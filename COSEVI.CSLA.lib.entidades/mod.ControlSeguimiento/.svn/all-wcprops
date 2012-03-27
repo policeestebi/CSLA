@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/202/CSLA/COSEVI.CSLA.lib.entidades/mod.ControlSeguimiento
+END
+cls_componentePaquete..cs
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.ControlSeguimiento/cls_componentePaquete..cs
+END
+cls_proyectoEntregable..cs
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.ControlSeguimiento/cls_proyectoEntregable..cs
+END
+cls_estado..cs
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.ControlSeguimiento/cls_estado..cs
+END
+cls_entregableComponente..cs
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.ControlSeguimiento/cls_entregableComponente..cs
+END
+cls_paquete..cs
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.ControlSeguimiento/cls_paquete..cs
+END
+cls_proyecto..cs
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/87/CSLA/COSEVI.CSLA.lib.entidades/mod.ControlSeguimiento/cls_proyecto..cs
+END
+cls_componente..cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.ControlSeguimiento/cls_componente..cs
+END
+cls_actividad..cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/202/CSLA/COSEVI.CSLA.lib.entidades/mod.ControlSeguimiento/cls_actividad..cs
+END
+cls_departamentoProyecto..cs
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.ControlSeguimiento/cls_departamentoProyecto..cs
+END
+cls_entregable..cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.ControlSeguimiento/cls_entregable..cs
+END

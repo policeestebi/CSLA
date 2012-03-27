@@ -1,0 +1,97 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+
+
+//======================================================================
+// Consejo de Seguridad Vial (COSEVI). - 2011
+// Sistema CSLA
+//
+// cls_entregable_componente.cs
+//
+// Clase que asocia la información de los entregables y componentes
+// del Consejo de Seguridad Vial.
+// =====================================================================
+// Historial
+// PERSONA 			        MES - DIA - AÑO		DESCRIPCION
+// Cristian Arce            05  - 15    2011    Se crea la clase.
+//							
+// 
+//								
+//								
+//
+//======================================================================
+
+namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
+{
+	public class cls_entregableComponente
+    {
+
+        #region Constructor
+
+        /// <summary>
+        /// Constructor de la clase cls_entregable_componente.
+        /// </summary>
+        public cls_entregableComponente()
+        {
+            this.componente = new cls_componente();
+            this.proyectoEntregable = new cls_proyectoEntregable();
+        }
+
+        #endregion
+
+        #region Propiedades
+
+
+        public int pPK_Entregable
+        {
+            get { return proyectoEntregable.pPK_Entregable; }
+            set { this.proyectoEntregable.pPK_Entregable = value; }
+        }
+
+        public int pPK_Departamento
+        {
+            get { return proyectoEntregable.pPK_Departamento; }
+            set { this.proyectoEntregable.pPK_Departamento = value; }
+        }
+
+        public int pPK_Proyecto
+        {
+            get { return proyectoEntregable.pPK_Proyecto; }
+            set { this.proyectoEntregable.pPK_Proyecto = value; }
+        }
+
+        public int pPK_Componente
+        {
+            get { return componente.pPK_componente; }
+            set { this.componente.pPK_componente = value; }
+        }
+
+        public cls_proyectoEntregable pProyectoEntregable
+        {
+            get { return proyectoEntregable; }
+            set { this.proyectoEntregable = value; }
+        }
+
+		public cls_componente pComponente
+        {
+            get { return componente; }
+            set { this.componente = value; }
+        }
+
+        #endregion
+
+        #region Atributos
+
+        private cls_proyectoEntregable proyectoEntregable;
+
+        private cls_componente componente;
+
+        #endregion
+
+	}
+
+}
+

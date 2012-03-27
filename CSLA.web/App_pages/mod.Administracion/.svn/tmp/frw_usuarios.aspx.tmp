@@ -1,0 +1,247 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/msp.EstiloBasico/mspContenido.Master"
+    AutoEventWireup="true" CodeBehind="frw_usuarios.aspx.cs" Inherits="CSLA.web.App_pages.mod.Administracion.frw_usuario" %>
+
+<%@ Register Assembly="COSEVI.web.controls" Namespace="COSEVI.web.controls" TagPrefix="cc1" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="act" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="tituloPagina" runat="server">
+    Lista de Usuarios
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="cuerpoPagina" runat="server">
+    <asp:ScriptManager ID="scr_Man" runat="server">
+    </asp:ScriptManager>
+    <asp:UpdatePanel ID="upd_Principal" runat="server" ChildrenAsTriggers="true" UpdateMode="Conditional">
+        <ContentTemplate>
+            <act:Accordion ID="ard_principal" runat="server" SelectedIndex="0" FadeTransitions="false"
+                FramesPerSecond="40" TransitionDuration="250" AutoSize="None" RequireOpenedPane="false"
+                SuppressHeaderPostbacks="true" HeaderCssClass="encabezadoAcordeon" ContentCssClass="contenidoAcordeon"
+                HeaderSelectedCssClass="encabezadoSeleccionadoAcordeon">
+                <Panes>
+                    <act:AccordionPane ID="acp_listadoDatos" runat="server">
+                        <Header>
+                            <a href="" style="color: #FFFFFF; font-size: 12px;">Listado de Usuarios</a>
+                        </Header>
+                        <Content>
+                            <table id="tbl_contenido">
+                                <tr>
+                                    <%-- Contenido de agregado Arriba--%>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <%-- Búsqueda--%>
+                                        <cc1:ucSearch ID="ucSearchUsuario" runat="server" OnSearchClick="ucSearchUsuario_searchClick" />
+                                        <asp:Button ID="btn_agregar" runat="server" Text="Agregar" OnClick="btn_agregar_Click"
+                                            CausesValidation="false" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <%-- Espacio--%>
+                                        <br />
+                                        <br />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <%-- GridView--%>
+                                        <asp:GridView ID="grd_listaUsuarios" AllowPaging="True" runat="server" AutoGenerateColumns="False"
+                                            Width="100%" CssClass="Grid" CellSpacing="1" CellPadding="3" OnRowCommand="grd_listaUsuarios_RowCommand"
+                                            OnPageIndexChanging="grd_listaUsuarios_PageIndexChanging">
+                                            <PagerSettings PageButtonCount="20" />
+                                            <Columns>
+                                                <asp:BoundField DataField="pPK_usuario" HeaderText="Usuario" SortExpression="pPK_usuario" />
+                                                <asp:BoundField DataField="pNombre" HeaderText="Nombre" SortExpression="pNombre" />
+                                                <asp:BoundField DataField="pContrasena" HeaderText="Contrasena" SortExpression="pContrasena"
+                                                    Visible="false" />
+                                                <asp:BoundField DataField="pApellido1" HeaderText="Apellido1" SortExpression="pApellido1" />
+                                                <asp:BoundField DataField="pApellido2" HeaderText="Apellido2" SortExpression="pApellido2" />
+                                                <asp:BoundField DataField="pFK_rol" HeaderText="Rol" SortExpression="pFK_rol"
+                                                    Visible="false" />
+                                                <asp:BoundField   DataField="pNombreRol" HeaderText="Rol" SortExpression="pNombreRol" />
+                                                <asp:BoundField DataField="pPuesto" HeaderText="Puesto" SortExpression="pPuesto" />
+                                                <asp:CheckBoxField DataField="pActivo" HeaderText="Activo" ReadOnly="true" />
+                                                <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:ImageButton runat="server" ID="btn_ver" CommandName="Ver" CommandArgument='<%# DataBinder.Eval(Container, "RowIndex") %>'
+                                                            CausesValidation="false" ImageUrl="~/App_Themes/Basico/Botones/img_ver.gif" />
+                                                    </ItemTemplate>
+                                                    <ItemStyle Width="1px" />
+                                                </asp:TemplateField>
+                                                <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:ImageButton runat="server" ID="btn_editar" CommandName="Editar" CommandArgument='<%# DataBinder.Eval(Container, "RowIndex") %>'
+                                                            CausesValidation="false" ImageUrl="~/App_Themes/Basico/Botones/img_editar.gif" />
+                                                    </ItemTemplate>
+                                                    <ItemStyle Width="1px" />
+                                                </asp:TemplateField>
+                                                <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:ImageButton runat="server" ID="btn_eliminar" CommandName="Eliminar" CommandArgument='<%# DataBinder.Eval(Container, "RowIndex") %>'
+                                                            CausesValidation="false" ImageUrl="~/App_Themes/Basico/botones/img_eliminar.gif"
+                                                            OnClientClick="return confirm('¿Está seguro que desea eliminar este registro?');" />
+                                                    </ItemTemplate>
+                                                    <ItemStyle Width="1px" />
+                                                </asp:TemplateField>
+                                            </Columns>
+                                            <HeaderStyle CssClass="GridHeader"></HeaderStyle>
+                                            <AlternatingRowStyle CssClass="GridAltItem" />
+                                        </asp:GridView>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <%--Contenido Agregado Abajo --%>
+                                        <table id="tbl_agregado" align="right">
+                                            <tr align="right">
+                                                <td>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </Content>
+                    </act:AccordionPane>
+                    <act:AccordionPane ID="acp_edicionDatos" runat="server">
+                        <Header>
+                            <a href="" style="color: #FFFFFF; font-size: 12px;">Edici&oacute;n de Usuarios</a>
+                        </Header>
+                        <Content>
+                            <table id="Table1">
+                                <tr>
+                                    <%-- Contenido de agregado Arriba--%>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <%-- Espacio--%>
+                                        <br />
+                                        <br />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <%-- GridView o Mantenimiento--%>
+                                        <table id="tbl_mantenimiento">
+                                            <tr align="left">
+                                                <td>
+                                                    <asp:Label ID="lbl_usuario" runat="server" Text="Usuario Login: "></asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_usuario" runat="server"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <asp:RequiredFieldValidator ID="rfv_usuarioLogin" runat="server" ControlToValidate="txt_usuario"
+                                                        ToolTip="Ingrese Login del usuario" ErrorMessage="Login del usuario es requerido"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
+                                                </td>
+                                            </tr>
+                                            <tr align="left">
+                                                <td>
+                                                    <asp:Label ID="lbl_contrasena" runat="server" Text="Contraseña: "></asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_contrasena" TextMode="Password" runat="server"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <asp:RequiredFieldValidator ID="rfv_contrasena" runat="server" ControlToValidate="txt_contrasena"
+                                                        ToolTip="Ingrese la contraseña del usuario" ErrorMessage="Contraseña es requerida"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
+                                                </td>
+                                            </tr>
+                                            <tr align="left">
+                                                <td>
+                                                    <asp:Label ID="lbl_nombre" runat="server" Text="Nombre: "></asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_nombre" runat="server"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <asp:RequiredFieldValidator ID="rfv_nombre" runat="server" ControlToValidate="txt_nombre"
+                                                        ToolTip="Ingrese el nombre del usuario" ErrorMessage="Nombre es requerido"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
+                                                </td>
+                                            </tr>
+                                            <tr align="left">
+                                                <td>
+                                                    <asp:Label ID="lbl_apellido1" runat="server" Text="Apellido1: "></asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_apellido1" runat="server"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <asp:RequiredFieldValidator ID="rfv_apellido1" runat="server" ControlToValidate="txt_apellido1"
+                                                        ToolTip="Ingrese el apellido1 del usuario" ErrorMessage="Apellido1 es requerido"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
+                                                </td>
+                                            </tr>
+                                            <tr align="left">
+                                                <td>
+                                                    <asp:Label ID="lbl_apellido2" runat="server" Text="Apellido2: "></asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_apellido2" runat="server"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <asp:RequiredFieldValidator ID="rfv_apellido2" runat="server" ControlToValidate="txt_apellido2"
+                                                        ToolTip="Ingrese el apellido2 del usuario" ErrorMessage="Apellido2 es requerido"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
+                                                </td>
+                                            </tr>
+                                            <tr align="left">
+                                                <td>
+                                                    <asp:Label ID="lbl_rol" runat="server" Text="Rol: "></asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:DropDownList ID="ddl_rol" runat="server" OnSelectedIndexChanged="ddlRol_SelectedIndexChanged">
+                                                    </asp:DropDownList>
+                                                </td>
+                                            </tr>
+                                            <tr align="left">
+                                                <td>
+                                                    <asp:Label ID="lbl_puesto" runat="server" Text="Puesto: "></asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txt_puesto" runat="server"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <asp:RequiredFieldValidator ID="rfv_puesto" runat="server" ControlToValidate="txt_puesto"
+                                                        ToolTip="Ingrese el puesto del usuario" ErrorMessage="Puesto es requerido"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
+                                                </td>
+                                            </tr>
+                                            <tr align="left">
+                                                <td>
+                                                    <asp:Label ID="lbl_activo" runat="server" Text="Activo: "></asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:CheckBox ID="chk_activo" runat="server" Checked="True"></asp:CheckBox>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <%--Contenido Agregado Abajo --%>
+                                        <div class="center">
+                                            <table id="Table2" >
+                                                <tr align="right">
+                                                    <td>
+                                                        <asp:Button ID="btn_cancelar" CausesValidation="false" OnClick="btn_cancelar_Click"
+                                                            runat="server" Text="Cancelar" />
+                                                    </td>
+                                                    <td>
+                                                        <asp:Button ID="btn_guardar" runat="server" OnClick="btn_guardar_Click" Text="Guardar" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </Content>
+                    </act:AccordionPane>
+                </Panes>
+            </act:Accordion>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+</asp:Content>

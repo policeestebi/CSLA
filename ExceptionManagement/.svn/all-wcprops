@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/98/CSLA/ExceptionManagement
+END
+ExceptionManagerText.xsx
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/40/CSLA/ExceptionManagement/ExceptionManagerText.xsx
+END
+BaseApplicationException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/40/CSLA/ExceptionManagement/BaseApplicationException.cs
+END
+ExceptionManagerText.Designer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/40/CSLA/ExceptionManagement/ExceptionManagerText.Designer.cs
+END
+COSEVI.lib.exceptionManagement.csproj.user
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/40/CSLA/ExceptionManagement/COSEVI.lib.exceptionManagement.csproj.user
+END
+COSEVI.lib.exceptionManagement.csproj
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/40/CSLA/ExceptionManagement/COSEVI.lib.exceptionManagement.csproj
+END
+ExceptionManagerInstaller.resx
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/40/CSLA/ExceptionManagement/ExceptionManagerInstaller.resx
+END
+ExceptionManagerText.xsc
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/40/CSLA/ExceptionManagement/ExceptionManagerText.xsc
+END
+ExceptionManagerText.xss
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/40/CSLA/ExceptionManagement/ExceptionManagerText.xss
+END
+ExceptionManagerText.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/40/CSLA/ExceptionManagement/ExceptionManagerText.xsd
+END
+ExceptionManagerInstaller.cs
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/40/CSLA/ExceptionManagement/ExceptionManagerInstaller.cs
+END
+CustomPublisherException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/40/CSLA/ExceptionManagement/CustomPublisherException.cs
+END
+ExceptionManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/40/CSLA/ExceptionManagement/ExceptionManager.cs
+END
+ExceptionManagerText.resx
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/40/CSLA/ExceptionManagement/ExceptionManagerText.resx
+END

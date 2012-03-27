@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/188/CSLA/COSEVI.CSLA.lib.entidades/mod.Administracion
+END
+cls_rolPaginaPermiso.cs
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.Administracion/cls_rolPaginaPermiso.cs
+END
+cls_rol.cs
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.Administracion/cls_rol.cs
+END
+cls_registroPermanente.cs
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/161/CSLA/COSEVI.CSLA.lib.entidades/mod.Administracion/cls_registroPermanente.cs
+END
+cls_paginaPermiso.cs
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.Administracion/cls_paginaPermiso.cs
+END
+cls_permiso.cs
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.Administracion/cls_permiso.cs
+END
+cls_pagina.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/90/CSLA/COSEVI.CSLA.lib.entidades/mod.Administracion/cls_pagina.cs
+END
+cls_departamento.cs
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/84/CSLA/COSEVI.CSLA.lib.entidades/mod.Administracion/cls_departamento.cs
+END
+cls_bitacora.cs
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.Administracion/cls_bitacora.cs
+END
+cls_menu.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/90/CSLA/COSEVI.CSLA.lib.entidades/mod.Administracion/cls_menu.cs
+END
+mod_adm_diagram.cd
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/40/CSLA/COSEVI.CSLA.lib.entidades/mod.Administracion/mod_adm_diagram.cd
+END
+cls_usuario.cs
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/188/CSLA/COSEVI.CSLA.lib.entidades/mod.Administracion/cls_usuario.cs
+END

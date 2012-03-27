@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/189/CSLA/lib_accesoDatos/mod.Administracion
+END
+cls_gestorRolPaginaPermiso..cs
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/121/CSLA/lib_accesoDatos/mod.Administracion/cls_gestorRolPaginaPermiso..cs
+END
+cls_gestorRol..cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/184/CSLA/lib_accesoDatos/mod.Administracion/cls_gestorRol..cs
+END
+cls_gestorPaginaPermiso..cs
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/121/CSLA/lib_accesoDatos/mod.Administracion/cls_gestorPaginaPermiso..cs
+END
+cls_gestorRol.cs
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/40/CSLA/lib_accesoDatos/mod.Administracion/cls_gestorRol.cs
+END
+cls_gestorPagina..cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/155/CSLA/lib_accesoDatos/mod.Administracion/cls_gestorPagina..cs
+END
+cls_gestorDepartamento..cs
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/142/CSLA/lib_accesoDatos/mod.Administracion/cls_gestorDepartamento..cs
+END
+cls_gestorBitacora..cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/141/CSLA/lib_accesoDatos/mod.Administracion/cls_gestorBitacora..cs
+END
+cls_gestorMenu..cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/143/CSLA/lib_accesoDatos/mod.Administracion/cls_gestorMenu..cs
+END
+cls_gestortPermiso.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/155/CSLA/lib_accesoDatos/mod.Administracion/cls_gestortPermiso.cs
+END
+cls_gestorUsuario..cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/189/CSLA/lib_accesoDatos/mod.Administracion/cls_gestorUsuario..cs
+END

@@ -1,0 +1,485 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace COSEVI.web.controls
+{
+    [DefaultProperty("Text")]
+    [ToolboxData("<{0}:ucCalendar runat=server></{0}:ucCalendar>")]
+    public class ucCalendar : CompositeControl
+    {
+
+        #region Override
+
+        protected override void RenderContents(HtmlTextWriter output)
+        {
+            output.Write(Text);
+        }
+
+
+        public override ControlCollection Controls
+        {
+            get
+            {
+                EnsureChildControls();
+                return base.Controls;
+            }
+        }
+
+        /// <summary>
+        /// Se encarga de crear los controles hijos
+        /// </summary>
+        protected override void CreateChildControls()
+        {
+            base.CreateChildControls();
+
+            Controls.Clear();
+
+            //Se crean los controles.
+            this.CrearControles();
+
+            //Al inicio se colocan las fechas iniciales.
+            this.ColocarFechas(this.FechaActual);
+
+            // Se coloca la fecha que se muestra para el rango de semanas
+            this.ColocarFechaMes();
+
+        }
+
+        /// <summary>
+        /// Se sobreescribe el método de render
+        /// para crear la estructura la el control.
+        /// </summary>
+        /// <param name="writer"></param>
+        protected override void Render(HtmlTextWriter writer)
+        {
+            AddAttributesToRender(writer);
+
+            //Se hace el render del encabezado
+            this.CrearEncabezado(writer);
+        }
+
+        /// <summary>
+        /// Se ejecuta al inicio del control.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            
+        }
+        
+        #endregion
+
+        #region Metodos
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ColocarFechaMes() 
+        {
+            this.lblSemana.Text = String.Format("{0:dd}", this.FechaLunes) + " - " + 
+                String.Format("{0:dd}", this.FechaLunes.AddDays(6)) +
+                " " +  this.ObtenerMesDescripcion(this.FechaLunes.AddDays(6).Month) +
+                ", " + String.Format("{0:yyyy}", this.FechaLunes.AddDays(6));
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pi_mes"></param>
+        /// <returns></returns>
+        private string ObtenerMesDescripcion(int pi_mes)
+        {
+            string vs_mes = String.Empty;
+
+            switch (pi_mes) 
+            {
+                case 1:
+                    vs_mes = "Enero";
+                    break;
+                case 2:
+                    vs_mes = "Febrero";
+                    break;
+                case 3:
+                    vs_mes = "Marzo";
+                    break;
+                case 4:
+                    vs_mes = "Abril";
+                    break;
+                case 5:
+                    vs_mes = "Mayo";
+                    break;
+                case 6:
+                    vs_mes = "Junio";
+                    break;
+                case 7:
+                    vs_mes = "Julio";
+                    break;
+                case 8:
+                    vs_mes = "Agosto";
+                    break;
+                case 9:
+                    vs_mes = "Setiembre";
+                    break;
+                case 10:
+                    vs_mes = "Octubre";
+                    break;
+                case 11:
+                    vs_mes = "Noviembre";
+                    break;
+                case 12:
+                    vs_mes = "Diciembre";
+                    break;
+                default:
+                    break;
+            }
+
+            return vs_mes;
+
+        }
+
+        /// <summary>
+        /// Coloca las fechas de los encabezados según una fecha
+        /// </summary>
+        /// <param name="pd_fecha"></param>
+        private void ColocarFechas(DateTime pd_fecha)
+        {
+            //Se obtiene el lunes
+            DateTime vd_fechaInicial = this.ObtenerLunes(pd_fecha);
+
+            //Por cada día la semana se coloca su respectiva fecha.
+            //Lunes
+            this.lblLunes.Text = " Lun, " + String.Format("{0:dd }",vd_fechaInicial);
+
+            vd_fechaInicial = vd_fechaInicial.AddDays(1);
+
+            this.lblMartes.Text = " Mart, " + String.Format("{0:dd }", vd_fechaInicial);
+
+            vd_fechaInicial = vd_fechaInicial.AddDays(1);
+
+            this.lblMiercoles.Text = " Miér, " + String.Format("{0:dd }", vd_fechaInicial);
+
+            vd_fechaInicial = vd_fechaInicial.AddDays(1);
+
+            this.lblJueves.Text = " Juev,  " + String.Format("{0:dd }", vd_fechaInicial);
+
+            vd_fechaInicial = vd_fechaInicial.AddDays(1);
+
+            this.lblViernes.Text = " Vier, " + String.Format("{0:dd }", vd_fechaInicial);
+
+            vd_fechaInicial = vd_fechaInicial.AddDays(1);
+
+            this.lblSabado.Text = " Sáb, " + String.Format("{0:dd }", vd_fechaInicial);
+
+            vd_fechaInicial = vd_fechaInicial.AddDays(1);
+
+            this.lblDomingo.Text = " Dom, " + String.Format("{0:dd }", vd_fechaInicial);
+
+            
+
+        }
+
+        /// <summary>
+        /// Crea el encabezado del
+        /// del calendario.
+        /// </summary>
+        /// <param name="writer"></param>
+        private void CrearEncabezado(HtmlTextWriter writer) 
+        {
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, this.Css);
+            writer.RenderBeginTag(HtmlTextWriterTag.Table);
+            //Controles de arriba
+            writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.RenderEndTag();// End TD
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            this.btnAnterior.RenderControl(writer);
+            writer.RenderEndTag();// End TD
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.RenderEndTag();// End TD
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            this.btnSiguiente.RenderControl(writer);
+            writer.RenderEndTag();// End TD
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.AddAttribute(HtmlTextWriterAttribute.Colspan, "3");
+            this.lblSemana.RenderControl(writer);
+            writer.RenderEndTag();// End TD
+            writer.RenderEndTag();//End TR
+
+            writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            this.lblTarea.RenderControl(writer);
+            writer.RenderEndTag();//End TD
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            this.lblLunes.RenderControl(writer);
+            writer.RenderEndTag();//End TD
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            this.lblMartes.RenderControl(writer);
+            writer.RenderEndTag();//End TD
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            this.lblMiercoles.RenderControl(writer);
+            writer.RenderEndTag();//End TD
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            this.lblJueves.RenderControl(writer);
+            writer.RenderEndTag();//End TD
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            this.lblViernes.RenderControl(writer);
+            writer.RenderEndTag();//End TD
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            this.lblSabado.RenderControl(writer);
+            writer.RenderEndTag();//End TD
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            this.lblDomingo.RenderControl(writer);
+            writer.RenderEndTag();//End TD
+            writer.RenderEndTag();//End TR
+            writer.RenderEndTag();//End table
+
+            
+        }
+
+        private DateTime ObtenerLunes(DateTime pd_fecha) 
+        {
+            DateTime vd_lunes = pd_fecha;
+
+            if (pd_fecha.DayOfWeek == DayOfWeek.Monday) 
+            {
+                this.FechaLunes = pd_fecha;
+                return pd_fecha;
+            }
+            
+            //Se suma un día hasta que se llegue 
+            //al lunes
+            while (vd_lunes.DayOfWeek != DayOfWeek.Monday) 
+            {
+                vd_lunes = vd_lunes.AddDays(-1);
+            }
+
+            this.FechaLunes = vd_lunes;
+
+            return vd_lunes;
+        }
+
+        /// <summary>
+        /// Crea los controles hijos
+        /// del control.
+        /// </summary>
+        private void CrearControles()
+        {
+            try
+            {
+                this.lblLunes = new Label();
+                this.lblLunes.ID = "lblLunes";
+                this.Controls.Add(this.lblLunes);
+
+                this.lblMartes = new Label();
+                this.lblMartes.ID = "lblMartes";
+                this.Controls.Add(this.lblMartes);
+
+                this.lblMiercoles = new Label();
+                this.lblMiercoles.ID = "lblMiercoles";
+                this.Controls.Add(this.lblMiercoles);
+
+                this.lblJueves = new Label();
+                this.lblJueves.ID = "lblJueves";
+                this.Controls.Add(this.lblJueves);
+
+                this.lblViernes = new Label();
+                this.lblViernes.ID = "lblViernes";
+                this.Controls.Add(this.lblViernes);
+
+                this.lblSabado = new Label();
+                this.lblSabado.ID = "lblSabado";
+                this.Controls.Add(this.lblSabado);
+
+                this.lblDomingo = new Label();
+                this.lblDomingo.ID = "lblDomingo";
+                this.Controls.Add(this.lblDomingo);
+
+                this.lblTarea = new Label();
+                this.lblTarea.ID = "lblTarea";
+                this.lblTarea.Text = "Actividad";
+                this.Controls.Add(this.lblTarea);
+
+                this.btnAnterior = new ImageButton();
+                this.btnAnterior.ID = "btnAnterior";
+                this.btnAnterior.Width = 30;
+                this.btnAnterior.Height = 30;
+                this.btnAnterior.ImageUrl = this.urlAnterior;
+                this.Controls.Add(this.btnAnterior);
+                this.btnAnterior.Click += new ImageClickEventHandler(btnAnterior_Click);
+
+                this.btnSiguiente = new ImageButton();
+                this.btnSiguiente.ID = "btnSiguiente";
+                this.btnSiguiente.Width = 30;
+                this.btnSiguiente.Height = 30;
+                this.btnSiguiente.ImageUrl = this.urlSiguiente;
+                this.Controls.Add(this.btnSiguiente);
+                this.btnSiguiente.Click += new ImageClickEventHandler(btnSiguiente_Click);
+
+                this.lblSemana = new Label();
+                this.lblSemana.ID = "lblSemana";
+                this.Controls.Add(this.lblSemana);
+            }
+            catch (Exception po_excepcion)
+            {
+            }
+
+
+        }
+        #endregion
+
+        #region Eventos
+
+        /// <summary>
+        /// Evento que se ejecuta al dar click
+        /// al control de siguiente.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void btnSiguiente_Click(object sender, ImageClickEventArgs e)
+        {
+            this.FechaLunes = this.FechaLunes.AddDays(8);
+            this.FechaActual = this.FechaLunes;
+            this.CreateChildControls();
+        }
+
+        /// <summary>
+        /// Evento que se ejecuta al dar click
+        /// al control de anterior.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void btnAnterior_Click(object sender, ImageClickEventArgs e)
+        {
+            this.FechaLunes = this.FechaLunes.AddDays(-1);
+            this.FechaActual = this.FechaLunes.AddDays(-1);
+            this.CreateChildControls();
+        }
+
+        #endregion
+
+        #region Propiedades
+
+        [Bindable(true)]
+        [Category("Appearance")]
+        [DefaultValue("")]
+        [Localizable(true)]
+        public string Text
+        {
+            get
+            {
+                String s = (String)ViewState["Text"];
+                return ((s == null) ? String.Empty : s);
+            }
+
+            set
+            {
+                ViewState["Text"] = value;
+            }
+        }
+
+
+        [Category("Style")]
+        [DefaultValue("")]
+        [Localizable(true)]
+        public String CssHeader
+        {
+            get { return cssHeader; }
+            set { cssHeader = value; }
+        }
+
+        [Category("Style")]
+        [DefaultValue("")]
+        [Localizable(true)]
+        public String Css
+        {
+            get { return css; }
+            set { css = value; }
+        }
+
+        [Category("Style")]
+        [DefaultValue("")]
+        [Localizable(true)]
+        public String UrlAnterior
+        {
+            get { return urlAnterior; }
+            set { urlAnterior = value; }
+        }
+
+        [Category("Style")]
+        [DefaultValue("")]
+        [Localizable(true)]
+        public String UrlSiguiente
+        {
+            get { return urlSiguiente; }
+            set { urlSiguiente = value; }
+        }
+
+
+        public DateTime FechaLunes
+        {
+            get
+            {
+                String s = ViewState["fechaLunes"] != null ? (String)ViewState["fechaLunes"].ToString() : String.Empty;
+                return String.IsNullOrEmpty(s) ? DateTime.Now : Convert.ToDateTime(s);
+            }
+            set { ViewState["fechaLunes"] = value; }
+        }
+
+
+        public DateTime FechaActual
+        {
+            get
+            {
+                String s = ViewState["fechaActual"] != null ? (String)ViewState["fechaActual"].ToString() : String.Empty;
+                return String.IsNullOrEmpty(s) ? DateTime.Now : Convert.ToDateTime(s);
+            }
+            set { ViewState["fechaActual"] = value; }
+        }
+
+        #endregion
+
+        #region Atributos
+
+        private Label lblTarea;
+
+        private Label lblLunes;
+
+        private Label lblMartes;
+
+        private Label lblMiercoles;
+
+        private Label lblJueves;
+
+        private Label lblViernes;
+
+        private Label lblSabado;
+
+        private Label lblDomingo;
+
+        private Label lblSemana;
+
+        private ImageButton btnAnterior;
+
+        private ImageButton btnSiguiente;
+
+        private String cssHeader;
+
+        private String css;
+
+        private String urlAnterior;
+
+        private String urlSiguiente;
+
+        #endregion
+
+    }
+}

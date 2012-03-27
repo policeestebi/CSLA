@@ -1,0 +1,219 @@
+USE CSLA
+GO
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_estadoUpdate]'))
+DROP PROCEDURE [dbo].[PA_cont_estadoUpdate]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_estadoUpdate 
+  @paramPK_estado int,
+  @paramdescripcion varchar(30) 
+AS 
+ BEGIN 
+SET NOCOUNT ON; 
+
+         UPDATE t_cont_estado
+         SET 
+			descripcion = @paramdescripcion       
+         WHERE 
+			PK_estado = @paramPK_estado 
+  
+END   
+ GO 
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_proyectoUpdate]'))
+DROP PROCEDURE [dbo].[PA_cont_proyectoUpdate]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_proyectoUpdate 
+  @paramFK_estado int, 
+  @paramnombre varchar(100) , 
+  @paramdescripcion varchar(100) , 
+  @paramobjetivo varchar(500) , 
+  @parammeta varchar(500) , 
+  @paramfechaInicio datetime, 
+  @paramfechaFin datetime, 
+  @paramhorasAsignadas decimal, 
+  @paramhorasAsigDefectos decimal, 
+  @paramhorasReales decimal, 
+  @paramhorasRealesDefectos decimal,
+  @paramPK_proyecto int
+
+AS 
+ BEGIN 
+SET NOCOUNT ON; 
+
+         UPDATE t_cont_proyecto
+         SET 
+			FK_estado = @paramFK_estado ,
+			nombre = @paramnombre ,
+			descripcion = @paramdescripcion ,
+			objetivo = @paramobjetivo ,
+			meta = @parammeta ,
+			fechaInicio = @paramfechaInicio ,
+			fechaFin = @paramfechaFin ,
+			horasAsignadas = @paramhorasAsignadas ,
+			horasAsigDefectos = @paramhorasAsigDefectos ,
+			horasReales = @paramhorasReales ,
+			horasRealesDefectos = @paramhorasRealesDefectos       
+         WHERE 
+			PK_proyecto = @paramPK_proyecto 
+  
+END   
+ GO 
+ 
+ 
+ IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_entregableUpdate]'))
+DROP PROCEDURE [dbo].[PA_cont_entregableUpdate]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_entregableUpdate 
+  @paramPK_entregable int,
+  @paramcodigo varchar(20) , 
+  @paramnombre varchar(100) , 
+  @paramdescripcion varchar(100)  
+AS 
+ BEGIN 
+SET NOCOUNT ON; 
+
+         UPDATE t_cont_entregable
+         SET 
+			codigo = @paramcodigo ,
+			nombre = @paramnombre ,
+			descripcion = @paramdescripcion       
+         WHERE 
+			PK_entregable = @paramPK_entregable
+
+END   
+ GO
+ 
+ 
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_componenteUpdate]'))
+DROP PROCEDURE [dbo].[PA_cont_componenteUpdate]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_componenteUpdate 
+  @paramPK_componente int,
+  @paramcodigo varchar(20) , 
+  @paramnombre varchar(100) , 
+  @paramdescripcion varchar(100) 
+AS 
+ BEGIN 
+SET NOCOUNT ON; 
+
+         UPDATE t_cont_componente
+         SET 
+			codigo = @paramcodigo ,
+			nombre = @paramnombre ,
+			descripcion = @paramdescripcion       
+         WHERE 
+			PK_componente = @paramPK_componente
+
+END   
+ GO 
+
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_paqueteUpdate]'))
+DROP PROCEDURE [dbo].[PA_cont_paqueteUpdate]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_paqueteUpdate 
+  @paramPK_paquete int,
+  @paramcodigo varchar(20) , 
+  @paramnombre varchar(100) , 
+  @paramdescripcion varchar(100) 
+AS 
+ BEGIN 
+SET NOCOUNT ON; 
+
+         UPDATE t_cont_paquete
+         SET 
+			codigo = @paramcodigo ,
+			nombre = @paramnombre ,
+			descripcion = @paramdescripcion       
+         WHERE 
+			PK_paquete = @paramPK_paquete
+
+END   
+ GO 
+
+
+
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_actividadUpdate]'))
+DROP PROCEDURE [dbo].[PA_cont_actividadUpdate]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_actividadUpdate 
+  @paramPK_actividad int, 
+  @paramcodigo varchar(20) , 
+  @paramnombre varchar(100) , 
+  @paramdescripcion varchar(100) 
+AS 
+ BEGIN 
+SET NOCOUNT ON; 
+
+         UPDATE t_cont_actividad
+         SET 
+			codigo = @paramcodigo ,
+			nombre = @paramnombre ,
+			descripcion = @paramdescripcion       
+         WHERE 
+			PK_actividad = @paramPK_actividad
+  
+END   
+ GO 

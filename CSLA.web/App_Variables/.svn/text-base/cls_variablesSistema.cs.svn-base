@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace CSLA.web.App_Variables
+{
+    /// <summary>
+    /// Clase que contiene 
+    /// variables utilizadas 
+    /// para los diferentes
+    /// mantenimientos del sistema
+    /// </summary>
+    public class cls_variablesSistema
+    {
+        //Añadir el usuario
+        public static String tipoEstado;            //Agregar o Modificar
+        public static Object obj = new Object();    //Objeto que trae los datos
+    }
+}

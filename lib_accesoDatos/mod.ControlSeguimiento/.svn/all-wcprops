@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/206/CSLA/lib_accesoDatos/mod.ControlSeguimiento
+END
+cls_gestorActividad..cs
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/206/CSLA/lib_accesoDatos/mod.ControlSeguimiento/cls_gestorActividad..cs
+END
+cls_gestorDepartamentoProyecto..cs
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/!svn/ver/121/CSLA/lib_accesoDatos/mod.ControlSeguimiento/cls_gestorDepartamentoProyecto..cs
+END
+cls_gestorEntregable..cs
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/155/CSLA/lib_accesoDatos/mod.ControlSeguimiento/cls_gestorEntregable..cs
+END
+cls_gestorComponentePaquete..cs
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/121/CSLA/lib_accesoDatos/mod.ControlSeguimiento/cls_gestorComponentePaquete..cs
+END
+cls_gestorProyectoEntregable..cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/121/CSLA/lib_accesoDatos/mod.ControlSeguimiento/cls_gestorProyectoEntregable..cs
+END
+cls_gestorEstado..cs
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/152/CSLA/lib_accesoDatos/mod.ControlSeguimiento/cls_gestorEstado..cs
+END
+cls_gestorEntregableComponente..cs
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/!svn/ver/121/CSLA/lib_accesoDatos/mod.ControlSeguimiento/cls_gestorEntregableComponente..cs
+END
+cls_gestorPaquete..cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/153/CSLA/lib_accesoDatos/mod.ControlSeguimiento/cls_gestorPaquete..cs
+END
+cls_gestorProyecto..cs
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/154/CSLA/lib_accesoDatos/mod.ControlSeguimiento/cls_gestorProyecto..cs
+END
+cls_gestorComponente..cs
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/155/CSLA/lib_accesoDatos/mod.ControlSeguimiento/cls_gestorComponente..cs
+END

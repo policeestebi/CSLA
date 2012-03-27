@@ -1,0 +1,98 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+
+
+//======================================================================
+// Consejo de Seguridad Vial (COSEVI). - 2011
+// Sistema CSLA
+//
+// cls_proyecto_entregable.cs
+//
+// Clase que asocia la información de los departamentos, proyectos y entregables
+// del Consejo de Seguridad Vial.
+// =====================================================================
+// Historial
+// PERSONA 			        MES - DIA - AÑO		DESCRIPCION
+// Cristian Arce            05  - 15    2011    Se crea la clase.
+//							
+// 
+//								
+//								
+//
+//======================================================================
+
+namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
+{
+    /// <summary>
+    /// Clase que asocia la información de los departamentos, proyectos y entregables
+    // del Consejo de Seguridad Vial.
+    /// </summary>
+	public class cls_proyectoEntregable
+    {
+
+        #region Constructor
+
+        /// <summary>
+        /// Constructor de la clase cls_proyecto_entregable.
+        /// </summary>
+        public cls_proyectoEntregable()
+        {
+            this.entregable = new cls_entregable();
+            this.departamentoProyecto = new cls_departamentoProyecto();
+        }
+
+        #endregion
+
+        #region Propiedades
+
+        public int pPK_Entregable
+        {
+            get { return entregable.pPK_entregable; }
+            set { this.entregable.pPK_entregable = value; }
+        }
+
+
+        public int pPK_Departamento
+        {
+            get { return pDepartamentoProyecto.pPK_departamento; }
+            set { this.pDepartamentoProyecto.pPK_departamento = value; }
+        }
+
+
+        public int pPK_Proyecto
+        {
+            get { return pDepartamentoProyecto.pPK_proyecto; }
+            set { this.pDepartamentoProyecto.pPK_proyecto = value; }
+        }
+
+
+        public cls_departamentoProyecto pDepartamentoProyecto
+        {
+            get { return departamentoProyecto; }
+            set { this.departamentoProyecto = value; }
+        }
+
+
+        public cls_entregable pEntregable
+        {
+            get { return entregable; }
+            set { this.entregable = value; }
+        }
+
+
+        #endregion
+
+        #region Atributos
+
+	    private cls_departamentoProyecto departamentoProyecto;
+
+	    private cls_entregable entregable;
+
+        #endregion
+   
+	}
+
+}

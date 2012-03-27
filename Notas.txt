@@ -1,0 +1,19 @@
+//=======================================================================
+// Consejo de Seguridad Vial (COSEVI). - 2012
+// Sistema CSLA
+//
+// Archivo para Notas por parte de Desarrollo
+//
+// Explicación de los contenidos del archivo.
+// =========================================================================
+// Historial
+// PERSONA 			        MES - DIA - AÑO		
+// Cristian Arce		 	12    01    2012    
+// CONSIDERACIONES:
+//	
+//	- Tomar en cuenta el estado "activo" de los ususario para el loggeo al sistema
+//	- Validar tamaño de los textos con los campos de BD(Validar en Control y Seguimiento)		
+//	- Para los campos Activo/Inactivo, modificar el filtro para que el usuario no deba escribir nada					
+//  - Crear filtro especial para la búsqueda en la bitácora
+//  
+//======================================================================
