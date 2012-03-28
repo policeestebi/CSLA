@@ -7,7 +7,7 @@
 <head runat="server">
     <title></title>
     <link rel="Stylesheet" type="text/css" href="App_Themes/Basico/css/pages_style.css"
-</head>
+</head> 
 <body>
 
     <form id="form1" runat="server">
@@ -17,6 +17,8 @@
     <asp:HyperLink runat="server" Text="Prueba">
     </asp:HyperLink>
     <asp:TextBox  runat="server" Text="prueba" id="btnPrueba"/>
+
+
     <act:CalendarExtender runat="server" TargetControlID="btnPrueba"></act:CalendarExtender>
     </div>
     </form>
