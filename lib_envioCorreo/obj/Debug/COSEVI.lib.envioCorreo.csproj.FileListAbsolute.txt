@@ -1,0 +1,7 @@
+D:\cslagit\CSLA\lib_envioCorreo\bin\Debug\lib_envioCorreo.dll
+D:\cslagit\CSLA\lib_envioCorreo\bin\Debug\lib_envioCorreo.pdb
+D:\cslagit\CSLA\lib_envioCorreo\bin\Debug\ExceptionManagement.dll
+D:\cslagit\CSLA\lib_envioCorreo\bin\Debug\ExceptionManagement.pdb
+D:\cslagit\CSLA\lib_envioCorreo\obj\Debug\ResolveAssemblyReference.cache
+D:\cslagit\CSLA\lib_envioCorreo\obj\Debug\lib_envioCorreo.dll
+D:\cslagit\CSLA\lib_envioCorreo\obj\Debug\lib_envioCorreo.pdb

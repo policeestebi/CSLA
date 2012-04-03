@@ -1,0 +1,4 @@
+D:\cslagit\CSLA\COSEVI.web.controls\obj\Debug\ResolveAssemblyReference.cache
+D:\cslagit\CSLA\COSEVI.web.controls\obj\Debug\COSEVI.web.controls.cld_resources.resources
+D:\cslagit\CSLA\COSEVI.web.controls\obj\Debug\GenerateResource-ResGen.read.1.tlog
+D:\cslagit\CSLA\COSEVI.web.controls\obj\Debug\GenerateResource-ResGen.write.1.tlog
