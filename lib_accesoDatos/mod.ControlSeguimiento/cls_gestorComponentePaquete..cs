@@ -41,7 +41,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
         /// </summary>
         /// <param name="poComponentePaquete">ComponentePaquete a insertar</param>
         /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-	   public static int insertComponentePaquete(cls_componentePaquete poComponentePaquete)
+	   public static int insertComponentePaquete(cls_componentePaquete po_ComponentePaquete)
    {
             int vi_resultado;
 
@@ -50,17 +50,17 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                 String vs_comando = "PA_cont_componente_paqueteInsert";
                 cls_parameter[] vu_parametros = 
                 {
-                    new cls_parameter("@paramPK_paquete", poComponentePaquete.pPK_paquete),
-                    new cls_parameter("@paramPK_componente", poComponentePaquete.pPK_componente),
-                    new cls_parameter("@paramPK_entregable", poComponentePaquete.pPK_entregable),
-                    new cls_parameter("@paramPK_proyecto", poComponentePaquete.pPK_proyecto)
+                    new cls_parameter("@paramPK_paquete", po_ComponentePaquete.pPaquete.pPK_Paquete),
+                    new cls_parameter("@paramPK_componente", po_ComponentePaquete.pComponente.pPK_componente),
+                    new cls_parameter("@paramPK_entregable", po_ComponentePaquete.pEntregable.pPK_entregable),
+                    new cls_parameter("@paramPK_proyecto", po_ComponentePaquete.pProyecto.pPK_proyecto)
                 };
 
                 cls_sqlDatabase.beginTransaction();
 
                 vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
 
-                cls_interface.insertarTransacccionBitacora(cls_constantes.INSERTAR, cls_constantes.COMPONENTE_PAQUETE, poComponentePaquete.pPK_proyecto + "/" + poComponentePaquete.pPK_entregable + "/" + poComponentePaquete.pPK_componente + "/" + poComponentePaquete.pPK_paquete);
+                cls_interface.insertarTransacccionBitacora(cls_constantes.INSERTAR, cls_constantes.COMPONENTE_PAQUETE, po_ComponentePaquete.pProyecto.pPK_proyecto + "/" + po_ComponentePaquete.pEntregable.pPK_entregable + "/" + po_ComponentePaquete.pComponente.pPK_componente + "/" + po_ComponentePaquete.pPaquete.pPK_Paquete);
 
                 cls_sqlDatabase.commitTransaction();
 
@@ -79,9 +79,9 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// Método que permite eliminar 
        /// un registro en la tabla componentePaquete
        /// </summary>
-       /// <param name="poComponentePaquete">ComponentePaquete a eliminar</param>
+       /// <param name="po_ComponentePaquete">ComponentePaquete a eliminar</param>
        /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-       public static int deleteComponentePaquete(cls_componentePaquete poComponentePaquete)
+       public static int deleteComponentePaquete(cls_componentePaquete po_ComponentePaquete)
        {
             int vi_resultado;
 
@@ -90,18 +90,17 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                 String vs_comando = "PA_cont_componente_paqueteDelete";
                 cls_parameter[] vu_parametros = 
                 {
-                    
-                    new cls_parameter("@paramPK_paquete", poComponentePaquete.pPK_paquete),
-                    new cls_parameter("@paramPK_componente", poComponentePaquete.pPK_componente),
-                    new cls_parameter("@paramPK_entregable", poComponentePaquete.pPK_entregable),
-                    new cls_parameter("@paramPK_proyecto", poComponentePaquete.pPK_proyecto)  
+                     new cls_parameter("@paramPK_paquete", po_ComponentePaquete.pPaquete.pPK_Paquete),
+                    new cls_parameter("@paramPK_componente", po_ComponentePaquete.pComponente.pPK_componente),
+                    new cls_parameter("@paramPK_entregable", po_ComponentePaquete.pEntregable.pPK_entregable),
+                    new cls_parameter("@paramPK_proyecto", po_ComponentePaquete.pProyecto.pPK_proyecto) 
                 };
 
                 cls_sqlDatabase.beginTransaction();
 
                 vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
 
-                cls_interface.insertarTransacccionBitacora(cls_constantes.ELIMINAR, cls_constantes.COMPONENTE_PAQUETE, poComponentePaquete.pPK_proyecto + "/" + poComponentePaquete.pPK_entregable + "/" + poComponentePaquete.pPK_componente + "/" + poComponentePaquete.pPK_paquete);
+                cls_interface.insertarTransacccionBitacora(cls_constantes.ELIMINAR, cls_constantes.COMPONENTE_PAQUETE, po_ComponentePaquete.pProyecto.pPK_proyecto + "/" + po_ComponentePaquete.pEntregable.pPK_entregable + "/" + po_ComponentePaquete.pComponente.pPK_componente + "/" + po_ComponentePaquete.pPaquete.pPK_Paquete);
 
                 cls_sqlDatabase.commitTransaction();
 
@@ -114,6 +113,53 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                 throw new Exception("Ocurrió un error al eliminar el componente del paquete.", po_exception);
             }
 
-    }	
+    }
+
+       /// <summary>
+       /// 
+       /// </summary>
+       /// <param name="poProyecto"></param>
+       /// <returns></returns>
+       public static DataSet selectComponentePaquete(cls_componentePaquete po_componentePaquete)
+       {
+           try
+           {
+               String vs_comando = "PA_cont_componentePaqueteSelect";
+               cls_parameter[] vu_parametros = { new cls_parameter("@paramPK_proyecto", po_componentePaquete.pProyecto.pPK_proyecto),
+                                                 new cls_parameter("@paramPK_componente", po_componentePaquete.pComponente.pPK_componente) };
+
+               DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
+
+               return vu_dataSet;
+           }
+           catch (Exception po_exception)
+           {
+               throw new Exception("Ocurrió un error al obtener el listado de los paquetes asociados a los componentes.", po_exception);
+           }
+       }
+
+       /// <summary>
+       /// 
+       /// </summary>
+       /// <param name="poProyecto"></param>
+       /// <returns></returns>
+       public static DataSet selectComponentePaquete(cls_proyecto po_proyecto)
+       {
+           try
+           {
+               String vs_comando = "PA_cont_componentePaqueteSelectAll";
+               cls_parameter[] vu_parametros = { new cls_parameter("@paramPK_proyecto", po_proyecto.pPK_proyecto)
+                                               };
+
+               DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
+
+               return vu_dataSet;
+           }
+           catch (Exception po_exception)
+           {
+               throw new Exception("Ocurrió un error al obtener el listado de los paquetes asociados a los componentes.", po_exception);
+           }
+       }
+
     }
 }

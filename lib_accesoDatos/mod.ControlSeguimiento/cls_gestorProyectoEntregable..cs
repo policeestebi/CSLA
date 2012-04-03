@@ -40,9 +40,9 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
         /// Método que permite insertar 
         /// un nuevo registro en la tabla Proyecto_Entregable
         /// </summary>
-        /// <param name="poProyectoEntregable">ProyectoEntregable a insertar</param>
+        /// <param name="po_proyectoEntregable">ProyectoEntregable a insertar</param>
         /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-	   public static int insertProyectoEntregable(cls_proyectoEntregable poProyectoEntregable)
+	   public static int insertProyectoEntregable(cls_proyectoEntregable po_proyectoEntregable)
        {
             int vi_resultado;
 
@@ -51,15 +51,16 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                 String vs_comando = "PA_cont_proyecto_entregableInsert";
                 cls_parameter[] vu_parametros = 
                 {                  
-                 		new cls_parameter("@paramPK_entregable", poProyectoEntregable.pPK_Entregable),
-                        new cls_parameter("@paramPK_proyecto", poProyectoEntregable.pPK_Proyecto)                   
+                 	new cls_parameter("@paramPK_proyecto", po_proyectoEntregable.pPK_Proyecto),  	
+                    new cls_parameter("@paramPK_entregable", po_proyectoEntregable.pPK_Entregable)
+                                         
                 };
 
                 cls_sqlDatabase.beginTransaction();
 
                 vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
 
-                cls_interface.insertarTransacccionBitacora(cls_constantes.INSERTAR, cls_constantes.PROYECTO_ENTREGABLE, poProyectoEntregable.pPK_Proyecto + "/" + poProyectoEntregable.pPK_Entregable);
+                cls_interface.insertarTransacccionBitacora(cls_constantes.INSERTAR, cls_constantes.PROYECTO_ENTREGABLE, po_proyectoEntregable.pPK_Proyecto + "/" + po_proyectoEntregable.pPK_Entregable);
 
                 cls_sqlDatabase.commitTransaction();
 
@@ -78,9 +79,9 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// Método que permite eliminar 
        /// un registro en la tabla Proyecto Entregable 
        /// </summary>
-       /// <param name="poProyectoEntregable">Proyecto a eliminar</param>
+       /// <param name="po_proyectoEntregable">Proyecto a eliminar</param>
        /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-       public static int deleteProyectEntregable(cls_proyectoEntregable poProyectoEntregable)
+       public static int deleteProyectEntregable(cls_proyectoEntregable po_proyectoEntregable)
        {
                 int vi_resultado;
 
@@ -89,15 +90,15 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                     String vs_comando = "PA_cont_proyecto_entregableDelete";
                     cls_parameter[] vu_parametros = 
                     {                   
-                 		    new cls_parameter("@paramPK_entregable", poProyectoEntregable.pPK_Entregable),
-                            new cls_parameter("@paramPK_proyecto", poProyectoEntregable.pPK_Proyecto)                  
+                 		    new cls_parameter("@paramPK_entregable", po_proyectoEntregable.pPK_Entregable),
+                            new cls_parameter("@paramPK_proyecto", po_proyectoEntregable.pPK_Proyecto)                  
                     };
 
                     cls_sqlDatabase.beginTransaction();
 
                     vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
 
-                    cls_interface.insertarTransacccionBitacora(cls_constantes.ELIMINAR, cls_constantes.PROYECTO_ENTREGABLE, poProyectoEntregable.pPK_Proyecto + "/" + + poProyectoEntregable.pPK_Entregable);
+                    cls_interface.insertarTransacccionBitacora(cls_constantes.ELIMINAR, cls_constantes.PROYECTO_ENTREGABLE, po_proyectoEntregable.pPK_Proyecto + "/" + + po_proyectoEntregable.pPK_Entregable);
 
                     cls_sqlDatabase.commitTransaction();
 
@@ -115,14 +116,14 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// <summary>
        /// 
        /// </summary>
-       /// <param name="poProyecto"></param>
+       /// <param name="po_proyecto"></param>
        /// <returns></returns>
-       public static DataSet selectProyectoEntregable(cls_proyecto poProyecto)
+       public static DataSet selectProyectoEntregable(cls_proyecto po_proyecto)
        {
            try
            {
                String vs_comando = "PA_cont_ProyectoEntregableSelect";
-               cls_parameter[] vu_parametros = { new cls_parameter("@paramPK_proyecto", poProyecto.pPK_proyecto)};
+               cls_parameter[] vu_parametros = { new cls_parameter("@paramPK_proyecto", po_proyecto.pPK_proyecto)};
 
                DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
 
