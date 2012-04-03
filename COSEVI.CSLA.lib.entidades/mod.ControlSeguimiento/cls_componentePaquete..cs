@@ -41,8 +41,14 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
         /// </summary>
         public cls_componentePaquete()
         {
+            this.proyecto = new cls_proyecto();
+            this.entregable = new cls_entregable();
+            this.componente = new cls_componente();
             this.paquete = new cls_paquete();
-            //this.entregableComponente = new cls_entregableComponente();
+            this.paqueteActividad = new cls_paqueteActividad();
+
+            this.paqueteList = new List<cls_paquete>();
+            this.paqueteActividadList = new List<cls_paqueteActividad>();
 
         }
 
@@ -50,34 +56,52 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         #region Propiedades
 
-        public int pPK_componente
+        public int pPK_Proyecto
         {
-            get { return entregableComponente.pPK_Componente; }
-            set { this.entregableComponente.pPK_Componente = value; }
+            get { return proyecto.pPK_proyecto; }
+            set { this.proyecto.pPK_proyecto = value; }
         }
 
-        public int pPK_entregable
+        public int pPK_Entregable
         {
-            get { return entregableComponente.pPK_Entregable; }
-            set { this.entregableComponente.pPK_Entregable = value; }
+            get { return entregable.pPK_entregable; }
+            set { this.entregable.pPK_entregable = value; }
         }
 
-        public int pPK_proyecto
+        public int pPK_Componente
         {
-            get { return entregableComponente.pPK_Proyecto; }
-            set { this.entregableComponente.pPK_Proyecto = value; }
+            get { return componente.pPK_componente; }
+            set { this.componente.pPK_componente = value; }
         }
 
-        public int pPK_paquete
+        public int pPK_Paquete
         {
             get { return paquete.pPK_Paquete; }
-            set { this.paquete.pPK_Paquete = value; }
+            set { this.paquete.pPK_Paquete= value; }
         }
 
-        public cls_entregableComponente pEntregableComponente
+        public string pNombrePaquete
         {
-            get { return entregableComponente; }
-            set { this.entregableComponente = value; }
+            get { return paquete.pNombre; }
+            set { this.paquete.pNombre = value; }
+        }
+
+        public cls_proyecto pProyecto
+        {
+            get { return proyecto; }
+            set { this.proyecto = value; }
+        }
+
+        public cls_entregable pEntregable
+        {
+            get { return entregable; }
+            set { this.entregable = value; }
+        }
+
+        public cls_componente pComponente
+        {
+            get { return componente; }
+            set { this.componente = value; }
         }
 
         public cls_paquete pPaquete
@@ -86,15 +110,80 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.paquete = value; }
         }
 
+        public cls_paqueteActividad pPaqueteActividad
+        {
+            get { return paqueteActividad; }
+            set { this.paqueteActividad = value; }
+        }
+
+        public List<cls_paquete> pPaqueteList
+        {
+            get { return paqueteList; }
+            set { this.paqueteList = value; }
+        }
+
+        public List<cls_paqueteActividad> pPaqueteActividadList
+        {
+            get { return paqueteActividadList; }
+            set { this.paqueteActividadList = value; }
+        }
+
         #endregion
 
 		#region Atributos
 
-	    private cls_entregableComponente entregableComponente;
+        private cls_proyecto proyecto;
 
-	    private cls_paquete paquete;
+        private cls_entregable entregable;
+
+        private cls_componente componente;
+
+        private cls_paquete paquete;
+
+        private cls_paqueteActividad paqueteActividad;
+
+        private List<cls_paquete> paqueteList;
+
+        private List<cls_paqueteActividad> paqueteActividadList;
  
         #endregion
+
+        #region Metodos
+
+        public bool ActividadEncontrada(cls_actividad po_actividad)
+        {
+            bool encontrado = false;
+
+            if (paqueteActividadList.Where(po => po.pPK_Actividad == po_actividad.pPK_Actividad).Count() > 0)
+            {
+                encontrado = true;
+            }
+
+            return encontrado;
+        }
+
+        public bool ActividadesAsignadas()
+        {
+            bool encontrado = false;
+
+            if (paqueteActividadList.Count > 0)
+            {
+                encontrado = true;
+            }
+
+            return encontrado;
+        }
+
+        public void RemoverActividadEncontrada(cls_actividad po_actividad)
+        {
+            //bool encontrado = false;
+
+            paqueteActividadList.RemoveAll(po => po.pPK_Actividad == po_actividad.pPK_Actividad);
+
+            //return encontrado;
+        }
+
+        #endregion Metodos
      
 	}
 

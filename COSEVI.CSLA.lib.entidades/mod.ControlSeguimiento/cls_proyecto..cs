@@ -40,9 +40,13 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             this.estadoProyecto = new cls_estado();
             this.entregableLista = new List<cls_entregable>();
             this.componenteLista = new List<cls_componente>();
+            this.paqueteLista = new List<cls_paquete>();
+            this.actividadLista = new List<cls_actividad>();
 
             this.proyectoEntregableLista = new List<cls_proyectoEntregable>();
             this.entregableComponenteLista = new List<cls_entregableComponente>();
+            this.componentePaqueteLista = new List<cls_componentePaquete>();
+            this.paqueteActividadLista = new List<cls_paqueteActividad>();
 
         }
 
@@ -218,7 +222,9 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         #endregion
 
+
         #region Creación de Proyecto
+
 
         #region Atributos
 
@@ -226,9 +232,17 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         private List<cls_componente> componenteLista = new List<cls_componente>();
 
+        private List<cls_paquete> paqueteLista = new List<cls_paquete>();
+
+        private List<cls_actividad> actividadLista = new List<cls_actividad>();
+
         private List<cls_proyectoEntregable> proyectoEntregableLista = new List<cls_proyectoEntregable>();
 
         private List<cls_entregableComponente> entregableComponenteLista = new List<cls_entregableComponente>();
+
+        private List<cls_componentePaquete> componentePaqueteLista = new List<cls_componentePaquete>();
+
+        private List<cls_paqueteActividad> paqueteActividadLista = new List<cls_paqueteActividad>();
 
         #endregion Atributos
 
@@ -247,6 +261,18 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.componenteLista = value; }
         }
 
+        public List<cls_paquete> pPaqueteLista
+        {
+            get { return paqueteLista; }
+            set { this.paqueteLista = value; }
+        }
+
+        public List<cls_actividad> pActividadLista
+        {
+            get { return actividadLista; }
+            set { this.actividadLista = value; }
+        }
+
         public List<cls_proyectoEntregable> pProyectoEntregableLista
         {
             get { return proyectoEntregableLista; }
@@ -259,7 +285,20 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.entregableComponenteLista = value; }
         }
 
+        public List<cls_componentePaquete> pComponentePaqueteLista
+        {
+            get { return componentePaqueteLista; }
+            set { this.componentePaqueteLista = value; }
+        }
+
+        public List<cls_paqueteActividad> pPaqueteActividadLista
+        {
+            get { return paqueteActividadLista; }
+            set { this.paqueteActividadLista = value; }
+        }
+
         #endregion Propiedades
+
 
         #endregion Creación de Proyecto
 
