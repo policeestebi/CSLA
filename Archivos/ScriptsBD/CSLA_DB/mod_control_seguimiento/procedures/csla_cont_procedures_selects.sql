@@ -262,3 +262,202 @@ AS
 			cont_ent_comp.PK_entregable = @paramPK_entregable
 END  
  GO 
+
+  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_entregableComponenteSelectAll]'))
+DROP PROCEDURE [dbo].[PA_cont_entregableComponenteSelectAll]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_entregableComponenteSelectAll
+  @paramPK_proyecto int
+AS 
+ BEGIN 
+		SELECT 
+			 cont_ent_comp.PK_proyecto,
+			 cont_ent_comp.PK_entregable,
+			 cont_ent_comp.PK_componente,
+			 cont_comp.nombre        
+        FROM 
+			t_cont_entregable_componente cont_ent_comp inner join t_cont_proyecto cont_proy 
+		ON 
+			cont_ent_comp.PK_proyecto = cont_proy.PK_proyecto inner join t_cont_entregable cont_ent
+		ON 
+			cont_ent_comp.PK_entregable = cont_ent.PK_entregable inner join t_cont_componente cont_comp
+		ON 
+			cont_ent_comp.PK_componente = cont_comp.PK_componente
+		WHERE 
+			cont_ent_comp.PK_proyecto = @paramPK_proyecto
+END  
+ GO 
+
+  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_componentePaqueteSelect]'))
+DROP PROCEDURE [dbo].[PA_cont_componentePaqueteSelect]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_componentePaqueteSelect
+  @paramPK_proyecto int,
+  @paramPK_componente int
+AS 
+ BEGIN 
+		SELECT 
+			 cont_comp_paq.PK_proyecto,
+			 cont_comp_paq.PK_entregable,
+			 cont_comp_paq.PK_componente,
+			 cont_comp_paq.PK_paquete,
+			 cont_paq.nombre        
+        FROM 
+			t_cont_componente_paquete cont_comp_paq inner join t_cont_proyecto cont_proy 
+		ON 
+			cont_comp_paq.PK_proyecto = cont_proy.PK_proyecto inner join t_cont_entregable cont_ent
+		ON 
+			cont_comp_paq.PK_entregable = cont_ent.PK_entregable inner join t_cont_componente cont_comp
+		ON 
+			cont_comp_paq.PK_componente = cont_comp.PK_componente inner join t_cont_paquete cont_paq
+		ON 
+			cont_comp_paq.PK_paquete = cont_paq.PK_paquete
+		WHERE 
+			cont_comp_paq.PK_proyecto = @paramPK_proyecto AND
+			cont_comp_paq.PK_componente = @paramPK_componente
+END  
+ GO 
+
+  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_componentePaqueteSelectAll]'))
+DROP PROCEDURE [dbo].[PA_cont_componentePaqueteSelectAll]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_componentePaqueteSelectAll
+  @paramPK_proyecto int
+AS 
+ BEGIN 
+		SELECT 
+			 cont_comp_paq.PK_proyecto,
+			 cont_comp_paq.PK_entregable,
+			 cont_comp_paq.PK_componente,
+			 cont_comp_paq.PK_paquete,
+			 cont_paq.nombre        
+        FROM 
+			t_cont_componente_paquete cont_comp_paq inner join t_cont_proyecto cont_proy 
+		ON 
+			cont_comp_paq.PK_proyecto = cont_proy.PK_proyecto inner join t_cont_entregable cont_ent
+		ON 
+			cont_comp_paq.PK_entregable = cont_ent.PK_entregable inner join t_cont_componente cont_comp
+		ON 
+			cont_comp_paq.PK_componente = cont_comp.PK_componente inner join t_cont_paquete cont_paq
+		ON 
+			cont_comp_paq.PK_paquete = cont_paq.PK_paquete
+		WHERE 
+			cont_comp_paq.PK_proyecto = @paramPK_proyecto
+END  
+ GO 
+
+
+  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_paqueteActividadSelect]'))
+DROP PROCEDURE [dbo].[PA_cont_paqueteActividadSelect]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_paqueteActividadSelect
+  @paramPK_proyecto int,
+  @paramPK_paquete int
+AS 
+ BEGIN 
+		SELECT 
+			 cont_paq_act.PK_proyecto,
+			 cont_paq_act.PK_entregable,
+			 cont_paq_act.PK_componente,
+			 cont_paq_act.PK_paquete,
+			 cont_paq_act.PK_actividad,
+			 cont_act.nombre        
+        FROM 
+			t_cont_paquete_actividad cont_paq_act inner join t_cont_proyecto cont_proy 
+		ON 
+			cont_paq_act.PK_proyecto = cont_proy.PK_proyecto inner join t_cont_entregable cont_ent
+		ON 
+			cont_paq_act.PK_entregable = cont_ent.PK_entregable inner join t_cont_componente cont_comp
+		ON 
+			cont_paq_act.PK_componente = cont_comp.PK_componente inner join t_cont_paquete cont_paq
+		ON 
+			cont_paq_act.PK_paquete = cont_paq.PK_paquete inner join t_cont_actividad cont_act
+		ON 
+			cont_paq_act.PK_actividad = cont_act.PK_actividad
+		WHERE 
+			cont_paq_act.PK_proyecto = @paramPK_proyecto AND
+			cont_paq_act.PK_paquete = @paramPK_paquete
+END  
+ GO 
+
+
+  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_paqueteActividadSelectAll]'))
+DROP PROCEDURE [dbo].[PA_cont_paqueteActividadSelectAll]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_paqueteActividadSelectAll
+  @paramPK_proyecto int
+AS 
+ BEGIN 
+		SELECT 
+			 cont_paq_act.PK_proyecto,
+			 cont_paq_act.PK_entregable,
+			 cont_paq_act.PK_componente,
+			 cont_paq_act.PK_paquete,
+			 cont_paq_act.PK_actividad,
+			 cont_act.nombre        
+        FROM 
+			t_cont_paquete_actividad cont_paq_act inner join t_cont_proyecto cont_proy 
+		ON 
+			cont_paq_act.PK_proyecto = cont_proy.PK_proyecto inner join t_cont_entregable cont_ent
+		ON 
+			cont_paq_act.PK_entregable = cont_ent.PK_entregable inner join t_cont_componente cont_comp
+		ON 
+			cont_paq_act.PK_componente = cont_comp.PK_componente inner join t_cont_paquete cont_paq
+		ON 
+			cont_paq_act.PK_paquete = cont_paq.PK_paquete inner join t_cont_actividad cont_act
+		ON 
+			cont_paq_act.PK_actividad = cont_act.PK_actividad
+		WHERE 
+			cont_paq_act.PK_proyecto = @paramPK_proyecto
+END  
+ GO 

@@ -394,6 +394,50 @@ AS
 END   
  GO 
 
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_paquete_actividadInsert]'))
+DROP PROCEDURE [dbo].[PA_cont_paquete_actividadInsert]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_paquete_actividadInsert
+  @paramPK_actividad int,   
+  @paramPK_paquete int, 
+  @paramPK_componente int, 
+  @paramPK_entregable int, 
+  @paramPK_proyecto int 
+ 
+AS 
+ BEGIN 
+ SET NOCOUNT ON; 
+
+         INSERT INTO t_cont_paquete_actividad
+        (
+		 PK_actividad,
+         PK_paquete,
+         PK_componente,
+         PK_entregable,
+         PK_proyecto
+        ) 
+        VALUES
+        ( 
+		 @paramPK_actividad,
+         @paramPK_paquete,
+         @paramPK_componente,
+         @paramPK_entregable,
+         @paramPK_proyecto
+        ) 
+
+END   
+ GO 
  
 IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_actividadAsignadaInsert]'))
 DROP PROCEDURE [dbo].[PA_cont_actividadAsignadaInsert]
