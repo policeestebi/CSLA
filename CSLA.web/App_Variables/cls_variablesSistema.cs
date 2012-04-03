@@ -22,13 +22,5 @@ namespace CSLA.web.App_Variables
         //Variable Estática para llevar la creación de un proyecto!!!
         public static cls_proyecto vs_proyecto = new cls_proyecto();
 
-        public static cls_departamentoProyecto vs_departamentoProyecto = new cls_departamentoProyecto();
-
-        public static List<cls_departamento> vsl_departamentos = new List<cls_departamento>();
-        public static List<cls_departamentoProyecto> vsl_departamentoProyecto = new List<cls_departamentoProyecto>();
-
-        public static List<cls_entregable> vsl_entregables = new List<cls_entregable>();
-        public static List<cls_proyectoEntregable> vsl_proyectoEntregable = new List<cls_proyectoEntregable>();
-
     }
 }
