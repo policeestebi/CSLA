@@ -18,7 +18,7 @@
                 SuppressHeaderPostbacks="true" HeaderCssClass="encabezadoAcordeon" ContentCssClass="contenidoAcordeon"
                 HeaderSelectedCssClass="encabezadoSeleccionadoAcordeon">
                 <Panes>
-                    <act:AccordionPane ID="acp_listadoDatos" runat="server">
+                    <act:AccordionPane ID="acp_listadoDatos" runat="server"> 
                         <Header>
                             <a href="" style="color: #FFFFFF; font-size: 12px;">Listado de Proyectos</a>
                         </Header>
