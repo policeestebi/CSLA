@@ -511,7 +511,7 @@ namespace COSEVI.web.controls
 
             if (this.voCambioFecha != null)
             {
-                this.voCambioFecha(this, FechaCalendario);
+                this.voCambioFecha(this, FechaCalendario); 
             }
 
             this.CreateChildControls();
