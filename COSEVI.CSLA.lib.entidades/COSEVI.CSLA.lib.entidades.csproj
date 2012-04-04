@@ -85,6 +85,7 @@
     <Compile Include="mod.ControlSeguimiento\cls_entregableComponente..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_estado..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_paquete..cs" />
+    <Compile Include="mod.ControlSeguimiento\cls_paqueteActividad.cs" />
     <Compile Include="mod.ControlSeguimiento\cls_proyecto..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_proyectoEntregable..cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

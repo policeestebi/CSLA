@@ -9,7 +9,7 @@ using System.Text;
 // Consejo de Seguridad Vial (COSEVI). - 2011
 // Sistema CSLA
 //
-// cls_componente_paquete.cs
+// cls_paquete_actividad.cs
 //
 // Clase que contiene la información relacionada con los paquetes pertenecientes a los componentes 
 // del Consejo de Seguridad Vial.
@@ -26,10 +26,10 @@ using System.Text;
 
 namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 {
-	public class cls_componentePaquete
+	public class cls_paqueteActividad
     {
         /// <summary>
-        /// Clase que contiene la información relacionada con los paquetes pertenecientes a los componentes
+        /// Clase que contiene la información relacionada con las actividades pertenecientes a los paquetes
         /// del Consejo de Seguridad Vial.
         /// </summary>
         /// 
@@ -37,18 +37,17 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
         #region Constructor
 
         /// <summary>
-        /// Constructor de la clase cls_componente_paquete.
+        /// Constructor de la clase cls_paqueteActividad.
         /// </summary>
-        public cls_componentePaquete()
+        public cls_paqueteActividad()
         {
             this.proyecto = new cls_proyecto();
             this.entregable = new cls_entregable();
             this.componente = new cls_componente();
             this.paquete = new cls_paquete();
-            this.paqueteActividad = new cls_paqueteActividad();
+            this.actividad = new cls_actividad();
 
-            this.paqueteList = new List<cls_paquete>();
-            this.paqueteActividadList = new List<cls_paqueteActividad>();
+            this.actividadList = new List<cls_actividad>();
 
         }
 
@@ -77,13 +76,19 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
         public int pPK_Paquete
         {
             get { return paquete.pPK_Paquete; }
-            set { this.paquete.pPK_Paquete= value; }
+            set { this.paquete.pPK_Paquete = value; }
+        }
+       
+        public int pPK_Actividad
+        {
+            get { return actividad.pPK_Actividad; }
+            set { this.actividad.pPK_Actividad = value; }
         }
 
-        public string pNombrePaquete
+        public string pNombreActividad
         {
-            get { return paquete.pNombre; }
-            set { this.paquete.pNombre = value; }
+            get { return actividad.pNombre; }
+            set { this.actividad.pNombre = value; }
         }
 
         public cls_proyecto pProyecto
@@ -110,22 +115,16 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.paquete = value; }
         }
 
-        public cls_paqueteActividad pPaqueteActividad
+        public cls_actividad pActividad
         {
-            get { return paqueteActividad; }
-            set { this.paqueteActividad = value; }
+            get { return actividad; }
+            set { this.actividad = value; }
         }
 
-        public List<cls_paquete> pPaqueteList
+        public List<cls_actividad> pActividadList
         {
-            get { return paqueteList; }
-            set { this.paqueteList = value; }
-        }
-
-        public List<cls_paqueteActividad> pPaqueteActividadList
-        {
-            get { return paqueteActividadList; }
-            set { this.paqueteActividadList = value; }
+            get { return actividadList; }
+            set { this.actividadList = value; }
         }
 
         #endregion
@@ -140,50 +139,11 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         private cls_paquete paquete;
 
-        private cls_paqueteActividad paqueteActividad;
+        private cls_actividad actividad;
 
-        private List<cls_paquete> paqueteList;
-
-        private List<cls_paqueteActividad> paqueteActividadList;
+        private List<cls_actividad> actividadList;
  
         #endregion
-
-        #region Metodos
-
-        public bool ActividadEncontrada(cls_actividad po_actividad)
-        {
-            bool encontrado = false;
-
-            if (paqueteActividadList.Where(po => po.pPK_Actividad == po_actividad.pPK_Actividad).Count() > 0)
-            {
-                encontrado = true;
-            }
-
-            return encontrado;
-        }
-
-        public bool ActividadesAsignadas()
-        {
-            bool encontrado = false;
-
-            if (paqueteActividadList.Count > 0)
-            {
-                encontrado = true;
-            }
-
-            return encontrado;
-        }
-
-        public void RemoverActividadEncontrada(cls_actividad po_actividad)
-        {
-            //bool encontrado = false;
-
-            paqueteActividadList.RemoveAll(po => po.pPK_Actividad == po_actividad.pPK_Actividad);
-
-            //return encontrado;
-        }
-
-        #endregion Metodos
      
 	}
 

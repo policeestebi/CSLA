@@ -10,7 +10,7 @@
 namespace CSLA.web.App_pages.mod.ControlSeguimiento {
     
     
-    public partial class frw_proyectos {
+    public partial class frw_proyectos { 
         
         /// <summary>
         /// scr_Man control.

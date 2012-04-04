@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\Esteban\Documents\GIT\CSLA\lib_accesoDatos\bin\Debug\lib_accesoDatos.dll
 C:\Users\Esteban\Documents\GIT\CSLA\lib_accesoDatos\bin\Debug\lib_accesoDatos.pdb
 C:\Users\Esteban\Documents\GIT\CSLA\lib_accesoDatos\bin\Debug\COSEVI.CSLA.lib.entidades.dll
@@ -5,3 +6,12 @@ C:\Users\Esteban\Documents\GIT\CSLA\lib_accesoDatos\bin\Debug\COSEVI.CSLA.lib.en
 C:\Users\Esteban\Documents\GIT\CSLA\lib_accesoDatos\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\Esteban\Documents\GIT\CSLA\lib_accesoDatos\obj\Debug\lib_accesoDatos.dll
 C:\Users\Esteban\Documents\GIT\CSLA\lib_accesoDatos\obj\Debug\lib_accesoDatos.pdb
+=======
+D:\cslagit\CSLA\lib_accesoDatos\bin\Debug\lib_accesoDatos.dll
+D:\cslagit\CSLA\lib_accesoDatos\bin\Debug\lib_accesoDatos.pdb
+D:\cslagit\CSLA\lib_accesoDatos\bin\Debug\COSEVI.CSLA.lib.entidades.dll
+D:\cslagit\CSLA\lib_accesoDatos\bin\Debug\COSEVI.CSLA.lib.entidades.pdb
+D:\cslagit\CSLA\lib_accesoDatos\obj\Debug\ResolveAssemblyReference.cache
+D:\cslagit\CSLA\lib_accesoDatos\obj\Debug\lib_accesoDatos.dll
+D:\cslagit\CSLA\lib_accesoDatos\obj\Debug\lib_accesoDatos.pdb
+>>>>>>> d92712e2c1919ad0a3019833b2c6ae34da92e536

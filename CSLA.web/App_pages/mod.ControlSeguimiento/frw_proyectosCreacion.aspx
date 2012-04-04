@@ -140,7 +140,7 @@
                                             <table id="tbl_paquetes">
                                                 <tr align="left">
                                                     <td>
-                                                        <asp:ListBox ID="lbx_componentesasociados" runat="server" SelectionMode="Multiple" Width="200px" Height="150px" OnSelectedIndexChanged="lbx_entregables_SelectedIndexChanged" AutoPostBack="true">
+                                                        <asp:ListBox ID="lbx_componentesasociados" runat="server" SelectionMode="Multiple" Width="200px" Height="150px" OnSelectedIndexChanged="lbx_componentes_SelectedIndexChanged" AutoPostBack="true">
                                                         </asp:ListBox>
                                                     </td>
                                                     <td align="left">
@@ -148,10 +148,10 @@
                                                         </asp:ListBox>
                                                     </td>
                                                     <td>
-                                                        <asp:Button ID="btn_asignarPaquete" runat="server" Text="&lt;" OnClick="btn_asignarComponente_Click" Width="35px" colspan="2"/>
+                                                        <asp:Button ID="btn_asignarPaquete" runat="server" Text="&lt;" OnClick="btn_asignarPaquete_Click" Width="35px" colspan="2"/>
                                                         <br />
                                                         <br />
-                                                        <asp:Button ID="btn_removerPaquete" runat="server" Text="&gt;" OnClick="btn_removerComponente_Click" Width="35px" colspan="2"/>
+                                                        <asp:Button ID="btn_removerPaquete" runat="server" Text="&gt;" OnClick="btn_removerPaquete_Click" Width="35px" colspan="2"/>
                                                     </td>
                                                     <td align="left">
                                                         <asp:ListBox ID="lbx_paquetes" runat="server" SelectionMode="Multiple" Width="200px" Height="150px">
@@ -178,7 +178,7 @@
                                             <table id="tbl_actividades">
                                                 <tr align="left">
                                                     <td>
-                                                        <asp:ListBox ID="lbx_actividadesasociadas" runat="server" SelectionMode="Multiple" Width="200px" Height="150px" OnSelectedIndexChanged="lbx_entregables_SelectedIndexChanged" AutoPostBack="true">
+                                                        <asp:ListBox ID="lbx_paquetesasociados" runat="server" SelectionMode="Multiple" Width="200px" Height="150px" OnSelectedIndexChanged="lbx_paquetes_SelectedIndexChanged" AutoPostBack="true">
                                                         </asp:ListBox>
                                                     </td>
                                                     <td align="left">
@@ -186,10 +186,10 @@
                                                         </asp:ListBox>
                                                     </td>
                                                     <td>
-                                                        <asp:Button ID="btn_asignarActividad" runat="server" Text="&lt;" OnClick="btn_asignarComponente_Click" Width="35px" colspan="2"/>
+                                                        <asp:Button ID="btn_asignarActividad" runat="server" Text="&lt;" OnClick="btn_asignarActividad_Click" Width="35px" colspan="2"/>
                                                         <br />
                                                         <br />
-                                                        <asp:Button ID="btn_removerActividad" runat="server" Text="&gt;" OnClick="btn_removerComponente_Click" Width="35px" colspan="2"/>
+                                                        <asp:Button ID="btn_removerActividad" runat="server" Text="&gt;" OnClick="btn_removerActividad_Click" Width="35px" colspan="2"/>
                                                     </td>
                                                     <td align="left">
                                                         <asp:ListBox ID="lbx_actividades" runat="server" SelectionMode="Multiple" Width="200px" Height="150px">

@@ -274,13 +274,13 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.Label lbl_actividades;
         
         /// <summary>
-        /// lbx_actividadesasociadas control.
+        /// lbx_paquetesasociados control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox lbx_actividadesasociadas;
+        protected global::System.Web.UI.WebControls.ListBox lbx_paquetesasociados;
         
         /// <summary>
         /// lbx_actasociadas control.

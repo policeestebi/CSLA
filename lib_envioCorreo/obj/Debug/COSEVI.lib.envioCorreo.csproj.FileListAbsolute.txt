@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\Esteban\Documents\GIT\CSLA\lib_envioCorreo\bin\Debug\lib_envioCorreo.dll
 C:\Users\Esteban\Documents\GIT\CSLA\lib_envioCorreo\bin\Debug\lib_envioCorreo.pdb
 C:\Users\Esteban\Documents\GIT\CSLA\lib_envioCorreo\bin\Debug\ExceptionManagement.dll
@@ -5,3 +6,12 @@ C:\Users\Esteban\Documents\GIT\CSLA\lib_envioCorreo\bin\Debug\ExceptionManagemen
 C:\Users\Esteban\Documents\GIT\CSLA\lib_envioCorreo\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\Esteban\Documents\GIT\CSLA\lib_envioCorreo\obj\Debug\lib_envioCorreo.dll
 C:\Users\Esteban\Documents\GIT\CSLA\lib_envioCorreo\obj\Debug\lib_envioCorreo.pdb
+=======
+D:\cslagit\CSLA\lib_envioCorreo\bin\Debug\lib_envioCorreo.dll
+D:\cslagit\CSLA\lib_envioCorreo\bin\Debug\lib_envioCorreo.pdb
+D:\cslagit\CSLA\lib_envioCorreo\bin\Debug\ExceptionManagement.dll
+D:\cslagit\CSLA\lib_envioCorreo\bin\Debug\ExceptionManagement.pdb
+D:\cslagit\CSLA\lib_envioCorreo\obj\Debug\ResolveAssemblyReference.cache
+D:\cslagit\CSLA\lib_envioCorreo\obj\Debug\lib_envioCorreo.dll
+D:\cslagit\CSLA\lib_envioCorreo\obj\Debug\lib_envioCorreo.pdb
+>>>>>>> d92712e2c1919ad0a3019833b2c6ae34da92e536

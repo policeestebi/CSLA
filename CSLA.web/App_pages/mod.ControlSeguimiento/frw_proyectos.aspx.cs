@@ -882,7 +882,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <summary>
         /// Método que se encarga de presentar los datos para el ListBox de departamentos
         /// </summary>
-        private void llenarListBoxDepartamentos()
+        private void llenarListBoxDepartamentos() 
         {
             try
             {

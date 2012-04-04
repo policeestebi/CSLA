@@ -41,7 +41,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
         /// </summary>
         /// <param name="poEntregableComponente">EntregableComponente a insertar</param>
         /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-	   public static int insertEntregableComponente(cls_entregableComponente poEntregableComponente)
+	   public static int insertEntregableComponente(cls_entregableComponente po_entregableComponente)
         {
             int vi_resultado;
 
@@ -50,16 +50,16 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                 String vs_comando = "PA_cont_entregable_componenteInsert";
                 cls_parameter[] vu_parametros = 
                 {
-                    new cls_parameter("@paramPK_componente", poEntregableComponente.pPK_Componente),
-                    new cls_parameter("@paramPK_entregable", poEntregableComponente.pPK_Entregable),
-                    new cls_parameter("@paramPK_proyecto", poEntregableComponente.pPK_Proyecto)
+                    new cls_parameter("@paramPK_componente", po_entregableComponente.pPK_Componente),
+                    new cls_parameter("@paramPK_entregable", po_entregableComponente.pPK_Entregable),
+                    new cls_parameter("@paramPK_proyecto", po_entregableComponente.pPK_Proyecto)
                 };
 
                 cls_sqlDatabase.beginTransaction();
 
                 vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
 
-                cls_interface.insertarTransacccionBitacora(cls_constantes.INSERTAR, cls_constantes.ENTREGABLE_COMPONENTE, poEntregableComponente.pPK_Proyecto + "/" + poEntregableComponente.pPK_Entregable + "/" + poEntregableComponente.pPK_Componente);
+                cls_interface.insertarTransacccionBitacora(cls_constantes.INSERTAR, cls_constantes.ENTREGABLE_COMPONENTE, po_entregableComponente.pPK_Proyecto + "/" + po_entregableComponente.pPK_Entregable + "/" + po_entregableComponente.pPK_Componente);
 
                 cls_sqlDatabase.commitTransaction();
 
@@ -78,9 +78,9 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// Método que permite eliminar 
        /// un registro en la tabla entregableComponente
        /// </summary>
-       /// <param name="poEntregableComponente">EntregableComponente a eliminar</param>
+       /// <param name="po_entregableComponente">EntregableComponente a eliminar</param>
        /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-       public static int deleteEntregableComponente(cls_entregableComponente poEntregableComponente)
+       public static int deleteEntregableComponente(cls_entregableComponente po_entregableComponente)
        {
             int vi_resultado;
 
@@ -89,16 +89,16 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                 String vs_comando = "PA_cont_entregable_componenteDelete";
                 cls_parameter[] vu_parametros = 
                 {                   
-                 	new cls_parameter("@paramPK_componente", poEntregableComponente.pPK_Componente),
-                    new cls_parameter("@paramPK_entregable", poEntregableComponente.pPK_Entregable),
-                    new cls_parameter("@paramPK_proyecto", poEntregableComponente.pPK_Proyecto)
+                 	new cls_parameter("@paramPK_componente", po_entregableComponente.pPK_Componente),
+                    new cls_parameter("@paramPK_entregable", po_entregableComponente.pPK_Entregable),
+                    new cls_parameter("@paramPK_proyecto", po_entregableComponente.pPK_Proyecto)
                 };
 
                 cls_sqlDatabase.beginTransaction();
 
                 vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
 
-                cls_interface.insertarTransacccionBitacora(cls_constantes.ELIMINAR, cls_constantes.ENTREGABLE_COMPONENTE, poEntregableComponente.pPK_Proyecto + "/" + poEntregableComponente.pPK_Entregable + "/" + poEntregableComponente.pPK_Componente);
+                cls_interface.insertarTransacccionBitacora(cls_constantes.ELIMINAR, cls_constantes.ENTREGABLE_COMPONENTE, po_entregableComponente.pPK_Proyecto + "/" + po_entregableComponente.pPK_Entregable + "/" + po_entregableComponente.pPK_Componente);
 
                 cls_sqlDatabase.commitTransaction();
 
@@ -136,5 +136,27 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
            }
        }
 
+       /// <summary>
+       /// 
+       /// </summary>
+       /// <param name="poProyecto"></param>
+       /// <returns></returns>
+       public static DataSet selectEntregableComponente(cls_proyecto po_proyecto)
+       {
+           try
+           {
+               String vs_comando = "PA_cont_entregableComponenteSelectAll";
+               cls_parameter[] vu_parametros = { new cls_parameter("@paramPK_proyecto", po_proyecto.pPK_proyecto)
+                                               };
+
+               DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
+
+               return vu_dataSet;
+           }
+           catch (Exception po_exception)
+           {
+               throw new Exception("Ocurrió un error al obtener el listado de los entregables.", po_exception);
+           }
+       }
     }
 }

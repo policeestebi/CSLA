@@ -131,38 +131,38 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         #region Metodos
 
-        //public bool ComponenteEncontrado(cls_componente po_componente)
-        //{
-        //    bool encontrado = false;
+        public bool PaqueteEncontrado(cls_paquete po_paquete)
+        {
+            bool encontrado = false;
 
-        //    if (pProyectocomList.Where(po => po.pPK_Entregable == po_entregable.pPK_entregable).Count() > 0)
-        //    {
-        //        encontrado = true;
-        //    }
+            if (componentePaqueteList.Where(po => po.pPK_Paquete == po_paquete.pPK_Paquete).Count() > 0)
+            {
+                encontrado = true;
+            }
 
-        //    return encontrado;
-        //}
+            return encontrado;
+        }
 
-        //public bool EntregablesAsignado()
-        //{
-        //    bool encontrado = false;
+        public bool PaquetesAsignados()
+        {
+            bool encontrado = false;
 
-        //    if (pProyectoEntregableList.Count > 0)
-        //    {
-        //        encontrado = true;
-        //    }
+            if (componentePaqueteList.Count > 0)
+            {
+                encontrado = true;
+            }
 
-        //    return encontrado;
-        //}
+            return encontrado;
+        }
 
-        //public void RemoverEntregableEncontrado(cls_entregable po_entregable)
-        //{
-        //    //bool encontrado = false;
+        public void RemoverPaqueteEncontrado(cls_paquete po_paquete)
+        {
+            //bool encontrado = false;
 
-        //    pProyectoEntregableList.RemoveAll(po => po.pPK_Entregable == po_entregable.pPK_entregable);
+            componentePaqueteList.RemoveAll(po => po.pPK_Paquete == po_paquete.pPK_Paquete);
 
-        //    //return encontrado;
-        //}
+            //return encontrado;
+        }
 
         #endregion Metodos
 
