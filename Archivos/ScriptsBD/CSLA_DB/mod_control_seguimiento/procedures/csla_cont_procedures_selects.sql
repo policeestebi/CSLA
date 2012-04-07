@@ -189,7 +189,8 @@ AS
 		ON 
 			cont_dep_proy.PK_departamento = admi_dep.PK_departamento
 		WHERE 
-			cont_dep_proy.PK_proyecto = @paramPK_proyecto
+			cont_dep_proy.PK_proyecto = @paramPK_proyecto AND
+			cont_dep_proy.activo = 1
 END  
  GO 
 
@@ -222,7 +223,8 @@ AS
 		ON 
 			cont_proy_ent.PK_entregable = cont_ent.PK_entregable
 		WHERE 
-			cont_proy_ent.PK_proyecto = @paramPK_proyecto
+			cont_proy_ent.PK_proyecto = @paramPK_proyecto AND
+			cont_proy_ent.activo = 1
 END  
  GO 
 
@@ -259,7 +261,8 @@ AS
 			cont_ent_comp.PK_componente = cont_comp.PK_componente
 		WHERE 
 			cont_ent_comp.PK_proyecto = @paramPK_proyecto AND
-			cont_ent_comp.PK_entregable = @paramPK_entregable
+			cont_ent_comp.PK_entregable = @paramPK_entregable AND
+			cont_ent_comp.activo = 1
 END  
  GO 
 
@@ -294,7 +297,8 @@ AS
 		ON 
 			cont_ent_comp.PK_componente = cont_comp.PK_componente
 		WHERE 
-			cont_ent_comp.PK_proyecto = @paramPK_proyecto
+			cont_ent_comp.PK_proyecto = @paramPK_proyecto AND
+			cont_ent_comp.activo = 1
 END  
  GO 
 
@@ -334,7 +338,8 @@ AS
 			cont_comp_paq.PK_paquete = cont_paq.PK_paquete
 		WHERE 
 			cont_comp_paq.PK_proyecto = @paramPK_proyecto AND
-			cont_comp_paq.PK_componente = @paramPK_componente
+			cont_comp_paq.PK_componente = @paramPK_componente AND
+			cont_comp_paq.activo = 1
 END  
  GO 
 
@@ -372,7 +377,8 @@ AS
 		ON 
 			cont_comp_paq.PK_paquete = cont_paq.PK_paquete
 		WHERE 
-			cont_comp_paq.PK_proyecto = @paramPK_proyecto
+			cont_comp_paq.PK_proyecto = @paramPK_proyecto AND
+			cont_comp_paq.activo = 1
 END  
  GO 
 
@@ -416,7 +422,8 @@ AS
 			cont_paq_act.PK_actividad = cont_act.PK_actividad
 		WHERE 
 			cont_paq_act.PK_proyecto = @paramPK_proyecto AND
-			cont_paq_act.PK_paquete = @paramPK_paquete
+			cont_paq_act.PK_paquete = @paramPK_paquete AND
+			cont_paq_act.activo = 1
 END  
  GO 
 
@@ -458,6 +465,7 @@ AS
 		ON 
 			cont_paq_act.PK_actividad = cont_act.PK_actividad
 		WHERE 
-			cont_paq_act.PK_proyecto = @paramPK_proyecto
+			cont_paq_act.PK_proyecto = @paramPK_proyecto AND
+			cont_paq_act.activo = 1
 END  
  GO 

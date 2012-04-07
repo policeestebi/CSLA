@@ -41,7 +41,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
         /// </summary>
         /// <param name="poComponentePaquete">ComponentePaquete a insertar</param>
         /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-	   public static int insertComponentePaquete(cls_componentePaquete po_ComponentePaquete)
+	   public static int insertComponentePaquete(cls_componentePaquete po_componentePaquete)
    {
             int vi_resultado;
 
@@ -50,17 +50,17 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                 String vs_comando = "PA_cont_componente_paqueteInsert";
                 cls_parameter[] vu_parametros = 
                 {
-                    new cls_parameter("@paramPK_paquete", po_ComponentePaquete.pPaquete.pPK_Paquete),
-                    new cls_parameter("@paramPK_componente", po_ComponentePaquete.pComponente.pPK_componente),
-                    new cls_parameter("@paramPK_entregable", po_ComponentePaquete.pEntregable.pPK_entregable),
-                    new cls_parameter("@paramPK_proyecto", po_ComponentePaquete.pProyecto.pPK_proyecto)
+                    new cls_parameter("@paramPK_paquete", po_componentePaquete.pPaquete.pPK_Paquete),
+                    new cls_parameter("@paramPK_componente", po_componentePaquete.pComponente.pPK_componente),
+                    new cls_parameter("@paramPK_entregable", po_componentePaquete.pEntregable.pPK_entregable),
+                    new cls_parameter("@paramPK_proyecto", po_componentePaquete.pProyecto.pPK_proyecto)
                 };
 
                 cls_sqlDatabase.beginTransaction();
 
                 vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
 
-                cls_interface.insertarTransacccionBitacora(cls_constantes.INSERTAR, cls_constantes.COMPONENTE_PAQUETE, po_ComponentePaquete.pProyecto.pPK_proyecto + "/" + po_ComponentePaquete.pEntregable.pPK_entregable + "/" + po_ComponentePaquete.pComponente.pPK_componente + "/" + po_ComponentePaquete.pPaquete.pPK_Paquete);
+                cls_interface.insertarTransacccionBitacora(cls_constantes.INSERTAR, cls_constantes.COMPONENTE_PAQUETE, po_componentePaquete.pProyecto.pPK_proyecto + "/" + po_componentePaquete.pEntregable.pPK_entregable + "/" + po_componentePaquete.pComponente.pPK_componente + "/" + po_componentePaquete.pPaquete.pPK_Paquete);
 
                 cls_sqlDatabase.commitTransaction();
 
@@ -79,28 +79,29 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// Método que permite eliminar 
        /// un registro en la tabla componentePaquete
        /// </summary>
-       /// <param name="po_ComponentePaquete">ComponentePaquete a eliminar</param>
+       /// <param name="po_componentePaquete">ComponentePaquete a eliminar</param>
        /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-       public static int deleteComponentePaquete(cls_componentePaquete po_ComponentePaquete)
+       public static int updateComponentePaquete(cls_componentePaquete po_componentePaquete, int pi_accion)
        {
             int vi_resultado;
 
             try
             {
-                String vs_comando = "PA_cont_componente_paqueteDelete";
+                String vs_comando = "PA_cont_componente_paqueteUpdate";
                 cls_parameter[] vu_parametros = 
                 {
-                     new cls_parameter("@paramPK_paquete", po_ComponentePaquete.pPaquete.pPK_Paquete),
-                    new cls_parameter("@paramPK_componente", po_ComponentePaquete.pComponente.pPK_componente),
-                    new cls_parameter("@paramPK_entregable", po_ComponentePaquete.pEntregable.pPK_entregable),
-                    new cls_parameter("@paramPK_proyecto", po_ComponentePaquete.pProyecto.pPK_proyecto) 
+                    new cls_parameter("@paramPK_paquete", po_componentePaquete.pPaquete.pPK_Paquete),
+                    new cls_parameter("@paramPK_componente", po_componentePaquete.pComponente.pPK_componente),
+                    new cls_parameter("@paramPK_entregable", po_componentePaquete.pEntregable.pPK_entregable),
+                    new cls_parameter("@paramPK_proyecto", po_componentePaquete.pProyecto.pPK_proyecto), 
+                    new cls_parameter("@paramAccion", pi_accion) 
                 };
 
                 cls_sqlDatabase.beginTransaction();
 
                 vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
 
-                cls_interface.insertarTransacccionBitacora(cls_constantes.ELIMINAR, cls_constantes.COMPONENTE_PAQUETE, po_ComponentePaquete.pProyecto.pPK_proyecto + "/" + po_ComponentePaquete.pEntregable.pPK_entregable + "/" + po_ComponentePaquete.pComponente.pPK_componente + "/" + po_ComponentePaquete.pPaquete.pPK_Paquete);
+                cls_interface.insertarTransacccionBitacora(cls_constantes.ELIMINAR, cls_constantes.COMPONENTE_PAQUETE, po_componentePaquete.pProyecto.pPK_proyecto + "/" + po_componentePaquete.pEntregable.pPK_entregable + "/" + po_componentePaquete.pComponente.pPK_componente + "/" + po_componentePaquete.pPaquete.pPK_Paquete);
 
                 cls_sqlDatabase.commitTransaction();
 

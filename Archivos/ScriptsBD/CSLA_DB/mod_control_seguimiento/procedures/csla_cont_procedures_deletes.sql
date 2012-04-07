@@ -167,8 +167,6 @@ SET NOCOUNT ON;
 END   
  GO 
 
-  
-
 IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_componenteDelete]'))
 DROP PROCEDURE [dbo].[PA_cont_componenteDelete]
 GO
@@ -225,7 +223,8 @@ SET NOCOUNT ON;
 
 END   
  GO 
- 
+
+
  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_paqueteDelete]'))
 DROP PROCEDURE [dbo].[PA_cont_paqueteDelete]
 GO

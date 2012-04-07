@@ -80,41 +80,43 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// Método que permite eliminar 
        /// un registro en la tabla componentePaquete
        /// </summary>
-       /// <param name="poPaqueteActividad">ComponentePaquete a eliminar</param>
+       /// <param name="po_paqueteActividad">ComponentePaquete a eliminar</param>
        /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-    //    public static int deletePaqueteActividad(cls_paqueteActividad poPaqueteActividad)
-    //   {
-    //        int vi_resultado;
+        public static int updatePaqueteActividad(cls_paqueteActividad po_paqueteActividad, int pi_accion)
+        {
+            int vi_resultado;
 
-    //        try
-    //        {
-    //            String vs_comando = "PA_cont_componente_paqueteDelete";
-    //            cls_parameter[] vu_parametros = 
-    //            {
-    //                 new cls_parameter("@paramPK_paquete", poPaqueteActividad.pPaquete.pPK_Paquete),
-    //                new cls_parameter("@paramPK_componente", poPaqueteActividad.pComponente.pPK_componente),
-    //                new cls_parameter("@paramPK_entregable", poPaqueteActividad.pEntregable.pPK_entregable),
-    //                new cls_parameter("@paramPK_proyecto", poPaqueteActividad.pProyecto.pPK_proyecto) 
-    //            };
+            try
+            {
+                String vs_comando = "PA_cont_paquete_actividadUpdate";
+                cls_parameter[] vu_parametros = 
+                {
+                    new cls_parameter("@paramPK_actividad", po_paqueteActividad.pActividad.pPK_Actividad),
+                    new cls_parameter("@paramPK_paquete", po_paqueteActividad.pPaquete.pPK_Paquete),
+                    new cls_parameter("@paramPK_componente", po_paqueteActividad.pComponente.pPK_componente),
+                    new cls_parameter("@paramPK_entregable", po_paqueteActividad.pEntregable.pPK_entregable),
+                    new cls_parameter("@paramPK_proyecto", po_paqueteActividad.pProyecto.pPK_proyecto), 
+                    new cls_parameter("@paramAccion", pi_accion) 
+                };
 
-    //            cls_sqlDatabase.beginTransaction();
+                cls_sqlDatabase.beginTransaction();
 
-    //            vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
+                vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
 
-    //            cls_interface.insertarTransacccionBitacora(cls_constantes.ELIMINAR, cls_constantes.COMPONENTE_PAQUETE, poPaqueteActividad.pProyecto.pPK_proyecto + "/" + poPaqueteActividad.pEntregable.pPK_entregable + "/" + poPaqueteActividad.pComponente.pPK_componente + "/" + poPaqueteActividad.pPaquete.pPK_Paquete);
+                cls_interface.insertarTransacccionBitacora(cls_constantes.ELIMINAR, cls_constantes.COMPONENTE_PAQUETE, po_paqueteActividad.pProyecto.pPK_proyecto + "/" + po_paqueteActividad.pEntregable.pPK_entregable + "/" + po_paqueteActividad.pComponente.pPK_componente + "/" + po_paqueteActividad.pPaquete.pPK_Paquete);
 
-    //            cls_sqlDatabase.commitTransaction();
+                cls_sqlDatabase.commitTransaction();
 
-    //            return vi_resultado;
+                return vi_resultado;
 
-    //        }
-    //        catch (Exception po_exception)
-    //        {
-    //            cls_sqlDatabase.rollbackTransaction();
-    //            throw new Exception("Ocurrió un error al eliminar el componente del paquete.", po_exception);
-    //        }
+            }
+            catch (Exception po_exception)
+            {
+                cls_sqlDatabase.rollbackTransaction();
+                throw new Exception("Ocurrió un error al eliminar el componente del paquete.", po_exception);
+            }
 
-    //}
+        }
 
        /// <summary>
        /// 

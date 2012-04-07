@@ -80,18 +80,19 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// </summary>
        /// <param name="po_entregableComponente">EntregableComponente a eliminar</param>
        /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-       public static int deleteEntregableComponente(cls_entregableComponente po_entregableComponente)
+       public static int updateEntregableComponente(cls_entregableComponente po_entregableComponente, int pi_accion)
        {
             int vi_resultado;
 
             try
             {
-                String vs_comando = "PA_cont_entregable_componenteDelete";
+                String vs_comando = "PA_cont_entregable_componenteUpdate";
                 cls_parameter[] vu_parametros = 
                 {                   
                  	new cls_parameter("@paramPK_componente", po_entregableComponente.pPK_Componente),
                     new cls_parameter("@paramPK_entregable", po_entregableComponente.pPK_Entregable),
-                    new cls_parameter("@paramPK_proyecto", po_entregableComponente.pPK_Proyecto)
+                    new cls_parameter("@paramPK_proyecto", po_entregableComponente.pPK_Proyecto),
+                    new cls_parameter("@paramAccion", pi_accion)
                 };
 
                 cls_sqlDatabase.beginTransaction();

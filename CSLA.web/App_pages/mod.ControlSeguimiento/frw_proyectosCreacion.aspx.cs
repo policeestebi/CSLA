@@ -66,7 +66,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 try
                 {
-                    this.llenarDatosEntregables();
+                    //this.llenarDatosEntregables();
                 }
                 catch (Exception po_exception)
                 {
@@ -152,41 +152,79 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
              return vo_proyecto;
         }
 
-        private List<cls_proyectoEntregable> crearProyectoEntregable()
+        private List<cls_proyectoEntregable> crearProyectoEntregableMemoria()
         {
             List<cls_proyectoEntregable> vo_proyectoEntregable = new List<cls_proyectoEntregable>();
 
-            vo_proyectoEntregable = cls_variablesSistema.vs_proyecto.pProyectoEntregableLista;
+            vo_proyectoEntregable = cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria;
 
             return vo_proyectoEntregable;
         }
 
-        private List<cls_entregableComponente> crearEntregableComponente()
+        private List<cls_entregableComponente> crearEntregableComponenteMemoria()
         {
             List<cls_entregableComponente> vo_entregableComponente = new List<cls_entregableComponente>();
 
-            vo_entregableComponente = cls_variablesSistema.vs_proyecto.pEntregableComponenteLista;
+            vo_entregableComponente = cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria;
 
             return vo_entregableComponente;
         }
 
-        private List<cls_componentePaquete> crearComponentePaquete()
+        private List<cls_componentePaquete> crearComponentePaqueteMemoria()
         {
             List<cls_componentePaquete> vo_componentePaquete = new List<cls_componentePaquete>();
 
-            vo_componentePaquete = cls_variablesSistema.vs_proyecto.pComponentePaqueteLista;
+            vo_componentePaquete = cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria;
 
             return vo_componentePaquete;
         }
 
-        private List<cls_paqueteActividad> crearPaqueteActividad()
+        private List<cls_paqueteActividad> crearPaqueteActividadMemoria()
         {
             List<cls_paqueteActividad> vo_paqueteActividad = new List<cls_paqueteActividad>();
 
-            vo_paqueteActividad = cls_variablesSistema.vs_proyecto.pPaqueteActividadLista;
+            vo_paqueteActividad = cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria;
 
             return vo_paqueteActividad;
         }
+
+
+        private List<cls_proyectoEntregable> crearProyectoEntregableBaseDatos()
+        {
+            List<cls_proyectoEntregable> vo_proyectoEntregable = new List<cls_proyectoEntregable>();
+
+            vo_proyectoEntregable = cls_variablesSistema.vs_proyecto.pProyectoEntregableListaBaseDatos;
+
+            return vo_proyectoEntregable;
+        }
+
+        private List<cls_entregableComponente> crearEntregableComponenteBaseDatos()
+        {
+            List<cls_entregableComponente> vo_entregableComponente = new List<cls_entregableComponente>();
+
+            vo_entregableComponente = cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos;
+
+            return vo_entregableComponente;
+        }
+
+        private List<cls_componentePaquete> crearComponentePaqueteBaseDatos()
+        {
+            List<cls_componentePaquete> vo_componentePaquete = new List<cls_componentePaquete>();
+
+            vo_componentePaquete = cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos;
+
+            return vo_componentePaquete;
+        }
+
+        private List<cls_paqueteActividad> crearPaqueteActividadBaseDatos()
+        {
+            List<cls_paqueteActividad> vo_paqueteActividad = new List<cls_paqueteActividad>();
+
+            vo_paqueteActividad = cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos;
+
+            return vo_paqueteActividad;
+        }
+
 
         /// <summary>
         /// Método que carga la información
@@ -219,7 +257,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             int llaveProyecto = cls_variablesSistema.vs_proyecto.pPK_proyecto;  
 
             //De momento se va a agregar, por defecto
-            cls_variablesSistema.tipoEstado = cls_constantes.AGREGAR;
+            //cls_variablesSistema.tipoEstado = cls_constantes.AGREGAR;
 
             try
             {
@@ -234,7 +272,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                         break;
                     case cls_constantes.EDITAR:
-                        //
+
+                        editarProyectoEntregable(llaveProyecto);
+                        editarEntregableComponente(llaveProyecto);
+                        editarComponentePaquete(llaveProyecto);
+                        editarPaqueteActividad(llaveProyecto);
+
                         break;
                     default:
                         break;
@@ -248,11 +291,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             } 
         }
 
+
         private int agregarProyectoEntregable(int ps_llaveProyecto)
         {
             int vi_resultado = 1;
 
-            List<cls_proyectoEntregable> vl_proyectoEntregable = this.crearProyectoEntregable();
+            List<cls_proyectoEntregable> vl_proyectoEntregable = this.crearProyectoEntregableMemoria();
 
             try
             {
@@ -275,7 +319,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             int vi_resultado = 1;
 
-            List<cls_entregableComponente> vl_entregableComponente = this.crearEntregableComponente();
+            List<cls_entregableComponente> vl_entregableComponente = this.crearEntregableComponenteMemoria();
 
             try
             {
@@ -298,7 +342,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             int vi_resultado = 1;
 
-            List<cls_componentePaquete> vl_componentePaquete = this.crearComponentePaquete();
+            List<cls_componentePaquete> vl_componentePaquete = this.crearComponentePaqueteMemoria();
 
             try
             {
@@ -321,7 +365,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             int vi_resultado = 1;
 
-            List<cls_paqueteActividad> vl_paqueteActividad = this.crearPaqueteActividad();
+            List<cls_paqueteActividad> vl_paqueteActividad = this.crearPaqueteActividadMemoria();
 
             try
             {
@@ -339,6 +383,156 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 throw new Exception("Ocurrió un error al guardar los paquetes del proyecto.", po_exception);
             }
         }
+
+
+        private int editarProyectoEntregable(int ps_llaveProyecto)
+        {
+            int vi_resultado = 1;
+
+            List<cls_proyectoEntregable> vl_proyectoEntregableMemoria = this.crearProyectoEntregableMemoria();
+            List<cls_proyectoEntregable> vl_proyectoEntregableBaseDatos = this.crearProyectoEntregableBaseDatos();
+
+            try
+            {
+                //Para cada proyecto entregable, se realiza la inserción
+                foreach (cls_proyectoEntregable vo_proyectoEntregable in vl_proyectoEntregableMemoria)
+                {
+                    if (!(vl_proyectoEntregableBaseDatos.Where(dep => dep.pPK_Entregable == vo_proyectoEntregable.pPK_Entregable).Count() > 0))
+                    {
+                        vo_proyectoEntregable.pProyecto.pPK_proyecto = ps_llaveProyecto;
+                        vi_resultado = cls_gestorProyectoEntregable.updateProyectEntregable(vo_proyectoEntregable, 1);
+                    }
+                }
+
+                //Para cada proyecto entregable, se realiza la inserción
+                foreach (cls_proyectoEntregable vo_proyectoEntregable in vl_proyectoEntregableBaseDatos)
+                {
+                    if (!(vl_proyectoEntregableMemoria.Where(dep => dep.pPK_Entregable == vo_proyectoEntregable.pPK_Entregable).Count() > 0))
+                    {
+                        vo_proyectoEntregable.pProyecto.pPK_proyecto = ps_llaveProyecto;
+                        vi_resultado = cls_gestorProyectoEntregable.updateProyectEntregable(vo_proyectoEntregable, 0);
+                    }
+                }
+
+                return vi_resultado;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al guardar los entregables del proyecto.", po_exception);
+            }
+        }
+
+        private int editarEntregableComponente(int ps_llaveProyecto)
+        {
+            int vi_resultado = 1;
+
+            List<cls_entregableComponente> vl_entregableComponenteMemoria = this.crearEntregableComponenteMemoria();
+            List<cls_entregableComponente> vl_entregableComponenteBaseDatos = this.crearEntregableComponenteBaseDatos();
+
+            try
+            {
+                //Para cada proyecto entregable, se realiza la inserción
+                foreach (cls_entregableComponente vo_entregableComponente in vl_entregableComponenteMemoria)
+                {
+                    if (!(vl_entregableComponenteBaseDatos.Where(dep => dep.pPK_Componente == vo_entregableComponente.pPK_Componente).Count() > 0))
+                    {
+                        vo_entregableComponente.pProyecto.pPK_proyecto = ps_llaveProyecto;
+                        vi_resultado = cls_gestorEntregableComponente.updateEntregableComponente(vo_entregableComponente, 1);
+                    }
+                }
+
+                //Para cada proyecto entregable, se realiza la inserción
+                foreach (cls_entregableComponente vo_entregableComponente in vl_entregableComponenteBaseDatos)
+                {
+                    if (!(vl_entregableComponenteMemoria.Where(dep => dep.pPK_Componente == vo_entregableComponente.pPK_Componente).Count() > 0))
+                    {
+                        vo_entregableComponente.pProyecto.pPK_proyecto = ps_llaveProyecto;
+                        vi_resultado = cls_gestorEntregableComponente.updateEntregableComponente(vo_entregableComponente, 0);
+                    }
+                }
+
+                return vi_resultado;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al guardar los entregables del proyecto.", po_exception);
+            }
+        }
+
+        private int editarComponentePaquete(int ps_llaveProyecto)
+        {
+            int vi_resultado = 1;
+
+            List<cls_componentePaquete> vl_componentePaqueteMemoria = this.crearComponentePaqueteMemoria();
+            List<cls_componentePaquete> vl_componentePaqueteBaseDatos = this.crearComponentePaqueteBaseDatos();
+
+            try
+            {
+                //Para cada proyecto entregable, se realiza la inserción
+                foreach (cls_componentePaquete vo_componentePaquete in vl_componentePaqueteMemoria)
+                {
+                    if (!(vl_componentePaqueteBaseDatos.Where(dep => dep.pPK_Paquete == vo_componentePaquete.pPK_Paquete).Count() > 0))
+                    {
+                        vo_componentePaquete.pProyecto.pPK_proyecto = ps_llaveProyecto;
+                        vi_resultado = cls_gestorComponentePaquete.updateComponentePaquete(vo_componentePaquete, 1);
+                    }
+                }
+
+                //Para cada proyecto entregable, se realiza la inserción
+                foreach (cls_componentePaquete vo_componentePaquete in vl_componentePaqueteBaseDatos)
+                {
+                    if (!(vl_componentePaqueteMemoria.Where(dep => dep.pPK_Paquete == vo_componentePaquete.pPK_Paquete).Count() > 0))
+                    {
+                        vo_componentePaquete.pProyecto.pPK_proyecto = ps_llaveProyecto;
+                        vi_resultado = cls_gestorComponentePaquete.updateComponentePaquete(vo_componentePaquete, 0);
+                    }
+                }
+
+                return vi_resultado;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al guardar los entregables del proyecto.", po_exception);
+            }
+        }
+
+        private int editarPaqueteActividad(int ps_llaveProyecto)
+        {
+            int vi_resultado = 1;
+
+            List<cls_paqueteActividad> vl_paqueteActividadMemoria = this.crearPaqueteActividadMemoria();
+            List<cls_paqueteActividad> vl_componentePaqueteBaseDatos = this.crearPaqueteActividadBaseDatos();
+
+            try
+            {
+                //Para cada proyecto entregable, se realiza la inserción
+                foreach (cls_paqueteActividad vo_paqueteActividad in vl_paqueteActividadMemoria)
+                {
+                    if (!(vl_componentePaqueteBaseDatos.Where(dep => dep.pPK_Actividad == vo_paqueteActividad.pPK_Actividad).Count() > 0))
+                    {
+                        vo_paqueteActividad.pProyecto.pPK_proyecto = ps_llaveProyecto;
+                        vi_resultado = cls_gestorPaqueteActividad.updatePaqueteActividad(vo_paqueteActividad, 1);
+                    }
+                }
+
+                //Para cada proyecto entregable, se realiza la inserción
+                foreach (cls_paqueteActividad vo_paqueteActividad in vl_componentePaqueteBaseDatos)
+                {
+                    if (!(vl_paqueteActividadMemoria.Where(dep => dep.pPK_Actividad == vo_paqueteActividad.pPK_Actividad).Count() > 0))
+                    {
+                        vo_paqueteActividad.pProyecto.pPK_proyecto = ps_llaveProyecto;
+                        vi_resultado = cls_gestorPaqueteActividad.updatePaqueteActividad(vo_paqueteActividad, 0);
+                    }
+                }
+
+                return vi_resultado;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al guardar los entregables del proyecto.", po_exception);
+            }
+        }
+
 
         /// <summary>
         /// Método que lanza la excepción personalizada
@@ -596,15 +790,30 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
-                if(cls_variablesSistema.vs_proyecto.pProyectoEntregableLista.Count > 0)
+                if(cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Count > 0)
                 {
-                    lbx_entasociados.DataSource = cls_variablesSistema.vs_proyecto.pProyectoEntregableLista;
+                    //Si la variable en memoria SI posee algún valor, se va a efectuar una "Actualizacion" al proyecto
+                    cls_variablesSistema.tipoEstado = cls_constantes.EDITAR;
+
+                    lbx_entasociados.DataSource = cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria;
                     lbx_entasociados.DataTextField = "pNombreEntregable";
                     lbx_entasociados.DataValueField = "pPK_Entregable";
                 }
                 else
                 {
+
                     vo_dataSet = cls_gestorProyectoEntregable.selectProyectoEntregable(cls_variablesSistema.vs_proyecto);
+
+                    if (vo_dataSet.Tables[0].Rows.Count > 0)
+                    {
+                        //Si la variable en memoria SI posee algún valor, se va a efectuar una "Actualizacion" al proyecto
+                        cls_variablesSistema.tipoEstado = cls_constantes.EDITAR;
+                    }
+                    else
+                    {
+                        //Si la variable en memoria NO posee algún valor, se va a efectuar una "Insercion" de proyecto
+                        cls_variablesSistema.tipoEstado = cls_constantes.AGREGAR;
+                    }
 
                     foreach (DataRow row in vo_dataSet.Tables[0].Rows)
                     {
@@ -618,7 +827,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         vo_proyectoEntregable.pEntregable = vo_entregable;
 
                         cls_variablesSistema.vs_proyecto.pEntregableLista.Add(vo_entregable);
-                        cls_variablesSistema.vs_proyecto.pProyectoEntregableLista.Add(vo_proyectoEntregable);
+                        cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Add(vo_proyectoEntregable);
+                        cls_variablesSistema.vs_proyecto.pProyectoEntregableListaBaseDatos.Add(vo_proyectoEntregable);
                     }
 
                     lbx_entasociados.DataSource = vo_dataSet;
@@ -660,11 +870,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                     vo_proyectoEntregable.pEntregable = vo_entregable;
 
-                    if (!(cls_variablesSistema.vs_proyecto.pProyectoEntregableLista.Where(test => test.pPK_Entregable == vo_entregable.pPK_entregable).Count() > 0))
+                    if (!(cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Where(test => test.pPK_Entregable == vo_entregable.pPK_entregable).Count() > 0))
                     {
                         vo_proyectoEntregable.pEntregableList.Add(vo_entregable);
                         cls_variablesSistema.vs_proyecto.pEntregableLista.Add(vo_entregable);
-                        cls_variablesSistema.vs_proyecto.pProyectoEntregableLista.Add(vo_proyectoEntregable);
+                        cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Add(vo_proyectoEntregable);
                     }
 
                     lbx_entasociados.Items.Add(lbx_entregables.Items[i]);
@@ -691,7 +901,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_proyectoEntregable.pEntregable = vo_entregable;
 
                     cls_variablesSistema.vs_proyecto.pEntregableLista.RemoveAll(test => test.pPK_entregable == vo_entregable.pPK_entregable);
-                    cls_variablesSistema.vs_proyecto.pProyectoEntregableLista.RemoveAll(test => test.pPK_Entregable == vo_entregable.pPK_entregable);
+                    cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.RemoveAll(test => test.pPK_Entregable == vo_entregable.pPK_entregable);
 
                     lbx_entregables.Items.Add(lbx_entasociados.Items[i]);
                     ListItem li = lbx_entasociados.Items[i];
@@ -727,9 +937,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             DataSet vo_dataSet = new DataSet();
             try
             {
-                if (cls_variablesSistema.vs_proyecto.pProyectoEntregableLista.Count > 0)
+                if (cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Count > 0)
                 {
-                    lbx_entregablesasociados.DataSource = cls_variablesSistema.vs_proyecto.pProyectoEntregableLista;
+                    lbx_entregablesasociados.DataSource = cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria;
                     lbx_entregablesasociados.DataTextField = "pNombreEntregable";
                     lbx_entregablesasociados.DataValueField = "pPK_entregable";
                     lbx_entregablesasociados.DataBind();
@@ -791,7 +1001,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 //También se procede a eliminar de la lista de componentes aquellos que se encuentren asignados en memoria
                 foreach (ListItem item in lbx_pivot.Items)
                 {
-                    if (cls_variablesSistema.vs_proyecto.pEntregableComponenteLista.Where(test => test.pPK_Componente.ToString() == item.Value).Count() > 0)
+                    if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(test => test.pPK_Componente.ToString() == item.Value).Count() > 0)
                     {
                         lbx_componentes.Items.Remove(item);
                     }
@@ -826,7 +1036,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
-                if (cls_variablesSistema.vs_proyecto.pEntregableComponenteLista.Count == 0)
+                if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Count == 0)
                 {
                     vo_dataSet = cls_gestorEntregableComponente.selectEntregableComponente(cls_variablesSistema.vs_proyecto);
 
@@ -844,15 +1054,20 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         vo_entregableComponente.pEntregable = vo_entregable;
                         vo_entregableComponente.pComponente = vo_componente;
 
-                        cls_variablesSistema.vs_proyecto.pComponenteLista.Add(vo_componente);
-                        cls_variablesSistema.vs_proyecto.pEntregableComponenteLista.Add(vo_entregableComponente);
+                        cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Add(vo_entregableComponente);
+
+                        if (cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Where(test => test.pPK_Entregable == vo_entregableComponente.pPK_Entregable).Count() > 0)
+                        {
+                            cls_variablesSistema.vs_proyecto.pComponenteLista.Add(vo_componente);
+                            cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Add(vo_entregableComponente);
+                        }
                     }
 
                 }
 
-                if (cls_variablesSistema.vs_proyecto.pEntregableComponenteLista.Where(test => test.pPK_Entregable == po_entregableComponente.pPK_Entregable).Count() > 0)
+                if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(test => test.pPK_Entregable == po_entregableComponente.pPK_Entregable).Count() > 0)
                 {
-                    lbx_compasociados.DataSource = cls_variablesSistema.vs_proyecto.pEntregableComponenteLista.Where(test => test.pPK_Entregable == po_entregableComponente.pPK_Entregable);
+                    lbx_compasociados.DataSource = cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(test => test.pPK_Entregable == po_entregableComponente.pPK_Entregable);
                     lbx_compasociados.DataTextField = "pNombreComponente";
                     lbx_compasociados.DataValueField = "pPK_Componente";
                 }
@@ -910,7 +1125,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_entregableComponente.pEntregable = vo_entregable;
                     vo_entregableComponente.pComponente = vo_componente;
 
-                    foreach (cls_proyectoEntregable proyEnt in cls_variablesSistema.vs_proyecto.pProyectoEntregableLista)
+                    foreach (cls_proyectoEntregable proyEnt in cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria)
                     {
                         if (proyEnt.pPK_Entregable == vo_entregable.pPK_entregable)
                         {
@@ -919,7 +1134,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                                 proyEnt.pEntregableComponente.pComponenteList.Add(vo_componente);
                                 proyEnt.pEntregableComponenteList.Add(vo_entregableComponente);
                                 cls_variablesSistema.vs_proyecto.pComponenteLista.Add(vo_componente);
-                                cls_variablesSistema.vs_proyecto.pEntregableComponenteLista.Add(vo_entregableComponente);
+                                cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Add(vo_entregableComponente);
                             }
                         }
                     }
@@ -953,7 +1168,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_entregableComponente.pEntregable = vo_entregable;
                     vo_entregableComponente.pComponente = vo_componente;
 
-                    foreach (cls_proyectoEntregable proyEnt in cls_variablesSistema.vs_proyecto.pProyectoEntregableLista)
+                    foreach (cls_proyectoEntregable proyEnt in cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria)
                     {
                         if (proyEnt.pPK_Entregable == vo_entregable.pPK_entregable)
                         {
@@ -961,7 +1176,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                             {
                                 proyEnt.RemoverComponenteEncontrado(vo_componente);
                                 cls_variablesSistema.vs_proyecto.pComponenteLista.RemoveAll(test => test.pPK_componente == vo_componente.pPK_componente);
-                                cls_variablesSistema.vs_proyecto.pEntregableComponenteLista.RemoveAll(test => test.pPK_Componente == vo_componente.pPK_componente);
+                                cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.RemoveAll(test => test.pPK_Componente == vo_componente.pPK_componente);
                             }
                         }
                     }
@@ -1002,9 +1217,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             
             try
             {
-                if (cls_variablesSistema.vs_proyecto.pEntregableComponenteLista.Count > 0)
+                if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Count > 0)
                 {
-                    lbx_componentesasociados.DataSource = cls_variablesSistema.vs_proyecto.pEntregableComponenteLista;
+                    lbx_componentesasociados.DataSource = cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria;
                     lbx_componentesasociados.DataTextField = "pNombreComponente";
                     lbx_componentesasociados.DataValueField = "pPK_Componente";
                     lbx_componentesasociados.DataBind();
@@ -1068,7 +1283,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 //También se procede a eliminar de la lista de paquetes aquellos que se encuentren asignados en memoria
                 foreach (ListItem item in lbx_pivot.Items)
                 {
-                    if (cls_variablesSistema.vs_proyecto.pComponentePaqueteLista.Where(test => test.pPK_Paquete.ToString() == item.Value).Count() > 0)
+                    if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(test => test.pPK_Paquete.ToString() == item.Value).Count() > 0)
                     {
                         lbx_paquetes.Items.Remove(item);
                     }
@@ -1132,7 +1347,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
-                if (cls_variablesSistema.vs_proyecto.pComponentePaqueteLista.Count == 0)
+                if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Count == 0)
                 {
                     vo_dataSet = cls_gestorComponentePaquete.selectComponentePaquete(cls_variablesSistema.vs_proyecto);
 
@@ -1153,15 +1368,20 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         vo_componentePaquete.pComponente = vo_componente;
                         vo_componentePaquete.pPaquete = vo_paquete;
 
-                        cls_variablesSistema.vs_proyecto.pPaqueteLista.Add(vo_paquete);
-                        cls_variablesSistema.vs_proyecto.pComponentePaqueteLista.Add(vo_componentePaquete);
+                        cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Add(vo_componentePaquete);
+
+                        if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(test => test.pPK_Componente == vo_componentePaquete.pPK_Componente).Count() > 0)
+                        {
+                            cls_variablesSistema.vs_proyecto.pPaqueteLista.Add(vo_paquete);
+                            cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Add(vo_componentePaquete);
+                        }
                     }
 
                 }
 
-                if (cls_variablesSistema.vs_proyecto.pComponentePaqueteLista.Where(test => test.pPK_Componente == po_componentePaquete.pPK_Componente).Count() > 0)
+                if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(test => test.pPK_Componente == po_componentePaquete.pPK_Componente).Count() > 0)
                 {
-                    lbx_paqasociados.DataSource = cls_variablesSistema.vs_proyecto.pComponentePaqueteLista.Where(test => test.pPK_Componente == po_componentePaquete.pPK_Componente);
+                    lbx_paqasociados.DataSource = cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(test => test.pPK_Componente == po_componentePaquete.pPK_Componente);
                     lbx_paqasociados.DataTextField = "pNombrePaquete";
                     lbx_paqasociados.DataValueField = "pPK_Paquete";
                 }
@@ -1220,7 +1440,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_componentePaquete.pComponente = vo_componente;
                     vo_componentePaquete.pPaquete = vo_paquete;
 
-                    foreach (cls_entregableComponente entComp in cls_variablesSistema.vs_proyecto.pEntregableComponenteLista)
+                    foreach (cls_entregableComponente entComp in cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria)
                     {
                         if (entComp.pPK_Componente == vo_componente.pPK_componente)
                         {
@@ -1232,7 +1452,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                                 entComp.pComponentePaquete.pPaqueteList.Add(vo_paquete);
                                 entComp.pComponentePaqueteList.Add(vo_componentePaquete);
                                 cls_variablesSistema.vs_proyecto.pPaqueteLista.Add(vo_paquete);
-                                cls_variablesSistema.vs_proyecto.pComponentePaqueteLista.Add(vo_componentePaquete);
+                                cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Add(vo_componentePaquete);
                             }
                         }
                     }
@@ -1266,7 +1486,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_componentePaquete.pComponente = vo_componente;
                     vo_componentePaquete.pPaquete = vo_paquete;
 
-                    foreach (cls_entregableComponente entComp in cls_variablesSistema.vs_proyecto.pEntregableComponenteLista)
+                    foreach (cls_entregableComponente entComp in cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria)
                     {
                         if (entComp.pPK_Componente == vo_componente.pPK_componente)
                         {
@@ -1274,7 +1494,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                             {
                                 entComp.RemoverPaqueteEncontrado(vo_paquete);
                                 cls_variablesSistema.vs_proyecto.pPaqueteLista.RemoveAll(test => test.pPK_Paquete == vo_paquete.pPK_Paquete);
-                                cls_variablesSistema.vs_proyecto.pComponentePaqueteLista.RemoveAll(test => test.pPK_Paquete == vo_paquete.pPK_Paquete);
+                                cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.RemoveAll(test => test.pPK_Paquete == vo_paquete.pPK_Paquete);
                             }
                         }
                     }
@@ -1315,9 +1535,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
-                if (cls_variablesSistema.vs_proyecto.pComponentePaqueteLista.Count > 0)
+                if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Count > 0)
                 {
-                    lbx_paquetesasociados.DataSource = cls_variablesSistema.vs_proyecto.pComponentePaqueteLista;
+                    lbx_paquetesasociados.DataSource = cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria;
                     lbx_paquetesasociados.DataTextField = "pNombrePaquete";
                     lbx_paquetesasociados.DataValueField = "pPK_Paquete";
                     lbx_paquetesasociados.DataBind();
@@ -1380,7 +1600,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 //También se procede a eliminar de la lista de actividades aquellas que se encuentren asignados en memoria
                 foreach (ListItem item in lbx_pivot.Items)
                 {
-                    if (cls_variablesSistema.vs_proyecto.pPaqueteActividadLista.Where(test => test.pPK_Actividad.ToString() == item.Value).Count() > 0)
+                    if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(test => test.pPK_Actividad.ToString() == item.Value).Count() > 0)
                     {
                         lbx_actividades.Items.Remove(item);
                     }
@@ -1443,7 +1663,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
-                if (cls_variablesSistema.vs_proyecto.pPaqueteActividadLista.Count == 0)
+                if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Count == 0)
                 {
                     vo_dataSet = cls_gestorPaqueteActividad.selectPaqueteActividad(cls_variablesSistema.vs_proyecto);
 
@@ -1467,15 +1687,20 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         vo_paqueteActividad.pPaquete = vo_paquete;
                         vo_paqueteActividad.pActividad = vo_actividad;
 
-                        cls_variablesSistema.vs_proyecto.pActividadLista.Add(vo_actividad);
-                        cls_variablesSistema.vs_proyecto.pPaqueteActividadLista.Add(vo_paqueteActividad);
+                        cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Add(vo_paqueteActividad);
+
+                        if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(test => test.pPK_Paquete == vo_paqueteActividad.pPK_Paquete).Count() > 0)
+                        {
+                            cls_variablesSistema.vs_proyecto.pActividadLista.Add(vo_actividad);
+                            cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Add(vo_paqueteActividad);
+                        }
                     }
 
                 }
 
-                if (cls_variablesSistema.vs_proyecto.pPaqueteActividadLista.Where(test => test.pPK_Paquete == po_paqueteActividad.pPK_Paquete).Count() > 0)
+                if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(test => test.pPK_Paquete == po_paqueteActividad.pPK_Paquete).Count() > 0)
                 {
-                    lbx_actasociadas.DataSource = cls_variablesSistema.vs_proyecto.pPaqueteActividadLista.Where(test => test.pPK_Paquete == po_paqueteActividad.pPK_Paquete);
+                    lbx_actasociadas.DataSource = cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(test => test.pPK_Paquete == po_paqueteActividad.pPK_Paquete);
                     lbx_actasociadas.DataTextField = "pNombreActividad";
                     lbx_actasociadas.DataValueField = "pPK_Actividad";
                 }
@@ -1534,7 +1759,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_paqueteActividad.pPaquete = vo_paquete;
                     vo_paqueteActividad.pActividad = vo_actividad;
 
-                    foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteLista)
+                    foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria)
                     {
                         if (compPaq.pPK_Paquete == vo_paquete.pPK_Paquete)
                         {
@@ -1547,7 +1772,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                                 compPaq.pPaqueteActividad.pActividadList.Add(vo_actividad);
                                 compPaq.pPaqueteActividadList.Add(vo_paqueteActividad);
                                 cls_variablesSistema.vs_proyecto.pActividadLista.Add(vo_actividad);
-                                cls_variablesSistema.vs_proyecto.pPaqueteActividadLista.Add(vo_paqueteActividad);
+                                cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Add(vo_paqueteActividad);
                             }
                         }
                     }
@@ -1581,7 +1806,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_paqueteActividad.pPaquete = vo_paquete;
                     vo_paqueteActividad.pActividad = vo_actividad;
 
-                    foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteLista)
+                    foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria)
                     {
                         if (compPaq.pPK_Paquete == vo_paquete.pPK_Paquete)
                         {
@@ -1589,7 +1814,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                             {
                                 compPaq.RemoverActividadEncontrada(vo_actividad);
                                 cls_variablesSistema.vs_proyecto.pActividadLista.RemoveAll(test => test.pPK_Actividad == vo_actividad.pPK_Actividad);
-                                cls_variablesSistema.vs_proyecto.pPaqueteActividadLista.RemoveAll(test => test.pPK_Actividad == vo_actividad.pPK_Actividad);
+                                cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.RemoveAll(test => test.pPK_Actividad == vo_actividad.pPK_Actividad);
                             }
                         }
                     }
