@@ -34,6 +34,15 @@ namespace COSEVI.web.controls
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
+
+            if (this.options != null && this.options.Count > 0)
+            {
+                foreach (option op in this.options)
+                {
+                    this.Controls.Add(op);
+                }
+            }
+
             //this.options = new List<option>();
             //this.inicializarPrueba();
         }
