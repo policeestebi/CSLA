@@ -78,16 +78,19 @@
     <Compile Include="mod.Administracion\cls_usuario.cs" />
     <Compile Include="mod.Administracion\cls_registroPermanente.cs" />
     <Compile Include="mod.ControlSeguimiento\cls_actividad..cs" />
+    <Compile Include="mod.ControlSeguimiento\cls_asignacionOperacion.cs" />
     <Compile Include="mod.ControlSeguimiento\cls_componente..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_componentePaquete..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_departamentoProyecto..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_entregable..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_entregableComponente..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_estado..cs" />
+    <Compile Include="mod.ControlSeguimiento\cls_operacion.cs" />
     <Compile Include="mod.ControlSeguimiento\cls_paquete..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_paqueteActividad.cs" />
     <Compile Include="mod.ControlSeguimiento\cls_proyecto..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_proyectoEntregable..cs" />
+    <Compile Include="mod.ControlSeguimiento\cls_registroOperacion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
