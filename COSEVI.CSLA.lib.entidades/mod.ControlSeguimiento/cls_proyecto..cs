@@ -43,10 +43,10 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             this.paqueteLista = new List<cls_paquete>();
             this.actividadLista = new List<cls_actividad>();
 
-            this.proyectoEntregableLista = new List<cls_proyectoEntregable>();
-            this.entregableComponenteLista = new List<cls_entregableComponente>();
-            this.componentePaqueteLista = new List<cls_componentePaquete>();
-            this.paqueteActividadLista = new List<cls_paqueteActividad>();
+            this.proyectoEntregableListaMemoria = new List<cls_proyectoEntregable>();
+            this.entregableComponenteListaMemoria = new List<cls_entregableComponente>();
+            this.componentePaqueteListaMemoria = new List<cls_componentePaquete>();
+            this.paqueteActividadListaMemoria = new List<cls_paqueteActividad>();
 
         }
 
@@ -236,13 +236,24 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         private List<cls_actividad> actividadLista = new List<cls_actividad>();
 
-        private List<cls_proyectoEntregable> proyectoEntregableLista = new List<cls_proyectoEntregable>();
 
-        private List<cls_entregableComponente> entregableComponenteLista = new List<cls_entregableComponente>();
+        private List<cls_proyectoEntregable> proyectoEntregableListaMemoria = new List<cls_proyectoEntregable>();
 
-        private List<cls_componentePaquete> componentePaqueteLista = new List<cls_componentePaquete>();
+        private List<cls_entregableComponente> entregableComponenteListaMemoria = new List<cls_entregableComponente>();
 
-        private List<cls_paqueteActividad> paqueteActividadLista = new List<cls_paqueteActividad>();
+        private List<cls_componentePaquete> componentePaqueteListaMemoria = new List<cls_componentePaquete>();
+
+        private List<cls_paqueteActividad> paqueteActividadListaMemoria = new List<cls_paqueteActividad>();
+
+
+        private List<cls_proyectoEntregable> proyectoEntregableListaBaseDatos = new List<cls_proyectoEntregable>();
+
+        private List<cls_entregableComponente> entregableComponenteListaBaseDatos = new List<cls_entregableComponente>();
+
+        private List<cls_componentePaquete> componentePaqueteListaBaseDatos = new List<cls_componentePaquete>();
+
+        private List<cls_paqueteActividad> paqueteActividadListaBaseDatos = new List<cls_paqueteActividad>();
+
 
         #endregion Atributos
 
@@ -273,29 +284,56 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.actividadLista = value; }
         }
 
-        public List<cls_proyectoEntregable> pProyectoEntregableLista
+
+        public List<cls_proyectoEntregable> pProyectoEntregableListaMemoria
         {
-            get { return proyectoEntregableLista; }
-            set { this.proyectoEntregableLista = value; }
+            get { return proyectoEntregableListaMemoria; }
+            set { this.proyectoEntregableListaMemoria = value; }
         }
 
-        public List<cls_entregableComponente> pEntregableComponenteLista
+        public List<cls_entregableComponente> pEntregableComponenteListaMemoria
         {
-            get { return entregableComponenteLista; }
-            set { this.entregableComponenteLista = value; }
+            get { return entregableComponenteListaMemoria; }
+            set { this.entregableComponenteListaMemoria = value; }
         }
 
-        public List<cls_componentePaquete> pComponentePaqueteLista
+        public List<cls_componentePaquete> pComponentePaqueteListaMemoria
         {
-            get { return componentePaqueteLista; }
-            set { this.componentePaqueteLista = value; }
+            get { return componentePaqueteListaMemoria; }
+            set { this.componentePaqueteListaMemoria = value; }
         }
 
-        public List<cls_paqueteActividad> pPaqueteActividadLista
+        public List<cls_paqueteActividad> pPaqueteActividadListaMemoria
         {
-            get { return paqueteActividadLista; }
-            set { this.paqueteActividadLista = value; }
+            get { return paqueteActividadListaMemoria; }
+            set { this.paqueteActividadListaMemoria = value; }
         }
+
+
+        public List<cls_proyectoEntregable> pProyectoEntregableListaBaseDatos
+        {
+            get { return proyectoEntregableListaBaseDatos; }
+            set { this.proyectoEntregableListaBaseDatos = value; }
+        }
+
+        public List<cls_entregableComponente> pEntregableComponenteListaBaseDatos
+        {
+            get { return entregableComponenteListaBaseDatos; }
+            set { this.entregableComponenteListaBaseDatos = value; }
+        }
+
+        public List<cls_componentePaquete> pComponentePaqueteListaBaseDatos
+        {
+            get { return componentePaqueteListaBaseDatos; }
+            set { this.componentePaqueteListaBaseDatos = value; }
+        }
+
+        public List<cls_paqueteActividad> pPaqueteActividadListaBaseDatos
+        {
+            get { return paqueteActividadListaBaseDatos; }
+            set { this.paqueteActividadListaBaseDatos = value; }
+        }
+
 
         #endregion Propiedades
 

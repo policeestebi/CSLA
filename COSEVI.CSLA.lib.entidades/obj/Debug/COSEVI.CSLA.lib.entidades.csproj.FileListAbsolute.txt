@@ -1,13 +1,5 @@
-<<<<<<< HEAD
-C:\Users\Esteban\Documents\GIT\CSLA\COSEVI.CSLA.lib.entidades\bin\Debug\COSEVI.CSLA.lib.entidades.dll
-C:\Users\Esteban\Documents\GIT\CSLA\COSEVI.CSLA.lib.entidades\bin\Debug\COSEVI.CSLA.lib.entidades.pdb
-C:\Users\Esteban\Documents\GIT\CSLA\COSEVI.CSLA.lib.entidades\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Esteban\Documents\GIT\CSLA\COSEVI.CSLA.lib.entidades\obj\Debug\COSEVI.CSLA.lib.entidades.dll
-C:\Users\Esteban\Documents\GIT\CSLA\COSEVI.CSLA.lib.entidades\obj\Debug\COSEVI.CSLA.lib.entidades.pdb
-=======
 D:\cslagit\CSLA\COSEVI.CSLA.lib.entidades\bin\Debug\COSEVI.CSLA.lib.entidades.dll
 D:\cslagit\CSLA\COSEVI.CSLA.lib.entidades\bin\Debug\COSEVI.CSLA.lib.entidades.pdb
 D:\cslagit\CSLA\COSEVI.CSLA.lib.entidades\obj\Debug\ResolveAssemblyReference.cache
 D:\cslagit\CSLA\COSEVI.CSLA.lib.entidades\obj\Debug\COSEVI.CSLA.lib.entidades.dll
 D:\cslagit\CSLA\COSEVI.CSLA.lib.entidades\obj\Debug\COSEVI.CSLA.lib.entidades.pdb
->>>>>>> d92712e2c1919ad0a3019833b2c6ae34da92e536

@@ -76,22 +76,23 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
     }
 
        /// <summary>
-       /// Método que permite eliminar 
+       /// Método que permite editar 
        /// un registro en la tabla Proyecto Entregable 
        /// </summary>
-       /// <param name="po_proyectoEntregable">Proyecto a eliminar</param>
+       /// <param name="po_proyectoEntregable">ProyectoEntregable a editar</param>
        /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-       public static int deleteProyectEntregable(cls_proyectoEntregable po_proyectoEntregable)
+       public static int updateProyectEntregable(cls_proyectoEntregable po_proyectoEntregable, int pi_accion)
        {
                 int vi_resultado;
 
                 try
                 {
-                    String vs_comando = "PA_cont_proyecto_entregableDelete";
+                    String vs_comando = "PA_cont_proyecto_entregableUpdate";
                     cls_parameter[] vu_parametros = 
                     {                   
                  		    new cls_parameter("@paramPK_entregable", po_proyectoEntregable.pPK_Entregable),
-                            new cls_parameter("@paramPK_proyecto", po_proyectoEntregable.pPK_Proyecto)                  
+                            new cls_parameter("@paramPK_proyecto", po_proyectoEntregable.pPK_Proyecto),
+                            new cls_parameter("@paramAccion", pi_accion)                     
                     };
 
                     cls_sqlDatabase.beginTransaction();

@@ -1,13 +1,5 @@
-<<<<<<< HEAD
-C:\Users\Esteban\Documents\GIT\CSLA\COSEVI.lib.Security\bin\Debug\COSEVI.lib.Security.dll
-C:\Users\Esteban\Documents\GIT\CSLA\COSEVI.lib.Security\bin\Debug\COSEVI.lib.Security.pdb
-C:\Users\Esteban\Documents\GIT\CSLA\COSEVI.lib.Security\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Esteban\Documents\GIT\CSLA\COSEVI.lib.Security\obj\Debug\COSEVI.lib.Security.dll
-C:\Users\Esteban\Documents\GIT\CSLA\COSEVI.lib.Security\obj\Debug\COSEVI.lib.Security.pdb
-=======
 D:\cslagit\CSLA\COSEVI.lib.Security\bin\Debug\COSEVI.lib.Security.dll
 D:\cslagit\CSLA\COSEVI.lib.Security\bin\Debug\COSEVI.lib.Security.pdb
 D:\cslagit\CSLA\COSEVI.lib.Security\obj\Debug\ResolveAssemblyReference.cache
 D:\cslagit\CSLA\COSEVI.lib.Security\obj\Debug\COSEVI.lib.Security.dll
 D:\cslagit\CSLA\COSEVI.lib.Security\obj\Debug\COSEVI.lib.Security.pdb
->>>>>>> d92712e2c1919ad0a3019833b2c6ae34da92e536
