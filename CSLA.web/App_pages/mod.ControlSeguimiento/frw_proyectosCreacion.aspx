@@ -247,7 +247,7 @@
                                              <td>
                                                  <asp:Button ID="btnPrevious" runat="server" Text="<< Prev"
                                                      CausesValidation="false" 
-                                                     CommandName="MovePrevious" 
+                                                     CommandName="MovePrevious" OnInit="btnPrev_Click"
                                                   />
                                                   <asp:Button ID="btnNext" runat="server" Text="Next >>"
                                                      CausesValidation="true" 
