@@ -251,7 +251,7 @@
                                                   />
                                                   <asp:Button ID="btnNext" runat="server" Text="Next >>"
                                                      CausesValidation="true" 
-                                                     CommandName="MoveNext" 
+                                                     CommandName="MoveNext" OnInit="btnNext_Click"
                                                   />
                                              </td>
                                          </tr>

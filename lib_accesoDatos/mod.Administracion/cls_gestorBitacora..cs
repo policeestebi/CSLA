@@ -47,9 +47,13 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Administracion
 
             try
             {
+                poBitacora.pPK_bitacora = (Convert.ToDecimal(cls_gestorUtil.selectMax(cls_constantes.BITACORA, "PK_bitacora")) + 1);
+
                 String vs_comando = "PA_admi_bitacoraInsert";
                 cls_parameter[] vu_parametros = 
                 {
+                    
+                    new cls_parameter("@paramPK_bitacora",  poBitacora.pPK_bitacora),
                     new cls_parameter("@paramFK_departamento", DBNull.Value),
                     new cls_parameter("@paramFK_usuario", poBitacora.pFK_usuario),
                     new cls_parameter("@paramaccion", poBitacora.pAccion),

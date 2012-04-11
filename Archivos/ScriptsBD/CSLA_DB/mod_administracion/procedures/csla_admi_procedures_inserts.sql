@@ -286,6 +286,7 @@ GO
 -- Descripción: 
 -- =============================================
 CREATE PROCEDURE  PA_admi_bitacoraInsert 
+  @paramPK_bitacora numeric(10,2), 
   @paramFK_departamento int, 
   @paramFK_usuario varchar(30), 
   @paramaccion varchar(50), 
@@ -299,6 +300,7 @@ AS
 
          INSERT INTO t_admi_bitacora
         ( 
+		 PK_bitacora,
          FK_departamento,
          FK_usuario,
          accion,
@@ -309,6 +311,7 @@ AS
         ) 
         VALUES
         ( 
+		 @paramPK_bitacora,
          @paramFK_departamento,
          @paramFK_usuario,
          @paramaccion,
