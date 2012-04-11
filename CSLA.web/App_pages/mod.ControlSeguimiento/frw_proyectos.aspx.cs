@@ -795,10 +795,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 vo_proyecto.pMeta = vu_fila.Cells[4].Text.ToString();
                 vo_proyecto.pFechaInicio = Convert.ToDateTime(vu_fila.Cells[5].Text.ToString());
                 vo_proyecto.pFechaFin = Convert.ToDateTime(vu_fila.Cells[6].Text.ToString());
-                vo_proyecto.pHorasAsignadas = Convert.ToInt32(vu_fila.Cells[7].Text.ToString());
-                vo_proyecto.pHorasAsigDefectos =Convert.ToInt32(vu_fila.Cells[8].Text.ToString());
-                vo_proyecto.pHorasReales = Convert.ToInt32(vu_fila.Cells[9].Text.ToString());
-                vo_proyecto.pHorasRealesDefectos = Convert.ToInt32(vu_fila.Cells[10].Text.ToString());
+                vo_proyecto.pHorasAsignadas = Convert.ToDecimal(vu_fila.Cells[7].Text.ToString());
+                vo_proyecto.pHorasAsigDefectos = Convert.ToDecimal(vu_fila.Cells[8].Text.ToString());
+                vo_proyecto.pHorasReales = Convert.ToDecimal(vu_fila.Cells[9].Text.ToString());
+                vo_proyecto.pHorasRealesDefectos = Convert.ToDecimal(vu_fila.Cells[10].Text.ToString());
                 vo_proyecto.pDescripcionEstado = vu_fila.Cells[11].Text.ToString();
                 vo_proyecto.pFK_estado = Convert.ToInt32(vu_fila.Cells[12].Text.ToString());
 
