@@ -346,3 +346,33 @@ SET NOCOUNT ON;
 
 END   
  GO 
+
+  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionDelete]'))
+DROP PROCEDURE [dbo].[PA_cont_operacionDelete]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez G.
+-- Fecha Creación:	11-04-2011
+-- Fecha Actulización:	11-04-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_operacionDelete 
+  @paramPK_operacion NVARCHAR(50),
+  @paramUsuario		 NVARCHAR(30)
+AS 
+BEGIN 
+SET NOCOUNT ON; 
+
+		DELETE FROM t_cont_asignacion_operacion
+		WHERE PK_usuario = @paramUsuario AND PK_codigo = @paramPK_operacion;
+		
+         DELETE FROM t_cont_operacion      
+         WHERE 
+			PK_codigo = @paramPK_operacion
+			
+END   
+GO 
