@@ -110,7 +110,7 @@ namespace CSLA.web
                     //Por cada padre se agrega al menu una opcion
                     foreach (DataRow row in vo_query)
                     {
-                        vo_opcion = this.agregarOpcion(row["titulo"].ToString(), "parent", "#",String.Empty, null);
+                        vo_opcion = this.agregarOpcion(row["titulo"].ToString(), "parent", row["url"].ToString(), row["height"].ToString(), null);
 
                         this.agregarOpcionesHijas(Convert.ToInt32(row["menu"]), vo_menu, vo_opcion);
                         
