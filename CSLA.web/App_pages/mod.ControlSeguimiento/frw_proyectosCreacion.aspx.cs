@@ -40,6 +40,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 {
     public partial class frw_proyectosCreacion : System.Web.UI.Page
     {
+        //Inicialización de botones de la navegación
+        Button btnNxt;
 
         #region enumerados
 
@@ -109,6 +111,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
+                
                 //Inicialización de botones de la asignación
                 //Entregables
                 this.btn_asignarEntregable = (Button)acp_creacionProyectos.FindControl("btn_asignarEntregable");
@@ -665,7 +668,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         protected void btnNext_Click(object sender, EventArgs e)
         {
-
+            btnNxt = (Button)sender;
         }
 
         //protected void OnFinishButtonClick(Object sender, WizardNavigationEventArgs e)
@@ -883,6 +886,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 }
             }
+
+            if (lbx_entasociados.Items.Count > 0)
+            {
+                btnNxt.Enabled = true;
+            }
+
         }
 
         protected void btn_removerEntregable_Click(object sender, EventArgs e)
@@ -902,12 +911,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                     cls_variablesSistema.vs_proyecto.pEntregableLista.RemoveAll(test => test.pPK_entregable == vo_entregable.pPK_entregable);
                     cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.RemoveAll(test => test.pPK_Entregable == vo_entregable.pPK_entregable);
+                    cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.RemoveAll(test => test.pPK_Entregable == vo_entregable.pPK_entregable);
 
                     lbx_entregables.Items.Add(lbx_entasociados.Items[i]);
                     ListItem li = lbx_entasociados.Items[i];
                     lbx_entasociados.Items.Remove(li);
                 }
             }
+
+            if(lbx_entasociados.Items.Count == 0)
+            {
+                btnNxt.Enabled = false;
+            }
+
         }
 
 
@@ -952,6 +968,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     lbx_entregablesasociados.DataValueField = "PK_entregable";
                     lbx_entregablesasociados.DataBind();
                 }
+
+                //Nota: meter esta funcionalidad dentro de otro método, es la misma que el evento lbx_entregables_SelectedIndexChanged
+                //for (int i = 0; i < lbx_entregablesasociados.Items.Count; i++)
+                //{
+                //    int entregableSeleccionado;
+                //    entregableSeleccionado = Convert.ToInt32(lbx_entregablesasociados.Items[i].Value);
+
+                //    cls_entregable vo_entregable = new cls_entregable();
+                //    vo_entregable.pPK_entregable = entregableSeleccionado;
+
+                //    inicializarComponentesPorEntregable(vo_entregable,1);
+                //}
+
+                cargarComponentesPorEntregable();
+
             }
             /*
                 Nota: revisar el manejo de excepxiones personalizadas en este form
@@ -1026,8 +1057,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             vo_entregableComponente.pEntregable = po_entregable;
 
             cargarComponentesPorEntregable(vo_entregableComponente);
-            cargarListaComponentes();
 
+                cargarListaComponentes();
+            
         }
 
         private void cargarComponentesPorEntregable(cls_entregableComponente po_entregableComponente)
@@ -1036,52 +1068,158 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
-                if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Count == 0)
-                {
-                    vo_dataSet = cls_gestorEntregableComponente.selectEntregableComponente(cls_variablesSistema.vs_proyecto);
-
-                    foreach (DataRow row in vo_dataSet.Tables[0].Rows)
+                //if (ps_modo == 0)
+                //{
+                    if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Count == 0)
                     {
+                        vo_dataSet = cls_gestorEntregableComponente.selectEntregableComponente(cls_variablesSistema.vs_proyecto);
 
-                        cls_entregable vo_entregable = new cls_entregable();
-                        cls_componente vo_componente = new cls_componente();
-                        cls_entregableComponente vo_entregableComponente = new cls_entregableComponente();
+                        foreach (DataRow row in vo_dataSet.Tables[0].Rows)
+                        {
 
-                        vo_entregable.pPK_entregable = Convert.ToInt32(row["PK_entregable"]);
-                        vo_componente.pPK_componente = Convert.ToInt32(row["PK_componente"]);
-                        vo_componente.pNombre = Convert.ToString(row["nombre"]);
+                            cls_entregable vo_entregable = new cls_entregable();
+                            cls_componente vo_componente = new cls_componente();
+                            cls_entregableComponente vo_entregableComponente = new cls_entregableComponente();
 
-                        vo_entregableComponente.pEntregable = vo_entregable;
-                        vo_entregableComponente.pComponente = vo_componente;
+                            vo_entregable.pPK_entregable = Convert.ToInt32(row["PK_entregable"]);
+                            vo_componente.pPK_componente = Convert.ToInt32(row["PK_componente"]);
+                            vo_componente.pNombre = Convert.ToString(row["nombre"]);
 
+                            vo_entregableComponente.pEntregable = vo_entregable;
+                            vo_entregableComponente.pComponente = vo_componente;
+
+                            if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Where(test => test.pPK_Entregable == vo_entregableComponente.pPK_Entregable).Count() == 0)
+                            {
+                                cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Add(vo_entregableComponente);
+                            }
+
+                            if (cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Where(test => test.pPK_Entregable == vo_entregableComponente.pPK_Entregable).Count() > 0)
+                            {
+                                if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(test => test.pPK_Componente == vo_entregableComponente.pPK_Componente).Count() == 0)
+                                {
+                                    cls_variablesSistema.vs_proyecto.pComponenteLista.Add(vo_componente);
+                                    cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Add(vo_entregableComponente);
+                                }                      
+                            }
+                        }
+
+                    }
+
+                    if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(test => test.pPK_Entregable == po_entregableComponente.pPK_Entregable).Count() > 0)
+                    {
+                        lbx_compasociados.DataSource = cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(test => test.pPK_Entregable == po_entregableComponente.pPK_Entregable);
+                        lbx_compasociados.DataTextField = "pNombreComponente";
+                        lbx_compasociados.DataValueField = "pPK_Componente";
+                    }
+                    else
+                    {
+                        vo_dataSet = cls_gestorEntregableComponente.selectEntregableComponente(po_entregableComponente);
+                        lbx_compasociados.DataSource = vo_dataSet;
+                        lbx_compasociados.DataTextField = "Nombre";
+                        lbx_compasociados.DataValueField = "PK_Componente";
+                    }
+
+                    //Se realiza el Binding luego de saber de donde se tomarán los datos
+                    lbx_compasociados.DataBind();
+
+                //}
+
+                //else
+                //{
+                //    vo_dataSet = cls_gestorEntregableComponente.selectEntregableComponente(cls_variablesSistema.vs_proyecto);
+
+                //    foreach (DataRow row in vo_dataSet.Tables[0].Rows)
+                //    {
+
+                //        cls_entregable vo_entregable = new cls_entregable();
+                //        cls_componente vo_componente = new cls_componente();
+                //        cls_entregableComponente vo_entregableComponente = new cls_entregableComponente();
+
+                //        vo_entregable.pPK_entregable = Convert.ToInt32(row["PK_entregable"]);
+                //        vo_componente.pPK_componente = Convert.ToInt32(row["PK_componente"]);
+                //        vo_componente.pNombre = Convert.ToString(row["nombre"]);
+
+                //        vo_entregableComponente.pEntregable = vo_entregable;
+                //        vo_entregableComponente.pComponente = vo_componente;
+
+                //        if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Where(test => test.pPK_Entregable == vo_entregableComponente.pPK_Entregable).Count() == 0)
+                //        {
+                //            cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Add(vo_entregableComponente);
+                //        }
+
+                //        if (cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Where(test => test.pPK_Entregable == vo_entregableComponente.pPK_Entregable).Count() > 0)
+                //        {
+                //            cls_variablesSistema.vs_proyecto.pComponenteLista.Add(vo_componente);
+                //            cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Add(vo_entregableComponente);
+                //        }
+                //    }
+                //}
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al cargar los entregables asociados al proyecto.", po_exception);
+            }
+        }
+
+        private void cargarComponentesPorEntregable()
+        {
+            DataSet vo_dataSet = new DataSet();
+            int cantidadCompAsociados;
+            int cantidadComponentes;
+
+            try
+            {
+                if (lbx_compasociados.Items.Count > 0)
+                {
+                    cantidadCompAsociados = lbx_compasociados.Items.Count;
+
+                    for (int i = 0; i < cantidadCompAsociados; i++ )
+                    {
+                        lbx_compasociados.Items.RemoveAt(0);
+                    }
+                }
+
+                if (lbx_componentes.Items.Count > 0)
+                {
+                    cantidadComponentes = lbx_componentes.Items.Count;
+
+                    for (int i = 0; i < cantidadComponentes; i++)
+                    {
+                        lbx_componentes.Items.RemoveAt(0);
+                    }
+                }
+
+                vo_dataSet = cls_gestorEntregableComponente.selectEntregableComponente(cls_variablesSistema.vs_proyecto);
+
+                foreach (DataRow row in vo_dataSet.Tables[0].Rows)
+                {
+
+                    cls_entregable vo_entregable = new cls_entregable();
+                    cls_componente vo_componente = new cls_componente();
+                    cls_entregableComponente vo_entregableComponente = new cls_entregableComponente();
+
+                    vo_entregable.pPK_entregable = Convert.ToInt32(row["PK_entregable"]);
+                    vo_componente.pPK_componente = Convert.ToInt32(row["PK_componente"]);
+                    vo_componente.pNombre = Convert.ToString(row["nombre"]);
+
+                    vo_entregableComponente.pEntregable = vo_entregable;
+                    vo_entregableComponente.pComponente = vo_componente;
+
+                    if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Where(test => test.pPK_Entregable == vo_entregableComponente.pPK_Entregable).Count() == 0)
+                    {
                         cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Add(vo_entregableComponente);
+                    }
 
-                        if (cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Where(test => test.pPK_Entregable == vo_entregableComponente.pPK_Entregable).Count() > 0)
+                    if (cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Where(test => test.pPK_Entregable == vo_entregableComponente.pPK_Entregable).Count() > 0)
+                    {
+                        if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(test => test.pPK_Componente == vo_entregableComponente.pPK_Componente).Count() == 0)
                         {
                             cls_variablesSistema.vs_proyecto.pComponenteLista.Add(vo_componente);
                             cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Add(vo_entregableComponente);
                         }
                     }
-
                 }
-
-                if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(test => test.pPK_Entregable == po_entregableComponente.pPK_Entregable).Count() > 0)
-                {
-                    lbx_compasociados.DataSource = cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(test => test.pPK_Entregable == po_entregableComponente.pPK_Entregable);
-                    lbx_compasociados.DataTextField = "pNombreComponente";
-                    lbx_compasociados.DataValueField = "pPK_Componente";
-                }
-                else
-                {
-                    vo_dataSet = cls_gestorEntregableComponente.selectEntregableComponente(po_entregableComponente);
-                    lbx_compasociados.DataSource = vo_dataSet;
-                    lbx_compasociados.DataTextField = "Nombre";
-                    lbx_compasociados.DataValueField = "PK_Componente";
-                }
-
-                //Se realiza el Binding luego de saber de donde se tomarán los datos
-                lbx_compasociados.DataBind();
-
+                
             }
             catch (Exception po_exception)
             {
@@ -1145,6 +1283,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 }
             }
+
+            if (lbx_compasociados.Items.Count > 0)
+            {
+                btnNxt.Enabled = true;
+            }
+
         }
 
         protected void btn_removerComponente_Click(object sender, EventArgs e)
@@ -1186,6 +1330,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     lbx_compasociados.Items.Remove(li);
 
                 }
+            }
+
+            if (lbx_compasociados.Items.Count == 0)
+            {
+                btnNxt.Enabled = false;
             }
         }
 
@@ -1463,6 +1612,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 }
             }
+
+            if (lbx_paqasociados.Items.Count > 0)
+            {
+                btnNxt.Enabled = true;
+            }
+
         }
 
         protected void btn_removerPaquete_Click(object sender, EventArgs e)
@@ -1504,6 +1659,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     lbx_paqasociados.Items.Remove(li);
 
                 }
+            }
+
+            if (lbx_paqasociados.Items.Count == 0)
+            {
+                btnNxt.Enabled = false;
             }
         }
 
@@ -1783,6 +1943,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 }
             }
+
+            if (lbx_actasociadas.Items.Count > 0)
+            {
+                btnNxt.Enabled = true;
+            }
         }
 
         protected void btn_removerActividad_Click(object sender, EventArgs e)
@@ -1824,6 +1989,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     lbx_actasociadas.Items.Remove(li);
 
                 }
+            }
+
+            if (lbx_actasociadas.Items.Count == 0)
+            {
+                btnNxt.Enabled = false;
             }
         }
 

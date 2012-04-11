@@ -336,12 +336,12 @@ AS
 
  DECLARE @SELECT VARCHAR(MAX)
 
- SELECT @SELECT = 'SELECT MAX(' + @paramColumna +') FROM ' +  @paramTable;
+ SELECT @SELECT = 'SELECT ISNULL(MAX(' + @paramColumna +'),0) FROM ' +  @paramTable;
 
  EXEC (@SELECT)
 
 END  
- GO 
+ GO
 
 
  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_admi_rol_pagina_permisoSelectRol]'))

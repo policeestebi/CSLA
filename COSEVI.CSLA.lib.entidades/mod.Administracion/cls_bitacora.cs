@@ -59,7 +59,7 @@ namespace COSEVI.CSLA.lib.entidades.mod.Administracion
 
         #region Propiedades
 
-        public int pPK_bitacora
+        public decimal pPK_bitacora
         {
             get { return PK_bitacora; }
             set { PK_bitacora = value; }
@@ -134,7 +134,7 @@ namespace COSEVI.CSLA.lib.entidades.mod.Administracion
 
         #region Atributos
 
-        private int PK_bitacora;
+        private decimal PK_bitacora;
 
         private string accion;
 
