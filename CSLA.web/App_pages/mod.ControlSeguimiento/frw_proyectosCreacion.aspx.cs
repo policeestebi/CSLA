@@ -779,8 +779,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             // Finish step.
             if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_entregables))
             {
-                cls_variablesSistema.vs_proyecto.pEntregableLista = new List<cls_entregable>();
-                cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria = new List<cls_proyectoEntregable>();
+                //cls_variablesSistema.vs_proyecto.pEntregableLista = new List<cls_entregable>();
+                //cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria = new List<cls_proyectoEntregable>();
 
                 llenarDatosEntregables();
 
@@ -810,8 +810,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     btnNxt.Enabled = false;
                 }
 
-                cls_variablesSistema.vs_proyecto.pComponenteLista = new List<cls_componente>();
-                cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria = new List<cls_entregableComponente>();
+                //cls_variablesSistema.vs_proyecto.pComponenteLista = new List<cls_componente>();
+                //cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria = new List<cls_entregableComponente>();
 
                 llenarDatosComponentes();
                 if (btnPrev != null)
@@ -827,8 +827,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     btnNxt.Enabled = false;
                 }
 
-                cls_variablesSistema.vs_proyecto.pPaqueteLista = new List<cls_paquete>();
-                cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria = new List<cls_componentePaquete>();
+                //cls_variablesSistema.vs_proyecto.pPaqueteLista = new List<cls_paquete>();
+                //cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria = new List<cls_componentePaquete>();
 
                 llenarDatosPaquetes();
                 if (btnPrev != null)
@@ -844,8 +844,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     btnNxt.Enabled = false;
                 }
 
-                cls_variablesSistema.vs_proyecto.pActividadLista = new List<cls_actividad>();
-                cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria = new List<cls_paqueteActividad>();
+                //cls_variablesSistema.vs_proyecto.pActividadLista = new List<cls_actividad>();
+                //cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria = new List<cls_paqueteActividad>();
 
                 llenarDatosActividades();
                 if (btnPrev != null)
