@@ -509,9 +509,12 @@ AS
 END   
  GO 
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 7cf49e74d253742fae771ca9e9c36e594c67389b
 IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionInsert]'))
 DROP PROCEDURE [dbo].[PA_cont_operacionInsert]
 GO
