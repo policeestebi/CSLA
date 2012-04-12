@@ -1397,6 +1397,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                                 proyEnt.RemoverComponenteEncontrado(vo_componente);
                                 cls_variablesSistema.vs_proyecto.pComponenteLista.RemoveAll(test => test.pPK_componente == vo_componente.pPK_componente);
                                 cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.RemoveAll(test => test.pPK_Componente == vo_componente.pPK_componente);
+                                cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.RemoveAll(test => test.pPK_Componente == vo_componente.pPK_componente);
                             }
                         }
                     }
@@ -1804,6 +1805,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                                 entComp.RemoverPaqueteEncontrado(vo_paquete);
                                 cls_variablesSistema.vs_proyecto.pPaqueteLista.RemoveAll(test => test.pPK_Paquete == vo_paquete.pPK_Paquete);
                                 cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.RemoveAll(test => test.pPK_Paquete == vo_paquete.pPK_Paquete);
+                                cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.RemoveAll(test => test.pPK_Paquete == vo_paquete.pPK_Paquete);
                             }
                         }
                     }

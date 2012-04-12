@@ -181,7 +181,7 @@ END
  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionSelectOne]'))
 DROP PROCEDURE [dbo].[PA_cont_operacionSelectOne]
 GO
-SET ANSI_NULLS PA_cont_operacionSelectOne
+SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO

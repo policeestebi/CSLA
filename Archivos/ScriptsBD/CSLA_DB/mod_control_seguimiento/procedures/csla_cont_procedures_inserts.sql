@@ -509,9 +509,6 @@ AS
 END   
  GO 
 
-   @param_PK_codigo nvarchar(50) OUTPUT
-
-
 IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionInsert]'))
 DROP PROCEDURE [dbo].[PA_cont_operacionInsert]
 GO
