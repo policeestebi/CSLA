@@ -73,7 +73,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 try
                 {
-                    this.deshabilitarBotonesNavegacion();
+                    //this.deshabilitarBotonesNavegacion();
                 }
                 catch (Exception po_exception)
                 {
@@ -664,11 +664,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         protected void btnNext_Click(object sender, EventArgs e)
         {
             btnNxt = (Button)sender;
-        }
-
-        protected void btnPrev_Click(object sender, EventArgs e)
-        {
-            btnPrev = (Button)sender;
 
             if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_entregables))
             {
@@ -677,39 +672,57 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     btnNxt.Enabled = false;
                 }
 
-                btnPrev.Visible = false;
+            }
+
+        }
+
+        protected void btnPrev_Click(object sender, EventArgs e)
+        {
+            btnPrev = (Button)sender;
+
+            if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_entregables))
+            {
+                //if (lbx_entasociados.Items.Count == 0 && btnNxt != null)
+                //{
+                //    btnNxt.Enabled = false;
+                //}
+
+                //btnPrev.Visible = false;
 
             }
 
             if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_componentes))
             {
-                if (lbx_compasociados.Items.Count == 0)
-                {
-                    btnNxt.Enabled = false;
-                }
+                //if (lbx_compasociados.Items.Count == 0)
+                //{
+                //    btnNxt.Enabled = false;
+                //}
 
-                btnPrev.Visible = true;
+                //btnPrev.Visible = true;
+
+                //cls_variablesSistema.vs_proyecto.pComponenteLista = new List<cls_componente>();
+                //cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria = new List<cls_entregableComponente>();
 
             }
 
             if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_paquetes))
             {
-                if (lbx_paqasociados.Items.Count == 0)
-                {
-                    btnNxt.Enabled = false;
-                }
+                //if (lbx_paqasociados.Items.Count == 0)
+                //{
+                //    btnNxt.Enabled = false;
+                //}
 
-                btnPrev.Visible = true;
+                //btnPrev.Visible = true;
             }
 
             if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_actividades))
             {
-                if (lbx_actasociadas.Items.Count == 0)
-                {
-                    btnNxt.Enabled = false;
-                }
+                //if (lbx_actasociadas.Items.Count == 0)
+                //{
+                //    btnNxt.Enabled = false;
+                //}
 
-                btnPrev.Visible = true;
+                //btnPrev.Visible = true;
             }
         }
 
@@ -754,22 +767,72 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             // Finish step.
             if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_entregables))
             {
+                cls_variablesSistema.vs_proyecto.pEntregableLista = new List<cls_entregable>(); 
+                cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria = new List<cls_proyectoEntregable>();
+
                 llenarDatosEntregables();
+
+                if (lbx_entasociados.Items.Count == 0 && btnNxt != null)
+                {
+                    btnNxt.Enabled = false;
+                }
+
+                if (btnPrev != null)
+                {
+                    btnPrev.Visible = false;
+                }
+
             }
             
             if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_componentes))
             {
+                if (lbx_compasociados.Items.Count == 0 && btnNxt != null)
+                {
+                    btnNxt.Enabled = false;
+                }
+
+                cls_variablesSistema.vs_proyecto.pComponenteLista = new List<cls_componente>();
+                cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria = new List<cls_entregableComponente>();
+
                 llenarDatosComponentes();
+                if (btnPrev != null)
+                {
+                    btnPrev.Visible = true;
+                }
             }
 
             if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_paquetes))
             {
+                if (lbx_paqasociados.Items.Count == 0 && btnNxt != null)
+                {
+                    btnNxt.Enabled = false;
+                }
+
+                cls_variablesSistema.vs_proyecto.pPaqueteLista = new List<cls_paquete>();
+                cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria= new List<cls_componentePaquete>();
+
                 llenarDatosPaquetes();
+                if (btnPrev != null)
+                {
+                    btnPrev.Visible = true;
+                }
             }
 
             if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_actividades))
             {
+                if (lbx_actasociadas.Items.Count == 0 && btnNxt != null)
+                {
+                    btnNxt.Enabled = false;
+                }
+
+                cls_variablesSistema.vs_proyecto.pActividadLista = new List<cls_actividad>();
+                cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria = new List<cls_paqueteActividad>();
+
                 llenarDatosActividades();
+                if (btnPrev != null)
+                {
+                    btnPrev.Visible = true;
+                }
             }
 
         }
@@ -970,7 +1033,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                     cls_variablesSistema.vs_proyecto.pEntregableLista.RemoveAll(test => test.pPK_entregable == vo_entregable.pPK_entregable);
                     cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.RemoveAll(test => test.pPK_Entregable == vo_entregable.pPK_entregable);
-                    cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.RemoveAll(test => test.pPK_Entregable == vo_entregable.pPK_entregable);
+                    //cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.RemoveAll(test => test.pPK_Entregable == vo_entregable.pPK_entregable);
 
                     lbx_entregables.Items.Add(lbx_entasociados.Items[i]);
                     ListItem li = lbx_entasociados.Items[i];
@@ -1395,6 +1458,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     lbx_componentesasociados.DataBind();
 
                 }
+
+                cargarPaquetesPorComponente();
+
             }
             /*
                 Nota: revisar el manejo de excepxiones personalizadas en este form
@@ -1499,6 +1565,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             vo_componentePaquete.pComponente = po_componente;
 
             cargarPaquetesPorComponente(vo_componentePaquete);
+            
             cargarListaPaquetes();
 
         }
@@ -1530,12 +1597,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         vo_componentePaquete.pComponente = vo_componente;
                         vo_componentePaquete.pPaquete = vo_paquete;
 
-                        cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Add(vo_componentePaquete);
+                        if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Where(test => test.pPK_Componente == vo_componentePaquete.pPK_Componente).Count() == 0)
+                        {
+                            cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Add(vo_componentePaquete);
+                        }          
 
                         if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(test => test.pPK_Componente == vo_componentePaquete.pPK_Componente).Count() > 0)
                         {
-                            cls_variablesSistema.vs_proyecto.pPaqueteLista.Add(vo_paquete);
-                            cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Add(vo_componentePaquete);
+                            if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(test => test.pPK_Paquete == vo_componentePaquete.pPK_Paquete).Count() == 0)
+                            {
+                                cls_variablesSistema.vs_proyecto.pPaqueteLista.Add(vo_paquete);
+                                cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Add(vo_componentePaquete);
+                            }                         
                         }
                     }
 
@@ -1565,6 +1638,74 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
         }
 
+        private void cargarPaquetesPorComponente()
+        {
+            DataSet vo_dataSet = new DataSet();
+            int cantidadPaqAsociados;
+            int cantidadPaquetes;
+
+            try
+            {
+                if (lbx_paqasociados.Items.Count > 0)
+                {
+                    cantidadPaqAsociados = lbx_paqasociados.Items.Count;
+
+                    for (int i = 0; i < cantidadPaqAsociados; i++ )
+                    {
+                        lbx_paqasociados.Items.RemoveAt(0);
+                    }
+                }
+
+                if (lbx_paquetes.Items.Count > 0)
+                {
+                    cantidadPaquetes = lbx_paquetes.Items.Count;
+
+                    for (int i = 0; i < cantidadPaquetes; i++)
+                    {
+                        lbx_paquetes.Items.RemoveAt(0);
+                    }
+                }
+
+                vo_dataSet = cls_gestorComponentePaquete.selectComponentePaquete(cls_variablesSistema.vs_proyecto);
+
+                foreach (DataRow row in vo_dataSet.Tables[0].Rows)
+                {
+
+                    cls_entregable vo_entregable = new cls_entregable();
+                    cls_componente vo_componente = new cls_componente();
+                    cls_paquete vo_paquete = new cls_paquete();
+                    cls_componentePaquete vo_componentePaquete = new cls_componentePaquete();
+
+                    vo_entregable.pPK_entregable = Convert.ToInt32(row["PK_entregable"]);
+                    vo_componente.pPK_componente = Convert.ToInt32(row["PK_componente"]);
+                    vo_paquete.pPK_Paquete = Convert.ToInt32(row["PK_paquete"]);
+                    vo_paquete.pNombre = Convert.ToString(row["nombre"]);
+
+                    vo_componentePaquete.pEntregable = vo_entregable;
+                    vo_componentePaquete.pComponente = vo_componente;
+                    vo_componentePaquete.pPaquete = vo_paquete;
+
+                    if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Where(test => test.pPK_Componente == vo_componentePaquete.pPK_Componente).Count() == 0)
+                    {
+                        cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Add(vo_componentePaquete);
+                    }
+
+                    if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(test => test.pPK_Componente == vo_componentePaquete.pPK_Componente).Count() > 0)
+                    {
+                        if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(test => test.pPK_Paquete == vo_componentePaquete.pPK_Paquete).Count() == 0)
+                        {
+                            cls_variablesSistema.vs_proyecto.pPaqueteLista.Add(vo_paquete);
+                            cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Add(vo_componentePaquete);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al cargar los paquetes asociados al proyecto.", po_exception);
+            }
+        }
 
         #endregion Métodos Paquetes
 
@@ -1722,8 +1863,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     lbx_paquetesasociados.DataTextField = "nombre";
                     lbx_paquetesasociados.DataValueField = "PK_paquete";
                     lbx_paquetesasociados.DataBind();
-                }
+                }    
+                
+                cargarActividadesPorPaquete();
+
             }
+
             /*
                 Nota: revisar el manejo de excepxiones personalizadas en este form
             */
@@ -1860,12 +2005,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         vo_paqueteActividad.pPaquete = vo_paquete;
                         vo_paqueteActividad.pActividad = vo_actividad;
 
-                        cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Add(vo_paqueteActividad);
-
+                        if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Where(test => test.pPK_Paquete == vo_paqueteActividad.pPK_Actividad).Count() == 0)
+                        {
+                            cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Add(vo_paqueteActividad);
+                        }
+                        
                         if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(test => test.pPK_Paquete == vo_paqueteActividad.pPK_Paquete).Count() > 0)
                         {
-                            cls_variablesSistema.vs_proyecto.pActividadLista.Add(vo_actividad);
-                            cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Add(vo_paqueteActividad);
+                            if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(test => test.pPK_Actividad == vo_paqueteActividad.pPK_Actividad).Count() == 0)
+                            {
+                                cls_variablesSistema.vs_proyecto.pActividadLista.Add(vo_actividad);
+                                cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Add(vo_paqueteActividad);
+                            } 
                         }
                     }
 
@@ -1895,6 +2046,76 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
         }
 
+        private void cargarActividadesPorPaquete()
+        {
+            DataSet vo_dataSet = new DataSet();
+            int cantidadActAsociadas;
+            int cantidadActividades;
+
+            try
+            {
+                if (lbx_actasociadas.Items.Count > 0)
+                {
+                    cantidadActAsociadas = lbx_actasociadas.Items.Count;
+
+                    for (int i = 0; i < cantidadActAsociadas; i++)
+                    {
+                        lbx_actasociadas.Items.RemoveAt(0);
+                    }
+                }
+
+                if (lbx_actividades.Items.Count > 0)
+                {
+                    cantidadActividades = lbx_actividades.Items.Count;
+
+                    for (int i = 0; i < cantidadActividades; i++)
+                    {
+                        lbx_actividades.Items.RemoveAt(0);
+                    }
+                }
+
+                vo_dataSet = cls_gestorPaqueteActividad.selectPaqueteActividad(cls_variablesSistema.vs_proyecto);
+
+                foreach (DataRow row in vo_dataSet.Tables[0].Rows)
+                {
+
+                    cls_entregable vo_entregable = new cls_entregable();
+                    cls_componente vo_componente = new cls_componente();
+                    cls_paquete vo_paquete = new cls_paquete();
+                    cls_actividad vo_actividad = new cls_actividad();
+                    cls_paqueteActividad vo_paqueteActividad = new cls_paqueteActividad();
+
+                    vo_entregable.pPK_entregable = Convert.ToInt32(row["PK_entregable"]);
+                    vo_componente.pPK_componente = Convert.ToInt32(row["PK_componente"]);
+                    vo_paquete.pPK_Paquete = Convert.ToInt32(row["PK_paquete"]);
+                    vo_actividad.pPK_Actividad = Convert.ToInt32(row["PK_actividad"]);
+                    vo_actividad.pNombre = Convert.ToString(row["nombre"]);
+
+                    vo_paqueteActividad.pEntregable = vo_entregable;
+                    vo_paqueteActividad.pComponente = vo_componente;
+                    vo_paqueteActividad.pPaquete = vo_paquete;
+                    vo_paqueteActividad.pActividad = vo_actividad;
+
+                    if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Where(test => test.pPK_Paquete == vo_paqueteActividad.pPK_Actividad).Count() == 0)
+                    {
+                        cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Add(vo_paqueteActividad);
+                    }
+
+                    if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(test => test.pPK_Paquete == vo_paqueteActividad.pPK_Paquete).Count() > 0)
+                    {
+                        if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(test => test.pPK_Actividad == vo_paqueteActividad.pPK_Actividad).Count() == 0)
+                        {
+                            cls_variablesSistema.vs_proyecto.pActividadLista.Add(vo_actividad);
+                            cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Add(vo_paqueteActividad);
+                        }
+                    }
+                }
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al cargar los actividades asociadas al proyecto.", po_exception);
+            }
+        }
 
         #endregion Métodos Actividades
 
