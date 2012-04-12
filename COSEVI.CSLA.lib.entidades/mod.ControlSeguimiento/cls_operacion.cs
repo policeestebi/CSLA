@@ -36,25 +36,33 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         #region Propiedades
 
-        public string PK_Tipo
+        public string pTipo
         {
-            get { return PK_tipo; }
-            set { PK_tipo = value; }
+            get { return tipo; }
+            set { tipo = value; }
         }
 
-        public int FK_Proyecto
+        public string pDescTipo
+        {
+            get 
+            {
+                return this.pTipo == "O" ? "Operación" : "Imprevisto";
+            }
+        }
+
+        public int pFK_Proyecto
         {
             get { return FK_proyecto; }
             set { FK_proyecto = value; }
         }
 
-        public int PK_Codigo
+        public String pPK_Codigo
         {
             get { return PK_codigo; }
             set { PK_codigo = value; }
         }
 
-        public string Descripcion
+        public string pDescripcion
         {
             get { return descripcion; }
             set { descripcion = value; }
@@ -64,11 +72,11 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         #region Atributos
 
-        private string PK_tipo;
+        private string tipo;
 
         private int FK_proyecto;
 
-        private int PK_codigo;
+        private String PK_codigo;
 
         private string descripcion;
 

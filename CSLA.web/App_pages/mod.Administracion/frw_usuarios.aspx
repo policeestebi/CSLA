@@ -355,7 +355,7 @@
                                                             runat="server" Text="Cancelar" />
                                                     </td>
                                                     <td>
-                                                        <asp:Button ID="btn_guardar" runat="server" OnClick="btn_guardar_Click" Text="Guardar" />
+                                                        <asp:Button ID="btn_guardar" runat="server" OnClick="btn_guardar_Click" Text="Guardar" CausesValidation="true" />
                                                     </td>
                                                 </tr>
                                             </table>

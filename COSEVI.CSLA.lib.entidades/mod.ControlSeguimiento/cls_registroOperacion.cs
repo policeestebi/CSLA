@@ -31,25 +31,26 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
         #endregion
 
         #region Propiedades
-        public string Comentario
+
+        public string pComentario
         {
             get { return comentario; }
             set { comentario = value; }
         }
 
-        public cls_asignacionOperacion FK_Asignacion
+        public cls_asignacionOperacion pFK_Asignacion
         {
             get { return FK_asignacion; }
             set { FK_asignacion = value; }
         }
 
-        public DateTime Fecha
+        public DateTime pFecha
         {
             get { return fecha; }
             set { fecha = value; }
         }
 
-        public float Horas
+        public decimal pHoras
         {
             get { return horas; }
             set { horas = value; }
@@ -58,13 +59,15 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         #region Atributos
 
-        private string comentario;
+        private decimal PK_registro;
 
         private cls_asignacionOperacion FK_asignacion;
 
+        private string comentario;
+
         private DateTime fecha;
 
-        private float horas;
+        private decimal horas;
 
         #endregion
     }

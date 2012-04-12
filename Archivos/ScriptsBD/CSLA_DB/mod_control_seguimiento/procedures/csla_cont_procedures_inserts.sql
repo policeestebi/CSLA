@@ -509,6 +509,12 @@ AS
 END   
  GO 
 
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> 7cf49e74d253742fae771ca9e9c36e594c67389b
 IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionInsert]'))
 DROP PROCEDURE [dbo].[PA_cont_operacionInsert]
 GO
@@ -527,6 +533,7 @@ CREATE PROCEDURE  PA_cont_operacionInsert
   @paramTipo nvarchar(1),
   @paramDescripcion	nvarchar(100),
   @paramUsuario		nvarchar(50),
+  @paramProyecto	int,
   @param_PK_codigo nvarchar(50) OUTPUT
 AS 
  BEGIN 
@@ -542,13 +549,15 @@ AS
         (
 		 PK_codigo,
 		 tipo,
-		 descripcion
+		 descripcion,
+		 FK_proyecto
         ) 
         VALUES
         ( 
 		 @codigo,
 		 @paramTipo,
-		 @paramDescripcion
+		 @paramDescripcion,
+		 @paramProyecto
         ) 
         
         INSERT INTO t_cont_asignacion_operacion
@@ -564,6 +573,29 @@ AS
         @paramDescripcion
         )
 
+END   
+ GO 
+
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_obtenerUltimaOperacion]'))
+DROP PROCEDURE [dbo].[PA_cont_obtenerUltimaOperacion]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez González.
+-- Fecha Creación:	11-04-2012
+-- Fecha Actulización:	11-04-2011
+-- Descripción: Procedimiento la última operación insertada
+-- =============================================
+CREATE PROCEDURE  PA_cont_obtenerUltimaOperacion
+AS 
+ BEGIN 
+ SET NOCOUNT ON; 
+		
+		SELECT CONVERT(NVARCHAR(50),MAX(CONVERT(decimal(38,0),PK_codigo ))) as codigo FROM t_cont_operacion;
 END   
  GO 
 

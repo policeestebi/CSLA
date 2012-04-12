@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using System.Data.SqlClient;
 
 namespace COSEVI.CSLA.lib.accesoDatos
 {
@@ -28,5 +31,21 @@ namespace COSEVI.CSLA.lib.accesoDatos
             this.cs_nombre = ps_nombre;
             this.co_valor = po_valor;
         }
+
+        public cls_parameter(String ps_nombre, Object po_valor, ParameterDirection po_direccion)
+        {
+            this.cs_nombre = ps_nombre;
+            this.co_valor = po_valor;
+            this.direccion = po_direccion;
+        }
+
+        private ParameterDirection direccion;
+
+        public ParameterDirection Direccion
+        {
+            get { return direccion; }
+            set { direccion = value; }
+        }
+        
     }
 }

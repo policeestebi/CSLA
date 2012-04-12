@@ -463,6 +463,8 @@ namespace COSEVI.web.controls
                 this.btnImprevisto = new Button();
                 this.btnImprevisto.ID = "btnImprevisto";
                 this.btnImprevisto.Text = " + Imprevisto";
+                this.btnImprevisto.CssClass = cssBotonImprevisto;
+                this.btnImprevisto.UseSubmitBehavior = false;
                 this.Controls.Add(this.btnImprevisto);
 
 
@@ -726,6 +728,12 @@ namespace COSEVI.web.controls
             set { urlLink = value; }
         }
 
+        public String CssBotonImprevisto
+        {
+            get { return cssBotonImprevisto; }
+            set { cssBotonImprevisto = value; }
+        }
+
         #endregion
 
         #region Atributos
@@ -788,7 +796,7 @@ namespace COSEVI.web.controls
 
         private String urlLink;
 
-       
+        private String cssBotonImprevisto;
 
         #endregion
 

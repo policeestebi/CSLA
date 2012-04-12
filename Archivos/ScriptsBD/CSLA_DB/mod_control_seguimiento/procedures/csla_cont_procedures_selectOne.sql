@@ -199,7 +199,8 @@ AS
          SELECT 
 			PK_codigo,
 			tipo,
-			descripcion 
+			descripcion,
+			ISNULL(FK_proyecto,-1) as FK_proyecto
 		 FROM
 			t_cont_operacion
          WHERE 
