@@ -509,3 +509,64 @@ AS
 END   
  GO 
 
+   @param_PK_codigo nvarchar(50) OUTPUT
+
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionInsert]'))
+DROP PROCEDURE [dbo].[PA_cont_operacionInsert]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez González.
+-- Fecha Creación:	11-04-2012
+-- Fecha Actulización:	11-04-2011
+-- Descripción: Procedimiento que inserta en la tabla
+--				t_cont_operacion
+-- =============================================
+CREATE PROCEDURE  PA_cont_operacionInsert
+  @paramTipo nvarchar(1),
+  @paramDescripcion	nvarchar(100),
+  @paramUsuario		nvarchar(50),
+  @param_PK_codigo nvarchar(50) OUTPUT
+AS 
+ BEGIN 
+ SET NOCOUNT ON; 
+		
+		DECLARE @codigo DECIMAL(38,0);
+	
+		SELECT @codigo = (ISNULL(MAX(CONVERT(decimal(38,0),PK_codigo )),0) + 1) FROM t_cont_operacion;
+		
+		SELECT @param_PK_codigo = CONVERT(NVARCHAR(50),@codigo);
+		
+        INSERT INTO t_cont_operacion
+        (
+		 PK_codigo,
+		 tipo,
+		 descripcion
+        ) 
+        VALUES
+        ( 
+		 @codigo,
+		 @paramTipo,
+		 @paramDescripcion
+        ) 
+        
+        INSERT INTO t_cont_asignacion_operacion
+        (
+        PK_codigo,
+        PK_usuario,
+        comentario
+        )
+        VALUES
+        (
+        @codigo,
+        @paramUsuario,
+        @paramDescripcion
+        )
+
+END   
+ GO 
+

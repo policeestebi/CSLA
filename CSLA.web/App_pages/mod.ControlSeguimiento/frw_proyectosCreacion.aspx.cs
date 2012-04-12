@@ -1033,7 +1033,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                     cls_variablesSistema.vs_proyecto.pEntregableLista.RemoveAll(test => test.pPK_entregable == vo_entregable.pPK_entregable);
                     cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.RemoveAll(test => test.pPK_Entregable == vo_entregable.pPK_entregable);
-                    //cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.RemoveAll(test => test.pPK_Entregable == vo_entregable.pPK_entregable);
+                    cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.RemoveAll(test => test.pPK_Entregable == vo_entregable.pPK_entregable);
 
                     lbx_entregables.Items.Add(lbx_entasociados.Items[i]);
                     ListItem li = lbx_entasociados.Items[i];

@@ -469,3 +469,34 @@ AS
 			cont_paq_act.activo = 1
 END  
  GO 
+
+ IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionSelectAll]'))
+DROP PROCEDURE [dbo].[PA_cont_operacionSelectAll]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez González
+-- Fecha Creación:	11-04-2012
+-- Fecha Actulización:	11-04-2012
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_operacionSelectAll
+  @paramUsuario	  NVARCHAR(30)
+AS 
+ BEGIN 
+		SELECT 
+			o.PK_codigo,
+			o.tipo,
+			o.descripcion
+		FROM
+			t_cont_operacion o
+		INNER JOIN
+			t_cont_asignacion_operacion ao
+		ON
+			o.PK_codigo = ao.PK_codigo AND
+			ao.PK_usuario = @paramUsuario
+END  
+ GO 

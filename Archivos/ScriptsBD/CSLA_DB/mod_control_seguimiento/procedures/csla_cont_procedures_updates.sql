@@ -452,4 +452,32 @@ DECLARE @activo int;
 			EXEC PA_cont_paquete_actividadInsert @paramPK_actividad,@paramPK_paquete,@paramPK_componente,@paramPK_entregable,@paramPK_proyecto;
 		END
 END   
- GO  
+ GO 
+ 
+ IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_paquete_actividadUpdate]'))
+DROP PROCEDURE [dbo].[PA_cont_paquete_actividadUpdate]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez González
+-- Fecha Creación:	11-04-2012
+-- Fecha Actulización:	11-04-2012
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_paquete_operacionUpdate 
+  @paramPK_operacion NVARCHAR(50),
+  @paramDescripcion NVARCHAR(100)   
+AS 
+ BEGIN 
+SET NOCOUNT ON; 
+
+	UPDATE t_cont_operacion
+	SET descripcion = @paramDescripcion
+	WHERE 
+	PK_codigo = @paramPK_operacion;
+
+END   
+ GO   
