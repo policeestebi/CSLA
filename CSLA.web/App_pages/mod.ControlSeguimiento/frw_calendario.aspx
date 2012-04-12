@@ -17,6 +17,21 @@
             'type': 'iframe',
             'closeBtn': true
         });
+
+        $(".imprevisto").click(function () {
+
+            alert("Hola");
+            $('<a href="frw_operaciones.aspx">+Imprevisto</a>').fancybox({
+                'width': '100%',
+                'height': '100%',
+                'autoScale': false,
+                'transitionIn': 'none',
+                'transitionOut': 'none',
+                'type': 'iframe',
+                'closeBtn': true
+            })
+        });
+        <
     });
 
 </script>
@@ -35,10 +50,11 @@ Calendario de Actividades
             CssDays="days"
             CssCalendarRow="calendarRow" 
             CssLink = "calendarLink"
+            CssBotonImprevisto="imprevisto"
             UrlLink = "frw_registroTiempos.aspx"
             UrlSiguiente="/App_Themes/Basico/imagenes/iconos/img_siguiente.png"
             UrlAnterior="/App_Themes/Basico/imagenes/iconos/img_anterior.png"
-            UrlBotonCalendario="/App_Themes/Basico/botones/img_calendario.png" 
+            UrlBotonCalendario="/App_Themes/Basico/botones/img_calendario.png"
             OnvoCambioFecha="Unnamed1_voCambioFecha" />
     </div>
 </asp:Content>

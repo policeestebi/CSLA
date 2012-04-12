@@ -36,25 +36,25 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         #region Propiedades
 
-        public string FK_Usuario
+        public string pFK_Usuario
         {
             get { return FK_usuario; }
             set { FK_usuario = value; }
         }
 
-        public string Comentario
+        public string pComentario
         {
             get { return comentario; }
             set { comentario = value; }
         }
 
-        public cls_operacion FK_Operacion
+        public cls_operacion pFK_Operacion
         {
             get { return FK_operacion; }
             set { FK_operacion = value; }
         }
 
-        public bool IsActivo
+        public bool pIsActivo
         {
             get { return isActivo; }
             set { isActivo = value; }

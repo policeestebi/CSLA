@@ -63,6 +63,7 @@
   <ItemGroup>
     <Content Include="App_pages\frw_bienvenidad.aspx" />
     <Content Include="App_pages\mod.ControlSeguimiento\frw_calendario.aspx" />
+    <Content Include="App_pages\mod.ControlSeguimiento\frw_operaciones.aspx" />
     <Content Include="App_pages\mod.ControlSeguimiento\frw_proyectosCreacion.aspx" />
     <Content Include="App_pages\mod.ControlSeguimiento\frw_registroTiempos.aspx" />
     <Content Include="App_Themes\Basico\css\common.css" />
@@ -129,6 +130,13 @@
     </Compile>
     <Compile Include="App_pages\mod.ControlSeguimiento\frw_calendario.aspx.designer.cs">
       <DependentUpon>frw_calendario.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_pages\mod.ControlSeguimiento\frw_operaciones.aspx.cs">
+      <DependentUpon>frw_operaciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="App_pages\mod.ControlSeguimiento\frw_operaciones.aspx.designer.cs">
+      <DependentUpon>frw_operaciones.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_pages\mod.ControlSeguimiento\frw_proyectosCreacion.aspx.cs">
       <DependentUpon>frw_proyectosCreacion.aspx</DependentUpon>

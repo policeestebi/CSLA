@@ -32,7 +32,12 @@ namespace COSEVI.CSLA.lib.accesoDatos.App_DataProvider
 
         public IDataParameter parameter(cls_parameter parameter)
         {
-            return new SqlParameter(parameter.Nombre, parameter.Valor);
+            SqlParameter param = new SqlParameter(parameter.Nombre, parameter.Valor);
+
+            if (parameter.Direccion == null)
+                param.Direction = parameter.Direccion;
+
+            return param;
         }
     }
 }
