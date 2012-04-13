@@ -501,11 +501,7 @@ AS
 END  
  GO 
 
-<<<<<<< HEAD
 
-   IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_actividadesProyectoSelectAll]'))
-DROP PROCEDURE [dbo].[PA_cont_actividadesProyectoSelectAll]
-=======
  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_proyectoSelectUsuario]'))
 DROP PROCEDURE [dbo].[PA_cont_proyectoSelectUsuario]
 GO
@@ -552,16 +548,14 @@ END
 GO 
 
 
- IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionSelectUsuario]'))
-DROP PROCEDURE [dbo].[PA_cont_operacionSelectUsuario]
->>>>>>> ae67798c6e45bedfe0156891432f0c96cce6c9c8
+ IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_actividadesProyectoSelectAll]'))
+DROP PROCEDURE [dbo].[PA_cont_actividadesProyectoSelectAll]
 GO
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
-<<<<<<< HEAD
 -- Autor: Generador
 -- Fecha Creación:	15-05-2011
 -- Fecha Actulización:	15-05-2011
@@ -596,7 +590,14 @@ AS
 END  
  GO
  
-=======
+ IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionSelectUsuario]'))
+DROP PROCEDURE [dbo].[PA_cont_operacionSelectUsuario]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
 -- Autor: Esteban Ramírez González
 -- Fecha Creación:	12-04-2012
 -- Fecha Actulización:	12-04-2012
@@ -672,4 +673,4 @@ ORDER BY op.descripcion asc
 
 END  
 GO 
->>>>>>> ae67798c6e45bedfe0156891432f0c96cce6c9c8
+
