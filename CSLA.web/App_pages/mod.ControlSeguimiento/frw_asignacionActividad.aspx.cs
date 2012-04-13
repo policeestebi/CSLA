@@ -9,10 +9,13 @@ using System.Web.UI.WebControls;
 using COSEVI.CSLA.lib.accesoDatos.App_InterfaceComunes;
 using ExceptionManagement.Exceptions;
 using COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento;
+using COSEVI.CSLA.lib.entidades.mod.Administracion;
 using COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento;
+using COSEVI.CSLA.lib.accesoDatos.mod.Administracion;
 
 using CSLA.web.App_Variables;
 using CSLA.web.App_Constantes;
+using System.Data;
 
 
 // =========================================================================
@@ -36,7 +39,7 @@ using CSLA.web.App_Constantes;
 
 namespace CSLA.web.App_pages.mod.ControlSeguimiento
 {
-    public partial class frw_actividadesResp : System.Web.UI.Page
+    public partial class frw_asignacionActividad : System.Web.UI.Page
     {
 
         #region Inicialización
@@ -54,11 +57,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 try
                 {
-                    this.llenarGridView();
+                    this.inicializarRegistros();
                 }
                 catch (Exception po_exception)
                 {
-                    String vs_error_usuario = "Error al inicializar el mantenimiento de actividades.";
+                    String vs_error_usuario = "Error al inicializar el mantenimiento de asignación de actividades.";
                     this.lanzarExcepcion(po_exception, vs_error_usuario);
                 } 
 
@@ -91,14 +94,13 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
-                this.btn_agregar = (Button)acp_listadoDatos.FindControl("btn_agregar");
-                this.btn_cancelar = (Button)acp_edicionDatos.FindControl("btn_cancelar");
+                //Inicializacón de botón de asignación
+                this.btn_asignarUsuario = (Button)acp_edicionDatos.FindControl("btn_asignarUsuario");
+
+                //Botones comunes
+                //this.btn_eliminar = (Button)acp_edicionDatos.FindControl("btn_elminar");
+                this.btn_regresar = (Button)acp_edicionDatos.FindControl("btn_regresar");
                 this.btn_guardar = (Button)acp_edicionDatos.FindControl("btn_guardar");
-
-                this.ucSearchActividad.SearchClick +=new COSEVI.web.controls.ucSearch.searchClick(this.ucSearchActividad_searchClick);
-
-                //Se agregan los filtros.
-                this.agregarItemListFiltro();
 
             }
             catch (Exception po_exception)
@@ -106,25 +108,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 String vs_error_usuario = "Ocurrió un error inicializando los controles del mantenimiento.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
-        }
-
-        /// <summary>
-        /// Agrega los filtros para el control de búsqueda.
-        /// </summary>
-        private void agregarItemListFiltro()
-        {
-
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("Actividad", "PK_Actividad"));
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("Nombre", "nombre"));
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("Descripcion", "descripcion"));
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("FechaInicio", "fechaInicio"));
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("FechaFin", "fechaFin"));
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("HorasAsignadas", "horasAsignadas"));
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("HorasAsigDefectos", "horasAsigDefectos"));
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("HorasReales", "horasReales"));
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("HorasRealesDefectos", "horasRealesDefectos"));
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("Estado", "Fk_estado"));
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("Usuario", "PK_usuario"));
         }
 
         #endregion
@@ -136,18 +119,109 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// llenar la información del
         /// grid view
         /// </summary>
-        private void llenarGridView()
+        private void inicializarRegistros()
         {
             try
             {
-                this.grd_listaActividades.Columns[0].Visible = true;
-                this.grd_listaActividades.DataSource = cls_gestorActividadResp.listarActividad();
-                this.grd_listaActividades.DataBind();
+                cargarNombreProyecto();
+                cargarActividadesProyecto();
+                cargarUsuarios();
+
+                //Se carga el dataset con los estados que puede adquirir una actividad
+                cargarDataSetEstados();
+                this.ddl_estado.DataBind();
             }
             catch (Exception po_exception)
             {
                 throw new Exception("Ocurrió un error llenando la tabla.", po_exception);
             } 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void cargarNombreProyecto()
+        {
+            try
+            {
+                txt_proyecto.Text = cls_variablesSistema.vs_proyecto.pNombre;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al cargar los datos del proyecto.", po_exception);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void cargarActividadesProyecto()
+        {
+            try
+            {
+                /*
+                 NOta: * Revisar los selects de los listar, para ver que tanto es necesario cambiar los "pNombre" por los nombres de la tabla => "pNombre" - "pNombreEntregable"
+                       * Ver si es relevante cambiar los nombres a los listbox
+                 */
+                cls_variablesSistema.vs_proyecto.pAsignacionLista = cls_gestorAsignacionActividad.listarActividadesProyecto(cls_variablesSistema.vs_proyecto.pPK_proyecto);
+
+                lbx_actividades.DataSource = cls_variablesSistema.vs_proyecto.pAsignacionLista;
+                lbx_actividades.DataTextField = "pNombreActividad";
+                lbx_actividades.DataValueField = "pPK_actividad";
+                lbx_actividades.DataBind();
+            }
+            /*
+             Nota: revisar el manejo de excepxiones personalizadas en este form
+             */
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al cargar los datos de la lista de actividades del proyecto.", po_exception);
+            }
+
+        }
+
+        private void cargarUsuarios()
+        {
+            try
+            {
+                /*
+                 NOta: * Revisar los selects de los listar, para ver que tanto es necesario cambiar los "pNombre" por los nombres de la tabla => "pNombre" - "pNombreEntregable"
+                       * Ver si es relevante cambiar los nombres a los listbox
+                 */
+                lbx_usuarios.DataSource = cls_gestorUsuario.listarUsuarios();
+                lbx_usuarios.DataTextField = "pNombre";
+                lbx_usuarios.DataValueField = "pPK_usuario";
+                lbx_usuarios.DataBind();
+            }
+            /*
+             Nota: revisar el manejo de excepxiones personalizadas en este form
+             */
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al cargar los datos de la lista de usuarios del sistema.", po_exception);
+            }
+
+        }
+
+        /// <summary>
+        /// Metodo que carga el dataSet de los estados a los que se puede asociar un proyecto
+        /// </summary>
+        private void cargarDataSetEstados()
+        {
+            DataSet vo_dataSet = new DataSet();
+
+            try
+            {
+                vo_dataSet = cls_gestorProyecto.listarEstado();
+                this.ddl_estado.DataSource = vo_dataSet;
+                this.ddl_estado.DataTextField = vo_dataSet.Tables[0].Columns["descripcion"].ColumnName.ToString();
+                this.ddl_estado.DataValueField = vo_dataSet.Tables[0].Columns["PK_estado"].ColumnName.ToString();
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al cargar los estados del proyecto.", po_exception);
+            }
+
         }
 
         /// <summary>
@@ -158,10 +232,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
-                this.grd_listaActividades.Columns[0].Visible = true;
-                this.grd_listaActividades.DataSource = cls_gestorActividadResp.listarActividadFiltro(psFilter);
-                this.grd_listaActividades.DataBind();
-                this.grd_listaActividades.Columns[0].Visible = false;
+                //this.grd_listaActividades.Columns[0].Visible = true;
+                //this.grd_listaActividades.DataSource = cls_gestorActividadResp.listarActividadFiltro(psFilter);
+                //this.grd_listaActividades.DataBind();
+                //this.grd_listaActividades.Columns[0].Visible = false;
             }
             catch (Exception po_exception)
             {
@@ -177,28 +251,27 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// web
         /// </summary>
         /// <returns>cls_actividadResp</returns>
-        private cls_actividadResp crearObjeto()
+        private cls_asignacionActividad crearObjeto()
         {
-            cls_actividadResp vo_actividad = new cls_actividadResp();
-            if (cls_variablesSistema.tipoEstado != cls_constantes.AGREGAR)
-            {
-                vo_actividad = (cls_actividadResp)cls_variablesSistema.obj;
-            }
+            cls_asignacionActividad vo_asignacionActividad = new cls_asignacionActividad();
+            //if (cls_variablesSistema.tipoEstado != cls_constantes.AGREGAR)
+            //{
+            //    vo_actividad = (cls_asignacionActividad)cls_variablesSistema.obj;
+            //}
             try
             {
+                vo_asignacionActividad = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionLista.Find(test => test.pPK_Actividad == Convert.ToInt32(hdn_codigoActividad.Value));
 
-
-                vo_actividad.pNombre = txt_nombre.Text;
-                vo_actividad.pDescripcion = txt_descripcion.Text;
-                //vo_actividad.pFechaInicio = dt_fechaInicio.Text;
-                //vo_actividad.pFechaFin = dt_fechaFin.Text;
-                vo_actividad.pHorasAsignadas = Convert.ToInt32(txt_horasAsignadas.Text);
-                vo_actividad.pHorasAsigDefectos = Convert.ToInt32(txt_horasAsigDefectos.Text);
-                vo_actividad.pHorasReales = Convert.ToInt32(txt_horasReales.Text);
-                vo_actividad.pHorasRealesDefectos = Convert.ToInt32(txt_horasRealesDef.Text);
-                vo_actividad.pEstado.pPK_estado = Convert.ToInt32(txt_estado.Text);
-                vo_actividad.pPK_Usuario = txt_usuario.Text;
-                return vo_actividad;
+                vo_asignacionActividad.pDescripcion = txt_descripcion.Text;
+                vo_asignacionActividad.pFechaInicio = Convert.ToDateTime(txt_fechaInicio.Text);
+                vo_asignacionActividad.pFechaFin = Convert.ToDateTime(txt_fechaFin.Text);
+                vo_asignacionActividad.pHorasAsignadas = Convert.ToInt32(txt_horasAsignadas.Text);
+                vo_asignacionActividad.pHorasAsigDefectos = Convert.ToInt32(txt_horasAsigDefectos.Text);
+                vo_asignacionActividad.pHorasReales = Convert.ToInt32(txt_horasReales.Text);
+                vo_asignacionActividad.pHorasRealesDefectos = Convert.ToInt32(txt_horasRealesDef.Text);
+                vo_asignacionActividad.pEstado.pPK_estado = Convert.ToInt32(ddl_estado.SelectedValue);
+                vo_asignacionActividad.pPK_Usuario = hdn_codigoUsuario.Value;
+                return vo_asignacionActividad;
             }
             catch (Exception po_exception)
             {
@@ -212,20 +285,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void cargarObjeto()
         {
-            cls_actividadResp vo_actividad = null;
+            cls_asignacionActividad vo_actividad = null;
 
             try
             {
-                vo_actividad = (cls_actividadResp)cls_variablesSistema.obj;
-                this.txt_nombre.Text = vo_actividad.pNombre;
+                vo_actividad = (cls_asignacionActividad)cls_variablesSistema.obj;
                 this.txt_descripcion.Text = vo_actividad.pDescripcion;
-                //this.dt_fechaInicio.Text = vo_actividad.pFechaInicio;
-                //this.dt_fechaFin.Text = vo_actividad.pFechaFin;
+                this.txt_fechaInicio.Text = vo_actividad.pFechaInicio.ToShortDateString();
+                this.txt_fechaFin.Text = vo_actividad.pFechaFin.ToShortDateString(); ;
                 this.txt_horasAsignadas.Text = vo_actividad.pHorasAsignadas.ToString();
                 this.txt_horasAsigDefectos.Text = vo_actividad.pHorasAsigDefectos.ToString();
                 this.txt_horasReales.Text = vo_actividad.pHorasReales.ToString();
                 this.txt_horasRealesDef.Text = vo_actividad.pHorasRealesDefectos.ToString();
-                this.txt_estado.Text = vo_actividad.pFK_Estado.ToString();
+                this.ddl_estado.SelectedValue = vo_actividad.pFK_Estado.ToString();
                 this.txt_usuario.Text = vo_actividad.pPK_Usuario;
                 if (cls_variablesSistema.tipoEstado == cls_constantes.VER)
                 {
@@ -247,13 +319,13 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// Método que elimina un permiso
         /// </summary>
         /// <param name="po_actividad">Permiso a eliminar</param>
-        private void eliminarDatos(cls_actividadResp po_actividad)
+        private void eliminarDatos(cls_asignacionActividad po_actividad)
         {
             try
             {
-                cls_gestorActividadResp.deleteActividad(po_actividad);
+                cls_gestorAsignacionActividad.deleteActividad(po_actividad);
 
-                this.llenarGridView();
+                this.inicializarRegistros();
 
                 this.upd_Principal.Update();
             }
@@ -272,16 +344,17 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         private int guardarDatos()
         {
             int vi_resultado = 1;
-            cls_actividadResp vo_actividad = this.crearObjeto();
+            cls_asignacionActividad vo_asignacionActividad = this.crearObjeto();
             try
             {
-                switch (cls_variablesSistema.tipoEstado)
+                //switch (cls_variablesSistema.tipoEstado)
+                switch (cls_constantes.AGREGAR)
                 {
                     case cls_constantes.AGREGAR:
-                        vi_resultado = cls_gestorActividadResp.insertActividad(vo_actividad);
+                        vi_resultado = cls_gestorAsignacionActividad.insertActividad(vo_asignacionActividad);
                         break;
                     case cls_constantes.EDITAR:
-                        vi_resultado = cls_gestorActividadResp.updateActividad(vo_actividad);
+                        vi_resultado = cls_gestorAsignacionActividad.updateActividad(vo_asignacionActividad);
                         break;
                     default:
                         break;
@@ -301,15 +374,14 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void limpiarCampos()
         {
-            this.txt_nombre.Text = String.Empty;
             this.txt_descripcion.Text = String.Empty;
-            //this.dt_fechaInicio.Text = String.Empty;
-            //this.dt_fechaFin.Text = String.Empty;
+            this.txt_fechaInicio.Text = String.Empty;
+            this.txt_fechaFin.Text = String.Empty;
             this.txt_horasAsignadas.Text = String.Empty;
             this.txt_horasAsigDefectos.Text = String.Empty;
             this.txt_horasReales.Text = String.Empty;
             this.txt_horasRealesDef.Text = String.Empty;
-            this.txt_estado.Text = String.Empty;
+            this.ddl_estado.SelectedIndex = -1;
             this.txt_usuario.Text = String.Empty;
         }
 
@@ -321,15 +393,14 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="pb_habilitados"></param>
         private void habilitarControles(bool pb_habilitados)
         {
-            this.txt_nombre.Enabled = pb_habilitados;
             this.txt_descripcion.Enabled = pb_habilitados;
-            this.dt_fechaInicio.Enabled = pb_habilitados;
-            this.dt_fechaFin.Enabled = pb_habilitados;
+            this.txt_fechaInicio.Enabled = pb_habilitados;
+            this.txt_fechaFin.Enabled = pb_habilitados;
             this.txt_horasAsignadas.Enabled = pb_habilitados;
             this.txt_horasAsigDefectos.Enabled = pb_habilitados;
             this.txt_horasReales.Enabled = pb_habilitados;
             this.txt_horasRealesDef.Enabled = pb_habilitados;
-            this.txt_estado.Enabled = pb_habilitados;
+            this.ddl_estado.Enabled = pb_habilitados;
             this.txt_usuario.Enabled = pb_habilitados;
             this.btn_guardar.Visible = pb_habilitados;
 
@@ -368,17 +439,13 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         #region Eventos
 
         /// <summary>
-        /// Busca un rol según el filtro.
+        /// Evento q asigna el nuevo valor del dropdown list de estados cuando se modifica el proyecto
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        /// <param name="value"></param>
-        /// <param name="seletecItem"></param>
-        protected void ucSearchActividad_searchClick(object sender, EventArgs e, string value, ListItem seletecItem)
+        protected void ddlEstado_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-            this.llenarGridViewFilter(this.ucSearchActividad.Filter); 
-
+            this.ddl_estado.Text = ((DropDownList)sender).SelectedValue;
         }
 
         /// <summary>
@@ -386,7 +453,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void btn_agregar_Click(object sender, EventArgs e)
+        protected void btn_eliminar_Click(object sender, EventArgs e)
         {
 
             try
@@ -421,7 +488,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 this.guardarDatos();
 
-                this.llenarGridView();
+                this.inicializarRegistros();
 
                 this.limpiarCampos();
 
@@ -442,17 +509,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void btn_cancelar_Click(object sender, EventArgs e)
+        protected void btn_regresar_Click(object sender, EventArgs e)
         {
             try
             {
-                this.habilitarControles(true);
-
-                this.limpiarCampos();
-
-                this.upd_Principal.Update();
-
-                this.ard_principal.SelectedIndex = 0;
+                // Do something with the click ...
+                Response.Redirect("frw_proyectos.aspx", false);
             }
             catch (Exception po_exception)
             {
@@ -462,94 +524,46 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
-        /// Cambiar de índice de página.
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void grd_listaActividades_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void btn_asignarUsuario_Click(object sender, EventArgs e)
         {
-            try
+            for (int i = lbx_actividades.Items.Count - 1; i >= 0; i--)
             {
-                
-                this.grd_listaActividades.PageIndex = e.NewPageIndex;
-                this.llenarGridView();
-                this.upd_Principal.Update();
-            }
-            catch (Exception po_exception)
-            {
-                String vs_error_usuario = "Ocurrió un error al realizar el listado de la actividad.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
-            } 
-        }
-
-        /// <summary>
-        /// Cuando se seleccionada un botón del grid.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void grd_listaActividades_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            try
-            {
-                int vi_indice = Convert.ToInt32(e.CommandArgument);
-
-                GridViewRow vu_fila = this.grd_listaActividades.Rows[vi_indice];
-
-                cls_actividadResp vo_actividad = new cls_actividadResp();
-
-                vo_actividad.pPK_Actividad = Convert.ToInt32(vu_fila.Cells[0].Text.ToString());
-                vo_actividad.pDescripcion = vu_fila.Cells[0].Text.ToString();
-                //vo_actividad.pFechaInicio = Convert.ToDate(vu_fila.Cells[0].Text.ToString());
-                //vo_actividad.pFechaFin = Convert.ToDate(vu_fila.Cells[0].Text.ToString());
-                vo_actividad.pHorasAsignadas = Convert.ToInt32(vu_fila.Cells[0].Text.ToString());
-                vo_actividad.pHorasAsigDefectos =Convert.ToInt32(vu_fila.Cells[0].Text.ToString());
-                vo_actividad.pHorasReales = Convert.ToInt32(vu_fila.Cells[0].Text.ToString());
-                vo_actividad.pHorasRealesDefectos = Convert.ToInt32(vu_fila.Cells[0].Text.ToString());
-                vo_actividad.pEstado.pPK_estado = Convert.ToInt32(vu_fila.Cells[0].Text.ToString());
-                vo_actividad.pPK_Usuario = vu_fila.Cells[0].Text.ToString();
-
-                switch (e.CommandName.ToString())
+                if (lbx_actividades.Items[i].Selected == true)
                 {
-                    case cls_constantes.VER:
-                        vo_actividad = cls_gestorActividadResp.seleccionarActividad(vo_actividad);
+                    cls_actividad vo_actividad = new cls_actividad();
+                    vo_actividad.pPK_Actividad = Convert.ToInt32(lbx_actividades.Items[i].Value.ToString());
+                    vo_actividad.pNombre = lbx_actividades.Items[i].Text.ToString();
 
-                        cls_variablesSistema.obj = vo_actividad;
+                    for (int j = lbx_usuarios.Items.Count - 1; j >= 0; j--)
+                    {
+                        if (lbx_usuarios.Items[j].Selected == true)
+                        {
+                            cls_usuario vo_usuario = new cls_usuario();
+                            vo_usuario.pPK_usuario = lbx_usuarios.Items[j].Value.ToString();
+                            vo_usuario.pNombre = lbx_usuarios.Items[j].Text.ToString();
 
-                        cls_variablesSistema.tipoEstado = e.CommandName;
+                            foreach (cls_asignacionActividad asigAct in cls_variablesSistema.vs_proyecto.pAsignacionLista)
+                            {
+                                if (asigAct.pPK_Actividad == vo_actividad.pPK_Actividad)
+                                {
+                                    asigAct.pPK_Usuario = vo_usuario.pPK_usuario;
 
-                        this.cargarObjeto();
+                                    hdn_codigoActividad.Value = vo_actividad.pPK_Actividad.ToString();
+                                    txt_actividad.Text = vo_actividad.pNombre;
+                                    hdn_codigoUsuario.Value = vo_usuario.pPK_usuario;
+                                    txt_usuario.Text = vo_usuario.pNombre;
 
-                        this.ard_principal.SelectedIndex = 1;
-                        break;
-
-                    case cls_constantes.EDITAR:
-                        vo_actividad = cls_gestorActividadResp.seleccionarActividad(vo_actividad);
-
-                        cls_variablesSistema.obj = vo_actividad;
-
-                        cls_variablesSistema.tipoEstado = e.CommandName;
-
-                        this.cargarObjeto();
-
-                        this.ard_principal.SelectedIndex = 1;
-                        break;
-
-                    case cls_constantes.ELIMINAR:
-                        this.eliminarDatos(vo_actividad);
-                        break;
-
-                    default:
-                        break;
+                                }
+                            }
+                        }
+                    }
                 }
-
             }
-            catch (Exception po_exception)
-            {
-                String vs_error_usuario = "Ocurrió un error al intentar mostrar la ventana de edición para los registros.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
-            } 
         }
-
         #endregion
 
 

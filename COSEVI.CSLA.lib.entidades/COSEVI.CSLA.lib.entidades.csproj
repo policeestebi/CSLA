@@ -78,6 +78,7 @@
     <Compile Include="mod.Administracion\cls_usuario.cs" />
     <Compile Include="mod.Administracion\cls_registroPermanente.cs" />
     <Compile Include="mod.ControlSeguimiento\cls_actividad..cs" />
+    <Compile Include="mod.ControlSeguimiento\cls_asignacionActividad.cs" />
     <Compile Include="mod.ControlSeguimiento\cls_asignacionOperacion.cs" />
     <Compile Include="mod.ControlSeguimiento\cls_componente..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_componentePaquete..cs" />

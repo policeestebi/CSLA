@@ -613,6 +613,23 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="po_proyecto"></param>
+        private void cargarProyectoAsignacion(cls_proyecto po_proyecto)
+        {
+            try
+            {
+                cls_variablesSistema.vs_proyecto = po_proyecto;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al cargar los departamentos asociados al proyecto.", po_exception);
+            }
+
+        }
+
+        /// <summary>
         /// Método que lanza la excepción personalizada
         /// </summary>
         /// <param name="po_exception">Excepción a levantar</param>
@@ -853,6 +870,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                         break;
 
+                    case cls_constantes.ASIGNAR:
+
+                        //Se limpia la variable de sistema que mantiene los departamentos proyectos para inmediatamente después comprobar si hubieron cambios o no
+                        limpiarVariablesSistema();
+
+                        //Se envía a cargar el atributo estático de cls_variablesSistema que mantiene el proyecto
+                        cargarProyectoAsignacion(vo_proyecto);
+
+                        //Se envía a la página de creación de proyectos
+                        Response.Redirect("frw_asignacionActividad.aspx", false);
+
+                        break;
+
                     default:
                         break;
                 }
@@ -877,7 +907,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         #endregion
 
-        #region Asignacion
+        #region Creación
 
         /// <summary>
         /// Método que se encarga de presentar los datos para el ListBox de departamentos
@@ -934,7 +964,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
         }
 
-        #endregion Asignacion
+        #endregion Creación
+
+
 
 
     }

@@ -42,6 +42,7 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             this.componenteLista = new List<cls_componente>();
             this.paqueteLista = new List<cls_paquete>();
             this.actividadLista = new List<cls_actividad>();
+            this.asignacionLista = new List<cls_asignacionActividad>();
 
             this.proyectoEntregableListaMemoria = new List<cls_proyectoEntregable>();
             this.entregableComponenteListaMemoria = new List<cls_entregableComponente>();
@@ -339,6 +340,31 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
 
         #endregion Creación de Proyecto
+
+
+        #region Asignacion Actividades
+
+
+        #region Atributos
+
+        private List<cls_asignacionActividad> asignacionLista = new List<cls_asignacionActividad>();
+
+
+        #endregion Atributos
+
+        #region Propiedades
+
+        public List<cls_asignacionActividad> pAsignacionLista
+        {
+            get { return asignacionLista; }
+            set { this.asignacionLista = value; }
+        }
+
+
+        #endregion Propiedades
+
+
+        #endregion Asignacion Actividades
 
     }
 

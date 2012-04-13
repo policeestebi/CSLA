@@ -31,7 +31,7 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
     /// Clase que asocia la información de los proyectos con las actividades por realizar de los mismos
     // del Consejo de Seguridad Vial.
     /// </summary>
-	public class cls_actividadResp
+	public class cls_asignacionActividad
     {
 
         #region Constructor
@@ -39,11 +39,10 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
         /// <summary>
         /// Constructor de la clase cls_actividad.
         /// </summary>
-        public cls_actividadResp()
+        public cls_asignacionActividad()
         {
             this.estado = new cls_estado();
             this.usuario = new cls_usuario();
-            this.componentePaquete = new cls_componentePaquete();
         }
 
         #endregion
@@ -59,36 +58,29 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         public int pPK_Paquete
         {
-            get { return componentePaquete.pPK_paquete; }
-            set { this.componentePaquete.pPK_paquete = value; }
+            get { return PK_paquete; }
+            set { this.PK_paquete = value; }
         }
 
 
         public int pPK_Componente
         {
-            get { return componentePaquete.pPK_componente; }
-            set { this.componentePaquete.pPK_componente = value; }
+            get { return PK_componente; }
+            set { this.PK_componente = value; }
         }
 
 
         public int pPK_Entregable
         {
-            get { return componentePaquete.pPK_entregable; }
-            set { this.componentePaquete.pPK_entregable = value; }
-        }
-
-
-        public int pPK_Departmento
-        {
-            get { return componentePaquete.pPK_departmento; }
-            set { this.componentePaquete.pPK_departmento = value; }
+            get { return PK_entregable; }
+            set { this.PK_entregable = value; }
         }
 
 
         public int pPK_Proyecto
         {
-            get { return componentePaquete.pPK_proyecto; }
-            set { this.componentePaquete.pPK_proyecto = value; }
+            get { return PK_proyecto; }
+            set { this.PK_proyecto = value; }
         }
 
 
@@ -105,10 +97,10 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
         }
 
 
-        public string pNombre
+        public string pNombreActividad
         {
-            get { return nombre; }
-            set { this.nombre = value; }
+            get { return nombreActividad; }
+            set { this.nombreActividad  = value; }
         }
 
 
@@ -153,12 +145,12 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.horasReales = value; }
         }
 
-
         public decimal pHorasRealesDefectos
         {
             get { return horasRealesDefectos; }
             set { this.horasRealesDefectos = value; }
         }
+
 
 
         public cls_estado pEstado
@@ -167,19 +159,12 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.estado = value; }
         }
 
-
         public cls_usuario pUsuario
         {
             get { return usuario; }
             set { this.usuario = value; }
         }
 
-
-        public cls_componentePaquete pComponentePaquete
-        {
-            get { return componentePaquete; }
-            set { this.componentePaquete = value; }
-        }
 
         #endregion 
 
@@ -191,50 +176,68 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
  	    private int PK_actividad;
 
         /// <summary>
-        /// Nombre de la actividad
+        /// Código de paquete
         /// </summary>
-	    private string nombre;
+        private int PK_paquete;
 
         /// <summary>
-        /// Descripción de la actividad
+        /// Código de componente
+        /// </summary>
+        private int PK_componente;
+
+        /// <summary>
+        /// Código de entregable
+        /// </summary>
+        private int PK_entregable;
+
+        /// <summary>
+        /// Código de proyecto
+        /// </summary>
+        private int PK_proyecto;
+
+        /// <summary>
+        /// Nombre de la actividad
+        /// </summary>
+        private string nombreActividad;
+
+        /// <summary>
+        /// Descripción de la asignación de actividad
         /// </summary>
 	    private string descripcion;
 
         /// <summary>
-        /// Fecha Inicio de la actividad
+        /// Fecha Inicio de la asignación de actividad
         /// </summary>
         private DateTime fechaInicio;
 
         /// <summary>
-        /// Fecha Fin de la actividad
+        /// Fecha Fin de la asignación de actividad
         /// </summary>
 	    private DateTime fechaFin;
 
         /// <summary>
-        /// Horas asignadas a la actividad
+        /// Horas asignadas a la asignación de actividad
         /// </summary>
 	    private decimal horasAsignadas;
 
         /// <summary>
-        /// Horas asignadas por defecto a la actividad
+        /// Horas asignadas por defecto a la asignación de actividad
         /// </summary>
         private decimal horasAsigDefectos;
 
         /// <summary>
-        /// Horas reales de la actividad
+        /// Horas reales de la asignación de la asignación de actividad
         /// </summary>
         private decimal horasReales;
 
         /// <summary>
-        /// Horas reales en la corrección de defectos de la actividad
+        /// Horas reales en la corrección de defectos de la asignación de actividad
         /// </summary>
         private decimal horasRealesDefectos;
 
         private cls_estado estado;
 
 	    private cls_usuario usuario;
-
-	    private cls_componentePaquete componentePaquete;
 
         #endregion
 

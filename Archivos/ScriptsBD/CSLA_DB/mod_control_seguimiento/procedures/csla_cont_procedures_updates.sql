@@ -454,13 +454,63 @@ DECLARE @activo int;
 END   
  GO 
  
-<<<<<<< HEAD
- IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_paquete_operacionUpdate]'))
-DROP PROCEDURE [dbo].[PA_cont_paquete_operacionUpdate]
-=======
- IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionUpdate]'))
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_asignacionActividadUpdate]'))
+DROP PROCEDURE [dbo].[PA_cont_asignacionActividadUpdate]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_asignacionActividadUpdate 
+  @paramPK_actividad int, 
+  @paramPK_paquete int,
+  @paramPK_componente int, 
+  @paramPK_entregable int, 
+  @paramPK_proyecto int, 
+  @paramPK_usuario varchar(30) , 
+  @paramFK_estado int, 
+  @paramdescripcion varchar(100) , 
+  @paramfechaInicio datetime, 
+  @paramfechaFin datetime, 
+  @paramhorasAsignadas numeric(10,2), 
+  @paramhorasAsigDefectos numeric(10,2), 
+  @paramhorasReales numeric(10,2), 
+  @paramhorasRealesDefectos numeric(10,2) 
+AS 
+ BEGIN 
+ SET NOCOUNT ON; 
+
+		UPDATE t_cont_asignacion_actividad
+         SET 
+			 descripcion = @paramdescripcion,
+			 fechaInicio = @paramfechaInicio,
+			 fechaFin = @paramfechaFin,
+			 horasAsignadas = @paramhorasAsignadas,
+			 horasAsigDefectos = @paramhorasAsigDefectos,
+			 horasReales = @paramhorasReales,
+			 horasRealesDefectos = @paramhorasRealesDefectos,
+			 FK_estado  = @paramFK_estado
+         WHERE 
+			 PK_actividad = @paramPK_actividad AND
+			 PK_paquete = @paramPK_paquete AND
+			 PK_componente = @paramPK_componente AND
+			 PK_entregable = @paramPK_entregable AND
+			 PK_proyecto = @paramPK_proyecto AND
+			 PK_usuario = @paramPK_usuario;
+
+END   
+ GO 
+
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionUpdate]'))
 DROP PROCEDURE [dbo].[PA_cont_operacionUpdate]
->>>>>>> e6789c94ca9a3d64c97ea2fa3413c5affc3b2e47
 GO
 SET ANSI_NULLS ON
 GO
