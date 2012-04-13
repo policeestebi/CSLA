@@ -651,4 +651,5 @@ div#dvTiempos table td, #dvTiempoComent table td
     padding:5px;
     width:100%;
     font-size:13px;
+    display:none;
 }

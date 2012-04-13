@@ -481,3 +481,38 @@ SET NOCOUNT ON;
 
 END   
  GO   
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionRegistroUpdate]'))
+DROP PROCEDURE [dbo].[PA_cont_operacionRegistroUpdate]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez González
+-- Fecha Creación:	11-04-2012
+-- Fecha Actulización:	11-04-2012
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_operacionRegistroUpdate 
+  @paramPK_registro   numeric(10,2),
+  @paramPK_codigo	nvarchar(50),
+  @paramUsuario		nvarchar(30),
+  @paramHoras		numeric(10,2),
+  @comentario		nvarchar(100) 
+AS 
+ BEGIN 
+SET NOCOUNT ON; 
+
+	UPDATE t_cont_registro_operacion
+	SET 
+		comentario = @comentario,
+		horas = @paramHoras
+	WHERE 
+	  PK_codigo = @paramPK_codigo AND
+			   PK_registro = @paramPK_registro AND
+			   PK_usuario = @paramUsuario;
+
+END   
+ GO 

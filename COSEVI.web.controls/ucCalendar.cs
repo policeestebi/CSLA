@@ -8,7 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using AjaxControlToolkit;
 
-//Commit hecho por Esteban
+using System.Data;
 
 namespace COSEVI.web.controls
 {
@@ -91,7 +91,6 @@ namespace COSEVI.web.controls
                 String.Format("{0:dd}", this.FechaLunes.AddDays(6)) +
                 " " + this.ObtenerMesDescripcion(this.FechaLunes.AddDays(6).Month) +
                 ", " + String.Format("{0:yyyy}", this.FechaLunes.AddDays(6));
-
         }
 
         /// <summary>
@@ -268,13 +267,155 @@ namespace COSEVI.web.controls
             writer.RenderEndTag();//End TD
             writer.RenderEndTag();//End TR
 
-            this.cargarDatos(writer);
+            this.cargarDatosCalendario(writer);
+            this.CargarProyectos();
 
             writer.RenderEndTag();//End table
         }
 
         /// <summary>
-        /// 
+        /// Carga todos los datos
+        /// en el calendario.
+        /// </summary>
+        private void cargarDatosCalendario(HtmlTextWriter writer)
+        {
+            DataTable datos = null;
+            int contador = 0;
+            int contadorLinks = 0;
+            DataRow vo_row = null;
+            DateTime vd_fechaLunes;
+            try
+            {
+                if (this.poDatosActividades != null)
+                {
+                    datos = ((DataSet)this.poDatosActividades).Tables[0];
+
+                    // Se recorre cada item de la lista y se crea una nueva fila
+                    foreach (DataRow row in datos.Rows)
+                    {
+                        vd_fechaLunes = this.FechaLunes;
+
+                        writer.AddAttribute(HtmlTextWriterAttribute.Class, this.cssCalendarRow);
+                        writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                        //Se crea la etiqueta de la descripción
+                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
+
+                        this.crearEtiquetaActividad("lblActividad" + contador, row[this.DescripcionField].ToString()).RenderControl(writer);
+
+                        writer.RenderEndTag();//End TD
+
+                        //Lunes
+                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        this.crearLinkHora("vlnkHora" + contadorLinks++,
+                                            this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
+                                            this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        writer.RenderEndTag();//End TD
+                        vd_fechaLunes = vd_fechaLunes.AddDays(1);
+
+                        //Martes
+                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        this.crearLinkHora("vlnkHora" + contadorLinks++,
+                                            this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto), 
+                                            this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        writer.RenderEndTag();//End TD
+                        vd_fechaLunes = vd_fechaLunes.AddDays(1);
+
+                        //Miércoles
+                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        this.crearLinkHora("vlnkHora" + contadorLinks++,
+                                           this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
+                                           this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        writer.RenderEndTag();//End TD
+                        vd_fechaLunes = vd_fechaLunes.AddDays(1);
+
+                        //Jueves
+                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        this.crearLinkHora("vlnkHora" + contadorLinks++,
+                                           this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
+                                           this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        writer.RenderEndTag();//End TD
+                        vd_fechaLunes = vd_fechaLunes.AddDays(1);
+
+                        //Viernes
+                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        this.crearLinkHora("vlnkHora" + contadorLinks++,
+                                            this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
+                                            this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        writer.RenderEndTag();//End TD
+                        vd_fechaLunes = vd_fechaLunes.AddDays(1);
+
+                        //Sábado
+                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        this.crearLinkHora("vlnkHora" + contadorLinks++,
+                                            this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
+                                            this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        writer.RenderEndTag();//End TD
+                        vd_fechaLunes = vd_fechaLunes.AddDays(1);
+
+                        //Domingo
+                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        this.crearLinkHora("vlnkHora" + contadorLinks++,
+                                            this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
+                                            this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        writer.RenderEndTag();//End TD
+                        vd_fechaLunes = vd_fechaLunes.AddDays(1);
+
+                        contador++;
+                        writer.RenderEndTag();//End TR
+                    }
+
+
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        /// <summary>
+        /// Obtiene las horas de un datarow
+        /// con los datos asignados
+        /// Si es nulo devuelve un 0
+        /// </summary>
+        /// <param name="po_row">DataRow con los datos.</param>
+        /// <returns>String con las horas.</returns>
+        private String ObtenerHoras(DataRow po_row)
+        {
+            if (po_row == null)
+                return "0";
+            else
+                return po_row[this.HorasField].ToString();
+        }
+
+        /// <summary>
+        /// Obtiene la url
+        /// basada en los datos
+        /// que se encuentran el
+        /// data row.
+        /// </summary>
+        /// <param name="po_row">DataRow fila</param>
+        /// <returns>String con la URL</returns>
+        private String ObtenerUrl(DataRow po_row,string ps_actividad, DateTime pd_fecha, string ps_proyecto)
+        {
+            string vs_url = this.UrlLink;
+
+            string vs_registro = po_row == null ? "" : po_row[this.RegistroField].ToString();
+
+            vs_url += "?act=" + ps_actividad + "&" + "pro=" + ps_proyecto + "&" + "reg=" + vs_registro + "&" + "fech=" + pd_fecha.ToString("dd/MM/yyyy");
+
+            return vs_url;
+        }
+
+        /// <summary>
+        /// Carga los datos de las actividades.
         /// </summary>
         /// <param name="writer"></param>
         private void cargarDatos(HtmlTextWriter writer)
@@ -303,7 +444,7 @@ namespace COSEVI.web.controls
                             }
                             else
                             {
-                                this.crearLinkHora("vlnkHora" + contador,this.urlLink, dato[i]).RenderControl(writer);
+                                this.crearLinkHora("vlnkHora" + contador, this.urlLink, dato[i]).RenderControl(writer);
                             }
 
                             contador++;
@@ -314,7 +455,24 @@ namespace COSEVI.web.controls
                         writer.RenderEndTag();//End TR
                     }
 
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
 
+        /// <summary>
+        /// Carga los proyectos al calendario.
+        /// </summary>
+        private void CargarProyectos()
+        {
+            try
+            {
+                if (this.poDatosProyecto != null)
+                {
+                    this.ddlProyectos.DataSource = this.poDatosProyecto;
+                    this.ddlProyectos.DataBind();
                 }
             }
             catch (Exception)
@@ -360,6 +518,12 @@ namespace COSEVI.web.controls
             return lblActividad;
         }
 
+        /// <summary>
+        /// Obtiene el lunes
+        /// de una semana, según una fecha dada.
+        /// </summary>
+        /// <param name="pd_fecha">DateTime fecha</param>
+        /// <returns></returns>
         private DateTime ObtenerLunes(DateTime pd_fecha)
         {
             DateTime vd_lunes = pd_fecha;
@@ -451,7 +615,12 @@ namespace COSEVI.web.controls
                 this.ddlProyectos = new DropDownList();
                 this.ddlProyectos.Width = 125;
                 this.ddlProyectos.ID = "ddlProyectos";
-                this.ddlProyectos.Items.Add(new ListItem("Proyecto"));
+                //this.ddlProyectos.Items.Add(new ListItem("Proyecto"));
+                this.ddlProyectos.AutoPostBack = true;
+                this.ddlProyectos.DataTextField = this.dataTextFieldProyecto;
+                this.ddlProyectos.DataValueField = this.dataValueFieldProyecto;
+                this.ddlProyectos.SelectedIndexChanged += new EventHandler(ddlProyectos_SelectedIndexChanged);
+                this.CargarProyectos();
                 this.Controls.Add(this.ddlProyectos);
 
                 this.lnbHoy = new LinkButton();
@@ -460,11 +629,11 @@ namespace COSEVI.web.controls
                 this.lnbHoy.Click += new EventHandler(lnbHoy_Click);
                 this.Controls.Add(this.lnbHoy);
 
-                this.btnImprevisto = new Button();
+                this.btnImprevisto = new HyperLink();
                 this.btnImprevisto.ID = "btnImprevisto";
                 this.btnImprevisto.Text = " + Imprevisto";
+                this.btnImprevisto.NavigateUrl = urlImprevisto;
                 this.btnImprevisto.CssClass = cssBotonImprevisto;
-                this.btnImprevisto.UseSubmitBehavior = false;
                 this.Controls.Add(this.btnImprevisto);
 
 
@@ -496,10 +665,68 @@ namespace COSEVI.web.controls
 
         }
 
+        /// <summary>
+        /// Obtiene a partir de los datos
+        /// de registro de actividades
+        /// el que corresponde a una fecha
+        /// y actividades específica
+        /// </summary>
+        /// <param name="pd_fecha">DateTime fecha</param>
+        /// <param name="ps_actividad">ps_actividad código de la actividad</param>
+        private DataRow ObtenerRegistroActividad(DateTime pd_fecha, string ps_actividad)
+        {
+            DataRow vo_dato = null;
+            IEnumerable<DataRow> vo_rows =  null;
+            try
+            {
+                if (poDatosRegistro != null)
+                {
+                    vo_rows = ((DataSet)this.poDatosRegistro).Tables[0].Select().Where(c => ConvertirFechaInicioDia(c.Field<DateTime>(this.FechaField))
+                                                                                            == ConvertirFechaInicioDia(pd_fecha) &&
+                                                                                            c.Field<String>(this.CodigoActividadField) == ps_actividad
+                                                                                       );
+                    if (vo_rows != null && vo_rows.Count() == 1)
+                    {
+                        vo_dato = vo_rows.ElementAt(0);
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+                vo_dato = null;
+            }
+            return vo_dato;
+        }
+
+        /// <summary>
+        /// Convierte una fecha a una
+        /// fecha a inicio de día.
+        /// </summary>
+        /// <param name="pd_fecha">DateTime fecha.</param>
+        /// <returns>DateTime</returns>
+        private DateTime ConvertirFechaInicioDia(DateTime pd_fecha)
+        {
+            return new DateTime(pd_fecha.Year, pd_fecha.Month, pd_fecha.Day);
+        }
 
         #endregion
 
         #region Eventos
+
+        /// <summary>
+        /// Evento que se ejecuta cuando se 
+        /// cambia de proyecto.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlProyectos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.voCambioFecha != null)
+            {
+                this.voCambioFecha(this, FechaCalendario, this.ddlProyectos.SelectedValue);
+            }
+        }
 
         /// <summary>
         /// Evento que se ejecuta al dar click
@@ -515,7 +742,7 @@ namespace COSEVI.web.controls
 
             if (this.voCambioFecha != null)
             {
-                this.voCambioFecha(this, FechaCalendario); 
+                this.voCambioFecha(this, FechaCalendario, this.ddlProyectos.SelectedValue);
             }
 
             this.CreateChildControls();
@@ -535,7 +762,7 @@ namespace COSEVI.web.controls
 
             if (this.voCambioFecha != null)
             {
-                this.voCambioFecha(this, FechaCalendario);
+                this.voCambioFecha(this, FechaCalendario, this.ddlProyectos.SelectedValue);
             }
 
             this.CreateChildControls();
@@ -556,7 +783,7 @@ namespace COSEVI.web.controls
 
             if (this.voCambioFecha != null)
             {
-                this.voCambioFecha(this, FechaCalendario);
+                this.voCambioFecha(this, FechaCalendario, this.ddlProyectos.SelectedValue);
             }
 
             this.CreateChildControls();
@@ -580,7 +807,7 @@ namespace COSEVI.web.controls
 
                 if (this.voCambioFecha != null)
                 {
-                    this.voCambioFecha(this, FechaCalendario);
+                    this.voCambioFecha(this, FechaCalendario, this.ddlProyectos.SelectedValue);
                 }
 
                 this.CreateChildControls();
@@ -703,6 +930,80 @@ namespace COSEVI.web.controls
             }
         }
 
+        public Object poDatosProyecto
+        {
+            get
+            {
+                Object lista = ViewState["poDatosProyecto"] != null ? ViewState["poDatosProyecto"] : null;
+                return lista;
+            }
+            set
+            {
+                ViewState["poDatosProyecto"] = value;
+            }
+        }
+
+        public Object poDatosRegistro
+        {
+            get
+            {
+                Object lista = ViewState["poDatosRegistro"] != null ? ViewState["poDatosRegistro"] : null;
+                return lista;
+            }
+            set
+            {
+                ViewState["poDatosRegistro"] = value;
+            }
+        }
+
+        public Object poDatosActividades
+        {
+            get
+            {
+                Object lista = ViewState["poDatosActividades"] != null ? ViewState["poDatosActividades"] : null;
+                return lista;
+            }
+            set
+            {
+                ViewState["poDatosActividades"] = value;
+            }
+        }
+
+        public string SelectValueProyecto
+        {
+            get
+            {
+                if (this.ddlProyectos != null)
+                {
+                    return this.ddlProyectos.SelectedValue;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
+
+        public Object DatosProyecto
+        {
+            get
+            {
+                return datosProyecto;
+            }
+            set
+            {
+                datosProyecto = value;
+            }
+        }
+
+        public Object DataSourceComboProyecto
+        {
+            set
+            {
+                this.ddlProyectos.DataSource = value;
+            }
+        }
+
         public String CssDays
         {
             get { return cssDays; }
@@ -734,6 +1035,62 @@ namespace COSEVI.web.controls
             set { cssBotonImprevisto = value; }
         }
 
+        public String UrlImprevisto
+        {
+            get { return urlImprevisto; }
+            set { urlImprevisto = value; }
+        }
+
+        public String DataTextFieldProyecto
+        {
+            get { return dataTextFieldProyecto; }
+            set { dataTextFieldProyecto = value; }
+        }
+
+        public String DataValueFieldProyecto
+        {
+            get { return dataValueFieldProyecto; }
+            set { dataValueFieldProyecto = value; }
+        }
+
+
+        public String CodigoActividadField
+        {
+            get { return codigoActividadField; }
+            set { codigoActividadField = value; }
+        }
+
+        public String DescripcionField
+        {
+            get { return descripcionField; }
+            set { descripcionField = value; }
+
+        }
+
+        public String FechaField
+        {
+            get { return fechaField; }
+            set { fechaField = value; }
+        }
+
+        public String TipoField
+        {
+            get { return tipoField; }
+            set { tipoField = value; }
+        }
+
+        public String RegistroField
+        {
+            get { return registroField; }
+            set { registroField = value; }
+        }
+
+        public String HorasField
+        {
+            get { return horasField; }
+            set { horasField = value; }
+        }
+
         #endregion
 
         #region Atributos
@@ -762,7 +1119,7 @@ namespace COSEVI.web.controls
 
         private LinkButton lnbHoy;
 
-        private Button btnImprevisto;
+        private HyperLink btnImprevisto;
 
         private ImageButton btnAnterior;
 
@@ -790,13 +1147,33 @@ namespace COSEVI.web.controls
 
         public event DateChange voCambioFecha;
 
-        public delegate void DateChange(object sender, DateTime pd_fechaLunes);
+        public delegate void DateChange(object sender, DateTime pd_fechaLunes, string proyecto);
 
         private String cssLink;
 
         private String urlLink;
 
         private String cssBotonImprevisto;
+
+        private String urlImprevisto;
+
+        private String dataTextFieldProyecto;
+
+        private String dataValueFieldProyecto;
+
+        private Object datosProyecto;
+
+        private String codigoActividadField;
+
+        private String descripcionField;
+
+        private String fechaField;
+
+        private String tipoField;
+
+        private String registroField;
+
+        private String horasField;
 
         #endregion
 

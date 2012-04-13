@@ -69,10 +69,11 @@
                     <table id="tblBotones" style="margin:0 auto; padding:10px;">
                         <tr>
                             <td>
-                                <asp:Button ID="btnGuardar" runat="server" Text="Guardar" />
+                                <asp:Button ID="btnGuardar" runat="server" Text="Guardar" 
+                                    onclick="btnGuardar_Click" />
                             </td>
                             <td>
-                                <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" />
+                                <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" Visible="false" />
                             </td>
                         </tr>
                     </table>

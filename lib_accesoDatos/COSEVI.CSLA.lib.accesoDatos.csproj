@@ -95,6 +95,7 @@
     <Compile Include="mod.ControlSeguimiento\cls_gestorPaqueteActividad.cs" />
     <Compile Include="mod.ControlSeguimiento\cls_gestorProyecto..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_gestorProyectoEntregable..cs" />
+    <Compile Include="mod.ControlSeguimiento\cls_gestorRegistroOperacion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

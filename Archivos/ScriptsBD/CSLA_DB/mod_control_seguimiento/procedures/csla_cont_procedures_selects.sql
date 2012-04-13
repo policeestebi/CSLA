@@ -500,3 +500,133 @@ AS
 			ao.PK_usuario = @paramUsuario
 END  
  GO 
+
+ IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_proyectoSelectUsuario]'))
+DROP PROCEDURE [dbo].[PA_cont_proyectoSelectUsuario]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez González
+-- Fecha Creación:	12-04-2012
+-- Fecha Actulización:	12-04-2012
+-- Descripción: Se utiliza para seleccionar en cuales
+--				se encuentra el usuario asociado
+--				en donde estos esten en estado
+--				iniciado.
+-- =============================================
+CREATE PROCEDURE  PA_cont_proyectoSelectUsuario
+	 @paramUsuario	  NVARCHAR(30)
+AS 
+ BEGIN 
+		SELECT DISTINCT
+			 pro.PK_proyecto,
+			 pro.FK_estado,
+			 pro.nombre,
+			 pro.descripcion,
+			 pro.objetivo,
+			 pro.meta,
+			 pro.fechaInicio,
+			 pro.fechaFin,
+			 pro.horasAsignadas,
+			 pro.horasAsigDefectos,
+			 pro.horasReales,
+			 pro.horasRealesDefectos
+		 FROM 
+			t_cont_proyecto pro
+		 INNER JOIN
+			t_cont_actividad_asignada acs
+		  ON
+		  pro.PK_proyecto = acs.PK_proyecto AND
+		  acs.PK_usuario = @paramUsuario
+		WHERE
+			pro.FK_estado = 1
+END  
+GO 
+
+
+ IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionSelectUsuario]'))
+DROP PROCEDURE [dbo].[PA_cont_operacionSelectUsuario]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez González
+-- Fecha Creación:	12-04-2012
+-- Fecha Actulización:	12-04-2012
+-- Descripción: Se utiliza para seleccionar en cuales
+--				las operaciones asociadas 
+--				a un usuario.
+-- =============================================
+CREATE PROCEDURE  PA_cont_operacionSelectUsuario
+	 @paramUsuario	  NVARCHAR(30),
+	 @paramTipo		  NVARCHAR(1)
+AS 
+ BEGIN 
+	SELECT 
+		op.PK_codigo,
+		op.descripcion
+	FROM 
+		t_cont_asignacion_operacion aop
+	INNER JOIN
+		t_cont_operacion op
+	ON
+		aop.PK_codigo = op.PK_codigo AND
+		aop.PK_usuario = @paramUsuario
+	WHERE 
+		op.FK_proyecto IS NULL AND
+		op.tipo = @paramTipo
+	ORDER BY op.descripcion asc
+END  
+GO 
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_registroOperacionSelectUsuario]'))
+DROP PROCEDURE [dbo].[PA_cont_registroOperacionSelectUsuario]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez González
+-- Fecha Creación:	12-04-2012
+-- Fecha Actulización:	12-04-2012
+-- Descripción: Se utiliza para seleccionar en cuales
+--				las operaciones asociadas 
+--				a un usuario.
+-- =============================================
+CREATE PROCEDURE  PA_cont_registroOperacionSelectUsuario
+	 @paramUsuario	  NVARCHAR(30),
+	 @paramTipo		  NVARCHAR(1),
+	 @paramFechaInicio	DATETIME,
+	 @paramFechaFin		DATETIME
+AS 
+ BEGIN 
+	SELECT
+	op.PK_codigo,
+	op.tipo,
+	op.descripcion,
+	ro.PK_registro,
+	ro.PK_usuario,
+	ro.fecha,
+	ro.horas,
+	ro.comentario
+FROM 
+	t_cont_registro_operacion ro
+RIGHT OUTER JOIN
+	t_cont_operacion op
+ON
+	ro.PK_codigo = op.PK_codigo AND
+	ro.PK_usuario = @paramUsuario 
+WHERE
+	op.FK_proyecto IS NULL AND
+	op.tipo = @paramTipo	 AND
+	ro.fecha between @paramFechaInicio AND @paramFechaFin	
+ORDER BY op.descripcion asc
+
+END  
+GO 

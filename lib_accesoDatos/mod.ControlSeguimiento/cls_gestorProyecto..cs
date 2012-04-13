@@ -353,5 +353,161 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
            }
        }
 
+
+       /// <summary>
+       /// Método que permite listar 
+       /// todos los registros en la tabla proyecto
+       /// </summary>
+       /// <returns>List<cls_proyecto> valor del resultado de la ejecución de la sentencia</returns>
+       public static List<cls_proyecto> listarProyectosUsuario()
+       {
+           List<cls_proyecto> vo_lista = null;
+           cls_proyecto poProyecto = null;
+           try
+           {
+               String vs_comando = "PA_cont_proyectoSelectUsuario";
+               cls_parameter[] vu_parametros = {
+                                                   new cls_parameter("@paramUsuario", cls_interface.vs_usuarioActual) 
+                                                    
+                                                };
+
+               DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
+
+               vo_lista = new List<cls_proyecto>();
+               for (int i = 0; i < vu_dataSet.Tables[0].Rows.Count; i++)
+               {
+                   poProyecto = new cls_proyecto();
+
+                   poProyecto.pPK_proyecto = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["PK_proyecto"]);
+
+                   poProyecto.pFK_estado = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["FK_estado"]);
+
+                   poProyecto.pNombre = vu_dataSet.Tables[0].Rows[i]["nombre"].ToString();
+
+                   poProyecto.pDescripcion = vu_dataSet.Tables[0].Rows[i]["descripcion"].ToString();
+
+                   poProyecto.pObjetivo = vu_dataSet.Tables[0].Rows[i]["objetivo"].ToString();
+
+                   poProyecto.pMeta = vu_dataSet.Tables[0].Rows[i]["meta"].ToString();
+
+                   poProyecto.pFechaInicio = Convert.ToDateTime(vu_dataSet.Tables[0].Rows[i]["fechaInicio"]);
+
+                   poProyecto.pFechaFin = Convert.ToDateTime(vu_dataSet.Tables[0].Rows[i]["fechaFin"]);
+
+                   poProyecto.pHorasAsignadas = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasAsignadas"]);
+
+                   poProyecto.pHorasAsigDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasAsigDefectos"]);
+
+                   poProyecto.pHorasReales = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasReales"]);
+
+                   poProyecto.pHorasRealesDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasRealesDefectos"]);
+
+                   vo_lista.Add(poProyecto);
+               }
+
+               poProyecto = new cls_proyecto();
+               poProyecto.pPK_proyecto = cls_constantes.CODIGO_IMPREVISTO;
+               poProyecto.pFK_estado = 1;
+               poProyecto.pNombre = cls_constantes.NOMBRE_IMPREVISTO;
+               poProyecto.pDescripcion = cls_constantes.NOMBRE_IMPREVISTO;
+               poProyecto.pObjetivo = cls_constantes.NOMBRE_IMPREVISTO;
+               poProyecto.pMeta = cls_constantes.NOMBRE_IMPREVISTO;
+               poProyecto.pFechaInicio = DateTime.Now;
+               poProyecto.pFechaFin = DateTime.Now;
+               poProyecto.pHorasAsignadas = 0;
+               poProyecto.pHorasAsigDefectos = 0;
+               poProyecto.pHorasReales = 0;
+               poProyecto.pHorasRealesDefectos = 0;
+
+               vo_lista.Insert(0, poProyecto);
+
+               poProyecto = new cls_proyecto();
+               poProyecto.pPK_proyecto = cls_constantes.CODIGO_OPERACION;
+               poProyecto.pFK_estado = 1;
+               poProyecto.pNombre = cls_constantes.NOMBRE_OPERACION;
+               poProyecto.pDescripcion = cls_constantes.NOMBRE_OPERACION;
+               poProyecto.pObjetivo = cls_constantes.NOMBRE_OPERACION;
+               poProyecto.pMeta = cls_constantes.NOMBRE_OPERACION;
+               poProyecto.pFechaInicio = DateTime.Now;
+               poProyecto.pFechaFin = DateTime.Now;
+               poProyecto.pHorasAsignadas = 0;
+               poProyecto.pHorasAsigDefectos = 0;
+               poProyecto.pHorasReales = 0;
+               poProyecto.pHorasRealesDefectos = 0;
+               vo_lista.Insert(0, poProyecto);
+
+               return vo_lista;
+           }
+           catch (Exception po_exception)
+           {
+               throw new Exception("Ocurrió un error al obtener el listado de los proyectos.", po_exception);
+           }
+       }
+
+        /// <summary>
+        /// Método que permite listar 
+        /// todos los registros en la tabla proyecto
+        /// </summary>
+        /// <returns></returns>
+       public static DataSet listarProyectosUsuarioDataSet()
+       {
+           DataSet vu_dataSet = null;
+           try
+           {
+               String vs_comando = "PA_cont_proyectoSelectUsuario";
+               cls_parameter[] vu_parametros = {
+                                                   new cls_parameter("@paramUsuario", cls_interface.vs_usuarioActual) 
+                                                    
+                                                };
+
+               vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
+
+               if(vu_dataSet != null)
+               {
+
+                   DataRow row = vu_dataSet.Tables[0].NewRow();
+                   row.ItemArray = new Object[] {cls_constantes.CODIGO_OPERACION,
+                                                   1,
+                                                   cls_constantes.NOMBRE_OPERACION,
+                                                   cls_constantes.NOMBRE_OPERACION,
+                                                   cls_constantes.NOMBRE_OPERACION,
+                                                   cls_constantes.NOMBRE_OPERACION,
+                                                   DateTime.Now,
+                                                   DateTime.Now,
+                                                   0,
+                                                   0,
+                                                   0,
+                                                   0 };
+
+                   vu_dataSet.Tables[0].Rows.InsertAt(row,0);
+
+                   row = vu_dataSet.Tables[0].NewRow();
+                    row.ItemArray = new Object[] {cls_constantes.CODIGO_IMPREVISTO,
+                                                1,
+                                                cls_constantes.NOMBRE_IMPREVISTO,
+                                                cls_constantes.NOMBRE_IMPREVISTO,
+                                                cls_constantes.NOMBRE_IMPREVISTO,
+                                                cls_constantes.NOMBRE_IMPREVISTO,
+                                                DateTime.Now,
+                                                DateTime.Now,
+                                                0,
+                                                0,
+                                                0,
+                                                0};
+
+                   vu_dataSet.Tables[0].Rows.InsertAt(row,0);
+
+               }
+
+             
+           }
+           catch (Exception po_exception)
+           {
+               throw new Exception("Ocurrió un error al obtener el listado de los proyectos.", po_exception);
+           }
+
+           return vu_dataSet;
+       }
+
     }
 }
