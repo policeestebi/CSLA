@@ -623,6 +623,10 @@ AS
  BEGIN 
  SET NOCOUNT ON; 
 		
+		DECLARE @registro numeric(10,2);
+
+		SELECT @registro = (SELECT ISNULL(MAX(PK_REGISTRO),0) +1  FROM t_cont_registro_operacion);
+
         INSERT INTO t_cont_registro_operacion
         (
 		 PK_registro,
@@ -634,7 +638,7 @@ AS
         ) 
         VALUES
         ( 
-        (SELECT ISNULL(MAX(PK_REGISTRO),0) +1  FROM t_cont_registro_operacion),
+        @registro,
 		@paramPK_codigo,
 		@paramUsuario,
 		@paramFecha,
