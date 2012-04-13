@@ -454,8 +454,13 @@ DECLARE @activo int;
 END   
  GO 
  
+<<<<<<< HEAD
+ IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_paquete_operacionUpdate]'))
+DROP PROCEDURE [dbo].[PA_cont_paquete_operacionUpdate]
+=======
  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionUpdate]'))
 DROP PROCEDURE [dbo].[PA_cont_operacionUpdate]
+>>>>>>> e6789c94ca9a3d64c97ea2fa3413c5affc3b2e47
 GO
 SET ANSI_NULLS ON
 GO
