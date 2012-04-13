@@ -594,3 +594,49 @@ AS
 END   
  GO 
 
+ IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionRegistroInsert]'))
+DROP PROCEDURE [dbo].[PA_cont_operacionRegistroInsert]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez González.
+-- Fecha Creación:	11-04-2012
+-- Fecha Actulización:	11-04-2011
+-- Descripción: Procedimiento que inserta en la tabla
+--				t_cont_registro_operacion
+-- =============================================
+CREATE PROCEDURE  PA_cont_operacionRegistroInsert
+  @paramPK_codigo	nvarchar(50),
+  @paramComentario	nvarchar(100),
+  @paramUsuario		nvarchar(50),
+  @paramFecha		DateTime,
+  @paramHoras		NUMERIC(10,2)
+AS 
+ BEGIN 
+ SET NOCOUNT ON; 
+		
+        INSERT INTO t_cont_registro_operacion
+        (
+		 PK_registro,
+		 PK_codigo,
+		 PK_usuario,
+		 fecha,
+		 horas,
+		 comentario
+        ) 
+        VALUES
+        ( 
+        (SELECT ISNULL(MAX(PK_REGISTRO),0) +1  FROM t_cont_registro_operacion),
+		@paramPK_codigo,
+		@paramUsuario,
+		@paramFecha,
+		@paramHoras,
+		@paramComentario
+        ) 
+
+END   
+GO 
+

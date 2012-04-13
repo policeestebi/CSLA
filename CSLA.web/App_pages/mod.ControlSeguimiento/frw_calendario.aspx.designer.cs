@@ -22,6 +22,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.ScriptManager ScriptManager1;
         
         /// <summary>
+        /// updPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updPanel;
+        
+        /// <summary>
         /// calendario control.
         /// </summary>
         /// <remarks>

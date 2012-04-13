@@ -316,5 +316,35 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
             return vs_codigo;
         }
 
+        /// <summary>
+        /// Lista todas las operaciones
+        /// que no esten asociadas a un proyecto.
+        /// </summary>
+        /// <param name="psUsuario">código del usuario.</param>
+        /// <param name="pstipo">tipo de operacion.</param>
+        /// <returns>DataSet</returns>
+        public static DataSet listarOperacionesUsuario(string psUsuario, string psTipo)
+        {
+            DataSet vu_dataSet = null;
+            try
+            {
+                String vs_comando = "PA_cont_operacionSelectUsuario";
+                cls_parameter[] vu_parametros = 
+                {
+                    new cls_parameter("@paramUsuario", psUsuario),
+                    new cls_parameter("@paramTipo", psTipo)
+                };
+
+                vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
+            }
+            catch (Exception po_exception)
+            {
+                cls_sqlDatabase.rollbackTransaction();
+                throw new Exception("Ocurrió un error al obtener el listado de los paquetes.", po_exception);
+            }
+
+            return vu_dataSet;
+        }
+
     }
 }

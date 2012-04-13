@@ -207,3 +207,40 @@ AS
 			   PK_codigo = @paramPK_codigo
 END  
  GO 
+
+
+  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionRegistroSelectOne]'))
+DROP PROCEDURE [dbo].[PA_cont_operacionRegistroSelectOne]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez G.
+-- Fecha Creación:	11-04-2011
+-- Fecha Actulización:	11-04-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_operacionRegistroSelectOne 
+  @paramPK_registro   numeric(10,2),
+  @paramPK_codigo	nvarchar(50),
+  @paramUsuario		nvarchar(30)
+AS 
+ BEGIN 
+
+         SELECT 
+			PK_registro,
+			PK_codigo,
+			PK_usuario,
+			fecha,
+			horas,
+			comentario
+		 FROM
+			t_cont_registro_operacion
+         WHERE 
+			   PK_codigo = @paramPK_codigo AND
+			   PK_registro = @paramPK_registro AND
+			   PK_usuario = @paramUsuario
+END  
+GO 

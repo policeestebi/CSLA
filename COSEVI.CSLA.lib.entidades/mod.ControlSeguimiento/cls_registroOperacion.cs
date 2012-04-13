@@ -55,12 +55,20 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             get { return horas; }
             set { horas = value; }
         }
+
+        public decimal pPK_registro
+        {
+            get { return PK_registro; }
+            set { PK_registro = value; }
+        }
+
         #endregion
 
         #region Atributos
 
         private decimal PK_registro;
 
+        
         private cls_asignacionOperacion FK_asignacion;
 
         private string comentario;
