@@ -439,8 +439,8 @@ AS
 END   
  GO 
  
-IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_actividadAsignadaInsert]'))
-DROP PROCEDURE [dbo].[PA_cont_actividadAsignadaInsert]
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_asignacionActividadInsert]'))
+DROP PROCEDURE [dbo].[PA_cont_asignacionActividadInsert]
 GO
 SET ANSI_NULLS ON
 GO
@@ -452,7 +452,7 @@ GO
 -- Fecha Actulización:	15-05-2011
 -- Descripción: 
 -- =============================================
-CREATE PROCEDURE  PA_cont_actividadAsignadaInsert 
+CREATE PROCEDURE  PA_cont_asignacionActividadInsert 
   @paramPK_actividad int, 
   @paramPK_paquete int,
   @paramPK_componente int, 
@@ -463,15 +463,15 @@ CREATE PROCEDURE  PA_cont_actividadAsignadaInsert
   @paramdescripcion varchar(100) , 
   @paramfechaInicio datetime, 
   @paramfechaFin datetime, 
-  @paramhorasAsignadas decimal, 
-  @paramhorasAsigDefectos decimal, 
-  @paramhorasReales decimal, 
-  @paramhorasRealesDefectos decimal 
+  @paramhorasAsignadas numeric(10,2), 
+  @paramhorasAsigDefectos numeric(10,2), 
+  @paramhorasReales numeric(10,2), 
+  @paramhorasRealesDefectos numeric(10,2) 
 AS 
  BEGIN 
  SET NOCOUNT ON; 
 
-         INSERT INTO t_cont_actividadAsignada
+         INSERT INTO t_cont_asignacion_actividad
         ( 
 		 PK_actividad,
          PK_paquete,
@@ -509,12 +509,7 @@ AS
 END   
  GO 
 
-<<<<<<< HEAD
 
-
-
-=======
->>>>>>> 7cf49e74d253742fae771ca9e9c36e594c67389b
 IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionInsert]'))
 DROP PROCEDURE [dbo].[PA_cont_operacionInsert]
 GO

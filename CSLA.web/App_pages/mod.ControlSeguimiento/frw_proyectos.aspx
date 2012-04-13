@@ -93,6 +93,13 @@
                                                     </ItemTemplate>
                                                     <ItemStyle Width="1px" />
                                                 </asp:TemplateField>
+                                                <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:ImageButton runat="server" ID="btn_asignar" CommandName="Asignar" CommandArgument='<%# DataBinder.Eval(Container, "RowIndex") %>'
+                                                            CausesValidation="false" ImageUrl="~/App_Themes/Basico/Botones/img_ver.gif" />
+                                                    </ItemTemplate>
+                                                    <ItemStyle Width="1px" />
+                                                </asp:TemplateField>
                                             </Columns>
                                             <HeaderStyle CssClass="GridHeader"></HeaderStyle>
                                             <AlternatingRowStyle CssClass="GridAltItem" />

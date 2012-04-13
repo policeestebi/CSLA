@@ -2300,18 +2300,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     {
                         if (compPaq.pPK_Paquete == vo_paquete.pPK_Paquete)
                         {
-                            //    if (!compPaq.ActividadEncontrada(vo_actividad))
-                            //    {
-                            //        //Se agregam el entregable y componente al que pertenece el paqueteActividad, puesto que se necesita al guardar el registro
-                            //        vo_paqueteActividad.pEntregable = compPaq.pEntregable;
-                            //        vo_paqueteActividad.pComponente = compPaq.pComponente;
-
-                            //        compPaq.pPaqueteActividad.pActividadList.Add(vo_actividad);
-                            //        compPaq.pPaqueteActividadList.Add(vo_paqueteActividad);
-                            //        cls_variablesSistema.vs_proyecto.pActividadLista.Add(vo_actividad);
-                            //        cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Add(vo_paqueteActividad);
-                            //    }
-                            //}
                             if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(test => test.pPK_Entregable == compPaq.pPK_Entregable &&
                                                                                                              test.pPK_Componente == compPaq.pPK_Componente &&
                                                                                                              test.pPK_Paquete == vo_paquete.pPK_Paquete &&

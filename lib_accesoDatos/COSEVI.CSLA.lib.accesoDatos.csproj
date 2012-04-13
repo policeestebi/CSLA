@@ -84,6 +84,7 @@
     <Compile Include="mod.Administracion\cls_gestorUsuario..cs" />
     <Compile Include="App_InterfaceComunes\cls_gestorUtil.cs" />
     <Compile Include="mod.ControlSeguimiento\cls_gestorActividad..cs" />
+    <Compile Include="mod.ControlSeguimiento\cls_gestorAsignacionActividad.cs" />
     <Compile Include="mod.ControlSeguimiento\cls_gestorComponente..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_gestorComponentePaquete..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_gestorDepartamentoProyecto..cs" />

@@ -10,7 +10,7 @@
 namespace CSLA.web.App_pages.mod.ControlSeguimiento {
     
     
-    public partial class frw_actividadesResp {
+    public partial class frw_asignacionActividad {
         
         /// <summary>
         /// scr_Man control.
@@ -40,42 +40,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::AjaxControlToolkit.Accordion ard_principal;
         
         /// <summary>
-        /// acp_listadoDatos control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.AccordionPane acp_listadoDatos;
-        
-        /// <summary>
-        /// ucSearchActividad control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::COSEVI.web.controls.ucSearch ucSearchActividad;
-        
-        /// <summary>
-        /// btn_agregar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_agregar;
-        
-        /// <summary>
-        /// grd_listaActividades control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView grd_listaActividades;
-        
-        /// <summary>
         /// acp_edicionDatos control.
         /// </summary>
         /// <remarks>
@@ -85,40 +49,67 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::AjaxControlToolkit.AccordionPane acp_edicionDatos;
         
         /// <summary>
-        /// hdf_codigo control.
+        /// lbl_proyecto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdf_codigo;
+        protected global::System.Web.UI.WebControls.Label lbl_proyecto;
         
         /// <summary>
-        /// lbl_nombre control.
+        /// txt_proyecto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_nombre;
+        protected global::System.Web.UI.WebControls.TextBox txt_proyecto;
         
         /// <summary>
-        /// txt_nombre control.
+        /// lbl_actividades control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_nombre;
+        protected global::System.Web.UI.WebControls.Label lbl_actividades;
         
         /// <summary>
-        /// rfv_nombre control.
+        /// lbx_actividades control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_nombre;
+        protected global::System.Web.UI.WebControls.ListBox lbx_actividades;
+        
+        /// <summary>
+        /// btn_asignarUsuario control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_asignarUsuario;
+        
+        /// <summary>
+        /// lbl_usuarios control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_usuarios;
+        
+        /// <summary>
+        /// lbx_usuarios control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox lbx_usuarios;
         
         /// <summary>
         /// lbl_descripcion control.
@@ -157,13 +148,31 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.Label lbl_fechaInicio;
         
         /// <summary>
+        /// txt_fechaInicio control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_fechaInicio;
+        
+        /// <summary>
         /// dt_fechaInicio control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Calendar dt_fechaInicio;
+        protected global::AjaxControlToolkit.CalendarExtender dt_fechaInicio;
+        
+        /// <summary>
+        /// rfv_fechaInicio control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_fechaInicio;
         
         /// <summary>
         /// lbl_fechaFin control.
@@ -175,13 +184,31 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.Label lbl_fechaFin;
         
         /// <summary>
+        /// txt_fechaFin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_fechaFin;
+        
+        /// <summary>
         /// dt_fechaFin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Calendar dt_fechaFin;
+        protected global::AjaxControlToolkit.CalendarExtender dt_fechaFin;
+        
+        /// <summary>
+        /// rfv_fechaFin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_fechaFin;
         
         /// <summary>
         /// lbl_horasAsignadas control.
@@ -211,6 +238,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_horasAsignadas;
         
         /// <summary>
+        /// rfv_horasAsignadaslenght control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rfv_horasAsignadaslenght;
+        
+        /// <summary>
         /// lbl_horasAsigDefectos control.
         /// </summary>
         /// <remarks>
@@ -238,6 +274,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_horasAsignadasDefectos;
         
         /// <summary>
+        /// rfv_horasAsignadasDefectoslenght control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rfv_horasAsignadasDefectoslenght;
+        
+        /// <summary>
         /// lbl_horasReales control.
         /// </summary>
         /// <remarks>
@@ -254,6 +299,24 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txt_horasReales;
+        
+        /// <summary>
+        /// rfv_horasReales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_horasReales;
+        
+        /// <summary>
+        /// rfv_horasRealeslenght control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rfv_horasRealeslenght;
         
         /// <summary>
         /// lbl_horasRealesDef control.
@@ -274,6 +337,24 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.TextBox txt_horasRealesDef;
         
         /// <summary>
+        /// rfv_horasRealesDef control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_horasRealesDef;
+        
+        /// <summary>
+        /// rfv_horasRealesDeflenght control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rfv_horasRealesDeflenght;
+        
+        /// <summary>
         /// lbl_estado control.
         /// </summary>
         /// <remarks>
@@ -283,22 +364,40 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.Label lbl_estado;
         
         /// <summary>
-        /// txt_estado control.
+        /// ddl_estado control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_estado;
+        protected global::System.Web.UI.WebControls.DropDownList ddl_estado;
         
         /// <summary>
-        /// rfv_estado control.
+        /// lbl_actividad control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_estado;
+        protected global::System.Web.UI.WebControls.Label lbl_actividad;
+        
+        /// <summary>
+        /// hdn_codigoActividad control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdn_codigoActividad;
+        
+        /// <summary>
+        /// txt_actividad control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_actividad;
         
         /// <summary>
         /// lbl_usuario control.
@@ -310,6 +409,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.Label lbl_usuario;
         
         /// <summary>
+        /// hdn_codigoUsuario control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdn_codigoUsuario;
+        
+        /// <summary>
         /// txt_usuario control.
         /// </summary>
         /// <remarks>
@@ -319,22 +427,13 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.TextBox txt_usuario;
         
         /// <summary>
-        /// rfv_usuario control.
+        /// btn_regresar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_usuario;
-        
-        /// <summary>
-        /// btn_cancelar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_cancelar;
+        protected global::System.Web.UI.WebControls.Button btn_regresar;
         
         /// <summary>
         /// btn_guardar control.

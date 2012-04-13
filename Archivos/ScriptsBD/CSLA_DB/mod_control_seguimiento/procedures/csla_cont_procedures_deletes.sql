@@ -312,7 +312,7 @@ END
  GO 
 
  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_actividadAsignadaDelete]'))
-DROP PROCEDURE [dbo].[PA_cont_actividadAsignadaDelete ]
+DROP PROCEDURE [dbo].[PA_cont_actividadAsignadaDelete]
 GO
 SET ANSI_NULLS ON
 GO
@@ -335,7 +335,7 @@ AS
  BEGIN 
 SET NOCOUNT ON; 
 
-         DELETE FROM t_cont_actividadAsignada
+         DELETE FROM t_cont_asignacion_actividad
          WHERE 
 			   PK_actividad = @paramPK_actividad AND 
                PK_paquete = @paramPK_paquete AND 
