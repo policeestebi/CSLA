@@ -76,6 +76,42 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.Wizard wiz_creacion;
         
         /// <summary>
+        /// wzs_inicio control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.WizardStep wzs_inicio;
+        
+        /// <summary>
+        /// lblAdvertencia control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAdvertencia;
+        
+        /// <summary>
+        /// img_creacion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image img_creacion;
+        
+        /// <summary>
+        /// lblAdvertenciaContenido control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAdvertenciaContenido;
+        
+        /// <summary>
         /// wzs_entregables control.
         /// </summary>
         /// <remarks>
@@ -85,13 +121,40 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.WizardStep wzs_entregables;
         
         /// <summary>
-        /// Label3 control.
+        /// lblEntregablesTitulo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label3;
+        protected global::System.Web.UI.WebControls.Label lblEntregablesTitulo;
+        
+        /// <summary>
+        /// lblEntregablesMensaje control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEntregablesMensaje;
+        
+        /// <summary>
+        /// lbl_entregables control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_entregables;
+        
+        /// <summary>
+        /// lbl_listaEntregables control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_listaEntregables;
         
         /// <summary>
         /// lbx_entasociados control.
@@ -139,13 +202,49 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.WizardStep wzs_componentes;
         
         /// <summary>
-        /// Label2 control.
+        /// lbl_componentesTitulo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label2;
+        protected global::System.Web.UI.WebControls.Label lbl_componentesTitulo;
+        
+        /// <summary>
+        /// lbl_componentesMensaje control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_componentesMensaje;
+        
+        /// <summary>
+        /// lblEntregables control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEntregables;
+        
+        /// <summary>
+        /// lblComponentesAsignados control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblComponentesAsignados;
+        
+        /// <summary>
+        /// lblComponentes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblComponentes;
         
         /// <summary>
         /// lbx_entregablesasociados control.
@@ -202,13 +301,49 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.WizardStep wzs_paquetes;
         
         /// <summary>
-        /// lbl_paquetes control.
+        /// lbl_PaqueteTitulo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_paquetes;
+        protected global::System.Web.UI.WebControls.Label lbl_PaqueteTitulo;
+        
+        /// <summary>
+        /// lbl_PaqueteMensaje control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_PaqueteMensaje;
+        
+        /// <summary>
+        /// lblComponentesAsociados control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblComponentesAsociados;
+        
+        /// <summary>
+        /// lblPaquetesAsociados control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPaquetesAsociados;
+        
+        /// <summary>
+        /// lblPaquetes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPaquetes;
         
         /// <summary>
         /// lbx_componentesasociados control.
@@ -265,13 +400,49 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.WizardStep wzs_actividades;
         
         /// <summary>
-        /// lbl_actividades control.
+        /// lbl_tituloActividades control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_actividades;
+        protected global::System.Web.UI.WebControls.Label lbl_tituloActividades;
+        
+        /// <summary>
+        /// lbl_actividadesMensaje control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_actividadesMensaje;
+        
+        /// <summary>
+        /// lblPaquetesAsignados control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPaquetesAsignados;
+        
+        /// <summary>
+        /// lblActividadesAsignadas control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblActividadesAsignadas;
+        
+        /// <summary>
+        /// lblActividades control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblActividades;
         
         /// <summary>
         /// lbx_paquetesasociados control.
@@ -328,12 +499,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.WizardStep wzs_finalizacion;
         
         /// <summary>
-        /// lbl_finalizacion control.
+        /// lbl_tituloFinalizacion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_finalizacion;
+        protected global::System.Web.UI.WebControls.Label lbl_tituloFinalizacion;
+        
+        /// <summary>
+        /// lbl_finalizacionMensaje control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_finalizacionMensaje;
     }
 }

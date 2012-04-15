@@ -90,6 +90,8 @@
     <Content Include="App_Themes\Basico\imagenes\fancybox\fancy_title_over.png" />
     <Content Include="App_Themes\Basico\imagenes\fancybox\fancy_title_right.png" />
     <Content Include="App_Themes\Basico\imagenes\iconos\img_previous.png" />
+    <Content Include="App_Themes\Basico\imagenes\iconos\img_proyecto.png" />
+    <Content Include="App_Themes\Basico\imagenes\iconos\img_user.png" />
     <Content Include="App_Themes\Basico\js\jquery.fancybox.js" />
     <Content Include="App_Themes\Basico\js\jquery.fancybox.pack.js" />
     <Content Include="frw_error.aspx" />

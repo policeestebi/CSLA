@@ -538,7 +538,7 @@ AS
 		 FROM 
 			t_cont_proyecto pro
 		 INNER JOIN
-			t_cont_actividad_asignada acs
+			t_cont_asignacion_actividad acs
 		  ON
 		  pro.PK_proyecto = acs.PK_proyecto AND
 		  acs.PK_usuario = @paramUsuario
