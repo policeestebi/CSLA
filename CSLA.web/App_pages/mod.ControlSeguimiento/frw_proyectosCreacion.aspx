@@ -459,6 +459,8 @@
                                                     OnClick="btnCancel_Click" />
                                             </td>
                                             <td>
+                                                <asp:Button ID="btnPrevious" runat="server" Text="<< Anterior" CausesValidation="false"
+                                                    CommandName="MovePrevious" OnInit="btnPrev_Click" />
                                                 <asp:Button ID="btnFinish" runat="server" Text="Finalizar" CausesValidation="true"
                                                     CommandName="MoveComplete" />
                                             </td>
