@@ -305,19 +305,59 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        }
 
        /// <summary>
+       /// 
+       /// </summary>
+       /// <param name="ps_proyecto"></param>
+       /// <returns></returns>
+       public static List<cls_paquete> listarPaquetesProyecto(int ps_proyecto)
+       {
+           List<cls_paquete> vo_lista = null;
+           cls_paquete vo_paqueteProyecto = null;
+           try
+           {
+               String vs_comando = "PA_cont_paquetesProyectoSelectAll";
+               cls_parameter[] vu_parametros = {
+                                                 new cls_parameter("@paramPK_proyecto", ps_proyecto.ToString())
+                                               };
+
+               DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
+
+               vo_lista = new List<cls_paquete>();
+               for (int i = 0; i < vu_dataSet.Tables[0].Rows.Count; i++)
+               {
+                   vo_paqueteProyecto = new cls_paquete();
+
+                   vo_paqueteProyecto.pPK_Paquete = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["PK_paquete"]);
+
+                   vo_paqueteProyecto.pNombre = vu_dataSet.Tables[0].Rows[i]["nombrePaquete"].ToString();
+
+                   vo_lista.Add(vo_paqueteProyecto);
+               }
+
+               return vo_lista;
+           }
+           catch (Exception po_exception)
+           {
+               throw new Exception("Ocurrió un error al obtener el listado de las actividades.", po_exception);
+           }
+       }
+
+
+       /// <summary>
        /// Hace un lista de permisos con un filtrado específico.
        /// </summary>
        /// <param name="psFiltro">String filtro.</param>
        /// <returns></returns>
-       public static List<cls_asignacionActividad> listarActividadesProyecto(int ps_proyecto)
+       public static List<cls_asignacionActividad> listarActividadesProyecto(int pi_proyecto, int pi_paquete)
        {
            List<cls_asignacionActividad> vo_lista = null;
            cls_asignacionActividad vo_asignacionActividad = null;
            try
            {
-               String vs_comando = "PA_cont_actividadesProyectoSelectAll";
+               String vs_comando = "PA_cont_actividadesProyectoSelectOne";
                cls_parameter[] vu_parametros = {
-                                                 new cls_parameter("@paramPK_proyecto", ps_proyecto.ToString())
+                                                 new cls_parameter("@paramPK_proyecto", pi_proyecto),
+                                                 new cls_parameter("@paramPK_paquete", pi_paquete)
                                                };
 
                DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
@@ -337,7 +377,9 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                    vo_asignacionActividad.pPK_Proyecto = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["PK_proyecto"]);
 
-                   vo_asignacionActividad.pNombreActividad = vu_dataSet.Tables[0].Rows[i]["nombre"].ToString();
+                   vo_asignacionActividad.pNombrePaquete = vu_dataSet.Tables[0].Rows[i]["nombrePaquete"].ToString();
+                   
+                   vo_asignacionActividad.pNombreActividad = vu_dataSet.Tables[0].Rows[i]["nombreActividad"].ToString();
 
                    vo_lista.Add(vo_asignacionActividad);
                }

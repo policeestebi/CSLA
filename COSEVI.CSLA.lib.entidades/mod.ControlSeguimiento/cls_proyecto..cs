@@ -360,6 +360,46 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.asignacionLista = value; }
         }
 
+        public List<cls_paquete> pPaquetesAsignadosLista
+        {
+            get {
+                    List<cls_paquete> vl_paquete = new List<cls_paquete>();
+                    cls_paquete vo_paquete;
+
+                    foreach (cls_asignacionActividad vo_asignacionActividad in asignacionLista)
+                    {
+                        if (vl_paquete.Where(test => test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
+                        {
+                            vo_paquete = new cls_paquete();
+                            vo_paquete.pPK_Paquete = vo_asignacionActividad.pPK_Paquete;
+                            vo_paquete.pNombre = vo_asignacionActividad.pNombrePaquete;
+
+                            vl_paquete.Add(vo_paquete);
+                        }
+                    }
+
+                    return vl_paquete; 
+                }
+        }
+
+        public void listarPaquetesAsignados()
+        {
+            List<cls_paquete> vl_paquete = new List<cls_paquete>();
+            cls_paquete vo_paquete;
+
+            foreach (cls_asignacionActividad vo_asignacionActividad in asignacionLista)
+            { 
+                if(vl_paquete.Where(test => test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
+                {
+                    vo_paquete = new cls_paquete();
+                    vo_paquete.pPK_Paquete = vo_asignacionActividad.pPK_Paquete;
+                    vo_paquete.pNombre = vo_asignacionActividad.pNombrePaquete;
+
+                    vl_paquete.Add(vo_paquete);
+                }
+            }
+
+        }
 
         #endregion Propiedades
 

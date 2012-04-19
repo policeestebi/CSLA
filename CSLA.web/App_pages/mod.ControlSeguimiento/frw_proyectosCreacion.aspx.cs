@@ -2084,15 +2084,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     }
                 }
 
-                //También se procede a eliminar de la lista de actividades aquellas que se encuentren asignados en memoria
-                //foreach (ListItem item in lbx_pivot.Items)
-                //{
-                //    if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(test => test.pPK_Actividad.ToString() == item.Value).Count() > 0)
-                //    {
-                //        lbx_actividades.Items.Remove(item);
-                //    }
-                //}
-
             }
             /*
              Nota: revisar el manejo de excepxiones personalizadas en este form

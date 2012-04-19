@@ -48,6 +48,13 @@
                                                 
                                                     <asp:TextBox ID="txt_proyecto" runat="server" ReadOnly="true"></asp:TextBox>
                                                 </td>
+                                            
+                                                <td>
+                                                    <asp:Label ID="lbl_paquete" runat="server" Text="Paquete: "></asp:Label>
+                                                    
+                                                    <asp:DropDownList ID="ddl_paquete" runat="server" OnSelectedIndexChanged="ddlPaquete_SelectedIndexChanged" AutoPostBack = "true">
+                                                    </asp:DropDownList>
+                                                </td>
                                             </tr>
                                             <tr align="left">
                                                 <td>
@@ -58,7 +65,16 @@
                                                     </asp:ListBox>                                                
                                                 </td>
                                                 <td>
+                                                    <asp:Label ID="lbl_usuariosAsociados" runat="server" Text="Asociados: "></asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:ListBox ID="lbx_usuariosAsociados" runat="server" SelectionMode="Single" Width="200px" Height="150px">
+                                                    </asp:ListBox>                                                
+                                                </td>
+                                                <td>
                                                         <asp:Button ID="btn_asignarUsuario" runat="server" Text="&lt;" OnClick="btn_asignarUsuario_Click" Width="35px" colspan="2"/>
+                                                        <br />
+                                                        <asp:Button ID="btn_removerUsuario" runat="server" Text="&gt;" OnClick="btn_removerUsuario_Click" Width="35px" colspan="2"/>
                                                 </td>
                                                 <td>
                                                     <asp:Label ID="lbl_usuarios" runat="server" Text="Usuarios: "></asp:Label>
@@ -174,7 +190,7 @@
                                                     </asp:DropDownList>
                                                 </td>
                                             </tr>
-                                            <tr align="left">
+                                            <%--<tr align="left">
                                                 <td>
                                                     <asp:Label ID="lbl_actividad" runat="server" Text="Actividad: "></asp:Label>
                                                 </td>
@@ -193,7 +209,7 @@
                                                 <td>
                                                     <asp:TextBox ID="txt_usuario" runat="server"></asp:TextBox>
                                                 </td>
-                                            </tr>
+                                            </tr>--%>
                                         </table>
                                     </td>
                                 </tr>

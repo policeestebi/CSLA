@@ -94,8 +94,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
+                
                 //Inicializacón de botón de asignación
                 this.btn_asignarUsuario = (Button)acp_edicionDatos.FindControl("btn_asignarUsuario");
+                this.btn_removerUsuario = (Button)acp_edicionDatos.FindControl("btn_removerUsuario");
 
                 //Botones comunes
                 //this.btn_eliminar = (Button)acp_edicionDatos.FindControl("btn_elminar");
@@ -124,12 +126,13 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             try
             {
                 cargarNombreProyecto();
-                cargarActividadesProyecto();
+                //cargarActividadesProyecto();
+                cargarDataSetPaquetes();
                 cargarUsuarios();
 
                 //Se carga el dataset con los estados que puede adquirir una actividad
                 cargarDataSetEstados();
-                this.ddl_estado.DataBind();
+                //this.ddl_estado.DataBind();
             }
             catch (Exception po_exception)
             {
@@ -152,30 +155,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private void cargarActividadesProyecto()
+        private void cargarDataSetPaquetes()
         {
             try
             {
-                /*
-                 NOta: * Revisar los selects de los listar, para ver que tanto es necesario cambiar los "pNombre" por los nombres de la tabla => "pNombre" - "pNombreEntregable"
-                       * Ver si es relevante cambiar los nombres a los listbox
-                 */
-                cls_variablesSistema.vs_proyecto.pAsignacionLista = cls_gestorAsignacionActividad.listarActividadesProyecto(cls_variablesSistema.vs_proyecto.pPK_proyecto);
-
-                lbx_actividades.DataSource = cls_variablesSistema.vs_proyecto.pAsignacionLista;
-                lbx_actividades.DataTextField = "pNombreActividad";
-                lbx_actividades.DataValueField = "pPK_actividad";
-                lbx_actividades.DataBind();
+                this.ddl_paquete.DataSource = cls_gestorAsignacionActividad.listarPaquetesProyecto(cls_variablesSistema.vs_proyecto.pPK_proyecto);
+                this.ddl_paquete.DataTextField = "pNombre";
+                this.ddl_paquete.DataValueField = "pPK_Paquete";
+                this.ddl_paquete.DataBind();
             }
-            /*
-             Nota: revisar el manejo de excepxiones personalizadas en este form
-             */
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los datos de la lista de actividades del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al cargar los paquetes del proyecto.", po_exception);
             }
 
         }
@@ -204,6 +195,59 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        private void cargarActividadesProyecto(int pi_paquete)
+        {
+            try
+            {
+                /*
+                 NOta: * Revisar los selects de los listar, para ver que tanto es necesario cambiar los "pNombre" por los nombres de la tabla => "pNombre" - "pNombreEntregable"
+                       * Ver si es relevante cambiar los nombres a los listbox
+                 */
+                cls_variablesSistema.vs_proyecto.pAsignacionLista = cls_gestorAsignacionActividad.listarActividadesProyecto(cls_variablesSistema.vs_proyecto.pPK_proyecto, pi_paquete);
+
+                lbx_actividades.DataSource = cls_variablesSistema.vs_proyecto.pAsignacionLista;
+                lbx_actividades.DataTextField = "pNombreActividad";
+                lbx_actividades.DataValueField = "pPK_Actividad";
+                lbx_actividades.DataBind();
+            }
+            /*
+             Nota: revisar el manejo de excepxiones personalizadas en este form
+             */
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al cargar los datos de la lista de actividades del proyecto.", po_exception);
+            }
+
+        }
+
+        //private void cargarPaquetesProyecto()
+        //{
+        //    try
+        //    {
+        //        /*
+        //         NOta: * Revisar los selects de los listar, para ver que tanto es necesario cambiar los "pNombre" por los nombres de la tabla => "pNombre" - "pNombreEntregable"
+        //               * Ver si es relevante cambiar los nombres a los listbox
+        //         */
+        //        cls_variablesSistema.vs_proyecto.pAsignacionLista = cls_gestorAsignacionActividad.listarActividadesProyecto(cls_variablesSistema.vs_proyecto.pPK_proyecto);
+
+        //        lbx_actividades.DataSource = cls_variablesSistema.vs_proyecto.pPaquetesAsignadosLista;
+        //        lbx_actividades.DataTextField = "pNombreActividad";
+        //        lbx_actividades.DataValueField = "pPK_actividad";
+        //        lbx_actividades.DataBind();
+        //    }
+        //    /*
+        //     Nota: revisar el manejo de excepxiones personalizadas en este form
+        //     */
+        //    catch (Exception po_exception)
+        //    {
+        //        throw new Exception("Ocurrió un error al cargar los datos de la lista de actividades del proyecto.", po_exception);
+        //    }
+
+        //}
+
+        /// <summary>
         /// Metodo que carga el dataSet de los estados a los que se puede asociar un proyecto
         /// </summary>
         private void cargarDataSetEstados()
@@ -216,6 +260,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 this.ddl_estado.DataSource = vo_dataSet;
                 this.ddl_estado.DataTextField = vo_dataSet.Tables[0].Columns["descripcion"].ColumnName.ToString();
                 this.ddl_estado.DataValueField = vo_dataSet.Tables[0].Columns["PK_estado"].ColumnName.ToString();
+                this.ddl_estado.DataBind();
             }
             catch (Exception po_exception)
             {
@@ -260,7 +305,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             //}
             try
             {
-                vo_asignacionActividad = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionLista.Find(test => test.pPK_Actividad == Convert.ToInt32(hdn_codigoActividad.Value));
+                //vo_asignacionActividad = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionLista.Find(test => test.pPK_Actividad == Convert.ToInt32(hdn_codigoActividad.Value));
 
                 vo_asignacionActividad.pDescripcion = txt_descripcion.Text;
                 vo_asignacionActividad.pFechaInicio = Convert.ToDateTime(txt_fechaInicio.Text);
@@ -270,7 +315,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 vo_asignacionActividad.pHorasReales = Convert.ToInt32(txt_horasReales.Text);
                 vo_asignacionActividad.pHorasRealesDefectos = Convert.ToInt32(txt_horasRealesDef.Text);
                 vo_asignacionActividad.pEstado.pPK_estado = Convert.ToInt32(ddl_estado.SelectedValue);
-                vo_asignacionActividad.pPK_Usuario = hdn_codigoUsuario.Value;
+
                 return vo_asignacionActividad;
             }
             catch (Exception po_exception)
@@ -298,7 +343,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 this.txt_horasReales.Text = vo_actividad.pHorasReales.ToString();
                 this.txt_horasRealesDef.Text = vo_actividad.pHorasRealesDefectos.ToString();
                 this.ddl_estado.SelectedValue = vo_actividad.pFK_Estado.ToString();
-                this.txt_usuario.Text = vo_actividad.pPK_Usuario;
+
                 if (cls_variablesSistema.tipoEstado == cls_constantes.VER)
                 {
                     this.habilitarControles(false);
@@ -382,7 +427,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             this.txt_horasReales.Text = String.Empty;
             this.txt_horasRealesDef.Text = String.Empty;
             this.ddl_estado.SelectedIndex = -1;
-            this.txt_usuario.Text = String.Empty;
         }
 
         /// <summary>
@@ -401,7 +445,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             this.txt_horasReales.Enabled = pb_habilitados;
             this.txt_horasRealesDef.Enabled = pb_habilitados;
             this.ddl_estado.Enabled = pb_habilitados;
-            this.txt_usuario.Enabled = pb_habilitados;
             this.btn_guardar.Visible = pb_habilitados;
 
         }
@@ -446,6 +489,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         protected void ddlEstado_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.ddl_estado.Text = ((DropDownList)sender).SelectedValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlPaquete_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.ddl_paquete.SelectedValue = ((DropDownList)sender).SelectedValue;
+
+            cargarActividadesProyecto(Convert.ToInt32(ddl_paquete.SelectedValue));
+
         }
 
         /// <summary>
@@ -552,10 +608,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                                 {
                                     asigAct.pPK_Usuario = vo_usuario.pPK_usuario;
 
-                                    hdn_codigoActividad.Value = vo_actividad.pPK_Actividad.ToString();
-                                    txt_actividad.Text = vo_actividad.pNombre;
-                                    hdn_codigoUsuario.Value = vo_usuario.pPK_usuario;
-                                    txt_usuario.Text = vo_usuario.pNombre;
+                                    //hdn_codigoActividad.Value = vo_actividad.pPK_Actividad.ToString();
+                                    //txt_actividad.Text = vo_actividad.pNombre;
+                                    //hdn_codigoUsuario.Value = vo_usuario.pPK_usuario;
+                                    //txt_usuario.Text = vo_usuario.pNombre;
 
                                 }
                             }
@@ -564,6 +620,17 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btn_removerUsuario_Click(object sender, EventArgs e)
+        {
+            
+        }
+
         #endregion
 
 

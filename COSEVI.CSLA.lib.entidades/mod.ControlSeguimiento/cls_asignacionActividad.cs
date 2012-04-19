@@ -96,6 +96,11 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.estado.pPK_estado = value; }
         }
 
+        public string pNombrePaquete
+        {
+            get { return nombrePaquete; }
+            set { this.nombrePaquete = value; }
+        }
 
         public string pNombreActividad
         {
@@ -194,6 +199,11 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
         /// Código de proyecto
         /// </summary>
         private int PK_proyecto;
+
+        /// <summary>
+        /// Nombre del paquete
+        /// </summary>
+        private string nombrePaquete;
 
         /// <summary>
         /// Nombre de la actividad
