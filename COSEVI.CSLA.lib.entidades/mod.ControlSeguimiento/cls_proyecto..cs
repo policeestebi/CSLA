@@ -42,7 +42,7 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             this.componenteLista = new List<cls_componente>();
             this.paqueteLista = new List<cls_paquete>();
             this.actividadLista = new List<cls_actividad>();
-            this.asignacionLista = new List<cls_asignacionActividad>();
+            this.actividadAsignada = new cls_actividadAsignada();
 
             this.proyectoEntregableListaMemoria = new List<cls_proyectoEntregable>();
             this.entregableComponenteListaMemoria = new List<cls_entregableComponente>();
@@ -347,17 +347,24 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         #region Atributos
 
-        private List<cls_asignacionActividad> asignacionLista = new List<cls_asignacionActividad>();
+        private cls_actividadAsignada actividadAsignada = new cls_actividadAsignada();
+        private List<cls_actividadAsignada> actividadPaqueteLista = new List<cls_actividadAsignada>();
 
 
         #endregion Atributos
 
         #region Propiedades
 
-        public List<cls_asignacionActividad> pAsignacionLista
+        public cls_actividadAsignada pActividadAsignada
         {
-            get { return asignacionLista; }
-            set { this.asignacionLista = value; }
+            get { return actividadAsignada; }
+            set { this.actividadAsignada = value; }
+        }
+
+        public List<cls_actividadAsignada> pActividadPaqueteLista
+        {
+            get { return actividadPaqueteLista; }
+            set { this.actividadPaqueteLista = value; }
         }
 
         public List<cls_paquete> pPaquetesAsignadosLista
@@ -366,17 +373,17 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
                     List<cls_paquete> vl_paquete = new List<cls_paquete>();
                     cls_paquete vo_paquete;
 
-                    foreach (cls_asignacionActividad vo_asignacionActividad in asignacionLista)
-                    {
-                        if (vl_paquete.Where(test => test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
-                        {
-                            vo_paquete = new cls_paquete();
-                            vo_paquete.pPK_Paquete = vo_asignacionActividad.pPK_Paquete;
-                            vo_paquete.pNombre = vo_asignacionActividad.pNombrePaquete;
+                    //foreach (cls_actividadAsignada vo_asignacionActividad in actividadAsignada)
+                    //{
+                    //    if (vl_paquete.Where(test => test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
+                    //    {
+                    //        vo_paquete = new cls_paquete();
+                    //        vo_paquete.pPK_Paquete = vo_asignacionActividad.pPK_Paquete;
+                    //        vo_paquete.pNombre = vo_asignacionActividad.pNombrePaquete;
 
-                            vl_paquete.Add(vo_paquete);
-                        }
-                    }
+                    //        vl_paquete.Add(vo_paquete);
+                    //    }
+                    //}
 
                     return vl_paquete; 
                 }
@@ -387,17 +394,17 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             List<cls_paquete> vl_paquete = new List<cls_paquete>();
             cls_paquete vo_paquete;
 
-            foreach (cls_asignacionActividad vo_asignacionActividad in asignacionLista)
-            { 
-                if(vl_paquete.Where(test => test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
-                {
-                    vo_paquete = new cls_paquete();
-                    vo_paquete.pPK_Paquete = vo_asignacionActividad.pPK_Paquete;
-                    vo_paquete.pNombre = vo_asignacionActividad.pNombrePaquete;
+            //foreach (cls_actividadAsignada vo_asignacionActividad in actividadAsignada)
+            //{ 
+            //    if(vl_paquete.Where(test => test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
+            //    {
+            //        vo_paquete = new cls_paquete();
+            //        vo_paquete.pPK_Paquete = vo_asignacionActividad.pPK_Paquete;
+            //        vo_paquete.pNombre = vo_asignacionActividad.pNombrePaquete;
 
-                    vl_paquete.Add(vo_paquete);
-                }
-            }
+            //        vl_paquete.Add(vo_paquete);
+            //    }
+            //}
 
         }
 

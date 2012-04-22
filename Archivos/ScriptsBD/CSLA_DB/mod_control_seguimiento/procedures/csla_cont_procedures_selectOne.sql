@@ -178,6 +178,115 @@ AS
 END  
  GO 
 
+
+ 
+  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_actividadesPaqueteSelect]'))
+DROP PROCEDURE [dbo].[PA_cont_actividadesPaqueteSelect]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_actividadesPaqueteSelect
+  @paramPK_proyecto int,
+  @paramPK_paquete int
+AS 
+ BEGIN 
+		SELECT 
+			 cont_paq_act.PK_proyecto,
+			 cont_paq_act.PK_entregable,
+			 cont_paq_act.PK_componente,
+			 cont_paq_act.PK_paquete,
+			 cont_paq_act.PK_actividad,
+			 cont_act.nombre nombreActividad,       
+			 cont_paq.nombre nombrePaquete
+        FROM 
+			t_cont_paquete_actividad cont_paq_act inner join t_cont_proyecto cont_proy 
+		ON 
+			cont_paq_act.PK_proyecto = cont_proy.PK_proyecto inner join t_cont_entregable cont_ent
+		ON 
+			cont_paq_act.PK_entregable = cont_ent.PK_entregable inner join t_cont_componente cont_comp
+		ON 
+			cont_paq_act.PK_componente = cont_comp.PK_componente inner join t_cont_paquete cont_paq
+		ON 
+			cont_paq_act.PK_paquete = cont_paq.PK_paquete inner join t_cont_actividad cont_act
+		ON 
+			cont_paq_act.PK_actividad = cont_act.PK_actividad
+		WHERE 
+			cont_paq_act.PK_proyecto = @paramPK_proyecto AND
+			cont_paq_act.PK_paquete = @paramPK_paquete AND
+			cont_paq_act.activo = 1
+END  
+ GO
+
+  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_actividadAsignadaSelectOne]'))
+DROP PROCEDURE [dbo].[PA_cont_actividadAsignadaSelectOne]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2011
+-- Fecha Actulización:	15-05-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_actividadAsignadaSelectOne
+  @paramPK_proyecto int,
+  @paramPK_paquete int,
+  @paramPK_actividad int
+AS 
+ BEGIN 
+		SELECT 
+			 cont_asig_act.PK_actividad,
+			 cont_asig_act.PK_paquete,
+			 cont_asig_act.PK_componente,	
+			 cont_asig_act.PK_entregable,	 	
+			 cont_asig_act.PK_proyecto,
+			 cont_asig_act.PK_usuario,
+			 cont_asig_act.FK_estado,
+			 cont_asig_act.descripcion,
+			 cont_asig_act.fechaInicio,
+			 cont_asig_act.fechaFin,
+			 cont_asig_act.horasAsignadas,
+			 cont_asig_act.horasAsigDefectos,
+			 cont_asig_act.horasReales,
+			 cont_asig_act.horasRealesDefectos,
+			 cont_act.nombre nombreActividad,       
+			 cont_paq.nombre nombrePaquete,
+			 admi_usu.nombre nombreUsuario
+        FROM 
+			t_cont_asignacion_actividad cont_asig_act inner join t_cont_proyecto cont_proy 
+		ON 
+			cont_asig_act.PK_proyecto = cont_proy.PK_proyecto inner join t_cont_entregable cont_ent
+		ON 
+			cont_asig_act.PK_entregable = cont_ent.PK_entregable inner join t_cont_componente cont_comp
+		ON 
+			cont_asig_act.PK_componente = cont_comp.PK_componente inner join t_cont_paquete cont_paq
+		ON 
+			cont_asig_act.PK_paquete = cont_paq.PK_paquete inner join t_cont_actividad cont_act
+		ON 
+			cont_asig_act.PK_actividad = cont_act.PK_actividad inner join t_admi_usuario admi_usu
+		ON 
+			cont_asig_act.PK_usuario = admi_usu.PK_usuario inner join t_cont_estado cont_est
+		ON 
+			cont_asig_act.FK_estado = cont_est.PK_estado
+		WHERE 
+			cont_asig_act.PK_proyecto = @paramPK_proyecto AND
+			cont_asig_act.PK_paquete = @paramPK_paquete AND
+			cont_asig_act.PK_actividad = @paramPK_actividad AND
+			cont_asig_act.activo = 1
+END  
+ GO
+
+
  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionSelectOne]'))
 DROP PROCEDURE [dbo].[PA_cont_operacionSelectOne]
 GO

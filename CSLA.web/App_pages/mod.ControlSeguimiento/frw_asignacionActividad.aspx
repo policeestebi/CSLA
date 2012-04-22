@@ -52,7 +52,7 @@
                                                 <td>
                                                     <asp:Label ID="lbl_paquete" runat="server" Text="Paquete: "></asp:Label>
                                                     
-                                                    <asp:DropDownList ID="ddl_paquete" runat="server" OnSelectedIndexChanged="ddlPaquete_SelectedIndexChanged" AutoPostBack = "true">
+                                                    <asp:DropDownList ID="ddl_paquete" runat="server" OnSelectedIndexChanged="ddlPaquete_SelectedIndexChanged" AutoPostBack = "true" OnDataBound="ddlPaquete_DataBound">
                                                     </asp:DropDownList>
                                                 </td>
                                             </tr>
@@ -61,7 +61,7 @@
                                                     <asp:Label ID="lbl_actividades" runat="server" Text="Actividades: "></asp:Label>
                                                 </td>
                                                 <td>
-                                                    <asp:ListBox ID="lbx_actividades" runat="server" SelectionMode="Single" Width="200px" Height="150px">
+                                                    <asp:ListBox ID="lbx_actividades" runat="server" SelectionMode="Single" Width="200px" Height="150px" AutoPostBack = "true" OnSelectedIndexChanged="lbx_actividades_SelectedIndexChanged"> 
                                                     </asp:ListBox>                                                
                                                 </td>
                                                 <td>
