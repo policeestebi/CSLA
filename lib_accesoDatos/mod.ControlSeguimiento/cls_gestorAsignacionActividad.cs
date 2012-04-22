@@ -266,12 +266,12 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
 
+               vo_asignacionActividad = new cls_actividadAsignada();
+
                vo_listaUsuarios = new List<cls_usuario>();
 
-               if (vu_dataSet.Tables[0].Rows.Count >= 0)
+               if (vu_dataSet.Tables[0].Rows.Count > 0)
                {
-                    vo_asignacionActividad = new cls_actividadAsignada();
-
                     vo_asignacionActividad.pPK_Actividad = Convert.ToInt32(vu_dataSet.Tables[0].Rows[0]["PK_actividad"]);
 
                     vo_asignacionActividad.pPK_Paquete = Convert.ToInt32(vu_dataSet.Tables[0].Rows[0]["PK_paquete"]);

@@ -9,3 +9,12 @@ C:\Users\Esteban\Documents\GIT\CSLA\ExceptionManagement\obj\Debug\ExceptionManag
 C:\Users\Esteban\Documents\GIT\CSLA\ExceptionManagement\obj\Debug\ExceptionManagement.pdb
 C:\Users\Esteban\Documents\GIT\CSLA\ExceptionManagement\obj\Debug\GenerateResource-ResGen.read.1.tlog
 C:\Users\Esteban\Documents\GIT\CSLA\ExceptionManagement\obj\Debug\GenerateResource-ResGen.write.1.tlog
+D:\cslagit\CSLA\ExceptionManagement\bin\Debug\ExceptionManagement.dll
+D:\cslagit\CSLA\ExceptionManagement\bin\Debug\ExceptionManagement.pdb
+D:\cslagit\CSLA\ExceptionManagement\obj\Debug\ResolveAssemblyReference.cache
+D:\cslagit\CSLA\ExceptionManagement\obj\Debug\ExceptionManagement.ExceptionManagerInstaller.resources
+D:\cslagit\CSLA\ExceptionManagement\obj\Debug\ExceptionManagement.ExceptionManagerText.resources
+D:\cslagit\CSLA\ExceptionManagement\obj\Debug\GenerateResource-ResGen.read.1.tlog
+D:\cslagit\CSLA\ExceptionManagement\obj\Debug\GenerateResource-ResGen.write.1.tlog
+D:\cslagit\CSLA\ExceptionManagement\obj\Debug\ExceptionManagement.dll
+D:\cslagit\CSLA\ExceptionManagement\obj\Debug\ExceptionManagement.pdb

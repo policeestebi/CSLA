@@ -195,6 +195,28 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
+        /// Metodo que carga el dataSet de los estados a los que se puede asociar un proyecto
+        /// </summary>
+        private void cargarDataSetEstados()
+        {
+            DataSet vo_dataSet = new DataSet();
+
+            try
+            {
+                vo_dataSet = cls_gestorProyecto.listarEstado();
+                this.ddl_estado.DataSource = vo_dataSet;
+                this.ddl_estado.DataTextField = vo_dataSet.Tables[0].Columns["descripcion"].ColumnName.ToString();
+                this.ddl_estado.DataValueField = vo_dataSet.Tables[0].Columns["PK_estado"].ColumnName.ToString();
+                this.ddl_estado.DataBind();
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al cargar los estados del proyecto.", po_exception);
+            }
+
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         private void cargarActividadesPorPaquete(int pi_paquete)
@@ -207,7 +229,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                  */
                 cls_variablesSistema.vs_proyecto.pActividadPaqueteLista = cls_gestorAsignacionActividad.listarActividadesPorPaquete(cls_variablesSistema.vs_proyecto.pPK_proyecto, pi_paquete);
 
-                lbx_actividades.DataSource = cls_variablesSistema.vs_proyecto.pActividadAsignada;
+                lbx_actividades.DataSource = cls_variablesSistema.vs_proyecto.pActividadPaqueteLista;
                 lbx_actividades.DataTextField = "pNombreActividad";
                 lbx_actividades.DataValueField = "pPK_Actividad";
                 lbx_actividades.DataBind();
@@ -277,28 +299,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         //    }
 
         //}
-
-        /// <summary>
-        /// Metodo que carga el dataSet de los estados a los que se puede asociar un proyecto
-        /// </summary>
-        private void cargarDataSetEstados()
-        {
-            DataSet vo_dataSet = new DataSet();
-
-            try
-            {
-                vo_dataSet = cls_gestorProyecto.listarEstado();
-                this.ddl_estado.DataSource = vo_dataSet;
-                this.ddl_estado.DataTextField = vo_dataSet.Tables[0].Columns["descripcion"].ColumnName.ToString();
-                this.ddl_estado.DataValueField = vo_dataSet.Tables[0].Columns["PK_estado"].ColumnName.ToString();
-                this.ddl_estado.DataBind();
-            }
-            catch (Exception po_exception)
-            {
-                throw new Exception("Ocurrió un error al cargar los estados del proyecto.", po_exception);
-            }
-
-        }
 
         /// <summary>
         /// Hace un buscar de la lista de permisos.
@@ -374,7 +374,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 this.txt_horasAsigDefectos.Text = vo_actividad.pHorasAsigDefectos.ToString();
                 this.txt_horasReales.Text = vo_actividad.pHorasReales.ToString();
                 this.txt_horasRealesDef.Text = vo_actividad.pHorasRealesDefectos.ToString();
-                this.ddl_estado.SelectedValue = vo_actividad.pFK_Estado.ToString();
+                this.ddl_estado.SelectedValue = vo_actividad.pFK_Estado == 0 ? "1" : vo_actividad.pFK_Estado.ToString();
 
                 if (cls_variablesSistema.tipoEstado == cls_constantes.VER)
                 {
@@ -396,21 +396,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// Método que elimina un permiso
         /// </summary>
         /// <param name="po_actividad">Permiso a eliminar</param>
-        private void eliminarDatos(cls_actividadAsignada po_actividad)
-        {
-            try
-            {
-                cls_gestorAsignacionActividad.deleteActividad(po_actividad);
+        //private void eliminarDatos(cls_actividadAsignada po_actividad)
+        //{
+        //    try
+        //    {
+        //        cls_gestorAsignacionActividad.deleteActividad(po_actividad);
 
-                this.inicializarRegistros();
+        //        this.inicializarRegistros();
 
-                this.upd_Principal.Update();
-            }
-            catch (Exception po_exception)
-            {
-                throw new Exception("Ocurrió un error eliminando la actividad.", po_exception);
-            }
-        }
+        //        this.upd_Principal.Update();
+        //    }
+        //    catch (Exception po_exception)
+        //    {
+        //        throw new Exception("Ocurrió un error eliminando la actividad.", po_exception);
+        //    }
+        //}
 
         /// <summary>
         /// Guarda la información se que se encuentra
@@ -668,23 +668,20 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     {
                         if (lbx_usuarios.Items[j].Selected == true)
                         {
+                            cls_actividadAsignada vo_actividadAsignada = new cls_actividadAsignada();
+
                             cls_usuario vo_usuario = new cls_usuario();
                             vo_usuario.pPK_usuario = lbx_usuarios.Items[j].Value.ToString();
                             vo_usuario.pNombre = lbx_usuarios.Items[j].Text.ToString();
 
-                            //foreach (cls_actividadAsignada asigAct in cls_variablesSistema.vs_proyecto.pActividadAsignada)
-                            //{
-                            //    if (asigAct.pPK_Actividad == vo_actividad.pPK_Actividad)
-                            //    {
-                            //        asigAct.pPK_Usuario = vo_usuario.pPK_usuario;
+                            if (((cls_actividadAsignada)cls_variablesSistema.obj).pUsuarioLista.Where(test => test.pPK_usuario == vo_usuario.pPK_usuario).Count() == 0)
+                            {
+                                ((cls_actividadAsignada)cls_variablesSistema.obj).pUsuarioLista.Add(vo_usuario);
 
-                            //        //hdn_codigoActividad.Value = vo_actividad.pPK_Actividad.ToString();
-                            //        //txt_actividad.Text = vo_actividad.pNombre;
-                            //        //hdn_codigoUsuario.Value = vo_usuario.pPK_usuario;
-                            //        //txt_usuario.Text = vo_usuario.pNombre;
-
-                            //    }
-                            //}
+                                lbx_usuariosAsociados.Items.Add(lbx_usuarios.Items[i]);
+                                ListItem li = lbx_usuarios.Items[i];
+                                lbx_usuarios.Items.Remove(li);
+                            }
                         }
                     }
                 }
@@ -698,7 +695,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void btn_removerUsuario_Click(object sender, EventArgs e)
         {
-            
+            for (int i = lbx_usuariosAsociados.Items.Count - 1; i >= 0; i--)
+            {
+                if (lbx_usuariosAsociados.Items[i].Selected == true)
+                {
+                    cls_usuario vo_usuario = new cls_usuario();
+                    vo_usuario.pPK_usuario = lbx_usuarios.Items[i].Value.ToString();
+                    vo_usuario.pNombre = lbx_usuarios.Items[i].Text.ToString();
+
+                    ((cls_actividadAsignada)cls_variablesSistema.obj).pUsuarioLista.RemoveAll(test => test.pPK_usuario == vo_usuario.pPK_usuario);
+                   
+                }
+            } 
         }
 
         #endregion

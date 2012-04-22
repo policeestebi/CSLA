@@ -204,6 +204,7 @@ AS
 		 email
         FROM t_admi_usuario
 		WHERE 
-			PK_usuario = @paramPK_usuario 
+			PK_usuario = @paramPK_usuario AND
+			activo = 1
 END  
  GO 
