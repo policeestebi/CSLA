@@ -22,3 +22,4 @@ D:\cslagit\CSLA\COSEVI.web.controls\obj\Debug\GenerateResource-ResGen.read.1.tlo
 D:\cslagit\CSLA\COSEVI.web.controls\obj\Debug\GenerateResource-ResGen.write.1.tlog
 D:\cslagit\CSLA\COSEVI.web.controls\obj\Debug\COSEVI.web.controls.dll
 D:\cslagit\CSLA\COSEVI.web.controls\obj\Debug\COSEVI.web.controls.pdb
+D:\cslagit\CSLA\COSEVI.web.controls\obj\Debug\GenerateResource.read.1.tlog

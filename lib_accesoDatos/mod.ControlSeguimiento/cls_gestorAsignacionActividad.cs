@@ -249,7 +249,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// un único registro en la tabla estado
        /// </summary>
        /// <returns>poActividad valor del resultado de la ejecución de la sentencia</returns>
-       public static cls_actividadAsignada seleccionarActividadAsignada(cls_paqueteActividad po_paqueteActividad)
+       public static cls_actividadAsignada seleccionarAsignacionActividad(cls_paqueteActividad po_paqueteActividad)
        {
            cls_actividadAsignada vo_asignacionActividad = null;
            cls_usuario vo_usuario = null;
@@ -359,7 +359,6 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                throw new Exception("Ocurrió un error al obtener el listado de las actividades.", po_exception);
            }
        }
-
 
        /// <summary>
        /// Hace un lista de permisos con un filtrado específico.

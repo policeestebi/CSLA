@@ -42,7 +42,7 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             this.componenteLista = new List<cls_componente>();
             this.paqueteLista = new List<cls_paquete>();
             this.actividadLista = new List<cls_actividad>();
-            this.actividadAsignada = new cls_actividadAsignada();
+            this.asignacionActividadListaBaseDatos = new List<cls_actividadAsignada>();
 
             this.proyectoEntregableListaMemoria = new List<cls_proyectoEntregable>();
             this.entregableComponenteListaMemoria = new List<cls_entregableComponente>();
@@ -347,24 +347,31 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         #region Atributos
 
-        private cls_actividadAsignada actividadAsignada = new cls_actividadAsignada();
-        private List<cls_actividadAsignada> actividadPaqueteLista = new List<cls_actividadAsignada>();
+        private List<cls_actividadAsignada> actividadesPaqueteLista = new List<cls_actividadAsignada>();
 
+        private List<cls_actividadAsignada> asignacionActividadListaMemoria = new List<cls_actividadAsignada>();
+        private List<cls_actividadAsignada> asignacionActividadListaBaseDatos = new List<cls_actividadAsignada>();
 
         #endregion Atributos
 
         #region Propiedades
 
-        public cls_actividadAsignada pActividadAsignada
+        public List<cls_actividadAsignada> pActividadesPaqueteLista
         {
-            get { return actividadAsignada; }
-            set { this.actividadAsignada = value; }
+            get { return actividadesPaqueteLista; }
+            set { this.actividadesPaqueteLista = value; }
         }
 
-        public List<cls_actividadAsignada> pActividadPaqueteLista
+        public List<cls_actividadAsignada> pAsignacionActividadListaMemoria
         {
-            get { return actividadPaqueteLista; }
-            set { this.actividadPaqueteLista = value; }
+            get { return asignacionActividadListaMemoria; }
+            set { this.asignacionActividadListaMemoria = value; }
+        }
+
+        public List<cls_actividadAsignada> pAsignacionActividadListaBaseDatos
+        {
+            get { return asignacionActividadListaBaseDatos; }
+            set { this.asignacionActividadListaBaseDatos = value; }
         }
 
         public List<cls_paquete> pPaquetesAsignadosLista
