@@ -39,11 +39,13 @@ namespace COSEVI.CSLA.lib.accesoDatos.App_Constantes
         public const String OPERACION = "t_cont_operacion";
         public const String OPERACION_ASIGNACION = "t_cont_asignacion_operacion";
         public const String OPERACION_REGISTRO = "t_cont_registro_operacion";
+        public const String ACTIVIDAD_REGISTRO = "t_cont_registro_actividad";
 
         public const String NOMBRE_IMPREVISTO = "Imprevisto";
         public const String NOMBRE_OPERACION = "Operación";
         public const int CODIGO_IMPREVISTO = 0;
         public const int CODIGO_OPERACION = -1;
+        public const int CODIGO_INVALIDO = -1;
 
     }
 }

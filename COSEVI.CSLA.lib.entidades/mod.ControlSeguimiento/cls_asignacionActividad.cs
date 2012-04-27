@@ -181,12 +181,20 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.usuario = value; }
         }
 
+<<<<<<< HEAD
+        public cls_actividad pActividad
+        {
+            get { return actividad; }
+            set { actividad = value; }
+        }
+=======
         public List<cls_usuario> pUsuarioLista
         {
             get { return usuarioLista; }
             set { this.usuarioLista = value; }
         }
 
+>>>>>>> 2c8b1de5502b394cfedcdfe456b0c92ca3312481
 
         #endregion 
 
@@ -196,6 +204,11 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
         /// Código de actividad
         /// </summary>
  	    private int PK_actividad;
+
+        /// <summary>
+        /// Instancia de la actividad.
+        /// </summary>
+        private cls_actividad actividad;
 
         /// <summary>
         /// Código de paquete

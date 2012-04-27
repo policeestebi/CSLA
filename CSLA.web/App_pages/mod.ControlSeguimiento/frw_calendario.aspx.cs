@@ -25,8 +25,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             //if (!this.IsPostBack)
             //{
-                //this.calendario.poDatos = ObtenerDatos();
-                this.InicializarCalendario();
+            //this.calendario.poDatos = ObtenerDatos();
+            this.InicializarCalendario();
             //}
         }
 
@@ -42,10 +42,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             try
             {
                 this.calendario.poDatosProyecto = this.ObtenerDatosProyectos();
-                this.calendario.poDatosRegistro = this.ObtenerListaRegistro(this.ObtenerLunes(this.calendario.FechaLunes),
-                                                    ((DataSet)this.calendario.poDatosProyecto).Tables[0].Rows[0][0].ToString()
-                                                    );
-                this.calendario.poDatosActividades = this.ObtenerListaActividades(((DataSet)this.calendario.poDatosProyecto).Tables[0].Rows[0][0].ToString());
+
+                if (calendario.SelectValueProyecto == String.Empty)
+                {
+                    this.calendario.poDatosRegistro = this.ObtenerListaRegistro(this.ObtenerLunes(this.calendario.FechaLunes),
+                                                        ((DataSet)this.calendario.poDatosProyecto).Tables[0].Rows[0][0].ToString()
+                                                        );
+                    this.calendario.poDatosActividades = this.ObtenerListaActividades(((DataSet)this.calendario.poDatosProyecto).Tables[0].Rows[0][0].ToString());
+                }
+                else
+                {
+                    this.calendario.poDatosRegistro = this.ObtenerListaRegistro(this.ObtenerLunes(this.calendario.FechaLunes),
+                                                        calendario.SelectValueProyecto
+                                                        );
+                    this.calendario.poDatosActividades = this.ObtenerListaActividades(calendario.SelectValueProyecto);
+                }
             }
             catch (Exception)
             {
@@ -63,7 +74,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 vo_datos = cls_gestorProyecto.listarProyectosUsuarioDataSet();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 vo_datos = null;
             }
@@ -105,9 +116,24 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             string vs_tipo = string.Empty;
             try
             {
-                vs_tipo = ps_proyecto == COSEVI.CSLA.lib.accesoDatos.App_Constantes.cls_constantes.CODIGO_IMPREVISTO.ToString() ? "I" : "O";
+                if (ps_proyecto.Equals(COSEVI.CSLA.lib.accesoDatos.App_Constantes.cls_constantes.CODIGO_IMPREVISTO.ToString())
+                    || ps_proyecto.Equals(COSEVI.CSLA.lib.accesoDatos.App_Constantes.cls_constantes.CODIGO_OPERACION.ToString()))
+                {
 
-                datos = cls_gestorRegistroOperacion.listarOperacionesUsuario(cls_interface.vs_usuarioActual, vs_tipo,this.ConvertirFechaInicioDia(pd_fecha),this.ConvertirFechaInicioDia(pd_fecha.AddDays(6)));
+                    vs_tipo = ps_proyecto == COSEVI.CSLA.lib.accesoDatos.App_Constantes.cls_constantes.CODIGO_IMPREVISTO.ToString() ? "I" : "O";
+
+                    datos = cls_gestorRegistroOperacion.listarOperacionesUsuario(cls_interface.vs_usuarioActual, 
+                                                                                    vs_tipo, this.ConvertirFechaInicioDia(pd_fecha), 
+                                                                                    this.ConvertirFechaInicioDia(pd_fecha.AddDays(6)));
+                }
+                else
+                {
+                    datos = cls_gestorRegistroActividad.listarRegistroActividadesUsuario(cls_interface.vs_usuarioActual,
+                                                                                            ps_proyecto,
+                                                                                            this.ConvertirFechaInicioDia(pd_fecha),
+                                                                                            this.ConvertirFechaInicioDia(pd_fecha.AddDays(6)));
+                }
+
             }
             catch (Exception)
             {
@@ -141,9 +167,17 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             string vs_tipo = string.Empty;
             try
             {
-                vs_tipo = ps_proyecto == COSEVI.CSLA.lib.accesoDatos.App_Constantes.cls_constantes.CODIGO_IMPREVISTO.ToString() ? "I" : "O";
+                if (ps_proyecto.Equals(COSEVI.CSLA.lib.accesoDatos.App_Constantes.cls_constantes.CODIGO_IMPREVISTO.ToString())
+                || ps_proyecto.Equals(COSEVI.CSLA.lib.accesoDatos.App_Constantes.cls_constantes.CODIGO_OPERACION.ToString()))
+                {
+                    vs_tipo = ps_proyecto == COSEVI.CSLA.lib.accesoDatos.App_Constantes.cls_constantes.CODIGO_IMPREVISTO.ToString() ? "I" : "O";
 
-                datos = cls_gestorOperacion.listarOperacionesUsuario(cls_interface.vs_usuarioActual, vs_tipo);
+                    datos = cls_gestorOperacion.listarOperacionesUsuario(cls_interface.vs_usuarioActual, vs_tipo);
+                }
+                else 
+                {
+                    datos = cls_gestorActividad.listarActividadesUsuario(cls_interface.vs_usuarioActual, ps_proyecto);
+                }
             }
             catch (Exception)
             {
@@ -168,7 +202,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 while (vd_fecha.DayOfWeek != DayOfWeek.Monday)
                 {
-                   vd_fecha = vd_fecha.AddDays(-1);
+                    vd_fecha = vd_fecha.AddDays(-1);
                 }
             }
 
@@ -179,11 +213,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         #region Eventos
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="pd_fechaLunes"></param>
+        /// <param name="proyecto"></param>
         protected void Unnamed1_voCambioFecha(object sender, DateTime pd_fechaLunes, string proyecto)
         {
-            this.calendario.poDatosRegistro = this.ObtenerListaRegistro(this.ObtenerLunes(this.calendario.FechaLunes),
-                                                   proyecto
-                                                   );
+
+            this.calendario.poDatosRegistro = this.ObtenerListaRegistro(this.ObtenerLunes(pd_fechaLunes),//this.calendario.FechaLunes
+                                               proyecto
+                                               );
             this.calendario.poDatosActividades = this.ObtenerListaActividades(proyecto);
         }
 

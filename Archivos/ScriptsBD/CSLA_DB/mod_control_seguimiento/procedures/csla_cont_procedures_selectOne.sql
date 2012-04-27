@@ -112,7 +112,6 @@ CREATE PROCEDURE  PA_cont_componenteSelectOne
 AS 
  BEGIN 
          SELECT 
-			PK_componente, 
 			codigo,
 			nombre,
 			descripcion   
@@ -141,6 +140,7 @@ CREATE PROCEDURE  PA_cont_paqueteSelectOne
 AS 
  BEGIN 
          SELECT 
+			PK_actividad,
 			codigo,
 			nombre,
 			descripcion     
@@ -169,6 +169,7 @@ AS
  BEGIN 
 
          SELECT 
+			PK_actividad,
 			codigo,
 			nombre,
 			descripcion      
@@ -397,5 +398,53 @@ AS
 			   PK_codigo = @paramPK_codigo AND
 			   PK_registro = @paramPK_registro AND
 			   PK_usuario = @paramUsuario
+END  
+GO 
+
+  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_actividadRegistroSelectOne]'))
+DROP PROCEDURE [dbo].[PA_cont_actividadRegistroSelectOne]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez G.
+-- Fecha Creación:	19-04-2011
+-- Fecha Actualización:	19-04-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_actividadRegistroSelectOne 
+@paramRegistro	INT,
+  @paramActividad   INT,
+  @paramPaquete		INT,
+  @paramComponente  INT,
+  @paramEntregable	INT,
+  @paramProyecto	INT,
+  @paramUsuario		nvarchar(50)
+AS 
+ BEGIN 
+
+         SELECT 
+			PK_registro,
+			PK_actividad,
+			PK_paquete ,
+			PK_componente,
+			PK_entregable,
+			PK_proyecto,
+			PK_usuario ,
+			fecha,
+			horas,
+			comentario
+		 FROM
+			t_cont_registro_actividad
+         WHERE 
+			PK_registro = @paramRegistro AND
+			PK_actividad = @paramActividad AND
+			PK_paquete = @paramPaquete AND
+			PK_componente = @paramComponente AND
+			PK_entregable = @paramEntregable AND
+			PK_proyecto =  @paramProyecto AND
+			PK_usuario = @paramUsuario
 END  
 GO 
