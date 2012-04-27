@@ -272,7 +272,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 //cls_variablesSistema.obj = cls_gestorAsignacionActividad.seleccionarActividadAsignada(po_paqueteActividad);
                 //cls_variablesSistema.vs_proyecto.pActividadAsignada = (cls_actividadAsignada)cls_variablesSistema.obj;
 
-                cls_actividadAsignada vo_asignacionActividad = new cls_actividadAsignada();
+                cls_asignacionActividad vo_asignacionActividad = new cls_asignacionActividad();
 
                 vo_asignacionActividad = cls_gestorAsignacionActividad.seleccionarAsignacionActividad(po_paqueteActividad);
 
@@ -294,7 +294,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     else
                     {
                         //Se carga en la variable objeto, luego verificar si es necesario
-                        vo_asignacionActividad = (cls_actividadAsignada)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == vo_asignacionActividad.pPK_Actividad &&
+                        vo_asignacionActividad = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == vo_asignacionActividad.pPK_Actividad &&
                                                                                                                                                         test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete);
                         cls_variablesSistema.obj = vo_asignacionActividad;
                         cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_asignacionActividad);
@@ -310,9 +310,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == po_paqueteActividad.pPK_Actividad &&
                                                                                                           test.pPK_Paquete == po_paqueteActividad.pPK_Paquete).Count() > 0)
                 {
-                    vo_asignacionActividad = (cls_actividadAsignada)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == po_paqueteActividad.pPK_Actividad &&
+                    vo_asignacionActividad = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == po_paqueteActividad.pPK_Actividad &&
                                                                                                                                                    test.pPK_Paquete == po_paqueteActividad.pPK_Paquete);
                     cls_variablesSistema.obj = vo_asignacionActividad;
+                    
+                    cargarObjeto();
 
                     lbx_usuariosAsociados.DataSource = vo_asignacionActividad.pUsuarioLista;
                     lbx_usuariosAsociados.DataTextField = "pNombre";
@@ -410,16 +412,16 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// web
         /// </summary>
         /// <returns>cls_actividadResp</returns>
-        private cls_actividadAsignada crearObjeto()
+        private cls_asignacionActividad crearObjeto()
         {
-            cls_actividadAsignada vo_asignacionActividad = new cls_actividadAsignada();
+            cls_asignacionActividad vo_asignacionActividad = new cls_asignacionActividad();
             //if (cls_variablesSistema.tipoEstado != cls_constantes.AGREGAR)
             //{
             //    vo_actividad = (cls_asignacionActividad)cls_variablesSistema.obj;
             //}
             try
             {
-                vo_asignacionActividad = (cls_actividadAsignada)cls_variablesSistema.obj;
+                vo_asignacionActividad = (cls_asignacionActividad)cls_variablesSistema.obj;
 
                 vo_asignacionActividad.pDescripcion = txt_descripcion.Text;
                 vo_asignacionActividad.pFechaInicio = Convert.ToDateTime(txt_fechaInicio.Text);
@@ -444,11 +446,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void cargarObjeto()
         {
-            cls_actividadAsignada vo_actividad = null;
+            cls_asignacionActividad vo_actividad = null;
 
             try
             {
-                vo_actividad = (cls_actividadAsignada)cls_variablesSistema.obj;
+                vo_actividad = (cls_asignacionActividad)cls_variablesSistema.obj;
 
                 this.txt_descripcion.Text = vo_actividad.pDescripcion;
                 this.txt_fechaInicio.Text = vo_actividad.pFechaInicio.ToShortDateString();
@@ -504,7 +506,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         private int guardarDatos()
         {
             int vi_resultado = 1;
-            cls_actividadAsignada vo_asignacionActividad = this.crearObjeto();
+            cls_asignacionActividad vo_asignacionActividad = this.crearObjeto();
             try
             {
                 //switch (cls_variablesSistema.tipoEstado)
@@ -542,6 +544,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             this.txt_horasReales.Text = String.Empty;
             this.txt_horasRealesDef.Text = String.Empty;
             this.ddl_estado.SelectedIndex = -1;
+
+            if (lbx_usuariosAsociados.Items.Count > 0)
+            {
+                int cantidadUsuAsociados = lbx_usuariosAsociados.Items.Count;
+                cantidadUsuAsociados = lbx_usuariosAsociados.Items.Count;
+
+                for (int i = 0; i < cantidadUsuAsociados; i++)
+                {
+                    lbx_usuariosAsociados.Items.RemoveAt(0);
+                }
+            }
+
         }
 
         /// <summary>
@@ -653,6 +667,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             cargarActividadesPorPaquete(Convert.ToInt32(ddl_paquete.SelectedValue));
 
+            limpiarCampos();
+
         }
 
         /// <summary>
@@ -677,6 +693,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             vo_paqueteActividad.pPK_Proyecto = proyectoSeleccionado;
             vo_paqueteActividad.pPK_Paquete = paqueteSeleccionado;
             vo_paqueteActividad.pPK_Actividad = actividadSeleccionada;
+
+            limpiarCampos();
 
             if (lbx_usuariosAsociados.Items.Count > 0)
             {
@@ -802,7 +820,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     {
                         if (lbx_usuarios.Items[j].Selected == true)
                         {
-                            cls_actividadAsignada vo_actividadAsignada = new cls_actividadAsignada();
+                            cls_asignacionActividad vo_actividadAsignada = new cls_asignacionActividad();
 
                             cls_usuario vo_usuario = new cls_usuario();
                             vo_usuario.pPK_usuario = lbx_usuarios.Items[j].Value.ToString();
@@ -812,7 +830,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                                                                                                                 test.pPK_Paquete == vo_paquete.pPK_Paquete).Count() == 0)
                             {
 
-                                vo_actividadAsignada = (cls_actividadAsignada)cls_variablesSistema.vs_proyecto.pActividadesPaqueteLista.Find(test => test.pPK_Actividad == vo_actividad.pPK_Actividad &&
+                                vo_actividadAsignada = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pActividadesPaqueteLista.Find(test => test.pPK_Actividad == vo_actividad.pPK_Actividad &&
                                                                                                                                         test.pPK_Paquete == vo_paquete.pPK_Paquete);
                                 cls_variablesSistema.obj = vo_actividadAsignada;
 
@@ -838,7 +856,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                             }
                             else
                             {
-                                vo_actividadAsignada = (cls_actividadAsignada)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == vo_actividad.pPK_Actividad &&
+                                vo_actividadAsignada = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == vo_actividad.pPK_Actividad &&
                                                                                                                                                              test.pPK_Paquete == vo_paquete.pPK_Paquete);
                                 cls_variablesSistema.obj = vo_actividadAsignada;
 
@@ -882,7 +900,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_usuario.pPK_usuario = lbx_usuarios.Items[i].Value.ToString();
                     vo_usuario.pNombre = lbx_usuarios.Items[i].Text.ToString();
 
-                    ((cls_actividadAsignada)cls_variablesSistema.obj).pUsuarioLista.RemoveAll(test => test.pPK_usuario == vo_usuario.pPK_usuario);
+                    ((cls_asignacionActividad)cls_variablesSistema.obj).pUsuarioLista.RemoveAll(test => test.pPK_usuario == vo_usuario.pPK_usuario);
                    
                 }
             } 

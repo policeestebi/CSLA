@@ -31,7 +31,7 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
     /// Clase que asocia la información de los proyectos con las actividades por realizar de los mismos
     // del Consejo de Seguridad Vial.
     /// </summary>
-	public class cls_actividadAsignada
+	public class cls_asignacionActividad
     {
 
         #region Constructor
@@ -39,7 +39,7 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
         /// <summary>
         /// Constructor de la clase cls_actividad.
         /// </summary>
-        public cls_actividadAsignada()
+        public cls_asignacionActividad()
         {
             this.estado = new cls_estado();
             this.usuario = new cls_usuario();
@@ -181,20 +181,18 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.usuario = value; }
         }
 
-<<<<<<< HEAD
         public cls_actividad pActividad
         {
             get { return actividad; }
             set { actividad = value; }
         }
-=======
+
         public List<cls_usuario> pUsuarioLista
         {
             get { return usuarioLista; }
             set { this.usuarioLista = value; }
         }
 
->>>>>>> 2c8b1de5502b394cfedcdfe456b0c92ca3312481
 
         #endregion 
 

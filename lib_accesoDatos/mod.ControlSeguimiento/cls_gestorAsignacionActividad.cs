@@ -42,7 +42,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
         /// </summary>
         /// <param name="po_Actividad">Actividad a insertar</param>
         /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-	   public static int insertActividad(cls_actividadAsignada po_Actividad)
+	   public static int insertActividad(cls_asignacionActividad po_Actividad)
    {
             int vi_resultado;
 
@@ -95,7 +95,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// </summary>
        /// <param name="po_Actividad">Actividad a actualizar</param>
        /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-       public static int updateActividad(cls_actividadAsignada po_Actividad)
+       public static int updateActividad(cls_asignacionActividad po_Actividad)
        {
             int vi_resultado;
 
@@ -145,7 +145,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// </summary>
        /// <param name="po_Actividad">Actividad a eliminar</param>
        /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-       public static int deleteActividad(cls_actividadAsignada po_Actividad)
+       public static int deleteActividad(cls_asignacionActividad po_Actividad)
        {
             int vi_resultado;
 
@@ -186,10 +186,10 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// todos los registros en la tabla actividad
        /// </summary>
        /// <returns> List<cls_actividad>  valor del resultado de la ejecución de la sentencia</returns>
-       public static List<cls_actividadAsignada> listarActividades()
+       public static List<cls_asignacionActividad> listarActividades()
        {
-           List<cls_actividadAsignada> vo_lista = null;
-           cls_actividadAsignada vo_Actividad = null;
+           List<cls_asignacionActividad> vo_lista = null;
+           cls_asignacionActividad vo_Actividad = null;
            try
            {
                String vs_comando = "PA_cont_actividadSelect";
@@ -199,10 +199,10 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
 
-               vo_lista = new List<cls_actividadAsignada>();
+               vo_lista = new List<cls_asignacionActividad>();
                for (int i = 0; i < vu_dataSet.Tables[0].Rows.Count; i++)
                {
-                   vo_Actividad = new cls_actividadAsignada();
+                   vo_Actividad = new cls_asignacionActividad();
 
                    vo_Actividad.pPK_Actividad = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["PK_actividad"]);
 
@@ -249,9 +249,9 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// un único registro en la tabla estado
        /// </summary>
        /// <returns>poActividad valor del resultado de la ejecución de la sentencia</returns>
-       public static cls_actividadAsignada seleccionarAsignacionActividad(cls_paqueteActividad po_paqueteActividad)
+       public static cls_asignacionActividad seleccionarAsignacionActividad(cls_paqueteActividad po_paqueteActividad)
        {
-           cls_actividadAsignada vo_asignacionActividad = null;
+           cls_asignacionActividad vo_asignacionActividad = null;
            cls_usuario vo_usuario = null;
            List<cls_usuario> vo_listaUsuarios = null;
 
@@ -266,7 +266,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
 
-               vo_asignacionActividad = new cls_actividadAsignada();
+               vo_asignacionActividad = new cls_asignacionActividad();
 
                vo_listaUsuarios = new List<cls_usuario>();
 
@@ -365,10 +365,10 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// </summary>
        /// <param name="psFiltro">String filtro.</param>
        /// <returns></returns>
-       public static List<cls_actividadAsignada> listarActividadesPorPaquete(int pi_proyecto, int pi_paquete)
+       public static List<cls_asignacionActividad> listarActividadesPorPaquete(int pi_proyecto, int pi_paquete)
        {
-           List<cls_actividadAsignada> vo_lista = null;
-           cls_actividadAsignada vo_asignacionActividad = null;
+           List<cls_asignacionActividad> vo_lista = null;
+           cls_asignacionActividad vo_asignacionActividad = null;
            try
            {
                String vs_comando = "PA_cont_actividadesPaqueteSelect";
@@ -379,10 +379,10 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
 
-               vo_lista = new List<cls_actividadAsignada>();
+               vo_lista = new List<cls_asignacionActividad>();
                for (int i = 0; i < vu_dataSet.Tables[0].Rows.Count; i++)
                {
-                   vo_asignacionActividad = new cls_actividadAsignada();
+                   vo_asignacionActividad = new cls_asignacionActividad();
 
                    vo_asignacionActividad.pPK_Actividad = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["PK_actividad"]);
 
@@ -415,10 +415,10 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// <param name="pi_proyecto"></param>
        /// <param name="pi_paquete"></param>
        /// <returns></returns>
-       public static cls_actividadAsignada listarActividadesPorPaquete(int pi_proyecto, int pi_paquete, int pi_actividad)
+       public static cls_asignacionActividad listarActividadesPorPaquete(int pi_proyecto, int pi_paquete, int pi_actividad)
        {
-           List<cls_actividadAsignada> vo_lista = null;
-           cls_actividadAsignada vo_asignacionActividad = null;
+           List<cls_asignacionActividad> vo_lista = null;
+           cls_asignacionActividad vo_asignacionActividad = null;
            try
            {
                String vs_comando = "PA_cont_actividadesPaqueteSelectOne";
@@ -430,10 +430,10 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
 
-               vo_lista = new List<cls_actividadAsignada>();
+               vo_lista = new List<cls_asignacionActividad>();
                for (int i = 0; i < vu_dataSet.Tables[0].Rows.Count; i++)
                {
-                   vo_asignacionActividad = new cls_actividadAsignada();
+                   vo_asignacionActividad = new cls_asignacionActividad();
 
                    vo_asignacionActividad.pPK_Actividad = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["PK_actividad"]);
 
