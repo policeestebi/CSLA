@@ -548,8 +548,8 @@ END
 GO 
 
 
- IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_actividadesProyectoSelectAll]'))
-DROP PROCEDURE [dbo].[PA_cont_actividadesProyectoSelectAll]
+ IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_paquetesProyectoSelectAll]'))
+DROP PROCEDURE [dbo].[PA_cont_paquetesProyectoSelectAll]
 GO
 SET ANSI_NULLS ON
 GO
@@ -561,17 +561,14 @@ GO
 -- Fecha Actulización:	15-05-2011
 -- Descripción: 
 -- =============================================
-CREATE PROCEDURE  PA_cont_actividadesProyectoSelectAll
+CREATE PROCEDURE  PA_cont_paquetesProyectoSelectAll
   @paramPK_proyecto int
 AS 
  BEGIN 
+		
 		SELECT 
-			 cont_paq_act.PK_proyecto,
-			 cont_paq_act.PK_entregable,
-			 cont_paq_act.PK_componente,
 			 cont_paq_act.PK_paquete,
-			 cont_paq_act.PK_actividad,
-			 cont_act.nombre        
+			 cont_paq.nombre nombrePaquete       
         FROM 
 			t_cont_paquete_actividad cont_paq_act inner join t_cont_proyecto cont_proy 
 		ON 
@@ -581,14 +578,13 @@ AS
 		ON 
 			cont_paq_act.PK_componente = cont_comp.PK_componente inner join t_cont_paquete cont_paq
 		ON 
-			cont_paq_act.PK_paquete = cont_paq.PK_paquete inner join t_cont_actividad cont_act
-		ON 
-			cont_paq_act.PK_actividad = cont_act.PK_actividad
+			cont_paq_act.PK_paquete = cont_paq.PK_paquete
 		WHERE 
 			cont_paq_act.PK_proyecto = @paramPK_proyecto AND
 			cont_paq_act.activo = 1
 END  
  GO
+
  
  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_operacionSelectUsuario]'))
 DROP PROCEDURE [dbo].[PA_cont_operacionSelectUsuario]

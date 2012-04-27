@@ -31,7 +31,7 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
     /// Clase que asocia la información de los proyectos con las actividades por realizar de los mismos
     // del Consejo de Seguridad Vial.
     /// </summary>
-	public class cls_asignacionActividad
+	public class cls_actividadAsignada
     {
 
         #region Constructor
@@ -39,10 +39,11 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
         /// <summary>
         /// Constructor de la clase cls_actividad.
         /// </summary>
-        public cls_asignacionActividad()
+        public cls_actividadAsignada()
         {
             this.estado = new cls_estado();
             this.usuario = new cls_usuario();
+            this.usuarioLista = new List<cls_usuario>();
         }
 
         #endregion
@@ -90,10 +91,25 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.usuario.pPK_usuario = value; }
         }
 
+
+        public string pNombreUsuario
+        {
+            get { return usuario.pNombre; }
+            set { this.usuario.pNombre = value; }
+        }
+
+
         public int pFK_Estado
         {
             get { return estado.pPK_estado; }
             set { this.estado.pPK_estado = value; }
+        }
+
+
+        public string pNombrePaquete
+        {
+            get { return nombrePaquete; }
+            set { this.nombrePaquete = value; }
         }
 
 
@@ -165,11 +181,20 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.usuario = value; }
         }
 
+<<<<<<< HEAD
         public cls_actividad pActividad
         {
             get { return actividad; }
             set { actividad = value; }
         }
+=======
+        public List<cls_usuario> pUsuarioLista
+        {
+            get { return usuarioLista; }
+            set { this.usuarioLista = value; }
+        }
+
+>>>>>>> 2c8b1de5502b394cfedcdfe456b0c92ca3312481
 
         #endregion 
 
@@ -204,6 +229,11 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
         /// Código de proyecto
         /// </summary>
         private int PK_proyecto;
+
+        /// <summary>
+        /// Nombre del paquete
+        /// </summary>
+        private string nombrePaquete;
 
         /// <summary>
         /// Nombre de la actividad
@@ -248,6 +278,8 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
         private cls_estado estado;
 
 	    private cls_usuario usuario;
+
+        private List<cls_usuario> usuarioLista;
 
         #endregion
 

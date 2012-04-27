@@ -42,7 +42,7 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             this.componenteLista = new List<cls_componente>();
             this.paqueteLista = new List<cls_paquete>();
             this.actividadLista = new List<cls_actividad>();
-            this.asignacionLista = new List<cls_asignacionActividad>();
+            this.asignacionActividadListaBaseDatos = new List<cls_actividadAsignada>();
 
             this.proyectoEntregableListaMemoria = new List<cls_proyectoEntregable>();
             this.entregableComponenteListaMemoria = new List<cls_entregableComponente>();
@@ -347,19 +347,73 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 
         #region Atributos
 
-        private List<cls_asignacionActividad> asignacionLista = new List<cls_asignacionActividad>();
+        private List<cls_actividadAsignada> actividadesPaqueteLista = new List<cls_actividadAsignada>();
 
+        private List<cls_actividadAsignada> asignacionActividadListaMemoria = new List<cls_actividadAsignada>();
+        private List<cls_actividadAsignada> asignacionActividadListaBaseDatos = new List<cls_actividadAsignada>();
 
         #endregion Atributos
 
         #region Propiedades
 
-        public List<cls_asignacionActividad> pAsignacionLista
+        public List<cls_actividadAsignada> pActividadesPaqueteLista
         {
-            get { return asignacionLista; }
-            set { this.asignacionLista = value; }
+            get { return actividadesPaqueteLista; }
+            set { this.actividadesPaqueteLista = value; }
         }
 
+        public List<cls_actividadAsignada> pAsignacionActividadListaMemoria
+        {
+            get { return asignacionActividadListaMemoria; }
+            set { this.asignacionActividadListaMemoria = value; }
+        }
+
+        public List<cls_actividadAsignada> pAsignacionActividadListaBaseDatos
+        {
+            get { return asignacionActividadListaBaseDatos; }
+            set { this.asignacionActividadListaBaseDatos = value; }
+        }
+
+        public List<cls_paquete> pPaquetesAsignadosLista
+        {
+            get {
+                    List<cls_paquete> vl_paquete = new List<cls_paquete>();
+                    cls_paquete vo_paquete;
+
+                    //foreach (cls_actividadAsignada vo_asignacionActividad in actividadAsignada)
+                    //{
+                    //    if (vl_paquete.Where(test => test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
+                    //    {
+                    //        vo_paquete = new cls_paquete();
+                    //        vo_paquete.pPK_Paquete = vo_asignacionActividad.pPK_Paquete;
+                    //        vo_paquete.pNombre = vo_asignacionActividad.pNombrePaquete;
+
+                    //        vl_paquete.Add(vo_paquete);
+                    //    }
+                    //}
+
+                    return vl_paquete; 
+                }
+        }
+
+        public void listarPaquetesAsignados()
+        {
+            List<cls_paquete> vl_paquete = new List<cls_paquete>();
+            cls_paquete vo_paquete;
+
+            //foreach (cls_actividadAsignada vo_asignacionActividad in actividadAsignada)
+            //{ 
+            //    if(vl_paquete.Where(test => test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
+            //    {
+            //        vo_paquete = new cls_paquete();
+            //        vo_paquete.pPK_Paquete = vo_asignacionActividad.pPK_Paquete;
+            //        vo_paquete.pNombre = vo_asignacionActividad.pNombrePaquete;
+
+            //        vl_paquete.Add(vo_paquete);
+            //    }
+            //}
+
+        }
 
         #endregion Propiedades
 
