@@ -892,18 +892,57 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void btn_removerUsuario_Click(object sender, EventArgs e)
         {
-            for (int i = lbx_usuariosAsociados.Items.Count - 1; i >= 0; i--)
-            {
-                if (lbx_usuariosAsociados.Items[i].Selected == true)
-                {
-                    cls_usuario vo_usuario = new cls_usuario();
-                    vo_usuario.pPK_usuario = lbx_usuarios.Items[i].Value.ToString();
-                    vo_usuario.pNombre = lbx_usuarios.Items[i].Text.ToString();
+            cls_paquete vo_paquete = new cls_paquete();
+            vo_paquete.pPK_Paquete = Convert.ToInt32(ddl_paquete.SelectedValue.ToString());
 
-                    ((cls_asignacionActividad)cls_variablesSistema.obj).pUsuarioLista.RemoveAll(test => test.pPK_usuario == vo_usuario.pPK_usuario);
-                   
+            for (int i = lbx_actividades.Items.Count - 1; i >= 0; i--)
+            {
+                if (lbx_actividades.Items[i].Selected == true)
+                {
+                    cls_actividad vo_actividad = new cls_actividad();
+                    vo_actividad.pPK_Actividad = Convert.ToInt32(lbx_actividades.Items[i].Value.ToString());
+                    vo_actividad.pNombre = lbx_actividades.Items[i].Text.ToString();
+
+                    for (int j = lbx_usuariosAsociados.Items.Count - 1; j >= 0; j--)
+                    {
+                        if (lbx_usuariosAsociados.Items[j].Selected == true)
+                        {
+                            cls_asignacionActividad vo_actividadAsignada = new cls_asignacionActividad();
+
+                            cls_usuario vo_usuario = new cls_usuario();
+                            vo_usuario.pPK_usuario = lbx_usuariosAsociados.Items[j].Value.ToString();
+                            vo_usuario.pNombre = lbx_usuariosAsociados.Items[j].Text.ToString();
+
+                            if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == vo_actividad.pPK_Actividad &&
+                                                                                                                test.pPK_Paquete == vo_paquete.pPK_Paquete).Count() > 0)
+                            {
+                                vo_actividadAsignada = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == vo_actividad.pPK_Actividad &&
+                                                                                                                                                             test.pPK_Paquete == vo_paquete.pPK_Paquete);
+                                //cls_variablesSistema.obj = vo_actividadAsignada;
+
+                                //vo_actividadAsignada = crearObjeto();
+
+                                //Si se logra asignar un valor de memoria, se procede, se lo contrario la variable está nula y no debe entrar a agregar
+                                //if (vo_actividadAsignada != null)
+                                //{
+                                //if (vo_actividadAsignada.pUsuarioLista.Where(test => test.pPK_usuario == vo_usuario.pPK_usuario).Count() == 0)
+                                //{
+
+                                    vo_actividadAsignada.pUsuarioLista.RemoveAll(test => test.pPK_usuario == vo_usuario.pPK_usuario);
+
+                                    //cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_actividadAsignada);
+                                //}
+                                //}
+                            }
+
+                            lbx_usuarios.Items.Add(lbx_usuariosAsociados.Items[j]);
+                            ListItem li = lbx_usuariosAsociados.Items[j];
+                            lbx_usuariosAsociados.Items.Remove(li);
+
+                        }
+                    }
                 }
-            } 
+            }
         }
 
         #endregion
