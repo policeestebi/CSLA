@@ -269,6 +269,38 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
            }
        }
 
+        /// <summary>
+        /// Obtiene la lista de actividades
+        /// a las que esta asociado un usuario.
+        /// Sólo aquellas que se encuentren 
+        /// activas.
+        /// </summary>
+        /// <param name="psUsuario">String código del usuario.</param>
+        /// <param name="psProyecto">String código del usuario</param>
+        /// <returns></returns>
+       public static DataSet listarActividadesUsuario(string psUsuario, string psProyecto)
+       {
+           DataSet vu_dataSet = null;
+           try
+           {
+               String vs_comando = "PA_cont_actividadSelectUsuario";
+               cls_parameter[] vu_parametros = 
+                {
+                    new cls_parameter("@paramUsuario", psUsuario),
+                    new cls_parameter("@paramProyecto", psProyecto)
+                };
+
+               vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
+           }
+           catch (Exception po_exception)
+           {
+               cls_sqlDatabase.rollbackTransaction();
+               throw new Exception("Ocurrió un error al obtener el listado de los actividades.", po_exception);
+           }
+
+           return vu_dataSet;
+       }
+
 	
     }
 }

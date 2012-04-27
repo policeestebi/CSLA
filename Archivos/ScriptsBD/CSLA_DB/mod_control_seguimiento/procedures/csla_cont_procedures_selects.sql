@@ -674,3 +674,150 @@ ORDER BY op.descripcion asc
 END  
 GO 
 
+
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_registroActividadSelectUsuario]'))
+DROP PROCEDURE [dbo].[PA_cont_registroActividadSelectUsuario]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez González
+-- Fecha Creación:	17-04-2012
+-- Fecha Actulización:	17-04-2012
+-- Descripción: Se utiliza para seleccionar en cuales
+--				las actividades registradas por el 
+--				usuario.
+-- =============================================
+CREATE PROCEDURE  PA_cont_registroActividadSelectUsuario
+	 @paramProyecto   INT,
+	 @paramUsuario	  NVARCHAR(30),
+	 @paramFechaInicio	DATETIME,
+	 @paramFechaFin		DATETIME
+AS 
+ BEGIN 
+ 
+ SELECT * FROM (
+	SELECT
+		ra.PK_registro,
+		ra.PK_actividad PK_codigo,
+		ra.PK_paquete,
+		ra.PK_componente,
+		ra.PK_entregable,
+		ra.PK_proyecto,
+		ra.PK_usuario,
+		ra.fecha,
+		ra.horas,
+		act.descripcion descripcion,
+		pa.descripcion descripcion_paquete
+	FROM 
+		t_cont_registro_actividad ra
+	INNER JOIN
+		t_cont_actividad act
+	ON
+		ra.PK_actividad = act.PK_actividad AND
+		ra.PK_usuario = @paramUsuario AND
+		ra.PK_proyecto = @paramProyecto
+	INNER JOIN
+		t_cont_paquete pa
+	ON
+		ra.PK_paquete = pa.PK_paquete 
+	WHERE
+		ra.fecha between @paramFechaInicio AND @paramFechaFin	
+	UNION
+	SELECT
+		ro.PK_registro,
+		op.PK_codigo PK_codigo,
+		-1 PK_paquete,
+		-1 PK_componente,
+		-1 PK_entregable,
+		op.FK_proyecto PK_proyecto ,
+		@paramUsuario PK_usuario,
+		ro.fecha,
+		ro.horas,
+		op.descripcion,
+		'' descripcion_paquete
+	FROM 
+		t_cont_registro_operacion ro
+	RIGHT OUTER JOIN
+		t_cont_operacion op
+	ON
+		ro.PK_codigo = op.PK_codigo AND
+		ro.PK_usuario = @paramUsuario 
+	WHERE
+		op.FK_proyecto = @paramProyecto AND
+		ro.fecha between @paramFechaInicio AND @paramFechaFin	
+	) t
+	ORDER BY descripcion asc
+	
+END 
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_actividadSelectUsuario]'))
+DROP PROCEDURE [dbo].[PA_cont_actividadSelectUsuario]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez González
+-- Fecha Creación:	12-04-2012
+-- Fecha Actulización:	12-04-2012
+-- Descripción: Se utiliza para seleccionar en cuales
+--				las operaciones asociadas 
+--				a un usuario.
+-- =============================================
+CREATE PROCEDURE  PA_cont_actividadSelectUsuario
+	 @paramUsuario	  NVARCHAR(30),
+	 @paramProyecto	  INT	  
+AS 
+ BEGIN 
+ SELECT * FROM
+ (
+	SELECT 
+		aact.PK_actividad PK_codigo,
+		aact.PK_paquete,
+		aact.PK_componente,
+		aact.PK_entregable,
+		aact.PK_proyecto,
+		aact.PK_usuario,
+		act.descripcion descripcion,
+		pa.descripcion descripcion_paquete
+	FROM 
+		t_cont_asignacion_actividad aact
+	INNER JOIN
+		t_cont_actividad act
+	ON
+		aact.PK_actividad = act.PK_actividad AND
+		aact.PK_proyecto = @paramProyecto AND
+		aact.PK_usuario = 	@paramUsuario
+	INNER JOIN
+		t_cont_paquete pa
+	ON
+		aact.PK_paquete = pa.PK_paquete
+	UNION
+	SELECT 
+		op.PK_codigo PK_codigo,
+		-1	PK_paquete,
+		-1  PK_componente,
+		-1  PK_entregable,
+		op.FK_proyecto PK_proyecto,
+		@paramUsuario PK_usuario,
+		op.descripcion,
+		'' descripcion_paquete
+	FROM
+		t_cont_operacion op
+	INNER JOIN
+		t_cont_asignacion_operacion ap
+	ON
+		op.PK_codigo = ap.PK_codigo AND
+		ap.PK_usuario = @paramUsuario AND
+		op.FK_proyecto = @paramProyecto
+	) t
+	ORDER BY descripcion ASC
+	
+END  
+GO 
+

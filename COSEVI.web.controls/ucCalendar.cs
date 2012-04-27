@@ -282,7 +282,6 @@ namespace COSEVI.web.controls
             DataTable datos = null;
             int contador = 0;
             int contadorLinks = 0;
-            DataRow vo_row = null;
             DateTime vd_fechaLunes;
             try
             {
@@ -301,71 +300,93 @@ namespace COSEVI.web.controls
                         //Se crea la etiqueta de la descripción
                         writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
-                        this.crearEtiquetaActividad("lblActividad" + contador, row[this.DescripcionField].ToString()).RenderControl(writer);
+                        if (this.ddlProyectos.SelectedValue.ToString().Equals("0") ||
+                            this.ddlProyectos.SelectedValue.ToString().Equals("-1"))
+                        {
+                            this.crearEtiquetaActividad("lblActividad" + contador, row[this.DescripcionField].ToString()).RenderControl(writer);
+                        }
+                        else 
+                        {
+                            this.crearEtiquetaActividad("lblActividad" + contador,  row[this.DescripcionPaquete].ToString() + "-" + row[this.DescripcionField].ToString()).RenderControl(writer);
+                        }
 
                         writer.RenderEndTag();//End TD
 
                         //Lunes
-                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
-                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
-                        this.crearLinkHora("vlnkHora" + contadorLinks++,
-                                            this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
-                                            this.ObtenerHoras(vo_row)).RenderControl(writer);
-                        writer.RenderEndTag();//End TD
+                        GeneraActividad(vd_fechaLunes, writer, row, contadorLinks);
+                        contadorLinks++;
+                        //vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        //writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        //this.crearLinkHora("vlnkHora" + contadorLinks++,
+                        //                    this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
+                        //                    this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        //writer.RenderEndTag();//End TD
                         vd_fechaLunes = vd_fechaLunes.AddDays(1);
 
                         //Martes
-                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
-                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
-                        this.crearLinkHora("vlnkHora" + contadorLinks++,
-                                            this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto), 
-                                            this.ObtenerHoras(vo_row)).RenderControl(writer);
-                        writer.RenderEndTag();//End TD
+                        GeneraActividad(vd_fechaLunes, writer, row, contadorLinks);
+                        contadorLinks++;
+                        //vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        //writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        //this.crearLinkHora("vlnkHora" + contadorLinks++,
+                        //                    this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto), 
+                        //                    this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        //writer.RenderEndTag();//End TD
                         vd_fechaLunes = vd_fechaLunes.AddDays(1);
 
                         //Miércoles
-                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
-                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
-                        this.crearLinkHora("vlnkHora" + contadorLinks++,
-                                           this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
-                                           this.ObtenerHoras(vo_row)).RenderControl(writer);
-                        writer.RenderEndTag();//End TD
+                        GeneraActividad(vd_fechaLunes, writer, row, contadorLinks);
+                        contadorLinks++;
+                        //vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        //writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        //this.crearLinkHora("vlnkHora" + contadorLinks++,
+                        //                   this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
+                        //                   this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        //writer.RenderEndTag();//End TD
                         vd_fechaLunes = vd_fechaLunes.AddDays(1);
 
                         //Jueves
-                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
-                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
-                        this.crearLinkHora("vlnkHora" + contadorLinks++,
-                                           this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
-                                           this.ObtenerHoras(vo_row)).RenderControl(writer);
-                        writer.RenderEndTag();//End TD
+                        GeneraActividad(vd_fechaLunes, writer, row, contadorLinks);
+                        contadorLinks++;
+                        //vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        //writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        //this.crearLinkHora("vlnkHora" + contadorLinks++,
+                        //                   this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
+                        //                   this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        //writer.RenderEndTag();//End TD
                         vd_fechaLunes = vd_fechaLunes.AddDays(1);
 
                         //Viernes
-                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
-                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
-                        this.crearLinkHora("vlnkHora" + contadorLinks++,
-                                            this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
-                                            this.ObtenerHoras(vo_row)).RenderControl(writer);
-                        writer.RenderEndTag();//End TD
+                        GeneraActividad(vd_fechaLunes, writer, row, contadorLinks);
+                        contadorLinks++;
+                        //vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        //writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        //this.crearLinkHora("vlnkHora" + contadorLinks++,
+                        //                    this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
+                        //                    this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        //writer.RenderEndTag();//End TD
                         vd_fechaLunes = vd_fechaLunes.AddDays(1);
 
                         //Sábado
-                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
-                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
-                        this.crearLinkHora("vlnkHora" + contadorLinks++,
-                                            this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
-                                            this.ObtenerHoras(vo_row)).RenderControl(writer);
-                        writer.RenderEndTag();//End TD
+                        GeneraActividad(vd_fechaLunes, writer, row, contadorLinks);
+                        contadorLinks++;
+                        //vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        //writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        //this.crearLinkHora("vlnkHora" + contadorLinks++,
+                        //                    this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
+                        //                    this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        //writer.RenderEndTag();//End TD
                         vd_fechaLunes = vd_fechaLunes.AddDays(1);
 
                         //Domingo
-                        vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
-                        writer.RenderBeginTag(HtmlTextWriterTag.Td);
-                        this.crearLinkHora("vlnkHora" + contadorLinks++,
-                                            this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
-                                            this.ObtenerHoras(vo_row)).RenderControl(writer);
-                        writer.RenderEndTag();//End TD
+                        GeneraActividad(vd_fechaLunes, writer, row, contadorLinks);
+                        contadorLinks++;
+                        //vo_row = this.ObtenerRegistroActividad(vd_fechaLunes, row[this.codigoActividadField].ToString());
+                        //writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                        //this.crearLinkHora("vlnkHora" + contadorLinks++,
+                        //                    this.ObtenerUrl(vo_row, row[this.codigoActividadField].ToString(), vd_fechaLunes, this.SelectValueProyecto),
+                        //                    this.ObtenerHoras(vo_row)).RenderControl(writer);
+                        //writer.RenderEndTag();//End TD
                         vd_fechaLunes = vd_fechaLunes.AddDays(1);
 
                         contador++;
@@ -377,6 +398,52 @@ namespace COSEVI.web.controls
             }
             catch (Exception)
             {
+            }
+        }
+
+        /// <summary>
+        /// Genera los controles
+        /// necesarios para el calendario
+        /// con sus respectivos nombres
+        /// de actividades y operaciones
+        /// y sus registros.
+        /// </summary>
+        /// <param name="pd_fecha">DateTime fecha.</param>
+        /// <param name="writer">HtmlWriter para realizar el render del control.</param>
+        /// <param name="po_actividad">DataRow con con la información de la actividad o la operación</param>
+        /// <param name="pi_contandor"></param>
+        private void GeneraActividad(DateTime pd_fecha, HtmlTextWriter writer, DataRow po_actividad, int pi_contandor) 
+        {
+            DataRow vo_row = null;
+
+            if (this.ddlProyectos.SelectedValue.ToString().Equals("0") ||
+                this.ddlProyectos.SelectedValue.ToString().Equals("-1"))
+            {
+                vo_row = this.ObtenerRegistroActividad(pd_fecha, po_actividad[this.codigoActividadField].ToString());
+                writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                this.crearLinkHora("vlnkHora" + pi_contandor,
+                                    this.ObtenerUrl(vo_row, po_actividad[this.codigoActividadField].ToString(), pd_fecha, this.SelectValueProyecto),
+                                    this.ObtenerHoras(vo_row)).RenderControl(writer);
+                writer.RenderEndTag();//End TD
+            }
+            else
+            {
+                vo_row = this.ObtenerRegistroActividad(pd_fecha, 
+                                                        po_actividad.Field<int>(this.codigoActividadField), 
+                                                        po_actividad.Field<int>(this.PaqueteField), 
+                                                        po_actividad.Field<int>(this.componenteField), 
+                                                        po_actividad.Field<int>(this.EntregableField));
+                writer.RenderBeginTag(HtmlTextWriterTag.Td);
+                this.crearLinkHora("vlnkHora" + pi_contandor,
+                                    this.ObtenerUrl(vo_row,
+                                                        po_actividad.Field<int>(this.codigoActividadField), 
+                                                        po_actividad.Field<int>(this.PaqueteField), 
+                                                        po_actividad.Field<int>(this.componenteField), 
+                                                        po_actividad.Field<int>(this.EntregableField),
+                                                        this.SelectValueProyecto, pd_fecha),
+                                    this.ObtenerHoras(vo_row)).RenderControl(writer);
+                writer.RenderEndTag();//End TD
+                                                                 
             }
         }
 
@@ -410,6 +477,43 @@ namespace COSEVI.web.controls
             string vs_registro = po_row == null ? "" : po_row[this.RegistroField].ToString();
 
             vs_url += "?act=" + ps_actividad + "&" + "pro=" + ps_proyecto + "&" + "reg=" + vs_registro + "&" + "fech=" + pd_fecha.ToString("dd/MM/yyyy");
+
+            return vs_url;
+        }
+
+        /// <summary>
+        /// Obtiene la url
+        /// basada en los datos
+        /// que se encuentran el
+        /// data row. 
+        /// </summary>
+        /// <param name="po_row">DataRow row</param>
+        /// <param name="pi_actividad">int actividad</param>
+        /// <param name="pi_paquete">int paquete</param>
+        /// <param name="pi_componente">int componente</param>
+        /// <param name="pi_entregable">int entregable</param>
+        /// <param name="ps_proyecto">int proyecto</param>
+        /// <param name="pd_fecha">DateTime fecha</param>
+        /// <returns></returns>
+        private String ObtenerUrl(DataRow po_row, 
+                                    int pi_actividad, 
+                                    int pi_paquete, 
+                                    int pi_componente, 
+                                    int pi_entregable, 
+                                    string ps_proyecto,
+                                    DateTime pd_fecha)
+        {
+            string vs_url = this.UrlLink;
+
+            string vs_registro = po_row == null ? "" : po_row[this.RegistroField].ToString();
+
+            vs_url += "?act=" + pi_actividad  + "&" +
+                       "paq=" + pi_paquete + "&" +
+                       "comp=" + pi_componente + "&" +
+                       "ent=" + pi_entregable + "&" +  
+                       "pro=" + ps_proyecto + "&" + 
+                       "reg=" + vs_registro + "&" + 
+                       "fech=" + pd_fecha.ToString("dd/MM/yyyy");
 
             return vs_url;
         }
@@ -700,6 +804,51 @@ namespace COSEVI.web.controls
         }
 
         /// <summary>
+        /// Obtiene a partir de los datos
+        /// de registro de actividades
+        /// el que corresponde a una fecha
+        /// y actividades específica
+        /// </summary>
+        /// <param name="pd_fecha">DateTime Fecha.</param>
+        /// <param name="pi_actividad">int código de la actividad.</param>
+        /// <param name="pi_paquete">int código del paquete.</param>
+        /// <param name="pi_componente">int código del componente.</param>
+        /// <param name="pi_entregable">int entregable</param>
+        /// <returns></returns>
+        private DataRow ObtenerRegistroActividad(DateTime pd_fecha, 
+                                                int pi_actividad,
+                                                int pi_paquete, 
+                                                int pi_componente, 
+                                                int pi_entregable)
+        {
+            DataRow vo_dato = null;
+            IEnumerable<DataRow> vo_rows = null;
+            try
+            {
+                if (poDatosRegistro != null)
+                {
+                    vo_rows = ((DataSet)this.poDatosRegistro).Tables[0].Select().Where(c => ConvertirFechaInicioDia(c.Field<DateTime>(this.FechaField))
+                                                                                            == ConvertirFechaInicioDia(pd_fecha) &&
+                                                                                            c.Field<int>(this.codigoActividadField) == pi_actividad &&
+                                                                                            c.Field<int>(this.PaqueteField) == pi_paquete &&
+                                                                                            c.Field<int>(this.ComponenteField) == pi_componente &&
+                                                                                            c.Field<int>(this.EntregableField) == pi_entregable 
+                                                                                       );
+                    if (vo_rows != null && vo_rows.Count() == 1)
+                    {
+                        vo_dato = vo_rows.ElementAt(0);
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+                vo_dato = null;
+            }
+            return vo_dato;
+        }
+
+        /// <summary>
         /// Convierte una fecha a una
         /// fecha a inicio de día.
         /// </summary>
@@ -742,10 +891,16 @@ namespace COSEVI.web.controls
 
             if (this.voCambioFecha != null)
             {
+                
                 this.voCambioFecha(this, FechaCalendario, this.ddlProyectos.SelectedValue);
+
             }
 
+            this.SelectProyecto = this.ddlProyectos.SelectedValue;
+
             this.CreateChildControls();
+
+            this.ddlProyectos.SelectedValue = this.SelectProyecto;
         }
 
         /// <summary>
@@ -765,7 +920,11 @@ namespace COSEVI.web.controls
                 this.voCambioFecha(this, FechaCalendario, this.ddlProyectos.SelectedValue);
             }
 
+            this.SelectProyecto = this.ddlProyectos.SelectedValue;
+
             this.CreateChildControls();
+
+            this.ddlProyectos.SelectedValue = this.SelectProyecto;
         }
 
         /// <summary>
@@ -786,7 +945,11 @@ namespace COSEVI.web.controls
                 this.voCambioFecha(this, FechaCalendario, this.ddlProyectos.SelectedValue);
             }
 
+            this.SelectProyecto = this.ddlProyectos.SelectedValue;
+
             this.CreateChildControls();
+
+            this.ddlProyectos.SelectedValue = this.SelectProyecto;
         }
 
         /// <summary>
@@ -810,7 +973,11 @@ namespace COSEVI.web.controls
                     this.voCambioFecha(this, FechaCalendario, this.ddlProyectos.SelectedValue);
                 }
 
+                this.SelectProyecto = this.ddlProyectos.SelectedValue;
+
                 this.CreateChildControls();
+
+                this.ddlProyectos.SelectedValue = this.SelectProyecto;
             }
 
         }
@@ -975,12 +1142,36 @@ namespace COSEVI.web.controls
             {
                 if (this.ddlProyectos != null)
                 {
+                    //if (ViewState["ddlProyecto"] == null)
+                    //{
+                    //    ViewState["ddlProyecto"] = this.ddlProyectos.SelectedValue;
+                    //}
+
+                    //return ViewState["ddlProyecto"].ToString();
+
                     return this.ddlProyectos.SelectedValue;
                 }
                 else
                 {
                     return string.Empty;
                 }
+            }
+            set
+            {
+                ViewState["ddlProyecto"] = value;
+                ddlProyectos.SelectedValue = value;
+            }
+        }
+
+        public string SelectProyecto
+        {
+            get
+            {
+                return ViewState["ddlProyecto"] != null ? ViewState["ddlProyecto"].ToString() : this.ddlProyectos.Items[0].Value;
+            }
+            set
+            {
+                ViewState["ddlProyecto"] = value;
             }
         }
 
@@ -1091,6 +1282,37 @@ namespace COSEVI.web.controls
             set { horasField = value; }
         }
 
+        public String PaqueteField
+        {
+            get { return paqueteField; }
+            set { paqueteField = value; }
+        }
+
+        public String ComponenteField
+        {
+            get { return componenteField; }
+            set { componenteField = value; }
+        }
+
+        public String EntregableField
+        {
+            get { return entregableField; }
+            set { entregableField = value; }
+        }
+
+        public String DescripcionPaquete
+        {
+            get { return descripcionPaquete; }
+            set { descripcionPaquete = value; }
+        }
+
+
+        public String UsuarioField
+        {
+            get { return usuarioField; }
+            set { usuarioField = value; }
+        }
+
         #endregion
 
         #region Atributos
@@ -1174,6 +1396,16 @@ namespace COSEVI.web.controls
         private String registroField;
 
         private String horasField;
+
+        private String paqueteField;
+
+        private String componenteField;
+
+        private String entregableField;
+
+        private String descripcionPaquete;
+
+        private String usuarioField;
 
         #endregion
 

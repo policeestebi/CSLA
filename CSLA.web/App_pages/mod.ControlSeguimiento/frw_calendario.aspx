@@ -41,7 +41,10 @@
                     'transitionIn': 'none',
                     'transitionOut': 'none',
                     'type': 'iframe',
-                    'closeBtn': true
+                    'closeBtn': true,
+                    onClosed: function () {
+                        __doPostBack('<%= updPanel.ClientID  %>', '');
+                    }
                 });
             });
         }
@@ -59,7 +62,8 @@
                     UrlAnterior="/App_Themes/Basico/imagenes/iconos/img_anterior.png" UrlBotonCalendario="/App_Themes/Basico/botones/img_calendario.png"
                     OnvoCambioFecha="Unnamed1_voCambioFecha" DataTextFieldProyecto="nombre" DataValueFieldProyecto="PK_proyecto"
                     CodigoActividadField="PK_codigo" DescripcionField="descripcion" FechaField="fecha"
-                    TipoField="tipo" RegistroField="PK_registro" HorasField="horas" />
+                    TipoField="tipo" RegistroField="PK_registro" HorasField="horas" 
+                    PaqueteField="PK_paquete" ComponenteField="PK_componente" EntregableField="PK_entregable" DescripcionPaquete="descripcion_paquete" UsuarioField="PK_usuario"/>
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
