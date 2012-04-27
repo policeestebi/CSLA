@@ -566,7 +566,7 @@ CREATE PROCEDURE  PA_cont_paquetesProyectoSelectAll
 AS 
  BEGIN 
 		
-		SELECT 
+		SELECT DISTINCT
 			 cont_paq_act.PK_paquete,
 			 cont_paq.nombre nombrePaquete       
         FROM 

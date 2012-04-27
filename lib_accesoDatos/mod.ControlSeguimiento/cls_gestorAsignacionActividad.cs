@@ -409,6 +409,56 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
            }
        }
 
-	
+       /// <summary>
+       /// Este va sobrecargado para traer también las actividades cuando NO hay cticidades aún asignadas
+       /// </summary>
+       /// <param name="pi_proyecto"></param>
+       /// <param name="pi_paquete"></param>
+       /// <returns></returns>
+       public static cls_actividadAsignada listarActividadesPorPaquete(int pi_proyecto, int pi_paquete, int pi_actividad)
+       {
+           List<cls_actividadAsignada> vo_lista = null;
+           cls_actividadAsignada vo_asignacionActividad = null;
+           try
+           {
+               String vs_comando = "PA_cont_actividadesPaqueteSelectOne";
+               cls_parameter[] vu_parametros = {
+                                                 new cls_parameter("@paramPK_proyecto", pi_proyecto),
+                                                 new cls_parameter("@paramPK_paquete", pi_paquete),
+                                                 new cls_parameter("@paramPK_actividad", pi_actividad)
+                                               };
+
+               DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
+
+               vo_lista = new List<cls_actividadAsignada>();
+               for (int i = 0; i < vu_dataSet.Tables[0].Rows.Count; i++)
+               {
+                   vo_asignacionActividad = new cls_actividadAsignada();
+
+                   vo_asignacionActividad.pPK_Actividad = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["PK_actividad"]);
+
+                   vo_asignacionActividad.pPK_Paquete = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["PK_paquete"]);
+
+                   vo_asignacionActividad.pPK_Componente = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["PK_componente"]);
+
+                   vo_asignacionActividad.pPK_Entregable = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["PK_entregable"]);
+
+                   vo_asignacionActividad.pPK_Proyecto = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["PK_proyecto"]);
+
+                   vo_asignacionActividad.pNombrePaquete = vu_dataSet.Tables[0].Rows[i]["nombrePaquete"].ToString();
+
+                   vo_asignacionActividad.pNombreActividad = vu_dataSet.Tables[0].Rows[i]["nombreActividad"].ToString();
+
+                   vo_lista.Add(vo_asignacionActividad);
+               }
+
+               return vo_asignacionActividad;
+           }
+           catch (Exception po_exception)
+           {
+               throw new Exception("Ocurrió un error al obtener el listado de las actividades.", po_exception);
+           }
+       }
+	    
     }
 }
