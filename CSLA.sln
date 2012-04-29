@@ -37,6 +37,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Procedures", "Procedures", "{BAB36C1D-E248-467C-A35E-5FE9C5C8B3C5}"
 	ProjectSection(SolutionItems) = preProject
 		Archivos\ScriptsBD\CSLA_DB\mod_control_seguimiento\procedures\csla_cont_procedures_deletes.sql = Archivos\ScriptsBD\CSLA_DB\mod_control_seguimiento\procedures\csla_cont_procedures_deletes.sql
+		Archivos\ScriptsBD\CSLA_DB\mod_control_seguimiento\procedures\csla_cont_procedures_inserts.sql = Archivos\ScriptsBD\CSLA_DB\mod_control_seguimiento\procedures\csla_cont_procedures_inserts.sql
 		Archivos\ScriptsBD\CSLA_DB\mod_control_seguimiento\procedures\csla_cont_procedures_selectOne.sql = Archivos\ScriptsBD\CSLA_DB\mod_control_seguimiento\procedures\csla_cont_procedures_selectOne.sql
 		Archivos\ScriptsBD\CSLA_DB\mod_control_seguimiento\procedures\csla_cont_procedures_selects.sql = Archivos\ScriptsBD\CSLA_DB\mod_control_seguimiento\procedures\csla_cont_procedures_selects.sql
 		Archivos\ScriptsBD\CSLA_DB\mod_control_seguimiento\procedures\csla_cont_procedures_updates.sql = Archivos\ScriptsBD\CSLA_DB\mod_control_seguimiento\procedures\csla_cont_procedures_updates.sql

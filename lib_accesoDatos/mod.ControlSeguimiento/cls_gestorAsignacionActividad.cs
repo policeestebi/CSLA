@@ -42,7 +42,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
         /// </summary>
         /// <param name="po_Actividad">Actividad a insertar</param>
         /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-	   public static int insertActividad(cls_asignacionActividad po_Actividad)
+	   public static int insertAsignacionActividad(cls_asignacionActividad po_Actividad)
    {
             int vi_resultado;
 
@@ -56,7 +56,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                         new cls_parameter("@paramPK_componente", po_Actividad.pPK_Componente),
                         new cls_parameter("@paramPK_entregable", po_Actividad.pPK_Entregable),
                         new cls_parameter("@paramPK_proyecto", po_Actividad.pPK_Proyecto),
-                        new cls_parameter("@paramPK_usuario", po_Actividad.pPK_Usuario),
+                        new cls_parameter("@paramPK_usuario", po_Actividad.pUsuarioPivot),
                         new cls_parameter("@paramFK_estado", po_Actividad.pFK_Estado),
                         new cls_parameter("@paramdescripcion", po_Actividad.pDescripcion),
                         new cls_parameter("@paramfechaInicio", po_Actividad.pFechaInicio),
@@ -95,7 +95,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// </summary>
        /// <param name="po_Actividad">Actividad a actualizar</param>
        /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
-       public static int updateActividad(cls_asignacionActividad po_Actividad)
+       public static int updateAsignacionActividad(cls_asignacionActividad po_Actividad, int ps_accion)
        {
             int vi_resultado;
 
@@ -109,7 +109,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                     new cls_parameter("@paramPK_componente", po_Actividad.pPK_Componente),
                     new cls_parameter("@paramPK_entregable", po_Actividad.pPK_Entregable),
                     new cls_parameter("@paramPK_proyecto", po_Actividad.pPK_Proyecto),
-                    new cls_parameter("@paramPK_usuario", po_Actividad.pPK_Usuario),
+                    new cls_parameter("@paramPK_usuario", po_Actividad.pUsuarioPivot),
                     new cls_parameter("@paramFK_estado", po_Actividad.pFK_Estado),
                     new cls_parameter("@paramdescripcion", po_Actividad.pDescripcion),
                     new cls_parameter("@paramfechaInicio", po_Actividad.pFechaInicio),
@@ -117,7 +117,8 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                     new cls_parameter("@paramhorasAsignadas", po_Actividad.pHorasAsignadas),
                     new cls_parameter("@paramhorasAsigDefectos", po_Actividad.pHorasAsigDefectos),
                     new cls_parameter("@paramhorasReales", po_Actividad.pHorasReales),
-                    new cls_parameter("@paramhorasRealesDefectos", po_Actividad.pHorasRealesDefectos)
+                    new cls_parameter("@paramhorasRealesDefectos", po_Actividad.pHorasRealesDefectos),
+                    new cls_parameter("@paramAccion", ps_accion)
                 };
 
                 cls_sqlDatabase.beginTransaction();

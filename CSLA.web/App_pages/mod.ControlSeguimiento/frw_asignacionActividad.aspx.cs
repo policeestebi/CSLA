@@ -506,27 +506,119 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         private int guardarDatos()
         {
             int vi_resultado = 1;
-            cls_asignacionActividad vo_asignacionActividad = this.crearObjeto();
+
+            //Se obtiene la llave primaria de proyecto, es decir, PK_proyecto, de la variables del sistema, para luego sólo enviarla por parámetro en los guardar
+            int llaveProyecto = cls_variablesSistema.vs_proyecto.pPK_proyecto;
+
+            //De momento se va a agregar, por defecto
+            //cls_variablesSistema.tipoEstado = cls_constantes.AGREGAR;
+
             try
             {
-                //switch (cls_variablesSistema.tipoEstado)
                 switch (cls_constantes.AGREGAR)
                 {
                     case cls_constantes.AGREGAR:
-                        vi_resultado = cls_gestorAsignacionActividad.insertActividad(vo_asignacionActividad);
+
+                        asignarActividades(llaveProyecto);
+
                         break;
                     case cls_constantes.EDITAR:
-                        vi_resultado = cls_gestorAsignacionActividad.updateActividad(vo_asignacionActividad);
+
+                        //editarActividadesAsignadas(llaveProyecto);
+
                         break;
                     default:
                         break;
                 }
+
                 return vi_resultado;
             }
             catch (Exception po_exception)
             {
                 throw new Exception("Ocurrió un error al guardar el registro.", po_exception);
             } 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ps_llaveProyecto"></param>
+        /// <returns></returns>
+        private int asignarActividades(int ps_llaveProyecto)
+        {
+            int vi_resultado = 1;
+
+            List<cls_asignacionActividad> vl_actividadAsignadaMemoria = this.crearAsignacionActividadMemoria();
+            List<cls_asignacionActividad> vl_actividadAsignadaBaseDatos = this.crearAsignacionActividadBaseDatos();
+
+            try
+            {
+                //Para cada proyecto entregable, se realiza la inserción
+                foreach (cls_asignacionActividad vo_actividadAsignada in vl_actividadAsignadaMemoria)
+                {
+                    if (!(vl_actividadAsignadaBaseDatos.Where(dep => dep.pPK_Entregable == vo_actividadAsignada.pPK_Entregable &&
+                                                                     dep.pPK_Componente == vo_actividadAsignada.pPK_Componente &&
+                                                                     dep.pPK_Paquete == vo_actividadAsignada.pPK_Paquete &&
+                                                                     dep.pPK_Actividad == vo_actividadAsignada.pPK_Actividad).Count() > 0))
+                    {
+                        foreach (cls_usuario vo_usuario in vo_actividadAsignada.pUsuarioLista)
+                        {
+                            vo_actividadAsignada.pPK_Proyecto = ps_llaveProyecto;
+                            vo_actividadAsignada.pUsuarioPivot = vo_usuario.pPK_usuario;
+                            vi_resultado = cls_gestorAsignacionActividad.updateAsignacionActividad(vo_actividadAsignada, 1);
+                        }
+                    }
+                }
+
+                //Para cada proyecto entregable, se realiza la inserción
+                foreach (cls_asignacionActividad vo_actividadAsignada in vl_actividadAsignadaBaseDatos)
+                {
+                    if (!(vl_actividadAsignadaMemoria.Where(dep => dep.pPK_Entregable == vo_actividadAsignada.pPK_Entregable &&
+                                                                   dep.pPK_Componente == vo_actividadAsignada.pPK_Componente &&
+                                                                   dep.pPK_Paquete == vo_actividadAsignada.pPK_Paquete &&
+                                                                   dep.pPK_Actividad == vo_actividadAsignada.pPK_Actividad).Count() > 0))
+                    {
+                        foreach (cls_usuario vo_usuario in vo_actividadAsignada.pUsuarioLista)
+                        {
+                            vo_actividadAsignada.pPK_Proyecto = ps_llaveProyecto;
+                            vo_actividadAsignada.pUsuarioPivot = vo_usuario.pPK_usuario;
+                            vi_resultado = cls_gestorAsignacionActividad.updateAsignacionActividad(vo_actividadAsignada, 0);
+                        }
+                    }
+                }
+
+                return vi_resultado;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al guardar los entregables del proyecto.", po_exception);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private List<cls_asignacionActividad> crearAsignacionActividadMemoria()
+        {
+            List<cls_asignacionActividad> vo_asignacionActividad = new List<cls_asignacionActividad>();
+
+            vo_asignacionActividad = cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria;
+
+            return vo_asignacionActividad;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private List<cls_asignacionActividad> crearAsignacionActividadBaseDatos()
+        {
+            List<cls_asignacionActividad> vo_asignacionActividad = new List<cls_asignacionActividad>();
+
+            vo_asignacionActividad = cls_variablesSistema.vs_proyecto.pAsignacionActividadListaBaseDatos;
+
+            return vo_asignacionActividad;
         }
 
         /// <summary>

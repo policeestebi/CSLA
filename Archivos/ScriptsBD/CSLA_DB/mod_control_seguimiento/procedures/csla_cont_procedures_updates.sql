@@ -482,29 +482,89 @@ CREATE PROCEDURE  PA_cont_asignacionActividadUpdate
   @paramhorasAsignadas numeric(10,2), 
   @paramhorasAsigDefectos numeric(10,2), 
   @paramhorasReales numeric(10,2), 
-  @paramhorasRealesDefectos numeric(10,2) 
+  @paramhorasRealesDefectos numeric(10,2), 
+  @paramAccion int  
 AS 
  BEGIN 
  SET NOCOUNT ON; 
 
-		UPDATE t_cont_asignacion_actividad
-         SET 
-			 descripcion = @paramdescripcion,
-			 fechaInicio = @paramfechaInicio,
-			 fechaFin = @paramfechaFin,
-			 horasAsignadas = @paramhorasAsignadas,
-			 horasAsigDefectos = @paramhorasAsigDefectos,
-			 horasReales = @paramhorasReales,
-			 horasRealesDefectos = @paramhorasRealesDefectos,
-			 FK_estado  = @paramFK_estado
-         WHERE 
-			 PK_actividad = @paramPK_actividad AND
-			 PK_paquete = @paramPK_paquete AND
-			 PK_componente = @paramPK_componente AND
-			 PK_entregable = @paramPK_entregable AND
-			 PK_proyecto = @paramPK_proyecto AND
-			 PK_usuario = @paramPK_usuario;
+ DECLARE @activo int;
 
+	IF ( SELECT COUNT(0) FROM t_cont_asignacion_actividad 
+				WHERE 
+					PK_actividad = @paramPK_actividad AND 
+					PK_paquete = @paramPK_paquete AND 
+					PK_componente = @paramPK_componente AND 
+					PK_entregable = @paramPK_entregable AND 
+					PK_proyecto = @paramPK_proyecto AND
+					PK_usuario = @paramPK_usuario) > 0
+		BEGIN
+			SET @activo = (SELECT activo FROM t_cont_asignacion_actividad
+					WHERE 
+						PK_actividad = @paramPK_actividad AND 
+						PK_paquete = @paramPK_paquete AND 
+						PK_componente = @paramPK_componente AND  
+						PK_entregable = @paramPK_entregable AND 
+						PK_proyecto = @paramPK_proyecto AND
+					    PK_usuario = @paramPK_usuario);
+
+			IF (@activo = 1 and @paramAccion = 0)
+				UPDATE t_cont_asignacion_actividad       
+         		SET activo = 0
+				WHERE 
+					PK_actividad = @paramPK_actividad AND
+					PK_paquete = @paramPK_paquete AND 
+					PK_componente = @paramPK_componente AND
+				    PK_entregable = @paramPK_entregable AND 
+         			PK_proyecto = @paramPK_proyecto AND
+					PK_usuario = @paramPK_usuario;
+			
+			IF (@activo = 0 and @paramAccion = 1)
+				UPDATE t_cont_asignacion_actividad       
+         		SET 
+					activo = 1,
+					descripcion = @paramdescripcion,
+					fechaInicio = @paramfechaInicio,
+					fechaFin = @paramfechaFin,
+					horasAsignadas = @paramhorasAsignadas,
+					horasAsigDefectos = @paramhorasAsigDefectos,
+					horasReales = @paramhorasReales,
+					horasRealesDefectos = @paramhorasRealesDefectos,
+					FK_estado  = @paramFK_estado
+				WHERE 
+				   PK_actividad = @paramPK_actividad AND
+				   PK_paquete = @paramPK_paquete AND 
+				   PK_componente = @paramPK_componente AND
+				   PK_entregable = @paramPK_entregable AND 
+         		   PK_proyecto = @paramPK_proyecto AND
+				   PK_usuario = @paramPK_usuario;
+
+			IF (@activo = 1 and @paramAccion = 1)
+				UPDATE t_cont_asignacion_actividad       
+         		SET 
+					descripcion = @paramdescripcion,
+					fechaInicio = @paramfechaInicio,
+					fechaFin = @paramfechaFin,
+					horasAsignadas = @paramhorasAsignadas,
+					horasAsigDefectos = @paramhorasAsigDefectos,
+					horasReales = @paramhorasReales,
+					horasRealesDefectos = @paramhorasRealesDefectos,
+					FK_estado  = @paramFK_estado
+				WHERE 
+				   PK_actividad = @paramPK_actividad AND
+				   PK_paquete = @paramPK_paquete AND 
+				   PK_componente = @paramPK_componente AND
+				   PK_entregable = @paramPK_entregable AND 
+         		   PK_proyecto = @paramPK_proyecto AND
+				   PK_usuario = @paramPK_usuario;
+
+		END
+	ELSE
+		BEGIN
+			EXEC PA_cont_asignacionActividadInsert @paramPK_actividad,@paramPK_paquete,@paramPK_componente,@paramPK_entregable,@paramPK_proyecto,
+												   @paramPK_usuario,@paramFK_estado,@paramdescripcion,@paramfechaInicio,@paramfechaFin,@paramhorasAsignadas,
+												   @paramhorasAsigDefectos,@paramhorasReales,@paramhorasRealesDefectos;
+		END
 END   
  GO 
 
