@@ -21,7 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Procedures", "Procedures", 
 	ProjectSection(SolutionItems) = preProject
 		Archivos\ScriptsBD\CSLA_DB\mod_administracion\procedures\csla_admi_procedures_deletes.sql = Archivos\ScriptsBD\CSLA_DB\mod_administracion\procedures\csla_admi_procedures_deletes.sql
 		Archivos\ScriptsBD\CSLA_DB\mod_administracion\procedures\csla_admi_procedures_inserts.sql = Archivos\ScriptsBD\CSLA_DB\mod_administracion\procedures\csla_admi_procedures_inserts.sql
-		Archivos\ScriptsBD\CSLA_DB\mod_administracion\procedures\csla_admi_procedures_selectOne.sql = Archivos\ScriptsBD\CSLA_DB\mod_administracion\procedures\csla_admi_procedures_selectOne.sql
 		Archivos\ScriptsBD\CSLA_DB\mod_administracion\procedures\csla_admi_procedures_selects.sql = Archivos\ScriptsBD\CSLA_DB\mod_administracion\procedures\csla_admi_procedures_selects.sql
 		Archivos\ScriptsBD\CSLA_DB\mod_administracion\procedures\csla_admi_procedures_updates.sql = Archivos\ScriptsBD\CSLA_DB\mod_administracion\procedures\csla_admi_procedures_updates.sql
 	EndProjectSection
