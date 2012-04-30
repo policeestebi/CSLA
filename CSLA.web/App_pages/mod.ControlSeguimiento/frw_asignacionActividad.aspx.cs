@@ -294,10 +294,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     else
                     {
                         //Se carga en la variable objeto, luego verificar si es necesario
-                        vo_asignacionActividad = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == vo_asignacionActividad.pPK_Actividad &&
+                        vo_asignacionActividad = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == vo_asignacionActividad.pPK_Actividad &&
                                                                                                                                                         test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete);
                         cls_variablesSistema.obj = vo_asignacionActividad;
-                        cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_asignacionActividad);
+                        //cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_asignacionActividad);
 
                     }
 
@@ -553,21 +553,22 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
-                //Para cada proyecto entregable, se realiza la inserción
+                //Se recorre toda la lista de actividades recién asignadas en memoria
                 foreach (cls_asignacionActividad vo_actividadAsignada in vl_actividadAsignadaMemoria)
                 {
+                    //Lo que importa es la asignación de cada uno de los usuarios que se han agregado/modificado en memoria
                     foreach (cls_usuario vo_usuario in vo_actividadAsignada.pUsuarioLista)
                     {
-                        if (!(vl_actividadAsignadaBaseDatos.Where(dep => dep.pPK_Entregable == vo_actividadAsignada.pPK_Entregable &&
-                                                                         dep.pPK_Componente == vo_actividadAsignada.pPK_Componente &&
-                                                                         dep.pPK_Paquete == vo_actividadAsignada.pPK_Paquete &&
-                                                                         dep.pPK_Actividad == vo_actividadAsignada.pPK_Actividad &&
-                                                                         (dep.pUsuarioLista.Count(t => t.pPK_usuario == vo_usuario.pPK_usuario) > 0)).Count() > 0))
-                        {                      
+                        //if (!(vl_actividadAsignadaBaseDatos.Where(dep => dep.pPK_Entregable == vo_actividadAsignada.pPK_Entregable &&
+                        //                                                 dep.pPK_Componente == vo_actividadAsignada.pPK_Componente &&
+                        //                                                 dep.pPK_Paquete == vo_actividadAsignada.pPK_Paquete &&
+                        //                                                 dep.pPK_Actividad == vo_actividadAsignada.pPK_Actividad &&
+                        //                                                 (dep.pUsuarioLista.Count(t => t.pPK_usuario == vo_usuario.pPK_usuario) > 0)).Count() > 0))
+                        //{                      
                             vo_actividadAsignada.pPK_Proyecto = ps_llaveProyecto;
                             vo_actividadAsignada.pUsuarioPivot = vo_usuario.pPK_usuario;
                             vi_resultado = cls_gestorAsignacionActividad.updateAsignacionActividad(vo_actividadAsignada, 1);
-                        }
+                        //}
                     }
                 }
 
@@ -1012,22 +1013,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                                                                                                                 test.pPK_Paquete == vo_paquete.pPK_Paquete).Count() > 0)
                             {
                                 vo_actividadAsignada = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == vo_actividad.pPK_Actividad &&
-                                                                                                                                                             test.pPK_Paquete == vo_paquete.pPK_Paquete);
-                                //cls_variablesSistema.obj = vo_actividadAsignada;
-
-                                //vo_actividadAsignada = crearObjeto();
-
-                                //Si se logra asignar un valor de memoria, se procede, se lo contrario la variable está nula y no debe entrar a agregar
-                                //if (vo_actividadAsignada != null)
-                                //{
-                                //if (vo_actividadAsignada.pUsuarioLista.Where(test => test.pPK_usuario == vo_usuario.pPK_usuario).Count() == 0)
-                                //{
-
+                                                                                                                                                               test.pPK_Paquete == vo_paquete.pPK_Paquete);
+                                //Si luego de esta eliminación, la lista aún va a quedar con elementos, solo se remueve el usuario
+                                if (vo_actividadAsignada.pUsuarioLista.Count > 1)
+                                {
                                     vo_actividadAsignada.pUsuarioLista.RemoveAll(test => test.pPK_usuario == vo_usuario.pPK_usuario);
-
-                                    //cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_actividadAsignada);
-                                //}
-                                //}
+                                }
+                                //Si solo se haya un elemento en la lista de usuarios, no se realiza la eliminación del mismo, sino de la actividad asignada
+                                //del obejto en memoria, esto debido a que la llave primaria de la asignación está compuesta en parte por la llave primario
+                                //del usuario, y si el mismo no se asigna, pues no se obtiene y presentaría un error
+                                else
+                                {
+                                    cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.RemoveAll(test => test.pPK_Actividad == vo_actividad.pPK_Actividad &&
+                                                                                                                        test.pPK_Paquete == vo_paquete.pPK_Paquete);
+                                
+                                }
                             }
 
                             lbx_usuarios.Items.Add(lbx_usuariosAsociados.Items[j]);
