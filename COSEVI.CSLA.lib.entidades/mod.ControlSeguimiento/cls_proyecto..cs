@@ -42,6 +42,7 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             this.componenteLista = new List<cls_componente>();
             this.paqueteLista = new List<cls_paquete>();
             this.actividadLista = new List<cls_actividad>();
+            this.asignacionActividadListaMemoria = new List<cls_asignacionActividad>();
             this.asignacionActividadListaBaseDatos = new List<cls_asignacionActividad>();
 
             this.proyectoEntregableListaMemoria = new List<cls_proyectoEntregable>();

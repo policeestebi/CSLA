@@ -426,10 +426,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 vo_asignacionActividad.pDescripcion = txt_descripcion.Text;
                 vo_asignacionActividad.pFechaInicio = Convert.ToDateTime(txt_fechaInicio.Text);
                 vo_asignacionActividad.pFechaFin = Convert.ToDateTime(txt_fechaFin.Text);
-                vo_asignacionActividad.pHorasAsignadas = Convert.ToInt32(txt_horasAsignadas.Text);
-                vo_asignacionActividad.pHorasAsigDefectos = Convert.ToInt32(txt_horasAsigDefectos.Text);
-                vo_asignacionActividad.pHorasReales = Convert.ToInt32(txt_horasReales.Text);
-                vo_asignacionActividad.pHorasRealesDefectos = Convert.ToInt32(txt_horasRealesDef.Text);
+                vo_asignacionActividad.pHorasAsignadas = Convert.ToDecimal(txt_horasAsignadas.Text);
+                vo_asignacionActividad.pHorasAsigDefectos = Convert.ToDecimal(txt_horasAsigDefectos.Text);
+                vo_asignacionActividad.pHorasReales = Convert.ToDecimal(txt_horasReales.Text);
+                vo_asignacionActividad.pHorasRealesDefectos = Convert.ToDecimal(txt_horasRealesDef.Text);
                 vo_asignacionActividad.pEstado.pPK_estado = Convert.ToInt32(ddl_estado.SelectedValue);
 
                 return vo_asignacionActividad;
