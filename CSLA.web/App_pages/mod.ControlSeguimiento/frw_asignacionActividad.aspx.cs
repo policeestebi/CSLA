@@ -556,13 +556,14 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 //Para cada proyecto entregable, se realiza la inserción
                 foreach (cls_asignacionActividad vo_actividadAsignada in vl_actividadAsignadaMemoria)
                 {
-                    if (!(vl_actividadAsignadaBaseDatos.Where(dep => dep.pPK_Entregable == vo_actividadAsignada.pPK_Entregable &&
-                                                                     dep.pPK_Componente == vo_actividadAsignada.pPK_Componente &&
-                                                                     dep.pPK_Paquete == vo_actividadAsignada.pPK_Paquete &&
-                                                                     dep.pPK_Actividad == vo_actividadAsignada.pPK_Actividad).Count() > 0))
+                    foreach (cls_usuario vo_usuario in vo_actividadAsignada.pUsuarioLista)
                     {
-                        foreach (cls_usuario vo_usuario in vo_actividadAsignada.pUsuarioLista)
-                        {
+                        if (!(vl_actividadAsignadaBaseDatos.Where(dep => dep.pPK_Entregable == vo_actividadAsignada.pPK_Entregable &&
+                                                                         dep.pPK_Componente == vo_actividadAsignada.pPK_Componente &&
+                                                                         dep.pPK_Paquete == vo_actividadAsignada.pPK_Paquete &&
+                                                                         dep.pPK_Actividad == vo_actividadAsignada.pPK_Actividad &&
+                                                                         (dep.pUsuarioLista.Count(t => t.pPK_usuario == vo_usuario.pPK_usuario) > 0)).Count() > 0))
+                        {                      
                             vo_actividadAsignada.pPK_Proyecto = ps_llaveProyecto;
                             vo_actividadAsignada.pUsuarioPivot = vo_usuario.pPK_usuario;
                             vi_resultado = cls_gestorAsignacionActividad.updateAsignacionActividad(vo_actividadAsignada, 1);
@@ -573,12 +574,14 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 //Para cada proyecto entregable, se realiza la inserción
                 foreach (cls_asignacionActividad vo_actividadAsignada in vl_actividadAsignadaBaseDatos)
                 {
-                    if (!(vl_actividadAsignadaMemoria.Where(dep => dep.pPK_Entregable == vo_actividadAsignada.pPK_Entregable &&
-                                                                   dep.pPK_Componente == vo_actividadAsignada.pPK_Componente &&
-                                                                   dep.pPK_Paquete == vo_actividadAsignada.pPK_Paquete &&
-                                                                   dep.pPK_Actividad == vo_actividadAsignada.pPK_Actividad).Count() > 0))
+                    foreach (cls_usuario vo_usuario in vo_actividadAsignada.pUsuarioLista)
                     {
-                        foreach (cls_usuario vo_usuario in vo_actividadAsignada.pUsuarioLista)
+
+                        if (!(vl_actividadAsignadaMemoria.Where(dep => dep.pPK_Entregable == vo_actividadAsignada.pPK_Entregable &&
+                                                                       dep.pPK_Componente == vo_actividadAsignada.pPK_Componente &&
+                                                                       dep.pPK_Paquete == vo_actividadAsignada.pPK_Paquete &&
+                                                                       dep.pPK_Actividad == vo_actividadAsignada.pPK_Actividad &&
+                                                                       (dep.pUsuarioLista.Count(t => t.pPK_usuario == vo_usuario.pPK_usuario) > 0)).Count() > 0))
                         {
                             vo_actividadAsignada.pPK_Proyecto = ps_llaveProyecto;
                             vo_actividadAsignada.pUsuarioPivot = vo_usuario.pPK_usuario;

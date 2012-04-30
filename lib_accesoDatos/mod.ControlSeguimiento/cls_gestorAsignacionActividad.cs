@@ -303,6 +303,8 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                     
                     for (int i = 0; i < vu_dataSet.Tables[0].Rows.Count; i++)
                     {
+                        vo_usuario = new cls_usuario();
+
                         vo_usuario.pPK_usuario = vu_dataSet.Tables[0].Rows[0]["PK_usuario"].ToString();
                         
                         vo_usuario.pNombre = vu_dataSet.Tables[0].Rows[0]["nombreUsuario"].ToString();
