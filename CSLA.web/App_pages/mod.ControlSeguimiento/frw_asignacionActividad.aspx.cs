@@ -272,31 +272,35 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 //cls_variablesSistema.obj = cls_gestorAsignacionActividad.seleccionarActividadAsignada(po_paqueteActividad);
                 //cls_variablesSistema.vs_proyecto.pActividadAsignada = (cls_actividadAsignada)cls_variablesSistema.obj;
 
-                cls_asignacionActividad vo_asignacionActividad = new cls_asignacionActividad();
+                //Se crean 2 variables para evitar que la asignación de una única presente inconcistencia de punteros a la hora de comparar y eliminar
+                //registro  de memoria con registros de la lista de base de datos (en el remover usuarios se presenta la inconsistencia de puntero)
+                cls_asignacionActividad vo_asignacionActividadMemoria = new cls_asignacionActividad();
+                cls_asignacionActividad vo_asignacionActividadBaseDatos = new cls_asignacionActividad();
 
-                vo_asignacionActividad = cls_gestorAsignacionActividad.seleccionarAsignacionActividad(po_paqueteActividad);
+                vo_asignacionActividadMemoria = cls_gestorAsignacionActividad.seleccionarAsignacionActividad(po_paqueteActividad);
+                vo_asignacionActividadBaseDatos = cls_gestorAsignacionActividad.seleccionarAsignacionActividad(po_paqueteActividad);
 
                 //Se verifica si la consulta de base de datos devolvió algún registro válido, de lo contrario no se debe registrar ni en la lista de memoria ni en la de base de datos
-                if (vo_asignacionActividad.pPK_Proyecto == cls_variablesSistema.vs_proyecto.pPK_proyecto)
+                if (vo_asignacionActividadMemoria.pPK_Proyecto == cls_variablesSistema.vs_proyecto.pPK_proyecto)
                 {
-                    if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaBaseDatos.Where(test => test.pPK_Actividad == vo_asignacionActividad.pPK_Actividad &&
-                                                                                                          test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
+                    if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaBaseDatos.Where(test => test.pPK_Actividad == vo_asignacionActividadBaseDatos.pPK_Actividad &&
+                                                                                                          test.pPK_Paquete == vo_asignacionActividadBaseDatos.pPK_Paquete).Count() == 0)
                     {
-                        cls_variablesSistema.vs_proyecto.pAsignacionActividadListaBaseDatos.Add(vo_asignacionActividad);
+                        cls_variablesSistema.vs_proyecto.pAsignacionActividadListaBaseDatos.Add(vo_asignacionActividadBaseDatos);
                     }
 
-                    if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == vo_asignacionActividad.pPK_Actividad &&
-                                                                                                          test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
+                    if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == vo_asignacionActividadMemoria.pPK_Actividad &&
+                                                                                                          test.pPK_Paquete == vo_asignacionActividadMemoria.pPK_Paquete).Count() == 0)
                     {
-                        cls_variablesSistema.obj = vo_asignacionActividad;
-                        cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_asignacionActividad);
+                        cls_variablesSistema.obj = vo_asignacionActividadMemoria;
+                        cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_asignacionActividadMemoria);
                     }
                     else
                     {
                         //Se carga en la variable objeto, luego verificar si es necesario
-                        vo_asignacionActividad = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == vo_asignacionActividad.pPK_Actividad &&
-                                                                                                                                                        test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete);
-                        cls_variablesSistema.obj = vo_asignacionActividad;
+                        vo_asignacionActividadMemoria = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == vo_asignacionActividadMemoria.pPK_Actividad &&
+                                                                                                                                                        test.pPK_Paquete == vo_asignacionActividadMemoria.pPK_Paquete);
+                        cls_variablesSistema.obj = vo_asignacionActividadMemoria;
                         //cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_asignacionActividad);
 
                     }
@@ -310,48 +314,32 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == po_paqueteActividad.pPK_Actividad &&
                                                                                                           test.pPK_Paquete == po_paqueteActividad.pPK_Paquete).Count() > 0)
                 {
-                    vo_asignacionActividad = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == po_paqueteActividad.pPK_Actividad &&
+                    vo_asignacionActividadMemoria = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == po_paqueteActividad.pPK_Actividad &&
                                                                                                                                                    test.pPK_Paquete == po_paqueteActividad.pPK_Paquete);
-                    cls_variablesSistema.obj = vo_asignacionActividad;
+                    cls_variablesSistema.obj = vo_asignacionActividadMemoria;
                     
                     cargarObjeto();
 
-                    lbx_usuariosAsociados.DataSource = vo_asignacionActividad.pUsuarioLista;
+                    lbx_usuariosAsociados.DataSource = vo_asignacionActividadMemoria.pUsuarioLista;
                     lbx_usuariosAsociados.DataTextField = "pNombre";
                     lbx_usuariosAsociados.DataValueField = "pPK_usuario";
                     lbx_usuariosAsociados.DataBind();
                 }
                 else
                 {
-                    vo_asignacionActividad = cls_gestorAsignacionActividad.listarActividadesPorPaquete(po_paqueteActividad.pPK_Proyecto, po_paqueteActividad.pPK_Paquete, po_paqueteActividad.pPK_Actividad);
+                    vo_asignacionActividadMemoria = cls_gestorAsignacionActividad.listarActividadesPorPaquete(po_paqueteActividad.pPK_Proyecto, po_paqueteActividad.pPK_Paquete, po_paqueteActividad.pPK_Actividad);
 
-                    cls_variablesSistema.obj = vo_asignacionActividad;
+                    cls_variablesSistema.obj = vo_asignacionActividadMemoria;
 
-                    lbx_usuariosAsociados.DataSource = vo_asignacionActividad.pUsuarioLista;
+                    lbx_usuariosAsociados.DataSource = vo_asignacionActividadMemoria.pUsuarioLista;
                     lbx_usuariosAsociados.DataTextField = "pNombre";
                     lbx_usuariosAsociados.DataValueField = "pPK_usuario";
                     lbx_usuariosAsociados.DataBind();
 
                 }
-                //if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == vo_asignacionActividad.pPK_Actividad &&
-                //                                                                                         test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
-                //{
-                    //lbx_usuariosAsociados.DataSource = vo_asignacionActividad.pUsuarioLista;
-                    //lbx_usuariosAsociados.DataTextField = "pNombre";
-                    //lbx_usuariosAsociados.DataValueField = "pPK_usuario";
-                    //lbx_usuariosAsociados.DataBind();
-                //}
-                //else
-                //{
-                    //lbx_usuariosAsociados.DataSource = vo_asignacionActividad.pUsuarioLista;
-                    //lbx_usuariosAsociados.DataTextField = "pNombre";
-                    //lbx_usuariosAsociados.DataValueField = "pPK_usuario";
-                    //lbx_usuariosAsociados.DataBind();
-                //}
-
             }
             /*
-             Nota: revisar el manejo de excepxiones personalizadas en este form
+             Nota: revisar el manejo de excepciones personalizadas en este form
              */
             catch (Exception po_exception)
             {
@@ -630,7 +618,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// existente en los diferentes
         /// controles del formulario web
         /// </summary>
-        private void limpiarCampos()
+        private void limpiarCamposTexto()
         {
             this.txt_descripcion.Text = String.Empty;
             this.txt_fechaInicio.Text = String.Empty;
@@ -641,6 +629,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             this.txt_horasRealesDef.Text = String.Empty;
             this.ddl_estado.SelectedIndex = -1;
 
+            limpiarListBoxUsuariosAsignados();
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void limpiarListBoxUsuariosAsignados()
+        {
             if (lbx_usuariosAsociados.Items.Count > 0)
             {
                 int cantidadUsuAsociados = lbx_usuariosAsociados.Items.Count;
@@ -649,6 +646,42 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 for (int i = 0; i < cantidadUsuAsociados; i++)
                 {
                     lbx_usuariosAsociados.Items.RemoveAt(0);
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void limpiarListBoxActividades()
+        {
+            if (lbx_actividades.Items.Count > 0)
+            {
+                int cantidadActividades = lbx_actividades.Items.Count;
+                cantidadActividades = lbx_actividades.Items.Count;
+
+                for (int i = 0; i < cantidadActividades; i++)
+                {
+                    lbx_actividades.Items.RemoveAt(0);
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void limpiarListBoxUsuarios()
+        {
+            if (lbx_usuarios.Items.Count > 0)
+            {
+                int cantidadActividades = lbx_usuarios.Items.Count;
+                cantidadActividades = lbx_usuarios.Items.Count;
+
+                for (int i = 0; i < cantidadActividades; i++)
+                {
+                    lbx_usuarios.Items.RemoveAt(0);
                 }
             }
 
@@ -763,7 +796,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             cargarActividadesPorPaquete(Convert.ToInt32(ddl_paquete.SelectedValue));
 
-            limpiarCampos();
+            limpiarCamposTexto();
 
         }
 
@@ -790,7 +823,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             vo_paqueteActividad.pPK_Paquete = paqueteSeleccionado;
             vo_paqueteActividad.pPK_Actividad = actividadSeleccionada;
 
-            limpiarCampos();
+            limpiarCamposTexto();
 
             if (lbx_usuariosAsociados.Items.Count > 0)
             {
@@ -831,7 +864,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 cls_variablesSistema.tipoEstado = cls_constantes.AGREGAR;
 
-                this.limpiarCampos();
+                this.limpiarCamposTexto();
 
                 this.habilitarControles(true);
 
@@ -861,7 +894,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 this.inicializarRegistros();
 
-                this.limpiarCampos();
+                this.limpiarCamposTexto();
+
+                limpiarListBoxActividades();
+
+                limpiarListBoxUsuarios();
 
                 this.upd_Principal.Update();
 
