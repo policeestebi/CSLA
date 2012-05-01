@@ -91,6 +91,11 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.usuario.pPK_usuario = value; }
         }
 
+        public string pUsuarioPivot
+        {
+            get { return usuarioPivot; }
+            set { this.usuarioPivot = value; }
+        }
 
         public string pNombreUsuario
         {
@@ -278,6 +283,11 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 	    private cls_usuario usuario;
 
         private List<cls_usuario> usuarioLista;
+
+        /// <summary>
+        /// Usuario pivot al guardar la asignación de la actividad
+        /// </summary>
+        private string usuarioPivot;
 
         #endregion
 

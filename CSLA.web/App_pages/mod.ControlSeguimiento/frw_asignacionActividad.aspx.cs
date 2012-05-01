@@ -29,8 +29,9 @@ using System.Data;
 // Historial
 // PERSONA 			           MES – DIA - AÑO		DESCRIPCIÓN
 // Esteban Ramírez Gónzalez  	03 – 06  - 2011	 	Se crea la clase
-// Cristian Arce Jiménez  	    27 – 11  - 2011	 	Se agrega el manejo de excepciones personalizadas
-// Cristian Arce Jiménez  	    23 – 01  - 2012	 	Se agrega el manejo de filtros
+// Cristian Arce Jiménez  	    11 – 27  - 2011	 	Se agrega el manejo de excepciones personalizadas
+// Cristian Arce Jiménez  	    01 – 23  - 2012	 	Se agrega el manejo de filtros
+// Cristian Arce Jiménez  	    05 – 01  - 2012	 	Se agregan cambios en la lógica para la asignación de actividades
 // 
 //								
 //								
@@ -60,7 +61,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
                 catch (Exception po_exception)
                 {
-                    String vs_error_usuario = "Error al inicializar el mantenimiento de asignación de actividades.";
+                    String vs_error_usuario = "Error al inicializar la asignación de actividades.";
                     this.lanzarExcepcion(po_exception, vs_error_usuario);
                 } 
 
@@ -74,7 +75,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected override void OnInit(EventArgs e)
         {
-
             base.OnInit(e);
             if (!this.DesignMode)
             {
@@ -84,7 +84,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
-        /// Método que inicializa los controles 
+        ///Método que inicializa los controles 
         ///que se encuentra dentro de los acordeones
         ///esto porque tienen a perderse cuando 
         ///la página se inicializa.
@@ -99,7 +99,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 this.btn_removerUsuario = (Button)acp_edicionDatos.FindControl("btn_removerUsuario");
 
                 //Botones comunes
-                //this.btn_eliminar = (Button)acp_edicionDatos.FindControl("btn_elminar");
                 this.btn_regresar = (Button)acp_edicionDatos.FindControl("btn_regresar");
                 this.btn_guardar = (Button)acp_edicionDatos.FindControl("btn_guardar");
 
@@ -117,30 +116,29 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         /// <summary>
         /// Método que se encarga de 
-        /// llenar la información del
-        /// grid view
+        /// inicializar los registros que 
+        /// pertenecen al proyecto seleccionado
         /// </summary>
         private void inicializarRegistros()
         {
             try
             {
+                //Nombre del proyecto seleccionado
                 cargarNombreProyecto();
-                //cargarActividadesProyecto();
-                cargarDataSetPaquetes();
-                //cargarUsuarios();
-
+                //Paquetes que están asociados al proyecto seleccionado
+                cargarSourcePaquetes();
                 //Se carga el dataset con los estados que puede adquirir una actividad
                 cargarDataSetEstados();
-                //this.ddl_estado.DataBind();
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error llenando la tabla.", po_exception);
+                String vs_error_usuario = "Ocurrió un error inicializando los registros del mantenimiento.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
 
         /// <summary>
-        /// 
+        /// Nombre del proyecto seleccionado
         /// </summary>
         private void cargarNombreProyecto()
         {
@@ -150,11 +148,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los datos del proyecto.", po_exception);
+                String vs_error_usuario = "Ocurrió un error asignando el nombre del proyecto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
         }
 
-        private void cargarDataSetPaquetes()
+        /// <summary>
+        /// Paquetes que están asociados al proyecto seleccionado
+        /// </summary>
+        private void cargarSourcePaquetes()
         {
             try
             {
@@ -166,13 +168,13 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los paquetes del proyecto.", po_exception);
+                String vs_error_usuario = "Ocurrió un error cargando los paquetes asociados al proyecto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
-
         }
 
         /// <summary>
-        /// Metodo que carga el dataSet de los estados a los que se puede asociar un proyecto
+        /// Metodo que carga el dataSet de los estados que presenta una actividad asignada
         /// </summary>
         private void cargarDataSetEstados()
         {
@@ -188,17 +190,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los estados del proyecto.", po_exception);
+                String vs_error_usuario = "Ocurrió un error cargando los estados para las actividades asociadas al proyecto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
 
         }
 
+        /// <summary>
+        /// Se carga la lista con la totalidad de usuarios que pueden ser asignados a una actividad
+        /// </summary>
         private void cargarUsuarios()
         {
             try
             {
                 /*
-                 NOta: * Revisar los selects de los listar, para ver que tanto es necesario cambiar los "pNombre" por los nombres de la tabla => "pNombre" - "pNombreEntregable"
+                 NOta: * Revisar los selects de los listar, para ver que tanto es necesario cambiar los "pNombre" por los nombres de la tabla => "pNombre" - "pNombreUsuario"
                        * Ver si es relevante cambiar los nombres a los listbox
                  */
                 lbx_usuarios.DataSource = cls_gestorUsuario.listarUsuarios();
@@ -206,8 +212,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 lbx_usuarios.DataValueField = "pPK_usuario";
                 lbx_usuarios.DataBind();
 
-                //Si se devuelven actividades asociadas, se remueven los mismos del listBox que mantiene la totalidad de actividades, estp para mantener la 
-                //pertenencia de una actividad a un sólo paquete
+                //Si se devuelven usuarios asociados, se remueven los mismos del listBox que mantiene la totalidad de usuarios, esto para evitar la 
+                //duplicidad del mismo usuario a una misma actividad
                 if (lbx_usuariosAsociados.Items.Count > 0)
                 {
                     foreach (ListItem item in lbx_usuariosAsociados.Items)
@@ -217,27 +223,20 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
 
             }
-            /*
-             Nota: revisar el manejo de excepxiones personalizadas en este form
-             */
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los datos de la lista de usuarios del sistema.", po_exception);
+                String vs_error_usuario = "Ocurrió un error cargando la lista de usuarios.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
-
         }
 
         /// <summary>
-        /// 
+        /// Método para cargar las actividades que están asociadas al paquete seleccionado
         /// </summary>
         private void cargarActividadesPorPaquete(int pi_paquete)
         {
             try
             {
-                /*
-                 NOta: * Revisar los selects de los listar, para ver que tanto es necesario cambiar los "pNombre" por los nombres de la tabla => "pNombre" - "pNombreEntregable"
-                       * Ver si es relevante cambiar los nombres a los listbox
-                 */
                 cls_variablesSistema.vs_proyecto.pActividadesPaqueteLista = cls_gestorAsignacionActividad.listarActividadesPorPaquete(cls_variablesSistema.vs_proyecto.pPK_proyecto, pi_paquete);
 
                 lbx_actividades.DataSource = cls_variablesSistema.vs_proyecto.pActividadesPaqueteLista;
@@ -245,191 +244,120 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 lbx_actividades.DataValueField = "pPK_Actividad";
                 lbx_actividades.DataBind();
             }
-            /*
-             Nota: revisar el manejo de excepxiones personalizadas en este form
-             */
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los datos de la lista de actividades del proyecto.", po_exception);
+                String vs_error_usuario = "Ocurrió un error cargando las actividades asociadas al paquete.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
-
         }
 
         /// <summary>
-        /// 
+        /// Método para cargar una actividad asignada de manera específica, enviando el proyecto, paquete y actividad 
         /// </summary>
         /// <param name="pi_paquete"></param>
         private void cargarAsignacionActividad(cls_paqueteActividad po_paqueteActividad)
         {
-
             try
             {
-                /*
-                 NOta: * Revisar los selects de los listar, para ver que tanto es necesario cambiar los "pNombre" por los nombres de la tabla => "pNombre" - "pNombreEntregable"
-                       * Ver si es relevante cambiar los nombres a los listbox
-                 */
-                //cls_variablesSistema.vs_proyecto.pActividadAsignada = cls_gestorAsignacionActividad.seleccionarActividadAsignada(po_paqueteActividad);
-                //cls_variablesSistema.obj = cls_gestorAsignacionActividad.seleccionarActividadAsignada(po_paqueteActividad);
-                //cls_variablesSistema.vs_proyecto.pActividadAsignada = (cls_actividadAsignada)cls_variablesSistema.obj;
+                //Se crean 2 variables para evitar que la asignación de una única presente inconcistencia de punteros a la hora de comparar y eliminar
+                //registro  de memoria con registros de la lista de base de datos (en el evento para remover usuarios del listbox se presenta la inconsistencia de puntero)
+                cls_asignacionActividad vo_asignacionActividadMemoria = new cls_asignacionActividad();
+                cls_asignacionActividad vo_asignacionActividadBaseDatos = new cls_asignacionActividad();
 
-                cls_asignacionActividad vo_asignacionActividad = new cls_asignacionActividad();
+                //La variables se cargan con el registro de base de datos
+                vo_asignacionActividadMemoria = cls_gestorAsignacionActividad.seleccionarAsignacionActividad(po_paqueteActividad);
+                vo_asignacionActividadBaseDatos = cls_gestorAsignacionActividad.seleccionarAsignacionActividad(po_paqueteActividad);
 
-                vo_asignacionActividad = cls_gestorAsignacionActividad.seleccionarAsignacionActividad(po_paqueteActividad);
-
-                //Se verifica si la consulta de base de datos devolvió algún registro válido, de lo contrario no se debe registrar ni en la lista de memoria ni en la de base de datos
-                if (vo_asignacionActividad.pPK_Proyecto == cls_variablesSistema.vs_proyecto.pPK_proyecto)
+                //Se verifica si la consulta de base de datos devolvió algún registro válido, de lo contrario no se debe registrar ni en la lista de memoria 
+                //ni en la de base de datos
+                if (vo_asignacionActividadMemoria.pPK_Proyecto == cls_variablesSistema.vs_proyecto.pPK_proyecto)
                 {
-                    if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaBaseDatos.Where(test => test.pPK_Actividad == vo_asignacionActividad.pPK_Actividad &&
-                                                                                                          test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
+                    //De no encontrarse ya en la lista de base de datos, se agrega
+                    if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaBaseDatos.Where(searchLinQ => searchLinQ.pPK_Actividad == vo_asignacionActividadBaseDatos.pPK_Actividad &&
+                                                                                                          searchLinQ.pPK_Paquete == vo_asignacionActividadBaseDatos.pPK_Paquete).Count() == 0)
                     {
-                        cls_variablesSistema.vs_proyecto.pAsignacionActividadListaBaseDatos.Add(vo_asignacionActividad);
+                        cls_variablesSistema.vs_proyecto.pAsignacionActividadListaBaseDatos.Add(vo_asignacionActividadBaseDatos);
                     }
-
-                    if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == vo_asignacionActividad.pPK_Actividad &&
-                                                                                                          test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
+                    //Se verifica si existe en la lista de memoria para agregarlo en la variable objeto local y en la misma lista
+                    if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Actividad == vo_asignacionActividadMemoria.pPK_Actividad &&
+                                                                                                        searchLinQ.pPK_Paquete == vo_asignacionActividadMemoria.pPK_Paquete).Count() == 0)
                     {
-                        cls_variablesSistema.obj = vo_asignacionActividad;
-                        cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_asignacionActividad);
+                        cls_variablesSistema.obj = vo_asignacionActividadMemoria;
+                        cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_asignacionActividadMemoria);
                     }
                     else
                     {
-                        //Se carga en la variable objeto, luego verificar si es necesario
-                        vo_asignacionActividad = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == vo_asignacionActividad.pPK_Actividad &&
-                                                                                                                                                        test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete);
-                        cls_variablesSistema.obj = vo_asignacionActividad;
-                        cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_asignacionActividad);
-
+                        //Si la asigancion ya ha sido leída, se carga la variable objeto con la que se encuentra en memoria
+                        vo_asignacionActividadMemoria = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(searchLinQ => searchLinQ.pPK_Actividad == vo_asignacionActividadMemoria.pPK_Actividad &&
+                                                                                                                                                        searchLinQ.pPK_Paquete == vo_asignacionActividadMemoria.pPK_Paquete);
+                        cls_variablesSistema.obj = vo_asignacionActividadMemoria;
                     }
 
-                    //Se carga en la variable objeto, luego verificar si es necesario
-                    //cls_variablesSistema.obj = vo_asignacionActividad;
-
-                    //Se envía a llamar al método encargado de cargar lo datos a pantalla si estos ya existen
+                    //Se encuentre la asignació ya en memoria, o no, se envía a cargar la información del registro para cargar los campos de la ventana
                     cargarObjeto();
+
                 }
-                if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == po_paqueteActividad.pPK_Actividad &&
-                                                                                                          test.pPK_Paquete == po_paqueteActividad.pPK_Paquete).Count() > 0)
+
+                //Si la actividad ya se encuentra en memoria, se procede a asignar a los usuarios asignados
+                if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Actividad == po_paqueteActividad.pPK_Actividad &&
+                                                                                                    searchLinQ.pPK_Paquete == po_paqueteActividad.pPK_Paquete).Count() > 0)
                 {
-                    vo_asignacionActividad = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == po_paqueteActividad.pPK_Actividad &&
-                                                                                                                                                   test.pPK_Paquete == po_paqueteActividad.pPK_Paquete);
-                    cls_variablesSistema.obj = vo_asignacionActividad;
+                    vo_asignacionActividadMemoria = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(searchLinQ => searchLinQ.pPK_Actividad == po_paqueteActividad.pPK_Actividad &&
+                                                                                                                                                   searchLinQ.pPK_Paquete == po_paqueteActividad.pPK_Paquete);
+                    cls_variablesSistema.obj = vo_asignacionActividadMemoria;
                     
                     cargarObjeto();
 
-                    lbx_usuariosAsociados.DataSource = vo_asignacionActividad.pUsuarioLista;
+                    lbx_usuariosAsociados.DataSource = vo_asignacionActividadMemoria.pUsuarioLista;
                     lbx_usuariosAsociados.DataTextField = "pNombre";
                     lbx_usuariosAsociados.DataValueField = "pPK_usuario";
                     lbx_usuariosAsociados.DataBind();
                 }
+                //Si no se encuentra en memoria es porque esa actividad aún no se encuentra asignada, por lo que sólo se procede a cargar la llave primaria de la actividad
+                //por si se va a realizar la asignación en ese momento
                 else
                 {
-                    vo_asignacionActividad = cls_gestorAsignacionActividad.listarActividadesPorPaquete(po_paqueteActividad.pPK_Proyecto, po_paqueteActividad.pPK_Paquete, po_paqueteActividad.pPK_Actividad);
+                    vo_asignacionActividadMemoria = cls_gestorAsignacionActividad.listarActividadesPorPaquete(po_paqueteActividad.pPK_Proyecto, po_paqueteActividad.pPK_Paquete, po_paqueteActividad.pPK_Actividad);
 
-                    cls_variablesSistema.obj = vo_asignacionActividad;
+                    cls_variablesSistema.obj = vo_asignacionActividadMemoria;
 
-                    lbx_usuariosAsociados.DataSource = vo_asignacionActividad.pUsuarioLista;
+                    lbx_usuariosAsociados.DataSource = vo_asignacionActividadMemoria.pUsuarioLista;
                     lbx_usuariosAsociados.DataTextField = "pNombre";
                     lbx_usuariosAsociados.DataValueField = "pPK_usuario";
                     lbx_usuariosAsociados.DataBind();
 
                 }
-                //if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == vo_asignacionActividad.pPK_Actividad &&
-                //                                                                                         test.pPK_Paquete == vo_asignacionActividad.pPK_Paquete).Count() == 0)
-                //{
-                    //lbx_usuariosAsociados.DataSource = vo_asignacionActividad.pUsuarioLista;
-                    //lbx_usuariosAsociados.DataTextField = "pNombre";
-                    //lbx_usuariosAsociados.DataValueField = "pPK_usuario";
-                    //lbx_usuariosAsociados.DataBind();
-                //}
-                //else
-                //{
-                    //lbx_usuariosAsociados.DataSource = vo_asignacionActividad.pUsuarioLista;
-                    //lbx_usuariosAsociados.DataTextField = "pNombre";
-                    //lbx_usuariosAsociados.DataValueField = "pPK_usuario";
-                    //lbx_usuariosAsociados.DataBind();
-                //}
-
-            }
-            /*
-             Nota: revisar el manejo de excepxiones personalizadas en este form
-             */
-            catch (Exception po_exception)
-            {
-                throw new Exception("Ocurrió un error al cargar los datos de la lista de actividades del proyecto.", po_exception);
-            }
-
-        }
-
-        //private void cargarPaquetesProyecto()
-        //{
-        //    try
-        //    {
-        //        /*
-        //         NOta: * Revisar los selects de los listar, para ver que tanto es necesario cambiar los "pNombre" por los nombres de la tabla => "pNombre" - "pNombreEntregable"
-        //               * Ver si es relevante cambiar los nombres a los listbox
-        //         */
-        //        cls_variablesSistema.vs_proyecto.pAsignacionLista = cls_gestorAsignacionActividad.listarActividadesProyecto(cls_variablesSistema.vs_proyecto.pPK_proyecto);
-
-        //        lbx_actividades.DataSource = cls_variablesSistema.vs_proyecto.pPaquetesAsignadosLista;
-        //        lbx_actividades.DataTextField = "pNombreActividad";
-        //        lbx_actividades.DataValueField = "pPK_actividad";
-        //        lbx_actividades.DataBind();
-        //    }
-        //    /*
-        //     Nota: revisar el manejo de excepxiones personalizadas en este form
-        //     */
-        //    catch (Exception po_exception)
-        //    {
-        //        throw new Exception("Ocurrió un error al cargar los datos de la lista de actividades del proyecto.", po_exception);
-        //    }
-
-        //}
-
-        /// <summary>
-        /// Hace un buscar de la lista de permisos.
-        /// </summary>
-        /// <param name="psFilter">String filtro.</param>
-        private void llenarGridViewFilter(String psFilter)
-        {
-            try
-            {
-                //this.grd_listaActividades.Columns[0].Visible = true;
-                //this.grd_listaActividades.DataSource = cls_gestorActividadResp.listarActividadFiltro(psFilter);
-                //this.grd_listaActividades.DataBind();
-                //this.grd_listaActividades.Columns[0].Visible = false;
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error llenando la tabla con filtro.";
+                String vs_error_usuario = "Ocurrió un error cargando la información para la actividad seleccionada.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
         }
 
         /// <summary>
         /// Crea un objeto de tipo
-        /// cls_actividadResp con la informacón
-        /// que se encuentra en el formulario
-        /// web
+        /// cls_asignacionActividad con la informacón
+        /// que se encuentra en memoria y la complementa 
+        /// con la información presente en el formulario web
         /// </summary>
         /// <returns>cls_actividadResp</returns>
         private cls_asignacionActividad crearObjeto()
         {
             cls_asignacionActividad vo_asignacionActividad = new cls_asignacionActividad();
-            //if (cls_variablesSistema.tipoEstado != cls_constantes.AGREGAR)
-            //{
-            //    vo_actividad = (cls_asignacionActividad)cls_variablesSistema.obj;
-            //}
+
             try
             {
+                //Se asignan los datos que conforman la llave primaria al objeto
                 vo_asignacionActividad = (cls_asignacionActividad)cls_variablesSistema.obj;
 
                 vo_asignacionActividad.pDescripcion = txt_descripcion.Text;
                 vo_asignacionActividad.pFechaInicio = Convert.ToDateTime(txt_fechaInicio.Text);
                 vo_asignacionActividad.pFechaFin = Convert.ToDateTime(txt_fechaFin.Text);
-                vo_asignacionActividad.pHorasAsignadas = Convert.ToInt32(txt_horasAsignadas.Text);
-                vo_asignacionActividad.pHorasAsigDefectos = Convert.ToInt32(txt_horasAsigDefectos.Text);
-                vo_asignacionActividad.pHorasReales = Convert.ToInt32(txt_horasReales.Text);
-                vo_asignacionActividad.pHorasRealesDefectos = Convert.ToInt32(txt_horasRealesDef.Text);
+                vo_asignacionActividad.pHorasAsignadas = Convert.ToDecimal(txt_horasAsignadas.Text);
+                vo_asignacionActividad.pHorasAsigDefectos = Convert.ToDecimal(txt_horasAsigDefectos.Text);
+                vo_asignacionActividad.pHorasReales = Convert.ToDecimal(txt_horasReales.Text);
+                vo_asignacionActividad.pHorasRealesDefectos = Convert.ToDecimal(txt_horasRealesDef.Text);
                 vo_asignacionActividad.pEstado.pPK_estado = Convert.ToInt32(ddl_estado.SelectedValue);
 
                 return vo_asignacionActividad;
@@ -442,7 +370,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         /// <summary>
         /// Método que carga la información
-        /// de un permiso.
+        /// de del objeto a memoria.
         /// </summary>
         private void cargarObjeto()
         {
@@ -450,6 +378,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
+                //Se carga el objeto que se encuentra asignado en memoria
                 vo_actividad = (cls_asignacionActividad)cls_variablesSistema.obj;
 
                 this.txt_descripcion.Text = vo_actividad.pDescripcion;
@@ -472,30 +401,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar el registro.", po_exception);
-            } 
-
+                String vs_error_usuario = "Ocurrió un error cargando el objeto de la lista de memoria.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            }
         }
-
-        /// <summary>
-        /// Método que elimina un permiso
-        /// </summary>
-        /// <param name="po_actividad">Permiso a eliminar</param>
-        //private void eliminarDatos(cls_actividadAsignada po_actividad)
-        //{
-        //    try
-        //    {
-        //        cls_gestorAsignacionActividad.deleteActividad(po_actividad);
-
-        //        this.inicializarRegistros();
-
-        //        this.upd_Principal.Update();
-        //    }
-        //    catch (Exception po_exception)
-        //    {
-        //        throw new Exception("Ocurrió un error eliminando la actividad.", po_exception);
-        //    }
-        //}
 
         /// <summary>
         /// Guarda la información se que se encuentra
@@ -506,21 +415,14 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         private int guardarDatos()
         {
             int vi_resultado = 1;
-            cls_asignacionActividad vo_asignacionActividad = this.crearObjeto();
+
+            //Se obtiene la llave primaria de proyecto, es decir, PK_proyecto, de la variables del sistema, para luego sólo enviarla por parámetro en los guardar
+            int llaveProyecto = cls_variablesSistema.vs_proyecto.pPK_proyecto;
+
             try
             {
-                //switch (cls_variablesSistema.tipoEstado)
-                switch (cls_constantes.AGREGAR)
-                {
-                    case cls_constantes.AGREGAR:
-                        vi_resultado = cls_gestorAsignacionActividad.insertActividad(vo_asignacionActividad);
-                        break;
-                    case cls_constantes.EDITAR:
-                        vi_resultado = cls_gestorAsignacionActividad.updateActividad(vo_asignacionActividad);
-                        break;
-                    default:
-                        break;
-                }
+                asignarActividades(llaveProyecto);
+                
                 return vi_resultado;
             }
             catch (Exception po_exception)
@@ -530,11 +432,92 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
+        /// Método que verifica las actividades que se van a asignar para su posterior inserción/modificación en base de datos
+        /// </summary>
+        /// <param name="ps_llaveProyecto"></param>
+        /// <returns></returns>
+        private int asignarActividades(int ps_llaveProyecto)
+        {
+            int vi_resultado = 1;
+
+            List<cls_asignacionActividad> vl_actividadAsignadaMemoria = this.crearAsignacionActividadMemoria();
+            List<cls_asignacionActividad> vl_actividadAsignadaBaseDatos = this.crearAsignacionActividadBaseDatos();
+
+            try
+            {
+                //Se recorre toda la lista de actividades recién asignadas en memoria
+                foreach (cls_asignacionActividad vo_actividadAsignada in vl_actividadAsignadaMemoria)
+                {
+                    //Lo que importa es la asignación de cada uno de los usuarios que se han agregado/modificado en memoria
+                    foreach (cls_usuario vo_usuario in vo_actividadAsignada.pUsuarioLista)
+                    {
+                        vo_actividadAsignada.pPK_Proyecto = ps_llaveProyecto;
+                        vo_actividadAsignada.pUsuarioPivot = vo_usuario.pPK_usuario;
+                        //Por cada usuario, se envía a realizar la inserción/modificación del mismo, el store procedure indica la operación a realizar
+                        vi_resultado = cls_gestorAsignacionActividad.updateAsignacionActividad(vo_actividadAsignada, 1);
+                    }
+                }
+
+                //Se recorre toda la lista de actividades que se obtuvieron desde un principio a nivel de base de datos
+                foreach (cls_asignacionActividad vo_actividadAsignada in vl_actividadAsignadaBaseDatos)
+                {
+                    //Lo que importa es la asignación de cada uno de los usuarios que se han agregado/modificado en memoria
+                    foreach (cls_usuario vo_usuario in vo_actividadAsignada.pUsuarioLista)
+                    {
+                        //Si en memoria no se encuentra la actividad leída de base de datos, se envía a realizar un borrado lógico
+                        if (!(vl_actividadAsignadaMemoria.Where(dep => dep.pPK_Entregable == vo_actividadAsignada.pPK_Entregable &&
+                                                                       dep.pPK_Componente == vo_actividadAsignada.pPK_Componente &&
+                                                                       dep.pPK_Paquete == vo_actividadAsignada.pPK_Paquete &&
+                                                                       dep.pPK_Actividad == vo_actividadAsignada.pPK_Actividad &&
+                                                                       (dep.pUsuarioLista.Count(t => t.pPK_usuario == vo_usuario.pPK_usuario) > 0)).Count() > 0))
+                        {
+                            vo_actividadAsignada.pPK_Proyecto = ps_llaveProyecto;
+                            vo_actividadAsignada.pUsuarioPivot = vo_usuario.pPK_usuario;
+                            vi_resultado = cls_gestorAsignacionActividad.updateAsignacionActividad(vo_actividadAsignada, 0);
+                        }
+                    }
+                }
+
+                return vi_resultado;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al guardar la asignación de las actividades.", po_exception);
+            }
+        }
+
+        /// <summary>
+        /// Método que lee la lista de asignaciones de memoria y la devuelve para una variable local cuando el método sea invocado
+        /// </summary>
+        /// <returns></returns>
+        private List<cls_asignacionActividad> crearAsignacionActividadMemoria()
+        {
+            List<cls_asignacionActividad> vo_asignacionActividad = new List<cls_asignacionActividad>();
+
+            vo_asignacionActividad = cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria;
+
+            return vo_asignacionActividad;
+        }
+
+        /// <summary>
+        /// Método que lee la lista de asignaciones de base de datos y la devuelve para una variable local cuando el método sea invocado
+        /// </summary>
+        /// <returns></returns>
+        private List<cls_asignacionActividad> crearAsignacionActividadBaseDatos()
+        {
+            List<cls_asignacionActividad> vo_asignacionActividad = new List<cls_asignacionActividad>();
+
+            vo_asignacionActividad = cls_variablesSistema.vs_proyecto.pAsignacionActividadListaBaseDatos;
+
+            return vo_asignacionActividad;
+        }
+
+        /// <summary>
         /// Método que limpia la información
         /// existente en los diferentes
         /// controles del formulario web
         /// </summary>
-        private void limpiarCampos()
+        private void limpiarCamposTexto()
         {
             this.txt_descripcion.Text = String.Empty;
             this.txt_fechaInicio.Text = String.Empty;
@@ -545,6 +528,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             this.txt_horasRealesDef.Text = String.Empty;
             this.ddl_estado.SelectedIndex = -1;
 
+            limpiarListBoxUsuariosAsignados();
+
+        }
+
+        /// <summary>
+        /// Limpia el listbox que presenta la asociación de usuario a las actividades
+        /// </summary>
+        private void limpiarListBoxUsuariosAsignados()
+        {
             if (lbx_usuariosAsociados.Items.Count > 0)
             {
                 int cantidadUsuAsociados = lbx_usuariosAsociados.Items.Count;
@@ -553,6 +545,42 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 for (int i = 0; i < cantidadUsuAsociados; i++)
                 {
                     lbx_usuariosAsociados.Items.RemoveAt(0);
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Limpia el listbox que presenta las actividades del proyecto
+        /// </summary>
+        private void limpiarListBoxActividades()
+        {
+            if (lbx_actividades.Items.Count > 0)
+            {
+                int cantidadActividades = lbx_actividades.Items.Count;
+                cantidadActividades = lbx_actividades.Items.Count;
+
+                for (int i = 0; i < cantidadActividades; i++)
+                {
+                    lbx_actividades.Items.RemoveAt(0);
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Limpia el listbox que presenta los usuarios que se pueden asociar a las actividades del proyecto
+        /// </summary>
+        private void limpiarListBoxUsuarios()
+        {
+            if (lbx_usuarios.Items.Count > 0)
+            {
+                int cantidadActividades = lbx_usuarios.Items.Count;
+                cantidadActividades = lbx_usuarios.Items.Count;
+
+                for (int i = 0; i < cantidadActividades; i++)
+                {
+                    lbx_usuarios.Items.RemoveAt(0);
                 }
             }
 
@@ -612,7 +640,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         #region Eventos
 
         /// <summary>
-        /// 
+        /// Evento para asignar el primer valor del dropdownlist, que en este caso es la leyenda "Seleccione un paquete", en la posición "0"
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -623,7 +651,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
-        /// Evento q asigna el nuevo valor del dropdown list de estados cuando se modifica el proyecto
+        /// Evento que asigna el nuevo valor del dropdown list de estados cuando se modifica la asignación de la actividad
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -633,127 +661,84 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
-        /// 
+        /// Evento para el cambio de índice del dropDownList de paquetes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void ddlPaquete_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int cantidadUsuAsociados;
-            int cantidadUsuarios;
-
-            this.ddl_paquete.SelectedValue = ((DropDownList)sender).SelectedValue;
-
-
-            if (lbx_usuariosAsociados.Items.Count > 0)
+            try
             {
-                cantidadUsuAsociados = lbx_usuariosAsociados.Items.Count;
+                //El index del paquete es reasignado
+                ddl_paquete.SelectedValue = ((DropDownList)sender).SelectedValue;
 
-                for (int i = 0; i < cantidadUsuAsociados; i++)
-                {
-                    lbx_usuariosAsociados.Items.RemoveAt(0);
-                }
+                //Se limpia todo el listBox antes de realizar la nueva asignación
+                limpiarListBoxUsuariosAsignados();
+
+                //Se limpia todo el listBox antes de realizar la nueva asignación
+                limpiarListBoxUsuarios();
+
+                //Se envía a llamar al método que trae las actividades para el paquete seleccionado
+                cargarActividadesPorPaquete(Convert.ToInt32(ddl_paquete.SelectedValue));
+
+                //Como aún no se ha escogido actividad alguna, se limpian los campos hasta que se vuelvan a asignar
+                limpiarCamposTexto();
             }
-
-            if (lbx_usuarios.Items.Count > 0)
+            catch (Exception po_exception)
             {
-                cantidadUsuarios = lbx_usuarios.Items.Count;
-
-                for (int i = 0; i < cantidadUsuarios; i++)
-                {
-                    lbx_usuarios.Items.RemoveAt(0);
-                }
-            }
-
-            cargarActividadesPorPaquete(Convert.ToInt32(ddl_paquete.SelectedValue));
-
-            limpiarCampos();
-
+                String vs_error_usuario = "Ocurrió un error mientras se cargaba la información del registro asociado a los paquetes.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
-        /// 
+        /// Evento para el cambio de índice en las actividades
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void lbx_actividades_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int cantidadUsuAsociados;
-            int cantidadUsuarios;
-
-            int proyectoSeleccionado;
-            int paqueteSeleccionado;
-            int actividadSeleccionada;
-
-            proyectoSeleccionado = cls_variablesSistema.vs_proyecto.pPK_proyecto;
-            paqueteSeleccionado = Convert.ToInt32(ddl_paquete.SelectedValue.ToString());
-            actividadSeleccionada = Convert.ToInt32(lbx_actividades.SelectedValue.ToString());
-
-            cls_paqueteActividad vo_paqueteActividad = new cls_paqueteActividad();
-            vo_paqueteActividad.pPK_Proyecto = proyectoSeleccionado;
-            vo_paqueteActividad.pPK_Paquete = paqueteSeleccionado;
-            vo_paqueteActividad.pPK_Actividad = actividadSeleccionada;
-
-            limpiarCampos();
-
-            if (lbx_usuariosAsociados.Items.Count > 0)
-            {
-                cantidadUsuAsociados = lbx_usuariosAsociados.Items.Count;
-
-                for (int i = 0; i < cantidadUsuAsociados; i++)
-                {
-                    lbx_usuariosAsociados.Items.RemoveAt(0);
-                }
-            }
-
-            if (lbx_usuarios.Items.Count > 0)
-            {
-                cantidadUsuarios = lbx_usuarios.Items.Count;
-
-                for (int i = 0; i < cantidadUsuarios; i++)
-                {
-                    lbx_usuarios.Items.RemoveAt(0);
-                }
-            }
-
-            cargarAsignacionActividad(vo_paqueteActividad);
-
-            cargarUsuarios();
-            //cargarObjeto();
-
-        }
-
-        /// <summary>
-        /// Agrega un nuevo permiso.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btn_eliminar_Click(object sender, EventArgs e)
-        {
-
             try
             {
-                cls_variablesSistema.tipoEstado = cls_constantes.AGREGAR;
+                int proyectoSeleccionado;
+                int paqueteSeleccionado;
+                int actividadSeleccionada;
 
-                this.limpiarCampos();
+                //Se asignan las 3 llaves para la búsqueda
+                proyectoSeleccionado = cls_variablesSistema.vs_proyecto.pPK_proyecto;
+                paqueteSeleccionado = Convert.ToInt32(ddl_paquete.SelectedValue.ToString());
+                actividadSeleccionada = Convert.ToInt32(lbx_actividades.SelectedValue.ToString());
 
-                this.habilitarControles(true);
+                //Se arma el objeto que envía las 3 llaves para la búsqueda
+                cls_paqueteActividad vo_paqueteActividad = new cls_paqueteActividad();
+                vo_paqueteActividad.pPK_Proyecto = proyectoSeleccionado;
+                vo_paqueteActividad.pPK_Paquete = paqueteSeleccionado;
+                vo_paqueteActividad.pPK_Actividad = actividadSeleccionada;
 
-                this.upd_Principal.Update();
+                limpiarCamposTexto();
 
-                this.ard_principal.SelectedIndex = 1;
+                //Se limpia el listbox antes de su asignación
+                limpiarListBoxUsuariosAsignados();
+
+                //Se limpia el listbox antes de su asignación
+                limpiarListBoxUsuarios();
+
+                //Se envía a cargar, de existir, la información relacionada a la actividad
+                cargarAsignacionActividad(vo_paqueteActividad);
+
+                //Se cargan los usuarios restantes que pueden ser asignados a la actividad seleccionada
+                cargarUsuarios();
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error al intentar mostrar la ventana de edición para los registros.";
+                String vs_error_usuario = "Ocurrió un error mientras se asignada la información del registro para las actividades.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
-
         }
 
         /// <summary>
         /// Evento que se ejecuta cuando se 
-        /// guarda un nuevo rol.
+        /// guarda una nueva asigación de actividad.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -761,15 +746,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
-                this.guardarDatos();
+                guardarDatos();
 
-                this.inicializarRegistros();
+                inicializarRegistros();
 
-                this.limpiarCampos();
+                limpiarCamposTexto();
 
-                this.upd_Principal.Update();
+                limpiarListBoxActividades();
 
-                this.ard_principal.SelectedIndex = 0;
+                limpiarListBoxUsuarios();
+
+                upd_Principal.Update();
+
+                ard_principal.SelectedIndex = 0;
             }
             catch (Exception po_exception)
             {
@@ -780,7 +769,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         /// <summary>
         /// Evento que se ejecuta cuando se le da
-        /// en el botón de cancelar.
+        /// en el botón de regresar.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -788,7 +777,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
-                // Do something with the click ...
+                //Se redirecciona a la ventana principal de proyectos
                 Response.Redirect("frw_proyectos.aspx", false);
             }
             catch (Exception po_exception)
@@ -799,154 +788,158 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
-        /// 
+        /// Evento que asigna usuarios a las actividades que se seleccionan
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void btn_asignarUsuario_Click(object sender, EventArgs e)
         {
-            cls_paquete vo_paquete = new cls_paquete();
-            vo_paquete.pPK_Paquete = Convert.ToInt32(ddl_paquete.SelectedValue.ToString());
-
-            for (int i = lbx_actividades.Items.Count - 1; i >= 0; i--)
+            try
             {
-                if (lbx_actividades.Items[i].Selected == true)
+                cls_paquete vo_paquete = new cls_paquete();
+                vo_paquete.pPK_Paquete = Convert.ToInt32(ddl_paquete.SelectedValue.ToString());
+
+                //Se recorren las actividades del listBox hasta que se llegue a la que se encuentra seleccionada
+                for (int i = lbx_actividades.Items.Count - 1; i >= 0; i--)
                 {
-                    cls_actividad vo_actividad = new cls_actividad();
-                    vo_actividad.pPK_Actividad = Convert.ToInt32(lbx_actividades.Items[i].Value.ToString());
-                    vo_actividad.pNombre = lbx_actividades.Items[i].Text.ToString();
-
-                    for (int j = lbx_usuarios.Items.Count - 1; j >= 0; j--)
+                    if (lbx_actividades.Items[i].Selected == true)
                     {
-                        if (lbx_usuarios.Items[j].Selected == true)
+                        cls_actividad vo_actividad = new cls_actividad();
+                        vo_actividad.pPK_Actividad = Convert.ToInt32(lbx_actividades.Items[i].Value.ToString());
+                        vo_actividad.pNombre = lbx_actividades.Items[i].Text.ToString();
+
+                        //Se recorren los usuarios del listBox hasta que se llegue al que se encuentra seleccionado
+                        for (int j = lbx_usuarios.Items.Count - 1; j >= 0; j--)
                         {
-                            cls_asignacionActividad vo_actividadAsignada = new cls_asignacionActividad();
-
-                            cls_usuario vo_usuario = new cls_usuario();
-                            vo_usuario.pPK_usuario = lbx_usuarios.Items[j].Value.ToString();
-                            vo_usuario.pNombre = lbx_usuarios.Items[j].Text.ToString();
-
-                            if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == vo_actividad.pPK_Actividad &&
-                                                                                                                test.pPK_Paquete == vo_paquete.pPK_Paquete).Count() == 0)
+                            if (lbx_usuarios.Items[j].Selected == true)
                             {
+                                cls_asignacionActividad vo_actividadAsignada = new cls_asignacionActividad();
 
-                                vo_actividadAsignada = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pActividadesPaqueteLista.Find(test => test.pPK_Actividad == vo_actividad.pPK_Actividad &&
-                                                                                                                                        test.pPK_Paquete == vo_paquete.pPK_Paquete);
-                                cls_variablesSistema.obj = vo_actividadAsignada;
+                                cls_usuario vo_usuario = new cls_usuario();
+                                vo_usuario.pPK_usuario = lbx_usuarios.Items[j].Value.ToString();
+                                vo_usuario.pNombre = lbx_usuarios.Items[j].Text.ToString();
 
-                                vo_actividadAsignada = crearObjeto();
-
-                                //Si se logra asignar un valor de memoria, se procede, se lo contrario la variable está nula y no debe entrar a agregar
-                                //if (vo_actividadAsignada != null)
-                                //{
-                                if (vo_actividadAsignada.pUsuarioLista.Where(test => test.pPK_usuario == vo_usuario.pPK_usuario).Count() == 0)
+                                //Si la asignación no se encuentra en memoria
+                                if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad &&
+                                                                                                                    searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete).Count() == 0)
                                 {
 
-                                    vo_actividadAsignada.pUsuarioLista.Add(vo_usuario);
+                                    vo_actividadAsignada = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pActividadesPaqueteLista.Find(searchLinQ => searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad &&
+                                                                                                                                                                 searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete);
+                                    cls_variablesSistema.obj = vo_actividadAsignada;
 
-                                    lbx_usuariosAsociados.Items.Add(lbx_usuarios.Items[j]);
-                                    ListItem li = lbx_usuarios.Items[j];
-                                    lbx_usuarios.Items.Remove(li);
+                                    vo_actividadAsignada = crearObjeto();
 
-                                    cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_actividadAsignada);
+                                    //Si el usuario no se encuentra asignado, se procede a agregarlo a la lista de usuarios de la asignación y a agregar la asignación en si
+                                    if (vo_actividadAsignada.pUsuarioLista.Where(searchLinQ => searchLinQ.pPK_usuario == vo_usuario.pPK_usuario).Count() == 0)
+                                    {
+
+                                        vo_actividadAsignada.pUsuarioLista.Add(vo_usuario);
+
+                                        lbx_usuariosAsociados.Items.Add(lbx_usuarios.Items[j]);
+                                        ListItem li = lbx_usuarios.Items[j];
+                                        lbx_usuarios.Items.Remove(li);
+
+                                        cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_actividadAsignada);
+                                    }
                                 }
-                                //}
-
-
-                            }
-                            else
-                            {
-                                vo_actividadAsignada = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == vo_actividad.pPK_Actividad &&
-                                                                                                                                                             test.pPK_Paquete == vo_paquete.pPK_Paquete);
-                                cls_variablesSistema.obj = vo_actividadAsignada;
-
-                                vo_actividadAsignada = crearObjeto();
-
-                                //Si se logra asignar un valor de memoria, se procede, se lo contrario la variable está nula y no debe entrar a agregar
-                                //if (vo_actividadAsignada != null)
-                                //{
-                                if (vo_actividadAsignada.pUsuarioLista.Where(test => test.pPK_usuario == vo_usuario.pPK_usuario).Count() == 0)
+                                //De encontrarse la asignación ya en memoria, sólo se asigna y se corrobora el usuario que se intenta asignar
+                                else
                                 {
+                                    vo_actividadAsignada = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(searchLinQ => searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad &&
+                                                                                                                                                                         searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete);
+                                    cls_variablesSistema.obj = vo_actividadAsignada;
 
-                                    vo_actividadAsignada.pUsuarioLista.Add(vo_usuario);
+                                    vo_actividadAsignada = crearObjeto();
 
-                                    lbx_usuariosAsociados.Items.Add(lbx_usuarios.Items[j]);
-                                    ListItem li = lbx_usuarios.Items[j];
-                                    lbx_usuarios.Items.Remove(li);
+                                    if (vo_actividadAsignada.pUsuarioLista.Where(searchLinQ => searchLinQ.pPK_usuario == vo_usuario.pPK_usuario).Count() == 0)
+                                    {
+                                        vo_actividadAsignada.pUsuarioLista.Add(vo_usuario);
 
-                                    //cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_actividadAsignada);
+                                        lbx_usuariosAsociados.Items.Add(lbx_usuarios.Items[j]);
+                                        ListItem li = lbx_usuarios.Items[j];
+                                        lbx_usuarios.Items.Remove(li);
+                                    }
                                 }
-                                //}
                             }
-                            
                         }
                     }
                 }
             }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error mientras se asignada la información del usuario a la actividad.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            }
         }
 
         /// <summary>
-        /// 
+        /// Evento para remover usuarios de la asignación de actividades
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void btn_removerUsuario_Click(object sender, EventArgs e)
         {
-            cls_paquete vo_paquete = new cls_paquete();
-            vo_paquete.pPK_Paquete = Convert.ToInt32(ddl_paquete.SelectedValue.ToString());
-
-            for (int i = lbx_actividades.Items.Count - 1; i >= 0; i--)
+            try
             {
-                if (lbx_actividades.Items[i].Selected == true)
+                cls_paquete vo_paquete = new cls_paquete();
+                vo_paquete.pPK_Paquete = Convert.ToInt32(ddl_paquete.SelectedValue.ToString());
+
+                for (int i = lbx_actividades.Items.Count - 1; i >= 0; i--)
                 {
-                    cls_actividad vo_actividad = new cls_actividad();
-                    vo_actividad.pPK_Actividad = Convert.ToInt32(lbx_actividades.Items[i].Value.ToString());
-                    vo_actividad.pNombre = lbx_actividades.Items[i].Text.ToString();
-
-                    for (int j = lbx_usuariosAsociados.Items.Count - 1; j >= 0; j--)
+                    if (lbx_actividades.Items[i].Selected == true)
                     {
-                        if (lbx_usuariosAsociados.Items[j].Selected == true)
+                        cls_actividad vo_actividad = new cls_actividad();
+                        vo_actividad.pPK_Actividad = Convert.ToInt32(lbx_actividades.Items[i].Value.ToString());
+                        vo_actividad.pNombre = lbx_actividades.Items[i].Text.ToString();
+
+                        for (int j = lbx_usuariosAsociados.Items.Count - 1; j >= 0; j--)
                         {
-                            cls_asignacionActividad vo_actividadAsignada = new cls_asignacionActividad();
-
-                            cls_usuario vo_usuario = new cls_usuario();
-                            vo_usuario.pPK_usuario = lbx_usuariosAsociados.Items[j].Value.ToString();
-                            vo_usuario.pNombre = lbx_usuariosAsociados.Items[j].Text.ToString();
-
-                            if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(test => test.pPK_Actividad == vo_actividad.pPK_Actividad &&
-                                                                                                                test.pPK_Paquete == vo_paquete.pPK_Paquete).Count() > 0)
+                            if (lbx_usuariosAsociados.Items[j].Selected == true)
                             {
-                                vo_actividadAsignada = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(test => test.pPK_Actividad == vo_actividad.pPK_Actividad &&
-                                                                                                                                                             test.pPK_Paquete == vo_paquete.pPK_Paquete);
-                                //cls_variablesSistema.obj = vo_actividadAsignada;
+                                cls_asignacionActividad vo_actividadAsignada = new cls_asignacionActividad();
 
-                                //vo_actividadAsignada = crearObjeto();
+                                cls_usuario vo_usuario = new cls_usuario();
+                                vo_usuario.pPK_usuario = lbx_usuariosAsociados.Items[j].Value.ToString();
+                                vo_usuario.pNombre = lbx_usuariosAsociados.Items[j].Text.ToString();
 
-                                //Si se logra asignar un valor de memoria, se procede, se lo contrario la variable está nula y no debe entrar a agregar
-                                //if (vo_actividadAsignada != null)
-                                //{
-                                //if (vo_actividadAsignada.pUsuarioLista.Where(test => test.pPK_usuario == vo_usuario.pPK_usuario).Count() == 0)
-                                //{
+                                if (cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad &&
+                                                                                                                          searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete).Count() > 0)
+                                {
+                                    vo_actividadAsignada = (cls_asignacionActividad)cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Find(searchLinQ => searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad &&
+                                                                                                                                                                         searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete);
+                                    //Si luego de esta eliminación, la lista aún va a quedar con elementos, solo se remueve el usuario
+                                    if (vo_actividadAsignada.pUsuarioLista.Count > 1)
+                                    {
+                                        vo_actividadAsignada.pUsuarioLista.RemoveAll(searchLinQ => searchLinQ.pPK_usuario == vo_usuario.pPK_usuario);
+                                    }
+                                    //Si solo se haya un elemento en la lista de usuarios, no se realiza la eliminación del mismo, sino de la actividad asignada
+                                    //del objeto en memoria, esto debido a que la llave primaria de la asignación está compuesta en parte por la llave primario
+                                    //del usuario, y si el mismo no se asigna, pues no se obtiene y presentaría un error
+                                    else
+                                    {
+                                        cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad &&
+                                                                                                                                  searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete);
+                                    }
+                                }
 
-                                    vo_actividadAsignada.pUsuarioLista.RemoveAll(test => test.pPK_usuario == vo_usuario.pPK_usuario);
+                                lbx_usuarios.Items.Add(lbx_usuariosAsociados.Items[j]);
+                                ListItem li = lbx_usuariosAsociados.Items[j];
+                                lbx_usuariosAsociados.Items.Remove(li);
 
-                                    //cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria.Add(vo_actividadAsignada);
-                                //}
-                                //}
                             }
-
-                            lbx_usuarios.Items.Add(lbx_usuariosAsociados.Items[j]);
-                            ListItem li = lbx_usuariosAsociados.Items[j];
-                            lbx_usuariosAsociados.Items.Remove(li);
-
                         }
                     }
                 }
             }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error mientras se desasociaba la información del usuario a la actividad.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            }
         }
 
         #endregion
-
 
     }
 }
