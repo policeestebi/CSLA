@@ -583,7 +583,7 @@ table.calendarHeader, table.calendarHeader td
     margin:0 auto;
     text-align:center;
     overflow:auto;
-    height:750px;
+    height:700px;
 }
 
 /*PopUp */
@@ -653,4 +653,9 @@ div#dvTiempos table td, #dvTiempoComent table td
     width:100%;
     font-size:13px;
     display:none;
+}
+
+div.tdCalendar td
+{
+    padding:0px;
 }

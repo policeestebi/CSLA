@@ -358,7 +358,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
        /// Método que permite listar 
        /// todos los registros en la tabla proyecto
        /// </summary>
-       /// <returns>List<cls_proyecto> valor del resultado de la ejecución de la sentencia</returns>
+       /// <returns>List valor del resultado de la ejecución de la sentencia</returns>
        public static List<cls_proyecto> listarProyectosUsuario()
        {
            List<cls_proyecto> vo_lista = null;
