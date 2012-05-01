@@ -11,9 +11,29 @@ using ExceptionManagement.Exceptions;
 using COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento;
 using COSEVI.CSLA.lib.entidades.mod.Administracion;
 using COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento;
+using COSEVI.CSLA.lib.accesoDatos.mod.Administracion;
 
 using CSLA.web.App_Variables;
 using CSLA.web.App_Constantes;
+
+using COSEVI.lib.Security;
+
+// =========================================================================
+// COSEVI - Consejo de Seguridad Vial. - 2011
+// Sistema CSLA (Sistema para el Control y Seguimiento de Labores)
+//
+// frw_usuarios.aspx.cs
+//
+// Explicación de los contenidos del archivo.
+// =========================================================================
+// Historial
+// PERSONA 			            MES – DIA - AÑO		DESCRIPCIÓN
+// Esteban Ramírez Gónzalez  	 29 –  04 - 2012	 	Se crea la clase
+//								
+//								
+//
+// =========================================================================
+
 
 namespace CSLA.web.App_pages.mod.ControlSeguimiento
 {
@@ -21,13 +41,30 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
     {
         #region Inicializacion
 
+        /// <summary>
+        /// Inicialización de la página.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!this.IsPostBack)
-            //{
-            //this.calendario.poDatos = ObtenerDatos();
-            this.InicializarCalendario();
-            //}
+            try
+            {
+                this.InicializarCalendario();
+
+                if (!this.IsPostBack)
+                {
+                    this.validarSession();
+                    this.obtenerPermisos();
+                    this.validarAcceso();
+                    
+                }
+            }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Error al inicializar al iniciar el calendario.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            }
         }
 
         #endregion
@@ -58,8 +95,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     this.calendario.poDatosActividades = this.ObtenerListaActividades(calendario.SelectValueProyecto);
                 }
             }
-            catch (Exception)
+            catch (Exception po_exception)
             {
+                String vs_error_usuario = "Error al inicializar al iniciar el calendario.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
         }
 
@@ -135,9 +174,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
 
             }
-            catch (Exception)
+            catch (Exception po_exception)
             {
                 datos = null;
+
+                String vs_error_usuario = "Error al obtener la lista de registro de tiempos.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
 
             return datos;
@@ -179,9 +221,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     datos = cls_gestorActividad.listarActividadesUsuario(cls_interface.vs_usuarioActual, ps_proyecto);
                 }
             }
-            catch (Exception)
+            catch (Exception po_exception) 
             {
                 datos = null;
+
+                String vs_error_usuario = "Error al obtener la lista de actividades.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
             return datos;
         }
@@ -230,9 +275,115 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         #endregion
 
+        #region Atributos
+
+        #endregion
+
         #region Propiedades
 
         #endregion
 
+        #region Seguridad
+
+        /// <summary>
+        /// Valida si el usuario
+        /// tiene acceso a la página de lo contrario
+        /// destruye la sessión
+        /// 
+        /// </summary>
+        private void validarAcceso()
+        {
+            if (!this.pbAcceso)
+            {
+                this.Session.Abandon();
+                this.Session.Clear();
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Determina si la sesión se encuentra
+        /// activa, si no es así se envía a la página de inicio.
+        /// </summary>
+        private void validarSession()
+        {
+            if (this.Session["cls_usuario"] == null)
+                Response.Redirect("../../Default.aspx");
+        }
+
+        /// <summary>
+        /// Valida el acceso del usuario a la página
+        /// </summary>
+        private bool pbAcceso
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ACCESO] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los permisos
+        /// para la página actual.
+        /// </summary>
+        private void obtenerPermisos()
+        {
+            string lsUrl = String.Empty;
+
+            try
+            {
+                lsUrl = "#.." + HttpContext.Current.Request.Url.AbsolutePath;
+
+                Session[cls_constantes.PAGINA] = cls_gestorPagina.obtenerPermisoPaginaRol(lsUrl, ((cls_usuario)this.Session["cls_usuario"]).pFK_rol);
+
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al obtener los permisos del rol en la página actual..", po_exception);
+            }
+        }
+
+        #endregion
+
+        #region Excepciones
+
+
+        /// <summary>
+        /// Método que lanza la excepción personalizada
+        /// </summary>
+        /// <param name="po_exception">Excepción a levantar</param>
+        /// <param name="ps_mensajeUsuario">Mensaje a comunicar al usuario</param>
+        private void lanzarExcepcion(Exception po_exception, String ps_mensajeUsuario)
+        {
+            try
+            {
+                String vs_error_usuario = ps_mensajeUsuario;
+                vs_error_usuario = vs_error_usuario.Replace(" ", "_");
+                vs_error_usuario = vs_error_usuario.Replace("'", "|");
+
+                String vs_error_tecnico = po_exception.Message;
+                vs_error_tecnico = vs_error_tecnico.Replace(" ", "_");
+                vs_error_tecnico = vs_error_tecnico.Replace("'", "|");
+
+                String vs_script = "window.showModalDialog(\"../../frw_error.aspx?vs_error_usuario=" + vs_error_usuario + "&vs_error_tecnico=" + vs_error_tecnico + "\",\"Ventana\",\"dialogHeight:450px;dialogWidth:625px;center:yes;status:no;menubar:no;resizable:no;scrollbars:yes;toolbar:no;location:no;directories:no\");";
+                ScriptManager.RegisterClientScriptBlock(this.upd_Principal, this.upd_Principal.GetType(), "jsKeyScript", vs_script, true);
+
+                throw new GeneralException("GeneralException", po_exception);
+            }
+            catch (GeneralException po_general_exception)
+            {
+                ExceptionManagement.ExceptionManager.Publish(po_general_exception);
+            }
+        }
+
+
+        #endregion
     }
 }

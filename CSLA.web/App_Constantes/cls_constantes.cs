@@ -12,6 +12,7 @@ namespace CSLA.web.App_Constantes
         public const String ELIMINAR = "Eliminar";
         public const String EDITAR = "Editar";
         public const String VER = "Ver";
+        public const String ACCESO = "Acceso";
         public const String CAMBIAR = "Cambiar";
         public const String CREAR= "Crear";
         public const String ASIGNAR = "Asignar";
@@ -21,6 +22,9 @@ namespace CSLA.web.App_Constantes
         public const string MODO = "modo";
         public const string PERMISO = "permiso";
         public const string PERMISONOMBRE = "pN";
+
+        //Constantes de la sesion
+        public const string PAGINA = "vo_pagina";
 
     }
 }

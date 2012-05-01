@@ -221,11 +221,20 @@ namespace COSEVI.web.controls
             this.btnSiguiente.RenderControl(writer);
             writer.RenderEndTag();// End TD
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
+
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssAjaxCalendar);
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
             this.txtCalendario.RenderControl(writer);
+            writer.RenderEndTag();// End TD
+
             writer.RenderEndTag();// End TD
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             this.btnCalendario.RenderControl(writer);
             this.cdeCalendario.RenderControl(writer);
+
+            this.mskDate.RenderControl(writer);
+          //  this.mdvDate.RenderControl(writer);
+
             writer.RenderEndTag();// End TD
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             this.lblSemana.RenderControl(writer);
@@ -760,6 +769,26 @@ namespace COSEVI.web.controls
                 this.cdeCalendario.PopupButtonID = "btnCalendario";
                 this.cdeCalendario.Format = "dd/MM/yyyy";
                 this.Controls.Add(this.cdeCalendario);
+
+                this.mskDate = new MaskedEditExtender();
+                this.mskDate.ID = "mskDate";
+                this.mskDate.TargetControlID = "txtCalendario";
+                this.mskDate.Mask = "99/99/9999";
+                this.mskDate.CultureName = "es-ES";
+                this.mskDate.MessageValidatorTip = true;
+                this.mskDate.MaskType = MaskedEditType.Date;
+                this.mskDate.UserDateFormat = MaskedEditUserDateFormat.DayMonthYear;
+                this.Controls.Add(this.mskDate);
+
+                //this.mdvDate = new MaskedEditValidator();
+                //this.mdvDate.ID = "mdvDate";
+                //this.mdvDate.ControlExtender = "mskDate";
+                //this.mdvDate.IsValidEmpty = true;
+                //this.mdvDate.ControlToValidate = "txtCalendario";
+                //this.mdvDate.InvalidValueMessage = "La fecha es inválida";
+                //this.mdvDate.Display = ValidatorDisplay.Dynamic;
+                //this.mdvDate.TooltipMessage = "Ingrese una fecha con formato dd/mm/yyyy Ejemplo: 25/05/2011";
+                //this.Controls.Add(this.mdvDate);
 
             }
             catch (Exception po_excepcion)
@@ -1313,6 +1342,12 @@ namespace COSEVI.web.controls
             set { usuarioField = value; }
         }
 
+        public String CssAjaxCalendar
+        {
+            get { return cssAjaxCalendar; }
+            set { cssAjaxCalendar = value; }
+        }
+
         #endregion
 
         #region Atributos
@@ -1406,6 +1441,14 @@ namespace COSEVI.web.controls
         private String descripcionPaquete;
 
         private String usuarioField;
+
+        private MaskedEditExtender mskDate;
+
+        private MaskedEditValidator mdvDate;
+
+        private String cssAjaxCalendar;
+
+       
 
         #endregion
 

@@ -129,7 +129,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
-                this.ddl_Proyectos.DataSource = cls_gestorProyecto.listarProyectos();
+                this.ddl_Proyectos.DataSource = cls_gestorProyecto.listarProyectosUsuario();
                 this.ddl_Proyectos.DataBind();
 
                 this.ddl_Proyectos.Items.Insert(0,new ListItem("Seleccione..","-1"));

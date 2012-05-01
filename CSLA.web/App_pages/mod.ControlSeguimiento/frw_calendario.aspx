@@ -30,7 +30,7 @@
                     'type': 'iframe',
                     'closeBtn': true,
                     onClosed: function () {
-                        __doPostBack('<%= updPanel.ClientID  %>', '');
+                        __doPostBack('<%= upd_Principal.ClientID  %>', '');
                     }
                 });
 
@@ -43,7 +43,7 @@
                     'type': 'iframe',
                     'closeBtn': true,
                     onClosed: function () {
-                        __doPostBack('<%= updPanel.ClientID  %>', '');
+                        __doPostBack('<%= upd_Principal.ClientID  %>', '');
                     }
                 });
             });
@@ -53,7 +53,7 @@
     
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
-    <asp:UpdatePanel ID="updPanel" runat="server">
+    <asp:UpdatePanel ID="upd_Principal" runat="server">
         <ContentTemplate>
             <div class="calendarContainer">
                 <cc1:ucCalendar runat="server" ID="calendario" Css="calendar" CssHeader="calendarHeader"
@@ -63,7 +63,8 @@
                     OnvoCambioFecha="Unnamed1_voCambioFecha" DataTextFieldProyecto="nombre" DataValueFieldProyecto="PK_proyecto"
                     CodigoActividadField="PK_codigo" DescripcionField="descripcion" FechaField="fecha"
                     TipoField="tipo" RegistroField="PK_registro" HorasField="horas" 
-                    PaqueteField="PK_paquete" ComponenteField="PK_componente" EntregableField="PK_entregable" DescripcionPaquete="descripcion_paquete" UsuarioField="PK_usuario"/>
+                    PaqueteField="PK_paquete" ComponenteField="PK_componente" EntregableField="PK_entregable" DescripcionPaquete="descripcion_paquete" UsuarioField="PK_usuario"
+                    CssAjaxCalendar="tdCalendar"/>
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
