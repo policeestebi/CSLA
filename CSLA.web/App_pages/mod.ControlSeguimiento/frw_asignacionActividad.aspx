@@ -68,7 +68,7 @@
                                                     <asp:Label ID="lbl_usuariosAsociados" runat="server" Text="Asociados: "></asp:Label>
                                                 </td>
                                                 <td>
-                                                    <asp:ListBox ID="lbx_usuariosAsociados" runat="server" SelectionMode="Multiple" Width="200px" Height="150px">
+                                                    <asp:ListBox ID="lbx_usuariosAsociados" runat="server" SelectionMode="Single" Width="200px" Height="150px" AutoPostBack = "true">
                                                     </asp:ListBox>                                                
                                                 </td>
                                                 <td>
@@ -80,7 +80,7 @@
                                                     <asp:Label ID="lbl_usuarios" runat="server" Text="Usuarios: "></asp:Label>
                                                 </td>
                                                 <td>
-                                                    <asp:ListBox ID="lbx_usuarios" runat="server" SelectionMode="Single" Width="200px" Height="150px"  >
+                                                    <asp:ListBox ID="lbx_usuarios" runat="server" SelectionMode="Single" Width="200px" Height="150px" AutoPostBack = "true">
                                                     </asp:ListBox>                                                
                                                 </td>
                                             </tr>
