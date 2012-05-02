@@ -647,7 +647,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
-        /// Evento que redirecciona directamente a la página princiapl de proyectos
+        /// Evento que redirecciona a la página principsl de proyectos
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -657,7 +657,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             Response.Redirect("frw_proyectos.aspx", false);
         }
 
-
+        /// <summary>
+        /// Evento para deshabilitar el botón de siguiente cuando no se encuentran registros asociados en el primer paso del wizard de creación
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnNext_Click(object sender, EventArgs e)
         {
             btnNxt = (Button)sender;
@@ -671,67 +675,28 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
         }
 
+        /// <summary>
+        /// Evento sin funcionalidad, sólo existe por si se llega a necesitar realizar validaciones en el devolverse en el wizard
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnPrev_Click(object sender, EventArgs e)
         {
+            //El evento solo existe por si se llegara a necesitar
             btnPrev = (Button)sender;
-
-            if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_entregables))
-            {
-                //if (lbx_entasociados.Items.Count == 0 && btnNxt != null)
-                //{
-                //    btnNxt.Enabled = false;
-                //}
-
-                //btnPrev.Visible = false;
-
-            }
-
-            if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_componentes))
-            {
-                //if (lbx_compasociados.Items.Count == 0)
-                //{
-                //    btnNxt.Enabled = false;
-                //}
-
-                //btnPrev.Visible = true;
-
-                //cls_variablesSistema.vs_proyecto.pComponenteLista = new List<cls_componente>();
-                //cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria = new List<cls_entregableComponente>();
-
-            }
-
-            if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_paquetes))
-            {
-                //if (lbx_paqasociados.Items.Count == 0)
-                //{
-                //    btnNxt.Enabled = false;
-                //}
-
-                //btnPrev.Visible = true;
-            }
-
-            if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_actividades))
-            {
-                //if (lbx_actasociadas.Items.Count == 0)
-                //{
-                //    btnNxt.Enabled = false;
-                //}
-
-                //btnPrev.Visible = true;
-            }
         }
 
-
+        /// <summary>
+        /// Evento encargado de llenar el listbox correspondiente al step donde se encuentre en el wizard, además de habilitar o deshabilitar los botones de navegación
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void OnActiveStepChanged(object sender, EventArgs e)
         {
-            // If the ActiveStep is changing to Step3, check to see whether the 
-            // SeparateShippingCheckBox is selected.  If it is not, skip to the
-            // Finish step.
+            //Validación en el primer paso, el de entregables
             if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_entregables))
             {
-                //cls_variablesSistema.vs_proyecto.pEntregableLista = new List<cls_entregable>();
-                //cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria = new List<cls_proyectoEntregable>();
-
+                //Se envía a llenar los datos asociados de los entregables
                 llenarDatosEntregables();
 
                 if (lbx_entasociados.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pProyectoEntregableListaBaseDatos.Count == 0)
@@ -752,7 +717,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
 
             }
-            
+            //Validación en el step de componentes ya asociados a entregables
             if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_componentes))
             {
                 if (lbx_compasociados.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Count == 0)
@@ -760,16 +725,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     btnNxt.Enabled = false;
                 }
 
-                //cls_variablesSistema.vs_proyecto.pComponenteLista = new List<cls_componente>();
-                //cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria = new List<cls_entregableComponente>();
-
+                //Se envía a llenar los datos asociados de los componentes
                 llenarDatosComponentes();
+
                 if (btnPrev != null)
                 {
                     btnPrev.Visible = true;
                 }
             }
-
+            //Validación en el step de componentes ya asociados a paquetes
             if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_paquetes))
             {
                 if (lbx_paqasociados.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Count == 0)
@@ -777,16 +741,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     btnNxt.Enabled = false;
                 }
 
-                //cls_variablesSistema.vs_proyecto.pPaqueteLista = new List<cls_paquete>();
-                //cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria = new List<cls_componentePaquete>();
-
+                //Se envía a llenar los datos asociados de los paquetes
                 llenarDatosPaquetes();
+
                 if (btnPrev != null)
                 {
                     btnPrev.Visible = true;
                 }
             }
-
+            //Validación en el step de componentes ya asociados a paquetes
             if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_actividades))
             {
                 if (lbx_actasociadas.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Count == 0)
@@ -794,10 +757,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     btnNxt.Enabled = false;
                 }
 
-                //cls_variablesSistema.vs_proyecto.pActividadLista = new List<cls_actividad>();
-                //cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria = new List<cls_paqueteActividad>();
-
+                //Se envía a llenar los datos asociados de las actividades
                 llenarDatosActividades();
+
                 if (btnPrev != null)
                 {
                     btnPrev.Visible = true;
@@ -829,7 +791,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
-        /// 
+        /// Método para cargar los entregables asociados, y los que se pueden asociar a un proyecto
         /// </summary>
         private void llenarDatosEntregables()
         {
@@ -908,6 +870,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         cls_variablesSistema.tipoEstado = cls_constantes.AGREGAR;
                     }
 
+                    //Se recorren los entregables pertenecientes a un proyecto y se asignan en el listbox para los asociados
                     foreach (DataRow row in vo_dataSet.Tables[0].Rows)
                     {
 
@@ -931,6 +894,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 lbx_entasociados.DataBind();
 
+                //Se elimina los entregables ya asociados de la totalidad, para evitar duplicidad en los datos por asignar
                 if (lbx_entasociados.Items.Count > 0)
                 {
                     foreach (ListItem item in lbx_entasociados.Items)
@@ -950,6 +914,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         #region Eventos Entregables
 
+        /// <summary>
+        /// Evento para la asignación de los entregables a un proyecto específico
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btn_asignarEntregable_Click(object sender, EventArgs e)
         {
             for (int i = lbx_entregables.Items.Count - 1; i >= 0; i--)
@@ -964,6 +933,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                     vo_proyectoEntregable.pEntregable = vo_entregable;
 
+                    //Si el registro no existe en memoria, se agrega
                     if (!(cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == vo_entregable.pPK_entregable).Count() > 0))
                     {
                         cls_variablesSistema.vs_proyecto.pEntregableLista.Add(vo_entregable);
@@ -973,10 +943,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     lbx_entasociados.Items.Add(lbx_entregables.Items[i]);
                     ListItem li = lbx_entregables.Items[i];
                     lbx_entregables.Items.Remove(li);
-
                 }
             }
 
+            //Si hay entregables asociados, se habilita el botón de navegación de siguiente
             if (lbx_entasociados.Items.Count > 0)
             {
                 btnNxt.Enabled = true;
@@ -984,6 +954,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         }
 
+        /// <summary>
+        /// Evento para la eliminación de un entregable asignado a un proyecto
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btn_removerEntregable_Click(object sender, EventArgs e)
         {
             for (int i = lbx_entasociados.Items.Count - 1; i >= 0; i--)
@@ -1041,6 +1016,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
             }
 
+            //Si luego de desasociar los entregables, si la lista queda vacía, no se puede proseguir hasta que no se realice al menos una asignación
             if (lbx_entasociados.Items.Count == 0 && cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Count == 0)
             {
                 btnNxt.Enabled = false;
@@ -1059,6 +1035,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         #region Métodos Componentes
 
+        /// <summary>
+        /// Método que obtiene los entregables que se encuentran asignados  a proyecto
+        /// </summary>
         private void llenarDatosComponentes()
         {
             try
@@ -1079,6 +1058,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             DataSet vo_dataSet = new DataSet();
             try
             {
+                //Si la lista posee datos, se respeta lo que se encuentre en memoria
                 if (cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Count > 0)
                 {
                     lbx_entregablesasociados.DataSource = cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria;
@@ -1086,6 +1066,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     lbx_entregablesasociados.DataValueField = "pPK_entregable";
                     lbx_entregablesasociados.DataBind();
                 }
+                //De lo contrario, se realiza la consulta a nivel de base de datos
                 else
                 {
                     vo_dataSet = cls_gestorProyectoEntregable.selectProyectoEntregable(cls_variablesSistema.vs_proyecto);
@@ -1095,6 +1076,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     lbx_entregablesasociados.DataBind();
                 }
 
+                //Luego de cargar los entregables, se procede a consultar en memoria o base de datos, filtrando por el entregable seleccionado
                 cargarComponentesPorEntregable();
 
             }
@@ -1163,6 +1145,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         }
 
+        /// <summary>
+        /// Método que obtiene los componentes asociados al entregable que se le indica
+        /// </summary>
+        /// <param name="po_entregable"></param>
         private void inicializarComponentesPorEntregable(cls_entregable po_entregable)
         {
             cls_entregableComponente vo_entregableComponente = new cls_entregableComponente();
@@ -1176,16 +1162,22 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             
         }
 
+        /// <summary>
+        /// Método que obtiene los entregables asociados al entregable seleccionado
+        /// </summary>
+        /// <param name="po_entregableComponente"></param>
         private void cargarComponentesPorEntregable(cls_entregableComponente po_entregableComponente)
         {
             DataSet vo_dataSet = new DataSet();
 
             try
             {
+                //Si la lista de memoria se encuentra vacía, se realiza la consulta a nivel de base de datos
                 if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Count == 0)
                 {
                     vo_dataSet = cls_gestorEntregableComponente.selectEntregableComponente(cls_variablesSistema.vs_proyecto);
 
+                    //Se recorren los registros obtenidos en la consulta
                     foreach (DataRow row in vo_dataSet.Tables[0].Rows)
                     {
 
@@ -1200,11 +1192,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         vo_entregableComponente.pEntregable = vo_entregable;
                         vo_entregableComponente.pComponente = vo_componente;
 
+                        //Si el objeto no se encuentra en memoria, se agrega
                         if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Where(searchLinQ => searchLinQ.pPK_Componente == vo_entregableComponente.pPK_Componente).Count() == 0)
                         {
                             cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Add(vo_entregableComponente);
                         }
-
+                        //Si el objeto no se encuentra en memoria, se agrega
                         if (cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == vo_entregableComponente.pPK_Entregable).Count() > 0)
                         {
                             if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Componente == vo_entregableComponente.pPK_Componente).Count() == 0)
@@ -1217,6 +1210,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 }
 
+                //Si el objeto está asociado en memoria se utiliza
                 if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == po_entregableComponente.pPK_Entregable).Count() > 0)
                 {
                     lbx_compasociados.DataSource = cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == po_entregableComponente.pPK_Entregable);
@@ -1232,6 +1226,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         btnNxt.Enabled = true;
                     }
                 }
+                //De lo contrario se consulta en base de datos para obtener, si existen, los registros asociados
                 else
                 {
                     vo_dataSet = cls_gestorEntregableComponente.selectEntregableComponente(po_entregableComponente);
@@ -1274,6 +1269,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
         }
 
+        /// <summary>
+        /// Método para obtener los componentes que se encuentran asociados a un entregable específico
+        /// </summary>
         private void cargarComponentesPorEntregable()
         {
             DataSet vo_dataSet = new DataSet();
@@ -1283,6 +1281,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
+                //Se limpia el listbox con los componentes asociados
                 if (lbx_compasociados.Items.Count > 0)
                 {
                     cantidadCompAsociados = lbx_compasociados.Items.Count;
@@ -1292,7 +1291,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         lbx_compasociados.Items.RemoveAt(0);
                     }
                 }
-
+                //Se limpia el listbox que mantiene la totalidad de los componentes
                 if (lbx_componentes.Items.Count > 0)
                 {
                     cantidadComponentes = lbx_componentes.Items.Count;
@@ -1303,6 +1302,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     }
                 }
 
+                //Se realiza la consulta para obtener todos los componentes asociados a un entregable del proyecto seleccionado
                 vo_dataSet = cls_gestorEntregableComponente.selectEntregableComponente(cls_variablesSistema.vs_proyecto);
 
                 foreach (DataRow row in vo_dataSet.Tables[0].Rows)
@@ -1319,11 +1319,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_entregableComponente.pEntregable = vo_entregable;
                     vo_entregableComponente.pComponente = vo_componente;
 
+                    //Si no se encuentra el elemento en la lista de memoria que mantiene los objetos de base de datos, se agrega
                     if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Where(searchLinQ => searchLinQ.pPK_Componente == vo_entregableComponente.pPK_Componente).Count() == 0)
                     {
                         cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Add(vo_entregableComponente);
                     }
-
+                    //Si no se encuentra el elemento en la lista de memoria que se está creando, se agrega
                     if (cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == vo_entregableComponente.pPK_Entregable).Count() > 0)
                     {
                         validacionMemoria = true;
@@ -1335,7 +1336,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         }
                     }
                 }
-
+                //Si la validación es True, se encontró al menos un elemento nuevo en la lista, por lo que se puede proseguir
                 if (validacionMemoria)
                 {
                     if (lbx_compasociados.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Count == 0)
@@ -1363,6 +1364,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         #region Eventos Componentes
 
+        /// <summary>
+        /// Evento que maneja el cambio de índice sobre el dropdownlist de entregables
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbx_entregables_SelectedIndexChanged(object sender, EventArgs e)
         {
             int entregableSeleccionado;
@@ -1374,14 +1380,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             inicializarComponentesPorEntregable(vo_entregable);
         }
 
+        /// <summary>
+        /// Evento para la asigación de un nuevo componente para un entregable específico
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btn_asignarComponente_Click(object sender, EventArgs e)
         {
             int entSeleccionado;
+            //Se obtiene el entregable seleccionado
             entSeleccionado = Convert.ToInt32(lbx_entregablesasociados.SelectedValue.ToString());
 
             cls_entregable vo_entregable = new cls_entregable();
             vo_entregable.pPK_entregable = entSeleccionado;
 
+            //Se recorre la lista de componentes para validar a quien es el que se va a asignar
             for (int i = lbx_componentes.Items.Count - 1; i >= 0; i--)
             {
                 if (lbx_componentes.Items[i].Selected == true)
@@ -1395,10 +1408,13 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_entregableComponente.pEntregable = vo_entregable;
                     vo_entregableComponente.pComponente = vo_componente;
 
+                    //Se recorre la lista de los entregables asociados a proyecto en memoria
                     foreach (cls_proyectoEntregable proyEnt in cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria)
                     {
+                        //Si los entregables coinciden, este es el que se va a asignar
                         if (proyEnt.pPK_Entregable == vo_entregable.pPK_entregable)
                         {
+                            //Si en el siguiente nivel, en entregable-componente no se encuentra la asignación, se realiza para ese proyecto-entregable
                             if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == vo_entregable.pPK_entregable &&
                                                                                                                  searchLinQ.pPK_Componente == vo_componente.pPK_componente).Count() == 0)
                             {
@@ -1415,6 +1431,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
             }
 
+            //Si existe al menos un elemento asociado, se puede continuar
             if (lbx_compasociados.Items.Count > 0)
             {
                 btnNxt.Enabled = true;
@@ -1422,14 +1439,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         }
 
+        /// <summary>
+        /// Evento que se encarga de remover componentes pertenecientes a un entregable específico
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btn_removerComponente_Click(object sender, EventArgs e)
         {
             int entSeleccionado;
+            //Se escoge el entregable sobre el que realizara la desasignación
             entSeleccionado = Convert.ToInt32(lbx_entregablesasociados.SelectedValue.ToString());
 
             cls_entregable vo_entregable = new cls_entregable();
             vo_entregable.pPK_entregable = entSeleccionado;
 
+            //Se recorren los componentes ya asociados
             for (int i = lbx_compasociados.Items.Count - 1; i >= 0; i--)
             {
                 if (lbx_compasociados.Items[i].Selected == true)
@@ -1443,8 +1467,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_entregableComponente.pEntregable = vo_entregable;
                     vo_entregableComponente.pComponente = vo_componente;
 
+                    //Se realiza un barrido de las asignaciones posteriores que tuviese el elemento a nivel de memoria, de los subniveles siguientes
                     if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == vo_entregable.pPK_entregable &&
-                                                                                                                searchLinQ.pPK_Componente == vo_componente.pPK_componente).Count() > 0)
+                                                                                                               searchLinQ.pPK_Componente == vo_componente.pPK_componente).Count() > 0)
                         {
                             //Se realiza una eliminación de todas las posibles referencias que se presenten a nivel de memoria para el entregable que se está eliminando
                             foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria)
@@ -1477,6 +1502,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
             }
 
+            //Luego del barrido, si no quedó ningún elemento asociado, no se habilita el botón de siguiente
             if (lbx_compasociados.Items.Count == 0 && cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Count == 0 && cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Count == 0)
             {
                 btnNxt.Enabled = false;
@@ -1494,6 +1520,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         #region Métodos Paquetes
 
+        /// <summary>
+        /// Método que cargará la información de los componentes ya asociados para el step de paquetes
+        /// </summary>
         private void llenarDatosPaquetes()
         {
             try
@@ -1515,6 +1544,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             
             try
             {
+                //Si se encuentran elementos ya en la lista que se mantiene en memoria, los mismos se respetan
                 if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Count > 0)
                 {
                     lbx_componentesasociados.DataSource = cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria;
@@ -1522,6 +1552,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     lbx_componentesasociados.DataValueField = "pPK_Componente";
                     lbx_componentesasociados.DataBind();
                 }
+                //De lo contrario se pregunta a nivel de base de datos si existen
                 else
                 {
                     vo_dataSet = cls_gestorEntregableComponente.selectEntregableComponente(cls_variablesSistema.vs_proyecto);
@@ -1532,6 +1563,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 }
 
+                //Se envía a cargar los paquetes para el componente seleccionado
                 cargarPaquetesPorComponente();
 
             }
@@ -1601,7 +1633,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
-        /// 
+        /// Método que obtiene los paquetes asociados al componente que se envía como parámetro
         /// </summary>
         /// <param name="po_componente"></param>
         private void inicializarPaquetesPorComponente(cls_componente po_componente)
@@ -1618,12 +1650,17 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         }
 
+        /// <summary>
+        /// Método que filtra los paquetes del componente seleccionado
+        /// </summary>
+        /// <param name="po_componentePaquete"></param>
         private void cargarPaquetesPorComponente(cls_componentePaquete po_componentePaquete)
         {
             DataSet vo_dataSet = new DataSet();
 
             try
             {
+                //Si la lista de memoria se encuentra vacía, se realiza la consulta en base de datos
                 if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Count == 0)
                 {
                     vo_dataSet = cls_gestorComponentePaquete.selectComponentePaquete(cls_variablesSistema.vs_proyecto);
@@ -1645,11 +1682,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         vo_componentePaquete.pComponente = vo_componente;
                         vo_componentePaquete.pPaquete = vo_paquete;
 
+                        //Si el elemento no se encuentra en la lista de memoria que mantiene los elementos que se obtienen de base de datos, se agrega
                         if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Where(searchLinQ => searchLinQ.pPK_Paquete == vo_componentePaquete.pPK_Paquete).Count() == 0)
                         {
                             cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Add(vo_componentePaquete);
                         }          
-
+                        //Si el elemento no se encuentra asignado a la lista de memoria, se agrega
                         if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Componente == vo_componentePaquete.pPK_Componente).Count() > 0)
                         {
                             if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Paquete == vo_componentePaquete.pPK_Paquete).Count() == 0)
@@ -1662,6 +1700,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 }
 
+                //Se respetan los paquetes que hayan sido asignados en memoria
                 if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Componente == po_componentePaquete.pPK_Componente).Count() > 0)
                 {
                     lbx_paqasociados.DataSource = cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Componente == po_componentePaquete.pPK_Componente);
@@ -1677,6 +1716,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         btnNxt.Enabled = true;
                     }
                 }
+                //Si el elemento no se encuentra en memoria, se realiza la consulta en base de datos
                 else
                 {
                     vo_dataSet = cls_gestorComponentePaquete.selectComponentePaquete(po_componentePaquete);
@@ -1718,6 +1758,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
         }
 
+        /// <summary>
+        /// Método que obtiene los paquetes asociados a un componente en específico
+        /// </summary>
         private void cargarPaquetesPorComponente()
         {
             DataSet vo_dataSet = new DataSet();
@@ -1727,6 +1770,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
+                //Se limpia el listbox de paquetes asociados
                 if (lbx_paqasociados.Items.Count > 0)
                 {
                     cantidadPaqAsociados = lbx_paqasociados.Items.Count;
@@ -1736,7 +1780,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         lbx_paqasociados.Items.RemoveAt(0);
                     }
                 }
-
+                //Se limpia el listbox de la totalidad de paquetes
                 if (lbx_paquetes.Items.Count > 0)
                 {
                     cantidadPaquetes = lbx_paquetes.Items.Count;
@@ -1747,6 +1791,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     }
                 }
 
+                //Se aplica la consulta en base de datos para obtener todos los paquetes asociados a los componentes que se encuentran asignados en memoria para el proyecto
                 vo_dataSet = cls_gestorComponentePaquete.selectComponentePaquete(cls_variablesSistema.vs_proyecto);
 
                 foreach (DataRow row in vo_dataSet.Tables[0].Rows)
@@ -1766,11 +1811,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_componentePaquete.pComponente = vo_componente;
                     vo_componentePaquete.pPaquete = vo_paquete;
 
+                    //Si le elemento leído no se encuentra en la lista de base de datos, se agrega
                     if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Where(searchLinQ => searchLinQ.pPK_Paquete == vo_componentePaquete.pPK_Paquete).Count() == 0)
                     {
                         cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Add(vo_componentePaquete);
                     }
-
+                    //Si el elemento leído no se encuentra en la lista de memoria, se agrega
                     if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Componente == vo_componentePaquete.pPK_Componente).Count() == 1)
                     {
                         validacionMemoria = true;
@@ -1790,7 +1836,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                     }
                 }
-
+                //Si la validación es True significa que se ha agregado al menos un elemento, por lo cuál el botón de siguiente puede habilitarse
                 if (validacionMemoria)
                 {
                     if (lbx_paqasociados.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Count == 0)
@@ -1818,6 +1864,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         #region Eventos Paquetes
 
+        /// <summary>
+        /// Evento que valida el cambio del índice del listboz de componentes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbx_componentes_SelectedIndexChanged(object sender, EventArgs e)
         {
             int componenteSeleccionado;
@@ -1826,17 +1877,25 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             cls_componente vo_componente = new cls_componente();
             vo_componente.pPK_componente = componenteSeleccionado;
 
+            //Se inicializan los paquetes asociados al componente específico
             inicializarPaquetesPorComponente(vo_componente);
         }
 
+        /// <summary>
+        /// Evento que se encarga de asigar un paquete a un componente específico
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btn_asignarPaquete_Click(object sender, EventArgs e)
         {
             int compSeleccionado;
+            //Se obtiene el componente al que se le va a agregar el paquete seleccionado
             compSeleccionado = Convert.ToInt32(lbx_componentesasociados.SelectedValue.ToString());
 
             cls_componente vo_componente = new cls_componente();
             vo_componente.pPK_componente = compSeleccionado;
 
+            //Se recorre la lista de paquetes hasta encontrar el que se va a asignar
             for (int i = lbx_paquetes.Items.Count - 1; i >= 0; i--)
             {
                 if (lbx_paquetes.Items[i].Selected == true)
@@ -1850,23 +1909,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_componentePaquete.pComponente = vo_componente;
                     vo_componentePaquete.pPaquete = vo_paquete;
 
+                    //Se recorre la lista de entregables-componentes en memoria
                     foreach (cls_entregableComponente entComp in cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria)
                     {
+                        //Si el componente es el mismo que se va a asignar
                         if (entComp.pPK_Componente == vo_componente.pPK_componente)
                         {
-                            //if (!entComp.PaqueteEncontrado(vo_paquete))
-                            //{
-                            //    //Se agrega el entregable al que pertenece el componentePaquete, puesto que se necesita al guardar el registro
-                            //    vo_componentePaquete.pEntregable = entComp.pEntregable;
-
-                            //    entComp.pComponentePaquete.pPaqueteList.Add(vo_paquete);
-                            //    entComp.pComponentePaqueteList.Add(vo_componentePaquete);
-                            //    cls_variablesSistema.vs_proyecto.pPaqueteLista.Add(vo_paquete);
-                            //    cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Add(vo_componentePaquete);
-                            //}
                             if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == entComp.pPK_Entregable &&
-                                                                                                          searchLinQ.pPK_Componente == vo_componente.pPK_componente &&
-                                                                                                          searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete).Count() == 0)
+                                                                                                                    searchLinQ.pPK_Componente == vo_componente.pPK_componente &&
+                                                                                                                    searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete).Count() == 0)
                             {
                                 //Se agrega el entregable al que pertenece el componentePaquete, puesto que se necesita al guardar el registro
                                 vo_componentePaquete.pEntregable = entComp.pEntregable;
@@ -1884,6 +1935,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
             }
 
+            //Si aún queda al menos un elemento, se habilita el botón de siguiente
             if (lbx_paqasociados.Items.Count > 0)
             {
                 btnNxt.Enabled = true;
@@ -1891,14 +1943,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         }
 
+        /// <summary>
+        /// Evento encargado de eliminar un paquete asociado a un componente específico
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btn_removerPaquete_Click(object sender, EventArgs e)
         {
             int compSeleccionado;
+            //Se obtiene el componente al que se le removerá el paquete
             compSeleccionado = Convert.ToInt32(lbx_componentesasociados.SelectedValue.ToString());
 
             cls_componente vo_componente = new cls_componente();
             vo_componente.pPK_componente = compSeleccionado;
 
+            //Se recorre la lista de paquetes asociados
             for (int i = lbx_paqasociados.Items.Count - 1; i >= 0; i--)
             {
                 if (lbx_paqasociados.Items[i].Selected == true)
@@ -1912,12 +1971,13 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_componentePaquete.pComponente = vo_componente;
                     vo_componentePaquete.pPaquete = vo_paquete;
 
+                    //Se recorre la lista
                     foreach (cls_entregableComponente entComp in cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria)
                     {
 
                         if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == entComp.pPK_Entregable &&
-                                                                                                          searchLinQ.pPK_Componente == vo_componente.pPK_componente &&
-                                                                                                          searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete).Count() > 0)
+                                                                                                                searchLinQ.pPK_Componente == vo_componente.pPK_componente &&
+                                                                                                                searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete).Count() > 0)
                         {
 
                             //Se realiza una eliminación de todas las posibles referencias que se presenten a nivel de memoria para el entregable que se está eliminando
@@ -1945,6 +2005,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
             }
 
+            //Si luego de la eliminación no se encuentran elementos en las listas, se deshabilita el botón de continuar
             if (lbx_paqasociados.Items.Count == 0 && cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Count == 0 && cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Count == 0)
             {
                 btnNxt.Enabled = false;
@@ -1962,6 +2023,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         #region Métodos Actividades
 
+        /// <summary>
+        /// Método que obtiene los paquetes que han sido asociados a un proyecto en el step de actividades del wizard de creación
+        /// </summary>
         private void llenarDatosActividades()
         {
             try
@@ -1983,6 +2047,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
+                //Si la lista de memoria posee elementos, se respetan y asignan
                 if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Count > 0)
                 {
                     lbx_paquetesasociados.DataSource = cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria;
@@ -1999,6 +2064,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     lbx_paquetesasociados.DataBind();
                 }    
                 
+                //Ya sea de memoria o de base de datos, se envía a cargar las actividades por paquete
                 cargarActividadesPorPaquete();
 
             }
@@ -2061,7 +2127,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
-        /// 
+        /// Método que inicializa las actividades asignadas a un paquete específico
         /// </summary>
         /// <param name="po_paquete"></param>
         private void inicializarActividadesPorPaquete(cls_paquete po_paquete)
@@ -2071,16 +2137,23 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             vo_paqueteActividad.pProyecto = cls_variablesSistema.vs_proyecto;
             vo_paqueteActividad.pPaquete = po_paquete;
 
+            //Se envía a cargas las actividaes por paquete
             cargarActividadesPorPaquete(vo_paqueteActividad);
+            //Se carga la totalidad de las actividades que aún pueden ser escogidas
             cargarListaActividades();
         }
 
+        /// <summary>
+        /// Método que carga las actividades para un paquete en específico
+        /// </summary>
+        /// <param name="po_paqueteActividad"></param>
         private void cargarActividadesPorPaquete(cls_paqueteActividad po_paqueteActividad)
         {
             DataSet vo_dataSet = new DataSet();
 
             try
             {
+                //Si se encuentran elementos en la lista de memoria, se verifica en estos
                 if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Count == 0)
                 {
                     vo_dataSet = cls_gestorPaqueteActividad.selectPaqueteActividad(cls_variablesSistema.vs_proyecto);
@@ -2105,11 +2178,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         vo_paqueteActividad.pPaquete = vo_paquete;
                         vo_paqueteActividad.pActividad = vo_actividad;
 
+                        //Si en la lista de memoria que mantiene los objetos leídos a nivel de base de datos, no se encuentra el elemente, se agrega
                         if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Where(searchLinQ => searchLinQ.pPK_Actividad == vo_paqueteActividad.pPK_Actividad).Count() == 0)
                         {
                             cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Add(vo_paqueteActividad);
                         }
-
+                        //Si en la lista de memoria no se encuentra el elemento, se agrega
                         if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == vo_paqueteActividad.pPK_Entregable &&
                                                                                                                 searchLinQ.pPK_Componente == vo_paqueteActividad.pPK_Componente &&
                                                                                                                 searchLinQ.pPK_Paquete == vo_paqueteActividad.pPK_Paquete).Count() > 0)
@@ -2121,6 +2195,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 }
 
+                //Si el elemento se encuentra en la lista de memoria, se respeta para la asignación
                 if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Paquete == po_paqueteActividad.pPK_Paquete).Count() > 0)
                 {
                     lbx_actasociadas.DataSource = cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Paquete == po_paqueteActividad.pPK_Paquete);
@@ -2146,6 +2221,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     //Se realiza el Binding luego de saber de donde se tomarán los datos
                     lbx_actasociadas.DataBind();
 
+                    //Si se encuentran elementos asociados
                     if (lbx_actasociadas.Items.Count > 0)
                     {
                         ListBox lbx_pivot = new ListBox();
@@ -2155,12 +2231,13 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         lbx_pivot.DataValueField = "PK_Actividad";
                         lbx_pivot.DataBind();
 
+                        //Si la actividad ya se encuentra asociada, se elimina del listbox de asociación
                         foreach (ListItem item in lbx_pivot.Items)
                         {
                             if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == po_paqueteActividad.pPK_Entregable &&
-                                                                                                             searchLinQ.pPK_Componente == po_paqueteActividad.pPK_Componente &&
-                                                                                                             searchLinQ.pPK_Paquete == po_paqueteActividad.pPK_Paquete &&
-                                                                                                             searchLinQ.pPK_Actividad == Convert.ToInt32(item.Value)).Count() == 0)
+                                                                                                                   searchLinQ.pPK_Componente == po_paqueteActividad.pPK_Componente &&
+                                                                                                                   searchLinQ.pPK_Paquete == po_paqueteActividad.pPK_Paquete &&
+                                                                                                                   searchLinQ.pPK_Actividad == Convert.ToInt32(item.Value)).Count() == 0)
                             {
                                 lbx_actasociadas.Items.Remove(item);
                             }
@@ -2178,6 +2255,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
         }
 
+        /// <summary>
+        /// Método que obtiene las actividades asociadas a un paquete específico
+        /// </summary>
         private void cargarActividadesPorPaquete()
         {
             DataSet vo_dataSet = new DataSet();
@@ -2187,6 +2267,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
+                //Se limpia el listbox que mantiene la asociación de actividades
                 if (lbx_actasociadas.Items.Count > 0)
                 {
                     cantidadActAsociadas = lbx_actasociadas.Items.Count;
@@ -2196,7 +2277,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         lbx_actasociadas.Items.RemoveAt(0);
                     }
                 }
-
+                //Se limpia el listbox que obtiene la totalidad de actividades
                 if (lbx_actividades.Items.Count > 0)
                 {
                     cantidadActividades = lbx_actividades.Items.Count;
@@ -2206,7 +2287,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         lbx_actividades.Items.RemoveAt(0);
                     }
                 }
-
+                
+                //Se realiza la consulta en base de datos para obtener las actividades asociadas a los paquetes del proyecto
                 vo_dataSet = cls_gestorPaqueteActividad.selectPaqueteActividad(cls_variablesSistema.vs_proyecto);
 
                 foreach (DataRow row in vo_dataSet.Tables[0].Rows)
@@ -2231,11 +2313,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                     //El filtro aquí se realiza con el paquete y la actividad, esto debido a que una actividad si puede encontrarse ya asignada a varios paquetes
                     if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Where(searchLinQ => searchLinQ.pPK_Paquete == vo_paqueteActividad.pPK_Paquete && 
-                                                                                                       searchLinQ.pPK_Actividad == vo_paqueteActividad.pPK_Actividad).Count() == 0)
+                                                                                                             searchLinQ.pPK_Actividad == vo_paqueteActividad.pPK_Actividad).Count() == 0)
                     {
                         cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Add(vo_paqueteActividad);
                     }
-
+                    //Si el componente-paquete que se va a asignar ya existe en memoria
                     if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Paquete == vo_paqueteActividad.pPK_Paquete).Count() == 1)
                     {
                         validacionMemoria = true;
@@ -2243,11 +2325,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         cls_componentePaquete vo_componentePaquete = new cls_componentePaquete();
                         vo_componentePaquete = (cls_componentePaquete)cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Find(searchLinQ => searchLinQ.pPK_Paquete == vo_paqueteActividad.pPK_Paquete);
 
+                        //Si se está asignando sobre uno que ya existe en memoria, se tiene que corroborar con toda la llave primaria
                         if (vo_paqueteActividad.pPK_Entregable == vo_componentePaquete.pPK_Entregable && vo_paqueteActividad.pPK_Componente == vo_componentePaquete.pPK_Componente && vo_paqueteActividad.pPK_Paquete == vo_componentePaquete.pPK_Paquete)
                         {
                             //Si la actividad no ha sido insertado en memoria, se agrega
                             if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Paquete == vo_paqueteActividad.pPK_Paquete &&
-                                                                                                             searchLinQ.pPK_Actividad == vo_paqueteActividad.pPK_Actividad).Count() == 0)
+                                                                                                                   searchLinQ.pPK_Actividad == vo_paqueteActividad.pPK_Actividad).Count() == 0)
                             {
                                 cls_variablesSistema.vs_proyecto.pActividadLista.Add(vo_actividad);
                                 cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Add(vo_paqueteActividad);
@@ -2257,6 +2340,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     }
                 }
 
+                //Si la validación devuelve un True, se ha asignado almenos un elemento, por lo cual se puede habilitar el botón de siguiente
                 if (validacionMemoria)
                 {
                     if (lbx_actasociadas.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Count == 0)
@@ -2284,6 +2368,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         #region Eventos Actividades
 
+        /// <summary>
+        /// Evento que maneja el cambio de índice para el listbox de paquete
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbx_paquetes_SelectedIndexChanged(object sender, EventArgs e)
         {
             int paqueteSeleccionado;
@@ -2292,6 +2381,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             cls_paquete vo_paquete = new cls_paquete();
             vo_paquete.pPK_Paquete = paqueteSeleccionado;
 
+            //Se envía a inicializa las actividades según el paquete seleccionado
             inicializarActividadesPorPaquete(vo_paquete);
         }
 
@@ -2303,6 +2393,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             cls_paquete vo_paquete = new cls_paquete();
             vo_paquete.pPK_Paquete = paqueteSeleccionado;
 
+            //Se recorre la lista de actividades
             for (int i = lbx_actividades.Items.Count - 1; i >= 0; i--)
             {
                 if (lbx_actividades.Items[i].Selected == true)
@@ -2316,10 +2407,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_paqueteActividad.pPaquete = vo_paquete;
                     vo_paqueteActividad.pActividad = vo_actividad;
 
+                    //Se recorre los elementos de la lista de memoria
                     foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria)
                     {
                         if (compPaq.pPK_Paquete == vo_paquete.pPK_Paquete)
                         {
+                            //Si la actividad no se encuentra asignada para ese paquete, se agrega
                             if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == compPaq.pPK_Entregable &&
                                                                                                              searchLinQ.pPK_Componente == compPaq.pPK_Componente &&
                                                                                                              searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete &&
@@ -2342,12 +2435,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
             }
 
+            //Si al menos se encuetra un elemento asociado, se puede habilitar el botón de siguiente
             if (lbx_actasociadas.Items.Count > 0)
             {
                 btnNxt.Enabled = true;
             }
         }
 
+        /// <summary>
+        /// Evento para la eliminación de una actividad
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btn_removerActividad_Click(object sender, EventArgs e)
         {
             int paqueteSeleccionado;
@@ -2356,6 +2455,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             cls_paquete vo_paquete = new cls_paquete();
             vo_paquete.pPK_Paquete = paqueteSeleccionado;
 
+            //Se recorre la lista de actividades asociadas
             for (int i = lbx_actasociadas.Items.Count - 1; i >= 0; i--)
             {
                 if (lbx_actasociadas.Items[i].Selected == true)
@@ -2369,6 +2469,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     vo_paqueteActividad.pPaquete = vo_paquete;
                     vo_paqueteActividad.pActividad = vo_actividad;
 
+                    //Se recorren los elementos de la lista de memoria
                     foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria)
                     {
                         if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == compPaq.pPK_Entregable &&
@@ -2378,7 +2479,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         {
                             cls_variablesSistema.vs_proyecto.pActividadLista.RemoveAll(searchLinQ => searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad);
                             cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete &&
-                                                                                                             searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad);
+                                                                                                                   searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad);
                         }
                     }
 
@@ -2389,6 +2490,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
             }
 
+            //Si no se encuentra al menos un elemento, no se habilita el botón de siguiente
             if (lbx_actasociadas.Items.Count == 0 && cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Count == 0 && cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Count == 0)
             {
                 btnNxt.Enabled = false;
