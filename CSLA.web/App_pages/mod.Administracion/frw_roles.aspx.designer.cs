@@ -220,6 +220,24 @@ namespace CSLA.web.App_pages.mod.Administracion {
         protected global::System.Web.UI.WebControls.Label lbl_permisos;
         
         /// <summary>
+        /// btn_marcar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_marcar;
+        
+        /// <summary>
+        /// btn_desmarcar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_desmarcar;
+        
+        /// <summary>
         /// trv_menu control.
         /// </summary>
         /// <remarks>

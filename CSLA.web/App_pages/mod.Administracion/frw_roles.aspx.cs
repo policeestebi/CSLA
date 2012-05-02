@@ -35,6 +35,7 @@ using CSLA.web.App_Constantes;
 // Esteban Ramírez              25-  10  - 2011     Se agrega la tree view del menú del sistema.
 // Cristian Arce Jiménez  	    27 – 11  - 2011	 	Se agrega el manejo de excepciones personalizadas
 // Cristian Arce Jiménez  	    23 – 01  - 2012	 	Se agrega el manejo de filtros
+// Esteban Ramírez Gónzalez  	01 – 05 - 2012	    Se agrega manejo se seguridad
 // 
 //								
 //								
@@ -61,6 +62,11 @@ namespace CSLA.web.App_pages.mod.Administracion
 
                 try
                 {
+                    this.validarSession();
+                    this.obtenerPermisos();
+                    this.validarAcceso();
+                    this.cargarPermisos();
+
                     this.llenarGridView();
                     this.llenarTreeView();
                 }
@@ -68,7 +74,7 @@ namespace CSLA.web.App_pages.mod.Administracion
                 {
                     String vs_error_usuario = "Error al inicializar el mantenimiento de roles.";
                     this.lanzarExcepcion(po_exception, vs_error_usuario);
-                } 
+                }
 
             }
 
@@ -114,7 +120,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             {
                 String vs_error_usuario = "Ocurrió un error inicializando los controles del mantenimiento.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
-            } 
+            }
         }
 
         /// <summary>
@@ -147,7 +153,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             catch (Exception po_exception)
             {
                 throw new Exception("Ocurrió un error llenando la tabla.", po_exception);
-            } 
+            }
         }
 
         /// <summary>
@@ -178,6 +184,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             DataTable vo_dt = null;
             IEnumerable<DataRow> vo_row = null;
             TreeNode vo_nodo = null;
+            string vs_nombre = string.Empty;
 
             try
             {
@@ -191,11 +198,16 @@ namespace CSLA.web.App_pages.mod.Administracion
                 foreach (DataRow row in vo_row)
                 {
 
-                    vo_nodo = new TreeNode(row["titulo"].ToString(), row["PK_menu"].ToString());
+                    if (row["titulo"].ToString() != vs_nombre)
+                    {
+                        vo_nodo = new TreeNode(row["titulo"].ToString(), row["PK_menu"].ToString());
 
-                    this.trv_menu.Nodes.Add(vo_nodo);
+                        this.trv_menu.Nodes.Add(vo_nodo);
 
-                    agregarHijosMenu(row["PK_menu"].ToString(), vo_dt, vo_nodo);
+                        agregarHijosMenu(row["PK_menu"].ToString(), vo_dt, vo_nodo);
+                    }
+
+                    vs_nombre = row["titulo"].ToString();
 
                     //Se agregan los permisos asociados a las páginas
 
@@ -208,7 +220,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             catch (Exception po_exception)
             {
                 throw new Exception("Ocurrió un error llenando el árbol.", po_exception);
-            } 
+            }
         }
 
         /// <summary>
@@ -268,7 +280,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             catch (Exception po_exception)
             {
                 throw new Exception("Ocurrió un error al cargar el registro.", po_exception);
-            } 
+            }
 
         }
 
@@ -288,7 +300,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error eliminando el rol.", po_exception);
+                throw new Exception("Ocurrió un error eliminando el rol. Es posible que exista un registro asociado a este rol", po_exception);
             }
         }
 
@@ -320,7 +332,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             catch (Exception po_exception)
             {
                 throw new Exception("Ocurrió un error al guardar el registro.", po_exception);
-            } 
+            }
         }
 
         /// <summary>
@@ -348,7 +360,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             this.txt_nombre.Enabled = pb_habilitados;
             this.txt_descripcion.Enabled = pb_habilitados;
             this.chk_activo.Enabled = pb_habilitados;
-            this.btn_guardar.Visible = pb_habilitados;
+            this.btn_guardar.Visible = pb_habilitados && (this.pbAgregar || this.pbModificar); ; ;
         }
 
         /// <summary>
@@ -362,7 +374,11 @@ namespace CSLA.web.App_pages.mod.Administracion
             try
             {
                 var vo_row = (from menu in po_datos.AsEnumerable()
-                              where menu.Field<Int32>("FK_menuPadre").ToString().Equals(ps_padre)
+                              where menu.Field<Int32>("FK_menuPadre").ToString().Equals(ps_padre) || (
+                                    menu.Field<Int32>("PK_menu").ToString().Equals(ps_padre) &&
+                                    menu.Field<Int32>("PK_pagina") != 0 &&
+                                    menu.Field<Int32>("PK_permiso") != 0 &&
+                                    menu.Field<Int32>("FK_menuPadre") == 0)
                               select new
                               {
                                   PKMENU = menu["PK_menu"].ToString(),
@@ -377,9 +393,16 @@ namespace CSLA.web.App_pages.mod.Administracion
 
                     vo_nodo = new TreeNode(row.TITULO, row.PKMENU);
 
-                    po_nodo.ChildNodes.Add(vo_nodo);
+                    if (row.MENUPADRE != "0")
+                    {
+                        po_nodo.ChildNodes.Add(vo_nodo);
 
-                    agregarHijosMenu(row.PKMENU, po_datos, vo_nodo);
+                        agregarHijosMenu(row.PKMENU, po_datos, vo_nodo);
+                    }
+                    else
+                    {
+                        vo_nodo = po_nodo;
+                    }
 
                     agregarPermisos(row.PKMENU, po_datos, vo_nodo);
                 }
@@ -448,26 +471,30 @@ namespace CSLA.web.App_pages.mod.Administracion
                 {
                     vo_codigo = nodo.Value.ToString().Split('/');
 
-                    vo_pagina = new cls_pagina();
-
-                    vo_pagina.pPK_pagina = Convert.ToInt32(vo_codigo[1]);
-
-                    if (!vo_permisos.Exists(c => c.pPK_pagina == Convert.ToInt32(vo_codigo[1])))
+                    if (vo_codigo != null && vo_codigo.Count() == 3)
                     {
-                        vo_permisos.Add(vo_pagina);
-                    }
-                    else
-                    {
-                        vo_pagina = vo_permisos.Find(c => c.pPK_pagina == Convert.ToInt32(vo_codigo[1]));
-                    }
+                        vo_pagina = new cls_pagina();
 
-                    vo_pagina.Permisos.Add(new cls_permiso() { pPK_permiso = Convert.ToInt32(vo_codigo[2]) });
+                        vo_pagina.pPK_pagina = Convert.ToInt32(vo_codigo[1]);
+
+
+                        if (!vo_permisos.Exists(c => c.pPK_pagina == Convert.ToInt32(vo_codigo[1])))
+                        {
+                            vo_permisos.Add(vo_pagina);
+                        }
+                        else
+                        {
+                            vo_pagina = vo_permisos.Find(c => c.pPK_pagina == Convert.ToInt32(vo_codigo[1]));
+                        }
+
+                        vo_pagina.Permisos.Add(new cls_permiso() { pPK_permiso = Convert.ToInt32(vo_codigo[2]) });
+                    }
                 }
             }
             catch (Exception po_exception)
             {
                 throw new Exception("Ocurrió un error al obtener los permisos del rol.", po_exception);
-            } 
+            }
 
             return vo_permisos;
         }
@@ -498,7 +525,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             catch (Exception po_exception)
             {
                 throw new Exception("Ocurrió un error cargando los permisos para el rol.", po_exception);
-            } 
+            }
         }
 
         /// <summary>
@@ -575,9 +602,59 @@ namespace CSLA.web.App_pages.mod.Administracion
             }
         }
 
+        /// <summary>
+        /// Marcar o desmarca
+        /// todos los nodos
+        /// del tree view 
+        /// del menú.
+        /// </summary>
+        /// <param name="pb_marcar"></param>
+        private void marcarDesmarcar(bool pb_marcar, TreeNode po_padre)
+        {
+            TreeNodeCollection nodos = po_padre == null ? this.trv_menu.Nodes : po_padre.ChildNodes;
+
+            foreach (TreeNode nodo in nodos)
+            {
+                if (nodo.ChildNodes != null &&
+                   nodo.ChildNodes.Count > 0)
+                {
+                    this.marcarDesmarcar(pb_marcar, nodo);
+                }
+                else
+                {
+                    nodo.Checked = pb_marcar;
+                }
+            }
+        }
+
         #endregion
 
         #region Eventos
+
+        /// <summary>
+        /// Evento que se ejecuta
+        /// cuando se presiona el botón 
+        /// de marcar.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btn_marcar_Click(object sender, EventArgs e)
+        {
+            this.marcarDesmarcar(true, null);
+        }
+
+        /// <summary>
+        /// Evento que se ejecuta
+        /// cuando se presiona el botón 
+        /// de desmarcar.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btn_desmarcar_Click(object sender, EventArgs e)
+        {
+            this.marcarDesmarcar(false, null);
+        }
+
 
         /// <summary>
         /// Busca un rol según el filtro.
@@ -589,7 +666,7 @@ namespace CSLA.web.App_pages.mod.Administracion
         protected void ucSearchRol_searchClick(object sender, EventArgs e, string value, ListItem seletecItem)
         {
 
-            this.llenarGridViewFilter(this.ucSearchRol.Filter); 
+            this.llenarGridViewFilter(this.ucSearchRol.Filter);
 
         }
 
@@ -617,7 +694,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             {
                 String vs_error_usuario = "Ocurrió un error al intentar mostrar la ventana de edición para los registros.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
-            } 
+            }
 
         }
 
@@ -646,7 +723,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             {
                 String vs_error_usuario = "Ocurrió un error mientras se guardaba el registro.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
-            } 
+            }
         }
 
         /// <summary>
@@ -671,7 +748,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             {
                 String vs_error_usuario = "Ocurrió un error al cancelar la operación.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
-            } 
+            }
         }
 
         /// <summary>
@@ -691,7 +768,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             {
                 String vs_error_usuario = "Ocurrió un error al realizar el listado de roles.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
-            } 
+            }
         }
 
         /// <summary>
@@ -762,11 +839,153 @@ namespace CSLA.web.App_pages.mod.Administracion
             {
                 String vs_error_usuario = "Ocurrió un error al intentar mostrar la ventana de edición para los registros.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
-            } 
+            }
 
         }
 
         #endregion
+
+        #region Seguridad
+
+        /// <summary>
+        /// Valida si el usuario
+        /// tiene acceso a la página de lo contrario
+        /// destruye la sessión
+        /// 
+        /// </summary>
+        private void validarAcceso()
+        {
+            if (!this.pbAcceso)
+            {
+                this.Session.Abandon();
+                this.Session.Clear();
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Determina si la sesión se encuentra
+        /// activa, si no es así se envía a la página de inicio.
+        /// </summary>
+        private void validarSession()
+        {
+            if (this.Session["cls_usuario"] == null)
+            {
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Valida el acceso del usuario en la página
+        /// </summary>
+        private bool pbAcceso
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ACCESO] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de agregar del usuario en página.
+        /// </summary>
+        private bool pbAgregar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.AGREGAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de modificar del usuario en página.
+        /// </summary>
+        private bool pbModificar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.MODIFICAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de eliminar del usuario en la página.
+        /// </summary>
+        private bool pbEliminar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ELIMINAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los permisos
+        /// para la página actual.
+        /// </summary>
+        private void obtenerPermisos()
+        {
+            string lsUrl = String.Empty;
+
+            try
+            {
+                lsUrl = "#.." + HttpContext.Current.Request.Url.AbsolutePath;
+
+                Session[cls_constantes.PAGINA] = cls_gestorPagina.obtenerPermisoPaginaRol(lsUrl, ((cls_usuario)this.Session["cls_usuario"]).pFK_rol);
+
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al obtener los permisos del rol en la página actual..", po_exception);
+            }
+        }
+
+        /// <summary>
+        /// Carga los permisos según la página.
+        /// </summary>
+        private void cargarPermisos()
+        {
+            this.btn_agregar.Visible = this.pbAgregar;
+            this.btn_guardar.Visible = this.pbModificar || this.pbAgregar;
+            this.grd_listaRoles.Columns[3].Visible = this.pbAcceso;
+            this.grd_listaRoles.Columns[4].Visible = this.pbModificar;
+            this.grd_listaRoles.Columns[5].Visible = this.pbEliminar;
+        }
+
+        #endregion
+
+
+
 
     }
 }

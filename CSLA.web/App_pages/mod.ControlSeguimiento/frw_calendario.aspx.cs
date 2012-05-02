@@ -29,6 +29,7 @@ using COSEVI.lib.Security;
 // Historial
 // PERSONA 			            MES – DIA - AÑO		DESCRIPCIÓN
 // Esteban Ramírez Gónzalez  	 29 –  04 - 2012	 	Se crea la clase
+// Esteban Ramírez Gónzalez  	 01 –  05 - 2012	    Se agrega manejo se seguridad
 //								
 //								
 //
@@ -297,6 +298,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 this.Session.Abandon();
                 this.Session.Clear();
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
                 Response.Redirect("../../Default.aspx");
             }
         }
@@ -308,7 +310,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         private void validarSession()
         {
             if (this.Session["cls_usuario"] == null)
+            {
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
                 Response.Redirect("../../Default.aspx");
+            }
         }
 
         /// <summary>

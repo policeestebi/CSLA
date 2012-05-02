@@ -30,6 +30,7 @@ using System.Data;
 // Esteban Ramírez Gónzalez  	26 – 08  - 2011	 	Se crea la clase
 // Cristian Arce Jiménez		01 - 22  - 2012		Modificación en la búsqueda através de filtros
 // Cristian Arce Jiménez		01 - 24  - 2012		Modificación en la búsqueda através de filtros y habilitación de campos
+// Esteban Ramírez Gónzalez  	01 –  05 - 2012	    Se agrega manejo se seguridad
 // 
 //								
 //								
@@ -56,6 +57,11 @@ namespace CSLA.web.App_pages.mod.Administracion
 
                 try
                 {
+                    this.validarSession();
+                    this.obtenerPermisos();
+                    this.validarAcceso();
+                    this.cargarPermisos();
+
                     this.llenarGridView();
                     this.cargarDataSetDepartamentos();
                 }
@@ -241,7 +247,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error eliminando el departamento.", po_exception);
+                throw new Exception("Ocurrió un error eliminando el departamento. Es posible que exista un registro asociado a este departamento", po_exception);
             }
         }
 
@@ -301,7 +307,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             this.txt_ubicacion.Enabled = pb_habilitados;
             this.txt_administrador.Enabled = pb_habilitados;
             this.ddl_departamentoPadre.Enabled = pb_habilitados;
-            this.btn_guardar.Visible = pb_habilitados;
+            this.btn_guardar.Visible = pb_habilitados && (this.pbAgregar || this.pbModificar); ;
 
         }
 
@@ -553,6 +559,145 @@ namespace CSLA.web.App_pages.mod.Administracion
                 String vs_error_usuario = "Ocurrió un error al intentar mostrar la ventana de edición para los registros.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
+        }
+
+        #endregion
+
+        #region Seguridad
+
+        /// <summary>
+        /// Valida si el usuario
+        /// tiene acceso a la página de lo contrario
+        /// destruye la sessión
+        /// 
+        /// </summary>
+        private void validarAcceso()
+        {
+            if (!this.pbAcceso)
+            {
+                this.Session.Abandon();
+                this.Session.Clear();
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Determina si la sesión se encuentra
+        /// activa, si no es así se envía a la página de inicio.
+        /// </summary>
+        private void validarSession()
+        {
+            if (this.Session["cls_usuario"] == null)
+            {
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Valida el acceso del usuario en la página
+        /// </summary>
+        private bool pbAcceso
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ACCESO] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de agregar del usuario en página.
+        /// </summary>
+        private bool pbAgregar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.AGREGAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de modificar del usuario en página.
+        /// </summary>
+        private bool pbModificar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.MODIFICAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de eliminar del usuario en la página.
+        /// </summary>
+        private bool pbEliminar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ELIMINAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los permisos
+        /// para la página actual.
+        /// </summary>
+        private void obtenerPermisos()
+        {
+            string lsUrl = String.Empty;
+
+            try
+            {
+                lsUrl = "#.." + HttpContext.Current.Request.Url.AbsolutePath;
+
+                Session[cls_constantes.PAGINA] = cls_gestorPagina.obtenerPermisoPaginaRol(lsUrl, ((cls_usuario)this.Session["cls_usuario"]).pFK_rol);
+
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al obtener los permisos del rol en la página actual..", po_exception);
+            }
+        }
+
+        /// <summary>
+        /// Carga los permisos según la página.
+        /// </summary>
+        private void cargarPermisos()
+        {
+            this.btn_agregar.Visible = this.pbAgregar;
+            this.btn_guardar.Visible = this.pbModificar || this.pbAgregar;
+            this.grd_listaDepartamentos.Columns[5].Visible = this.pbAcceso;
+            this.grd_listaDepartamentos.Columns[6].Visible = this.pbModificar; 
+            this.grd_listaDepartamentos.Columns[7].Visible = this.pbEliminar;
         }
 
         #endregion

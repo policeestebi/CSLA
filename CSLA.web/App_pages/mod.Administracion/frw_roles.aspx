@@ -13,26 +13,19 @@
     </asp:ScriptManager>
     <asp:UpdatePanel ID="upd_Principal" runat="server" ChildrenAsTriggers="true" UpdateMode="Conditional">
         <ContentTemplate>
-
             <%-- Modal para indicar mensaje de error al intentar eliminar un registro permanente --%>
-            <act:ModalPopupExtender ID="mpe_RegistroPermante" runat="server" 
-                TargetControlID="btn_permanente"
-                PopupControlID="div_PopUpMensaje" 
-                BackgroundCssClass="popUpStyle" 
-                CancelControlID="btn_permanente" 
-                DropShadow="true"
-                />
-
+            <act:ModalPopupExtender ID="mpe_RegistroPermante" runat="server" TargetControlID="btn_permanente"
+                PopupControlID="div_PopUpMensaje" BackgroundCssClass="popUpStyle" CancelControlID="btn_permanente"
+                DropShadow="true" />
             <%-- Llamado al modal para indicar mensaje de error al intentar eliminar un registro permanente --%>
-            <div id="div_PopUpMensaje" class="modalPopup" style="display:none;">
+            <div id="div_PopUpMensaje" class="modalPopup" style="display: none;">
                 <asp:Panel ID="pan_mensajeeliminar" runat="server" CssClass="modalPopup">
-                    No se puede terminar la petición debido a que el registro que intenta eliminar 
-                    es propio del sistema.
-                <br />
-                <asp:Button ID="btn_permanente" runat="server" Text="Close" />
+                    No se puede terminar la petición debido a que el registro que intenta eliminar es
+                    propio del sistema.
+                    <br />
+                    <asp:Button ID="btn_permanente" runat="server" Text="Close" />
                 </asp:Panel>
             </div>
-
             <act:Accordion ID="ard_principal" runat="server" SelectedIndex="0" FadeTransitions="false"
                 FramesPerSecond="40" TransitionDuration="250" AutoSize="None" RequireOpenedPane="false"
                 SuppressHeaderPostbacks="true" HeaderCssClass="encabezadoAcordeon" ContentCssClass="contenidoAcordeon"
@@ -150,7 +143,7 @@
                                                 <td>
                                                     <asp:RequiredFieldValidator ID="rfv_nombre" runat="server" ControlToValidate="txt_nombre"
                                                         ToolTip="Ingrese el nombre del rol" ErrorMessage="Nombre es requerido"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
-                                                    <asp:RegularExpressionValidator ID="rfv_nombrelength" runat="server" ErrorMessage="La longitud máxima son 75 caracteres." 
+                                                    <asp:RegularExpressionValidator ID="rfv_nombrelength" runat="server" ErrorMessage="La longitud máxima son 75 caracteres."
                                                         ValidationExpression="^([\S\s]{0,75})$" ControlToValidate="txt_nombre" Display="Dynamic"></asp:RegularExpressionValidator>
                                                 </td>
                                             </tr>
@@ -164,8 +157,9 @@
                                                 <td>
                                                     <asp:RequiredFieldValidator ID="rfv_descripcion" runat="server" ControlToValidate="txt_descripcion"
                                                         ToolTip="Ingrese la descripcion del rol" ErrorMessage="Descripción es requerida"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
-                                                    <asp:RegularExpressionValidator ID="rfv_descripcionlength" runat="server" ErrorMessage="La longitud máxima son 100 caracteres." 
-                                                        ValidationExpression="^([\S\s]{0,100})$" ControlToValidate="txt_descripcion" Display="Dynamic"></asp:RegularExpressionValidator>
+                                                    <asp:RegularExpressionValidator ID="rfv_descripcionlength" runat="server" ErrorMessage="La longitud máxima son 100 caracteres."
+                                                        ValidationExpression="^([\S\s]{0,100})$" ControlToValidate="txt_descripcion"
+                                                        Display="Dynamic"></asp:RegularExpressionValidator>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -178,15 +172,37 @@
                                                 <td>
                                                 </td>
                                             </tr>
+                                            <td colspan="2">
+                                                &nbsp;
+                                            </td>
                                             <tr>
                                                 <td colspan="2">
-                                                    <asp:Label ID="lbl_permisos" runat="server" Text="Permisos: "></asp:Label>
+                                                    <strong>
+                                                        <asp:Label ID="lbl_permisos" runat="server" Text="Permisos: "></asp:Label>
+                                                    </strong>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2">
-                                                    <div class="overflow" style="height: 225px;">
-                                                        <asp:TreeView ID="trv_menu" runat="server">
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <asp:Button ID="btn_marcar" runat="server" Text="Marcar Todos" CausesValidation="false" OnClick="btn_marcar_Click" />
+                                                    &nbsp;
+                                                    <asp:Button ID="btn_desmarcar" runat="server" Text="Desmarcar Todos" CausesValidation="false" OnClick="btn_desmarcar_Click" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <div class="overflow" style="height: 225px; width: 500px;">
+                                                        <asp:TreeView ID="trv_menu" runat="server" ShowLines="false">
                                                         </asp:TreeView>
                                                     </div>
                                                 </td>
