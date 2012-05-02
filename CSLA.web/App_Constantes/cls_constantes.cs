@@ -10,6 +10,7 @@ namespace CSLA.web.App_Constantes
         //Parámetros operaciones
         public const String AGREGAR = "Agregar";
         public const String ELIMINAR = "Eliminar";
+        public const String MODIFICAR = "Modificar";
         public const String EDITAR = "Editar";
         public const String VER = "Ver";
         public const String ACCESO = "Acceso";
