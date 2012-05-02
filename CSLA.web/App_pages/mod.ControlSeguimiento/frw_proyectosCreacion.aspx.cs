@@ -2385,6 +2385,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             inicializarActividadesPorPaquete(vo_paquete);
         }
 
+        /// <summary>
+        /// Evento encargado de asignar la actividad a uno o varios paquetes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btn_asignarActividad_Click(object sender, EventArgs e)
         {
             int paqueteSeleccionado;
