@@ -63,11 +63,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 try
                 {
-                    //this.deshabilitarBotonesNavegacion();
+                    //No se ha definido funcionalidad al cargar la página
                 }
                 catch (Exception po_exception)
                 {
-                    String vs_error_usuario = "Error al inicializar la creación de proyectos.";
+                    String vs_error_usuario = "Ocurrió un error al inicializar el asistente de creación de proyectos.";
                     this.lanzarExcepcion(po_exception, vs_error_usuario);
                 } 
             }
@@ -79,11 +79,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected override void OnInit(EventArgs e)
         {
-            base.OnInit(e);
-            if (!this.DesignMode)
+            try
             {
-                this.inicializarControles();
+                base.OnInit(e);
+                if (!this.DesignMode)
+                {
+                    this.inicializarControles();
+                }
             }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al inicializar los controles en el asistente de creación de proyectos.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
@@ -137,7 +145,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los datos del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al cargar la información del proyecto seleccionado.", po_exception);
             }
         }
 
@@ -147,11 +155,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <returns></returns>
         private List<cls_proyectoEntregable> crearProyectoEntregableMemoria()
         {
-            List<cls_proyectoEntregable> vo_proyectoEntregable = new List<cls_proyectoEntregable>();
+            try
+            {
+                List<cls_proyectoEntregable> vo_proyectoEntregable = new List<cls_proyectoEntregable>();
 
-            vo_proyectoEntregable = cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria;
+                vo_proyectoEntregable = cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria;
 
-            return vo_proyectoEntregable;
+                return vo_proyectoEntregable;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al asignar la información de la lista que mantiene los entregables asociados a proyecto.", po_exception);
+            }
         }
 
         /// <summary>
@@ -160,11 +175,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <returns></returns>
         private List<cls_entregableComponente> crearEntregableComponenteMemoria()
         {
-            List<cls_entregableComponente> vo_entregableComponente = new List<cls_entregableComponente>();
+            try
+            {
+                List<cls_entregableComponente> vo_entregableComponente = new List<cls_entregableComponente>();
 
-            vo_entregableComponente = cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria;
+                vo_entregableComponente = cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria;
 
-            return vo_entregableComponente;
+                return vo_entregableComponente;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al asignar la información de la lista que mantiene los componentes asociados a proyecto.", po_exception);
+            }
         }
 
         /// <summary>
@@ -173,11 +195,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <returns></returns>
         private List<cls_componentePaquete> crearComponentePaqueteMemoria()
         {
-            List<cls_componentePaquete> vo_componentePaquete = new List<cls_componentePaquete>();
+            try
+            {
+                List<cls_componentePaquete> vo_componentePaquete = new List<cls_componentePaquete>();
 
-            vo_componentePaquete = cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria;
+                vo_componentePaquete = cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria;
 
-            return vo_componentePaquete;
+                return vo_componentePaquete;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al asignar la información de la lista que mantiene los paquetes asociados a proyecto.", po_exception);
+            }
         }
 
         /// <summary>
@@ -186,11 +215,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <returns></returns>
         private List<cls_paqueteActividad> crearPaqueteActividadMemoria()
         {
-            List<cls_paqueteActividad> vo_paqueteActividad = new List<cls_paqueteActividad>();
+            try
+            {
+                List<cls_paqueteActividad> vo_paqueteActividad = new List<cls_paqueteActividad>();
 
-            vo_paqueteActividad = cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria;
+                vo_paqueteActividad = cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria;
 
-            return vo_paqueteActividad;
+                return vo_paqueteActividad;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al asignar la información de la lista que mantiene las actividades asociadas a proyecto.", po_exception);
+            }
         }
 
         /// <summary>
@@ -199,11 +235,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <returns></returns>
         private List<cls_proyectoEntregable> crearProyectoEntregableBaseDatos()
         {
-            List<cls_proyectoEntregable> vo_proyectoEntregable = new List<cls_proyectoEntregable>();
+            try
+            {
+                List<cls_proyectoEntregable> vo_proyectoEntregable = new List<cls_proyectoEntregable>();
 
-            vo_proyectoEntregable = cls_variablesSistema.vs_proyecto.pProyectoEntregableListaBaseDatos;
+                vo_proyectoEntregable = cls_variablesSistema.vs_proyecto.pProyectoEntregableListaBaseDatos;
 
-            return vo_proyectoEntregable;
+                return vo_proyectoEntregable;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al asignar la información de la lista que mantiene los entregables asociados a proyecto.", po_exception);
+            }
         }
 
         /// <summary>
@@ -212,11 +255,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <returns></returns>
         private List<cls_entregableComponente> crearEntregableComponenteBaseDatos()
         {
-            List<cls_entregableComponente> vo_entregableComponente = new List<cls_entregableComponente>();
+            try
+            {
+                List<cls_entregableComponente> vo_entregableComponente = new List<cls_entregableComponente>();
 
-            vo_entregableComponente = cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos;
+                vo_entregableComponente = cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos;
 
-            return vo_entregableComponente;
+                return vo_entregableComponente;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al asignar la información de la lista que mantiene los componentes asociados a proyecto.", po_exception);
+            }
         }
 
         /// <summary>
@@ -225,11 +275,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <returns></returns>
         private List<cls_componentePaquete> crearComponentePaqueteBaseDatos()
         {
-            List<cls_componentePaquete> vo_componentePaquete = new List<cls_componentePaquete>();
+            try
+            {
+                List<cls_componentePaquete> vo_componentePaquete = new List<cls_componentePaquete>();
 
-            vo_componentePaquete = cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos;
+                vo_componentePaquete = cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos;
 
-            return vo_componentePaquete;
+                return vo_componentePaquete;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al asignar la información de la lista que mantiene los paquetes asociados a proyecto.", po_exception);
+            }
         }
 
         /// <summary>
@@ -238,11 +295,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <returns></returns>
         private List<cls_paqueteActividad> crearPaqueteActividadBaseDatos()
         {
-            List<cls_paqueteActividad> vo_paqueteActividad = new List<cls_paqueteActividad>();
+            try
+            {
+                List<cls_paqueteActividad> vo_paqueteActividad = new List<cls_paqueteActividad>();
 
-            vo_paqueteActividad = cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos;
+                vo_paqueteActividad = cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos;
 
-            return vo_paqueteActividad;
+                return vo_paqueteActividad;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al asignar la información de la lista que mantiene las actividades asociadas a proyecto.", po_exception);
+            }
         }
 
         /// <summary>
@@ -289,7 +353,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al intentar guardar el registro.", po_exception);
             } 
         }
 
@@ -317,7 +381,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar los entregables del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al tratar de guardar los entregables asociados al proyecto.", po_exception);
             }
         }
 
@@ -345,7 +409,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar los entregables del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al tratar de guardar los componentes asociados al proyecto.", po_exception);
             }
         }
 
@@ -373,7 +437,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar los paquetes del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al tratar de guardar los paquetes asociados al proyecto.", po_exception);
             }
         }
 
@@ -401,7 +465,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar los paquetes del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al tratar de guardar las actividades asociadas al proyecto.", po_exception);
             }
         }
 
@@ -444,7 +508,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar los entregables del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al tratar de guardar los entregables asociados al proyecto.", po_exception);
             }
         }
 
@@ -488,7 +552,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar los entregables del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al tratar de guardar los componentes asociados al proyecto.", po_exception);
             }
         }
 
@@ -534,7 +598,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar los entregables del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al tratar de guardar los paquetes asociados al proyecto.", po_exception);
             }
         }
 
@@ -582,7 +646,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar los entregables del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al tratar de guardar las actividades asociadas al proyecto.", po_exception);
             }
         }
 
@@ -641,7 +705,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error mientras se guardaba el registro.";
+                String vs_error_usuario = "Ocurrió un error al intentar grabar la información del registro de proyecto.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
