@@ -28,7 +28,7 @@ using CSLA.web.App_Constantes;
 // Cristian Arce Jiménez      	29 – 08  - 2011	 	Se crea la clase
 // Cristian Arce Jiménez  	    27 – 11  - 2011	 	Se agrega el manejo de excepciones personalizadas
 // Cristian Arce Jiménez  	    23 – 01  - 2012	 	Se agrega el manejo de filtros
-// 
+// Cristian Arce Jiménez  	    05 – 03  - 2012	 	Cambia el manejo de excepciones
 //								
 //								
 //
@@ -51,19 +51,16 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             if (!Page.IsPostBack)
             {
-
                 try
                 {
                     this.llenarGridView();
                 }
                 catch (Exception po_exception)
                 {
-                    String vs_error_usuario = "Error al inicializar el mantenimiento de componentes.";
+                    String vs_error_usuario = "Ocurrió un error al inicializar el mantenimiento de componentes.";
                     this.lanzarExcepcion(po_exception, vs_error_usuario);
                 } 
-
             }
-
         }
 
         /// <summary>
@@ -72,13 +69,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected override void OnInit(EventArgs e)
         {
-
-            base.OnInit(e);
-            if (!this.DesignMode)
+            try
             {
-                this.inicializarControles();
+                base.OnInit(e);
+                if (!this.DesignMode)
+                {
+                    this.inicializarControles();
+                }
             }
-
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al tratar de inicializar los controles del mantenimiento de actividades.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
@@ -113,11 +116,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void agregarItemListFiltro()
         {
-
-            this.ucSearchComponente.LstCollecction.Add(new ListItem("Componente", "PK_componente"));
-            this.ucSearchComponente.LstCollecction.Add(new ListItem("Codigo", "codigo"));
-            this.ucSearchComponente.LstCollecction.Add(new ListItem("Nombre", "nombre"));
-            this.ucSearchComponente.LstCollecction.Add(new ListItem("Descripcion", "descripcion"));
+            try
+            {
+                this.ucSearchComponente.LstCollecction.Add(new ListItem("Componente", "PK_componente"));
+                this.ucSearchComponente.LstCollecction.Add(new ListItem("Codigo", "codigo"));
+                this.ucSearchComponente.LstCollecction.Add(new ListItem("Nombre", "nombre"));
+                this.ucSearchComponente.LstCollecction.Add(new ListItem("Descripcion", "descripcion"));
+            }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error inicializando los campos para filtro del mantenimiento.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            }         
         }
 
         #endregion
@@ -139,12 +149,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error llenando la tabla.", po_exception);
+                throw new Exception("Ocurrió un error llenando la tabla de componentes.", po_exception);
             } 
         }
 
         /// <summary>
-        /// Hace un buscar de la lista de permisos.
+        /// Hace un buscar de la lista de componentes.
         /// </summary>
         /// <param name="psFilter">String filtro.</param>
         private void llenarGridViewFilter(String psFilter)
@@ -158,8 +168,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error llenando la tabla con filtro.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
+                throw new Exception("Ocurrió un error llenando la tabla con el filtro para los componentes.", po_exception);
             }
         }
 
@@ -172,13 +181,14 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <returns>cls_componente</returns>
         private cls_componente crearObjeto()
         {
-            cls_componente vo_componente = new cls_componente();
-            if (cls_variablesSistema.tipoEstado != cls_constantes.AGREGAR)
-            {
-                vo_componente = (cls_componente)cls_variablesSistema.obj;
-            }
             try
             {
+                cls_componente vo_componente = new cls_componente();
+                if (cls_variablesSistema.tipoEstado != cls_constantes.AGREGAR)
+                {
+                    vo_componente = (cls_componente)cls_variablesSistema.obj;
+                }
+
                 vo_componente.pCodigo = txt_codigo.Text;
                 vo_componente.pNombre = txt_nombre.Text;
                 vo_componente.pDescripcion = txt_descripcion.Text;
@@ -186,7 +196,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al crear el objeto para guardar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al crear el registro de componente.", po_exception);
             }
         }
 
@@ -215,7 +225,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al cargar el registro de componente.", po_exception);
             } 
 
         }
@@ -278,9 +288,16 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void limpiarCampos()
         {
-            this.txt_codigo.Text = String.Empty;
-            this.txt_nombre.Text = String.Empty;
-            this.txt_descripcion.Text = String.Empty;
+            try
+            {
+                this.txt_codigo.Text = String.Empty;
+                this.txt_nombre.Text = String.Empty;
+                this.txt_descripcion.Text = String.Empty;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al limpiar los campos del registro.", po_exception);
+            } 
         }
 
         /// <summary>
@@ -291,11 +308,17 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="pb_habilitados"></param>
         private void habilitarControles(bool pb_habilitados)
         {
-            this.txt_codigo.Enabled = pb_habilitados;
-            this.txt_nombre.Enabled = pb_habilitados;
-            this.txt_descripcion.Enabled = pb_habilitados;
-            this.btn_guardar.Visible = pb_habilitados;
-
+            try
+            {
+                this.txt_codigo.Enabled = pb_habilitados;
+                this.txt_nombre.Enabled = pb_habilitados;
+                this.txt_descripcion.Enabled = pb_habilitados;
+                this.btn_guardar.Visible = pb_habilitados;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al habilitar los campos del registro.", po_exception);
+            } 
         }
 
         /// <summary>
@@ -338,10 +361,16 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="value"></param>
         /// <param name="seletecItem"></param>
         protected void ucSearchComponente_searchClick(object sender, EventArgs e, string value, ListItem seletecItem)
-        {
-
-            this.llenarGridViewFilter(this.ucSearchComponente.Filter); 
-
+        {       
+            try
+            {
+                this.llenarGridViewFilter(this.ucSearchComponente.Filter);
+            }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al realizar la búsqueda del registro seleccionado.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
@@ -373,7 +402,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         /// <summary>
         /// Evento que se ejecuta cuando se 
-        /// guarda un nuevo rol.
+        /// guarda un nuevo componente.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -500,7 +529,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error al intentar mostrar la ventana de edición para los registros.";
+                String vs_error_usuario = "Ocurrió un error al intentar acceder a la información del registro.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }

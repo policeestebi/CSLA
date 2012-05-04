@@ -1,4 +1,4 @@
-?using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -171,8 +171,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error llenando la tabla con el filtro para las actividades.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
+                throw new Exception("Ocurrió un error llenando la tabla con el filtro para las actividades.", po_exception);
             }
         }
 
@@ -372,7 +371,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 			}
             catch (Exception po_exception)
             {
-				String vs_error_usuario = "Ocurrió un error al realiza la búsqueda del registro seleccionado.";
+				String vs_error_usuario = "Ocurrió un error al realizar la búsqueda del registro seleccionado.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
@@ -440,7 +439,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
-                this.habilitarContactividades(true);
+                this.habilitarControles(true);
 
                 this.limpiarCampos();
 
@@ -538,7 +537,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         #endregion
-
 
     }
 }
