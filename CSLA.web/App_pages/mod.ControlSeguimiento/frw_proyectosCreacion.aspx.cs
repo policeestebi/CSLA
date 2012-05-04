@@ -717,8 +717,16 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            //Se redirecciona al cancelar
-            Response.Redirect("frw_proyectos.aspx", false);
+            try
+            {
+                //Se redirecciona al cancelar
+                Response.Redirect("frw_proyectos.aspx", false);
+            }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al cancelar la operación en el asistente de creación de proyectos.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            }
         }
 
         /// <summary>
