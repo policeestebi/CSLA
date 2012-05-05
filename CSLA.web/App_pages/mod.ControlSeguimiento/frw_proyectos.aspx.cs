@@ -1,4 +1,4 @@
-﻿using System;
+?using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -26,11 +26,12 @@ using COSEVI.CSLA.lib.entidades.mod.Administracion;
 // Explicación de los contenidos del archivo.
 // =========================================================================
 // Historial
-// PERSONA 			           MES – DIA - AÑO		DESCRIPCIÓN
+// PERSONA     		           MES – DIA - AÑO		DESCRIPCIÓN
 // Esteban Ramírez Gónzalez  	03 – 06  - 2011	 	Se crea la clase
-// Cristian Arce Jiménez  	    27 – 11  - 2011	 	Se agrega el manejo de excepciones personalizadas
+// Cristian Arce Jiménez  	    11 – 27  - 2011	 	Se agrega el manejo de excepciones personalizadas
 // Cristian Arce Jiménez  	    01 – 23  - 2012	 	Se agrega el manejo de filtros
 // Cristian Arce Jiménez  	    05 – 02  - 2012	 	Se agrega el manejo de filtros
+// Cristian Arce Jiménez  	    05 – 04  - 2012	 	Se agrega cambio en las excepciones
 // 
 //								
 //								
@@ -638,7 +639,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         #region Eventos
 
         /// <summary>
-        /// Busca un rol según el filtro.
+        /// Busca un proyecto según el filtro.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

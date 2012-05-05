@@ -1,4 +1,4 @@
-﻿using System;
+?using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -26,13 +26,12 @@ using System.Data;
 // Explicación de los contenidos del archivo.
 // =========================================================================
 // Historial
-// PERSONA 			           MES – DIA - AÑO		DESCRIPCIÓN
+// PERSONA     		           MES – DIA - AÑO		DESCRIPCIÓN
 // Esteban Ramírez Gónzalez  	03 – 06  - 2011	 	Se crea la clase
-// Cristian Arce Jiménez  	    27 – 11  - 2011	 	Se agrega el manejo de excepciones personalizadas
+// Cristian Arce Jiménez  	    11 – 27  - 2011	 	Se agrega el manejo de excepciones personalizadas
 // Cristian Arce Jiménez  	    01 – 23  - 2012	 	Se agrega el manejo de filtros
 // Cristian Arce Jiménez  	    05 – 01  - 2012	 	Se modifican los métodos y eventos
-// 
-//								
+// Cristian Arce Jiménez  	    05 – 04  - 2012	 	Se modifican el manejo de excepciones
 //								
 //
 // =========================================================================
@@ -737,13 +736,20 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         protected void btnNext_Click(object sender, EventArgs e)
         {
             btnNxt = (Button)sender;
-
-            if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_entregables))
+			try
+			{
+				if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_entregables))
+				{
+					if (lbx_entasociados.Items.Count == 0 && btnNxt != null)
+					{
+						btnNxt.Enabled = false;
+					}
+				}
+			}
+            catch (Exception po_exception)
             {
-                if (lbx_entasociados.Items.Count == 0 && btnNxt != null)
-                {
-                    btnNxt.Enabled = false;
-                }
+                String vs_error_usuario = "Ocurrió un error al intentar movilizarse en el asistente de creación de proyectos.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
         }
 
@@ -765,79 +771,86 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void OnActiveStepChanged(object sender, EventArgs e)
         {
-            //Validación en el primer paso, el de entregables
-            if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_entregables))
+			try
+			{
+				//Validación en el primer paso, el de entregables
+				if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_entregables))
+				{
+					//Se envía a llenar los datos asociados de los entregables
+					llenarDatosEntregables();
+
+					if (lbx_entasociados.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pProyectoEntregableListaBaseDatos.Count == 0)
+					{
+						btnNxt.Enabled = false;
+					}
+					else
+					{
+						if (btnNxt != null)
+						{
+							btnNxt.Enabled = true;
+						}
+					}
+
+					if (btnPrev != null)
+					{
+						btnPrev.Visible = false;
+					}
+
+				}
+				//Validación en el step de componentes ya asociados a entregables
+				if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_componentes))
+				{
+					if (lbx_compasociados.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Count == 0)
+					{
+						btnNxt.Enabled = false;
+					}
+
+					//Se envía a llenar los datos asociados de los componentes
+					llenarDatosComponentes();
+
+					if (btnPrev != null)
+					{
+						btnPrev.Visible = true;
+					}
+				}
+				//Validación en el step de componentes ya asociados a paquetes
+				if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_paquetes))
+				{
+					if (lbx_paqasociados.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Count == 0)
+					{
+						btnNxt.Enabled = false;
+					}
+
+					//Se envía a llenar los datos asociados de los paquetes
+					llenarDatosPaquetes();
+
+					if (btnPrev != null)
+					{
+						btnPrev.Visible = true;
+					}
+				}
+				//Validación en el step de componentes ya asociados a paquetes
+				if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_actividades))
+				{
+					if (lbx_actasociadas.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Count == 0)
+					{
+						btnNxt.Enabled = false;
+					}
+
+					//Se envía a llenar los datos asociados de las actividades
+					llenarDatosActividades();
+
+					if (btnPrev != null)
+					{
+						btnPrev.Visible = true;
+					}
+				}
+			}
+            catch (Exception po_exception)
             {
-                //Se envía a llenar los datos asociados de los entregables
-                llenarDatosEntregables();
-
-                if (lbx_entasociados.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pProyectoEntregableListaBaseDatos.Count == 0)
-                {
-                    btnNxt.Enabled = false;
-                }
-                else
-                {
-                    if (btnNxt != null)
-                    {
-                        btnNxt.Enabled = true;
-                    }
-                }
-
-                if (btnPrev != null)
-                {
-                    btnPrev.Visible = false;
-                }
-
+                String vs_error_usuario = "Ocurrió un error al intentar movilizarse al siguiente paso del asistente de creación de proyectos.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
-            //Validación en el step de componentes ya asociados a entregables
-            if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_componentes))
-            {
-                if (lbx_compasociados.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Count == 0)
-                {
-                    btnNxt.Enabled = false;
-                }
-
-                //Se envía a llenar los datos asociados de los componentes
-                llenarDatosComponentes();
-
-                if (btnPrev != null)
-                {
-                    btnPrev.Visible = true;
-                }
-            }
-            //Validación en el step de componentes ya asociados a paquetes
-            if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_paquetes))
-            {
-                if (lbx_paqasociados.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Count == 0)
-                {
-                    btnNxt.Enabled = false;
-                }
-
-                //Se envía a llenar los datos asociados de los paquetes
-                llenarDatosPaquetes();
-
-                if (btnPrev != null)
-                {
-                    btnPrev.Visible = true;
-                }
-            }
-            //Validación en el step de componentes ya asociados a paquetes
-            if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_actividades))
-            {
-                if (lbx_actasociadas.Items.Count == 0 && btnNxt != null && cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Count == 0)
-                {
-                    btnNxt.Enabled = false;
-                }
-
-                //Se envía a llenar los datos asociados de las actividades
-                llenarDatosActividades();
-
-                if (btnPrev != null)
-                {
-                    btnPrev.Visible = true;
-                }
-            }
-
         }
 
         #endregion Eventos Generales
@@ -851,14 +864,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void deshabilitarBotonesNavegacion()
         {
-            if (lbx_entasociados.Items.Count == 0)
-            {
-                btnNxt.Enabled = false;
-            }
+			try
+			{
+				if (lbx_entasociados.Items.Count == 0)
+				{
+					btnNxt.Enabled = false;
+				}
 
-            if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_entregables))
+				if (wiz_creacion.ActiveStepIndex == wiz_creacion.WizardSteps.IndexOf(this.wzs_entregables))
+				{
+					btnPrev.Visible = false;
+				}
+			}
+			catch (Exception po_exception)
             {
-                btnPrev.Visible = false;
+                throw new Exception("Ocurrió un error al intentar deshabilitar los botones del asistente de creación.", po_exception);
             }
         }
 
@@ -873,12 +893,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 cargarListaEntregables();
                 cargarEntregablesPorProyecto();
             }
-            /*
-                Nota: revisar el manejo de excepxiones personalizadas en este form
-            */
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al cargar el registro con los entregables de proyecto.", po_exception);
             }
         }
 
@@ -898,14 +915,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 lbx_entregables.DataValueField = "pPK_entregable";
                 lbx_entregables.DataBind();
             }
-                /*
-                 Nota: revisar el manejo de excepxiones personalizadas en este form
-                 */
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los datos de la lista de entregables del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al cargar los datos de la lista de entregables.", po_exception);
             }
-
         }
 
         /// <summary>
@@ -993,37 +1006,44 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void btn_asignarEntregable_Click(object sender, EventArgs e)
         {
-            for (int i = lbx_entregables.Items.Count - 1; i >= 0; i--)
+			try
+			{
+				for (int i = lbx_entregables.Items.Count - 1; i >= 0; i--)
+				{
+					if (lbx_entregables.Items[i].Selected == true)
+					{
+						cls_entregable vo_entregable = new cls_entregable();
+						vo_entregable.pPK_entregable = Convert.ToInt32(lbx_entregables.Items[i].Value.ToString());
+						vo_entregable.pNombre = lbx_entregables.Items[i].Text;
+
+						cls_proyectoEntregable vo_proyectoEntregable = new cls_proyectoEntregable();
+
+						vo_proyectoEntregable.pEntregable = vo_entregable;
+
+						//Si el registro no existe en memoria, se agrega
+						if (!(cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == vo_entregable.pPK_entregable).Count() > 0))
+						{
+							cls_variablesSistema.vs_proyecto.pEntregableLista.Add(vo_entregable);
+							cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Add(vo_proyectoEntregable);
+						}
+
+						lbx_entasociados.Items.Add(lbx_entregables.Items[i]);
+						ListItem li = lbx_entregables.Items[i];
+						lbx_entregables.Items.Remove(li);
+					}
+				}
+
+				//Si hay entregables asociados, se habilita el botón de navegación de siguiente
+				if (lbx_entasociados.Items.Count > 0)
+				{
+					btnNxt.Enabled = true;
+				}
+			}
+            catch (Exception po_exception)
             {
-                if (lbx_entregables.Items[i].Selected == true)
-                {
-                    cls_entregable vo_entregable = new cls_entregable();
-                    vo_entregable.pPK_entregable = Convert.ToInt32(lbx_entregables.Items[i].Value.ToString());
-                    vo_entregable.pNombre = lbx_entregables.Items[i].Text;
-
-                    cls_proyectoEntregable vo_proyectoEntregable = new cls_proyectoEntregable();
-
-                    vo_proyectoEntregable.pEntregable = vo_entregable;
-
-                    //Si el registro no existe en memoria, se agrega
-                    if (!(cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == vo_entregable.pPK_entregable).Count() > 0))
-                    {
-                        cls_variablesSistema.vs_proyecto.pEntregableLista.Add(vo_entregable);
-                        cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Add(vo_proyectoEntregable);
-                    }
-
-                    lbx_entasociados.Items.Add(lbx_entregables.Items[i]);
-                    ListItem li = lbx_entregables.Items[i];
-                    lbx_entregables.Items.Remove(li);
-                }
+                String vs_error_usuario = "Ocurrió un error al intentar asignar el entregable al proyecto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
-
-            //Si hay entregables asociados, se habilita el botón de navegación de siguiente
-            if (lbx_entasociados.Items.Count > 0)
-            {
-                btnNxt.Enabled = true;
-            }
-
         }
 
         /// <summary>
@@ -1033,69 +1053,77 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void btn_removerEntregable_Click(object sender, EventArgs e)
         {
-            for (int i = lbx_entasociados.Items.Count - 1; i >= 0; i--)
+			try
+			{
+				for (int i = lbx_entasociados.Items.Count - 1; i >= 0; i--)
+				{
+					if (lbx_entasociados.Items[i].Selected == true)
+					{
+
+						cls_entregable vo_entregable = new cls_entregable();
+						vo_entregable.pPK_entregable = Convert.ToInt32(lbx_entasociados.Items[i].Value.ToString());
+						vo_entregable.pNombre = lbx_entasociados.Items[i].Text;
+
+						cls_proyectoEntregable vo_proyectoEntregable = new cls_proyectoEntregable();
+
+						vo_proyectoEntregable.pEntregable = vo_entregable;
+
+						//Se realiza una eliminación de todas las posibles referencias que se presenten a nivel de memoria para el entregable que se está eliminando
+						foreach (cls_entregableComponente entComp in cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria)
+						{
+							if (entComp.pPK_Entregable == vo_entregable.pPK_entregable)
+							{
+								foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria)
+								{
+									if (compPaq.pPK_Entregable == entComp.pPK_Entregable)
+									{
+										foreach (cls_paqueteActividad paqAct in cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria)
+										{
+											if (paqAct.pPK_Entregable == entComp.pPK_Entregable)
+											{
+												cls_variablesSistema.vs_proyecto.pActividadLista.RemoveAll(searchLinQ => searchLinQ.pPK_Actividad == paqAct.pPK_Actividad);
+											}
+										}
+
+										cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == compPaq.pPK_Paquete);
+
+										cls_variablesSistema.vs_proyecto.pPaqueteLista.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == compPaq.pPK_Paquete);
+									}
+								}
+
+								cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Componente == entComp.pPK_Componente);
+
+								cls_variablesSistema.vs_proyecto.pComponenteLista.RemoveAll(searchLinQ => searchLinQ.pPK_componente == entComp.pPK_Componente);
+							}
+						}
+
+						cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Entregable == vo_entregable.pPK_entregable);
+
+
+						cls_variablesSistema.vs_proyecto.pEntregableLista.RemoveAll(searchLinQ => searchLinQ.pPK_entregable == vo_entregable.pPK_entregable);
+						cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Entregable == vo_entregable.pPK_entregable);
+
+
+						lbx_entregables.Items.Add(lbx_entasociados.Items[i]);
+						ListItem li = lbx_entasociados.Items[i];
+						lbx_entasociados.Items.Remove(li);
+					}
+				}
+
+				//Si luego de desasociar los entregables, si la lista queda vacía, no se puede proseguir hasta que no se realice al menos una asignación
+				if (lbx_entasociados.Items.Count == 0 && cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Count == 0)
+				{
+					btnNxt.Enabled = false;
+				}
+				else
+				{
+					btnNxt.Enabled = true;
+				}
+			}
+            catch (Exception po_exception)
             {
-                if (lbx_entasociados.Items[i].Selected == true)
-                {
-
-                    cls_entregable vo_entregable = new cls_entregable();
-                    vo_entregable.pPK_entregable = Convert.ToInt32(lbx_entasociados.Items[i].Value.ToString());
-                    vo_entregable.pNombre = lbx_entasociados.Items[i].Text;
-
-                    cls_proyectoEntregable vo_proyectoEntregable = new cls_proyectoEntregable();
-
-                    vo_proyectoEntregable.pEntregable = vo_entregable;
-
-                    //Se realiza una eliminación de todas las posibles referencias que se presenten a nivel de memoria para el entregable que se está eliminando
-                    foreach (cls_entregableComponente entComp in cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria)
-                    {
-                        if (entComp.pPK_Entregable == vo_entregable.pPK_entregable)
-                        {
-                            foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria)
-                            {
-                                if (compPaq.pPK_Entregable == entComp.pPK_Entregable)
-                                {
-                                    foreach (cls_paqueteActividad paqAct in cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria)
-                                    {
-                                        if (paqAct.pPK_Entregable == entComp.pPK_Entregable)
-                                        {
-                                            cls_variablesSistema.vs_proyecto.pActividadLista.RemoveAll(searchLinQ => searchLinQ.pPK_Actividad == paqAct.pPK_Actividad);
-                                        }
-                                    }
-
-                                    cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == compPaq.pPK_Paquete);
-
-                                    cls_variablesSistema.vs_proyecto.pPaqueteLista.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == compPaq.pPK_Paquete);
-                                }
-                            }
-
-                            cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Componente == entComp.pPK_Componente);
-
-                            cls_variablesSistema.vs_proyecto.pComponenteLista.RemoveAll(searchLinQ => searchLinQ.pPK_componente == entComp.pPK_Componente);
-                        }
-                    }
-
-                    cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Entregable == vo_entregable.pPK_entregable);
-
-
-                    cls_variablesSistema.vs_proyecto.pEntregableLista.RemoveAll(searchLinQ => searchLinQ.pPK_entregable == vo_entregable.pPK_entregable);
-                    cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Entregable == vo_entregable.pPK_entregable);
-
-
-                    lbx_entregables.Items.Add(lbx_entasociados.Items[i]);
-                    ListItem li = lbx_entasociados.Items[i];
-                    lbx_entasociados.Items.Remove(li);
-                }
-            }
-
-            //Si luego de desasociar los entregables, si la lista queda vacía, no se puede proseguir hasta que no se realice al menos una asignación
-            if (lbx_entasociados.Items.Count == 0 && cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria.Count == 0)
-            {
-                btnNxt.Enabled = false;
-            }
-            else
-            {
-                btnNxt.Enabled = true;
+                String vs_error_usuario = "Ocurrió un error al intentar remover el entregable del proyecto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
 
         }
@@ -1118,7 +1146,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los registros.", po_exception);
+                throw new Exception("Ocurrió un error al cargar los registros de los componentes de proyecto.", po_exception);
             }
         }
 
@@ -1157,7 +1185,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             */
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los datos de la lista de entregables del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al cargar los datos de la lista de los entregables asociados a proyecto.", po_exception);
             }
         }
 
@@ -1205,14 +1233,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                         lbx_componentes.Items.Remove(item);
                     }
                 }
-
             }
-            /*
-             Nota: revisar el manejo de excepxiones personalizadas en este form
-             */
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los datos de la lista de componentes del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al cargar los datos de la lista de componentes.", po_exception);
             }
 
         }
@@ -1223,15 +1247,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="po_entregable"></param>
         private void inicializarComponentesPorEntregable(cls_entregable po_entregable)
         {
-            cls_entregableComponente vo_entregableComponente = new cls_entregableComponente();
+			try
+			{
+				cls_entregableComponente vo_entregableComponente = new cls_entregableComponente();
 
-            vo_entregableComponente.pProyecto = cls_variablesSistema.vs_proyecto;
-            vo_entregableComponente.pEntregable = po_entregable;
+				vo_entregableComponente.pProyecto = cls_variablesSistema.vs_proyecto;
+				vo_entregableComponente.pEntregable = po_entregable;
 
-            cargarComponentesPorEntregable(vo_entregableComponente);
+				cargarComponentesPorEntregable(vo_entregableComponente);
 
-            cargarListaComponentes();
-            
+				cargarListaComponentes();
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al los componentes asociados a proyecto.", po_exception);
+            }
         }
 
         /// <summary>
@@ -1443,13 +1473,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void lbx_entregables_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int entregableSeleccionado;
-            entregableSeleccionado = Convert.ToInt32(lbx_entregablesasociados.SelectedValue.ToString());
+			try
+			{
+				int entregableSeleccionado;
+				entregableSeleccionado = Convert.ToInt32(lbx_entregablesasociados.SelectedValue.ToString());
 
-            cls_entregable vo_entregable = new cls_entregable();
-            vo_entregable.pPK_entregable = entregableSeleccionado;
+				cls_entregable vo_entregable = new cls_entregable();
+				vo_entregable.pPK_entregable = entregableSeleccionado;
 
-            inicializarComponentesPorEntregable(vo_entregable);
+				inicializarComponentesPorEntregable(vo_entregable);
+			}
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al intentar obtener la información del entregable.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            }
         }
 
         /// <summary>
@@ -1465,50 +1503,57 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             cls_entregable vo_entregable = new cls_entregable();
             vo_entregable.pPK_entregable = entSeleccionado;
+			
+			try
+			{
+				//Se recorre la lista de componentes para validar a quien es el que se va a asignar
+				for (int i = lbx_componentes.Items.Count - 1; i >= 0; i--)
+				{
+					if (lbx_componentes.Items[i].Selected == true)
+					{
+						cls_componente vo_componente = new cls_componente();
+						vo_componente.pPK_componente = Convert.ToInt32(lbx_componentes.Items[i].Value.ToString());
+						vo_componente.pNombre = lbx_componentes.Items[i].Text;
 
-            //Se recorre la lista de componentes para validar a quien es el que se va a asignar
-            for (int i = lbx_componentes.Items.Count - 1; i >= 0; i--)
+						cls_entregableComponente vo_entregableComponente = new cls_entregableComponente();
+
+						vo_entregableComponente.pEntregable = vo_entregable;
+						vo_entregableComponente.pComponente = vo_componente;
+
+						//Se recorre la lista de los entregables asociados a proyecto en memoria
+						foreach (cls_proyectoEntregable proyEnt in cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria)
+						{
+							//Si los entregables coinciden, este es el que se va a asignar
+							if (proyEnt.pPK_Entregable == vo_entregable.pPK_entregable)
+							{
+								//Si en el siguiente nivel, en entregable-componente no se encuentra la asignación, se realiza para ese proyecto-entregable
+								if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == vo_entregable.pPK_entregable &&
+																													 searchLinQ.pPK_Componente == vo_componente.pPK_componente).Count() == 0)
+								{
+									cls_variablesSistema.vs_proyecto.pComponenteLista.Add(vo_componente);
+									cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Add(vo_entregableComponente);
+								}
+							}
+						}
+
+						lbx_compasociados.Items.Add(lbx_componentes.Items[i]);
+						ListItem li = lbx_componentes.Items[i];
+						lbx_componentes.Items.Remove(li);
+
+					}
+				}
+
+				//Si existe al menos un elemento asociado, se puede continuar
+				if (lbx_compasociados.Items.Count > 0)
+				{
+					btnNxt.Enabled = true;
+				}
+			}
+            catch (Exception po_exception)
             {
-                if (lbx_componentes.Items[i].Selected == true)
-                {
-                    cls_componente vo_componente = new cls_componente();
-                    vo_componente.pPK_componente = Convert.ToInt32(lbx_componentes.Items[i].Value.ToString());
-                    vo_componente.pNombre = lbx_componentes.Items[i].Text;
-
-                    cls_entregableComponente vo_entregableComponente = new cls_entregableComponente();
-
-                    vo_entregableComponente.pEntregable = vo_entregable;
-                    vo_entregableComponente.pComponente = vo_componente;
-
-                    //Se recorre la lista de los entregables asociados a proyecto en memoria
-                    foreach (cls_proyectoEntregable proyEnt in cls_variablesSistema.vs_proyecto.pProyectoEntregableListaMemoria)
-                    {
-                        //Si los entregables coinciden, este es el que se va a asignar
-                        if (proyEnt.pPK_Entregable == vo_entregable.pPK_entregable)
-                        {
-                            //Si en el siguiente nivel, en entregable-componente no se encuentra la asignación, se realiza para ese proyecto-entregable
-                            if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == vo_entregable.pPK_entregable &&
-                                                                                                                 searchLinQ.pPK_Componente == vo_componente.pPK_componente).Count() == 0)
-                            {
-                                cls_variablesSistema.vs_proyecto.pComponenteLista.Add(vo_componente);
-                                cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Add(vo_entregableComponente);
-                            }
-                        }
-                    }
-
-                    lbx_compasociados.Items.Add(lbx_componentes.Items[i]);
-                    ListItem li = lbx_componentes.Items[i];
-                    lbx_componentes.Items.Remove(li);
-
-                }
+                String vs_error_usuario = "Ocurrió un error al intentar asignar el componente seleccionado.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
-
-            //Si existe al menos un elemento asociado, se puede continuar
-            if (lbx_compasociados.Items.Count > 0)
-            {
-                btnNxt.Enabled = true;
-            }
-
         }
 
         /// <summary>
@@ -1524,64 +1569,72 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             cls_entregable vo_entregable = new cls_entregable();
             vo_entregable.pPK_entregable = entSeleccionado;
+			
+			try
+			{
+				//Se recorren los componentes ya asociados
+				for (int i = lbx_compasociados.Items.Count - 1; i >= 0; i--)
+				{
+					if (lbx_compasociados.Items[i].Selected == true)
+					{
+						cls_componente vo_componente = new cls_componente();
+						vo_componente.pPK_componente = Convert.ToInt32(lbx_compasociados.Items[i].Value.ToString());
+						vo_componente.pNombre = lbx_compasociados.Items[i].Text;
 
-            //Se recorren los componentes ya asociados
-            for (int i = lbx_compasociados.Items.Count - 1; i >= 0; i--)
+						cls_entregableComponente vo_entregableComponente = new cls_entregableComponente();
+
+						vo_entregableComponente.pEntregable = vo_entregable;
+						vo_entregableComponente.pComponente = vo_componente;
+
+						//Se realiza un barrido de las asignaciones posteriores que tuviese el elemento a nivel de memoria, de los subniveles siguientes
+						if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == vo_entregable.pPK_entregable &&
+																												   searchLinQ.pPK_Componente == vo_componente.pPK_componente).Count() > 0)
+							{
+								//Se realiza una eliminación de todas las posibles referencias que se presenten a nivel de memoria para el entregable que se está eliminando
+								foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria)
+								{
+									if (compPaq.pPK_Componente == vo_componente.pPK_componente)
+									{
+										foreach (cls_paqueteActividad paqAct in cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria)
+										{
+											if (paqAct.pPK_Componente == compPaq.pPK_Componente)
+											{
+												cls_variablesSistema.vs_proyecto.pActividadLista.RemoveAll(searchLinQ => searchLinQ.pPK_Actividad == paqAct.pPK_Actividad);
+											}
+										}
+
+										cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == compPaq.pPK_Paquete);
+
+										cls_variablesSistema.vs_proyecto.pPaqueteLista.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == compPaq.pPK_Paquete);
+									}
+								}
+								cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Componente == vo_componente.pPK_componente);
+
+								cls_variablesSistema.vs_proyecto.pComponenteLista.RemoveAll(searchLinQ => searchLinQ.pPK_componente == vo_componente.pPK_componente);
+								cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Componente == vo_componente.pPK_componente);
+							}
+
+						lbx_componentes.Items.Add(lbx_compasociados.Items[i]);
+						ListItem li = lbx_compasociados.Items[i];
+						lbx_compasociados.Items.Remove(li);
+
+					}
+				}
+
+				//Luego del barrido, si no quedó ningún elemento asociado, no se habilita el botón de siguiente
+				if (lbx_compasociados.Items.Count == 0 && cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Count == 0 && cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Count == 0)
+				{
+					btnNxt.Enabled = false;
+				}
+				else
+				{
+					btnNxt.Enabled = true;
+				}
+			}
+            catch (Exception po_exception)
             {
-                if (lbx_compasociados.Items[i].Selected == true)
-                {
-                    cls_componente vo_componente = new cls_componente();
-                    vo_componente.pPK_componente = Convert.ToInt32(lbx_compasociados.Items[i].Value.ToString());
-                    vo_componente.pNombre = lbx_compasociados.Items[i].Text;
-
-                    cls_entregableComponente vo_entregableComponente = new cls_entregableComponente();
-
-                    vo_entregableComponente.pEntregable = vo_entregable;
-                    vo_entregableComponente.pComponente = vo_componente;
-
-                    //Se realiza un barrido de las asignaciones posteriores que tuviese el elemento a nivel de memoria, de los subniveles siguientes
-                    if (cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == vo_entregable.pPK_entregable &&
-                                                                                                               searchLinQ.pPK_Componente == vo_componente.pPK_componente).Count() > 0)
-                        {
-                            //Se realiza una eliminación de todas las posibles referencias que se presenten a nivel de memoria para el entregable que se está eliminando
-                            foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria)
-                            {
-                                if (compPaq.pPK_Componente == vo_componente.pPK_componente)
-                                {
-                                    foreach (cls_paqueteActividad paqAct in cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria)
-                                    {
-                                        if (paqAct.pPK_Componente == compPaq.pPK_Componente)
-                                        {
-                                            cls_variablesSistema.vs_proyecto.pActividadLista.RemoveAll(searchLinQ => searchLinQ.pPK_Actividad == paqAct.pPK_Actividad);
-                                        }
-                                    }
-
-                                    cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == compPaq.pPK_Paquete);
-
-                                    cls_variablesSistema.vs_proyecto.pPaqueteLista.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == compPaq.pPK_Paquete);
-                                }
-                            }
-                            cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Componente == vo_componente.pPK_componente);
-
-                            cls_variablesSistema.vs_proyecto.pComponenteLista.RemoveAll(searchLinQ => searchLinQ.pPK_componente == vo_componente.pPK_componente);
-                            cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Componente == vo_componente.pPK_componente);
-                        }
-
-                    lbx_componentes.Items.Add(lbx_compasociados.Items[i]);
-                    ListItem li = lbx_compasociados.Items[i];
-                    lbx_compasociados.Items.Remove(li);
-
-                }
-            }
-
-            //Luego del barrido, si no quedó ningún elemento asociado, no se habilita el botón de siguiente
-            if (lbx_compasociados.Items.Count == 0 && cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria.Count == 0 && cls_variablesSistema.vs_proyecto.pEntregableComponenteListaBaseDatos.Count == 0)
-            {
-                btnNxt.Enabled = false;
-            }
-            else
-            {
-                btnNxt.Enabled = true;
+                String vs_error_usuario = "Ocurrió un error al intentar remover el componente seleccionado.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
         }
 
@@ -1603,7 +1656,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al cargar los paquetes del proyecto.", po_exception);
             }
         }
 
@@ -1639,9 +1692,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 cargarPaquetesPorComponente();
 
             }
-            /*
-                Nota: revisar el manejo de excepxiones personalizadas en este form
-            */
             catch (Exception po_exception)
             {
                 throw new Exception("Ocurrió un error al cargar los datos de la lista de componentes del proyecto.", po_exception);
@@ -1694,14 +1744,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     }
                 }
             }
-            /*
-             Nota: revisar el manejo de excepxiones personalizadas en este form
-             */
             catch (Exception po_exception)
             {
                 throw new Exception("Ocurrió un error al cargar los datos de la lista de paquetes del proyecto.", po_exception);
             }
-
         }
 
         /// <summary>
@@ -1710,16 +1756,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="po_componente"></param>
         private void inicializarPaquetesPorComponente(cls_componente po_componente)
         {
+			try
+			{
+				cls_componentePaquete vo_componentePaquete = new cls_componentePaquete();
 
-            cls_componentePaquete vo_componentePaquete = new cls_componentePaquete();
+				vo_componentePaquete.pProyecto = cls_variablesSistema.vs_proyecto;
+				vo_componentePaquete.pComponente = po_componente;
 
-            vo_componentePaquete.pProyecto = cls_variablesSistema.vs_proyecto;
-            vo_componentePaquete.pComponente = po_componente;
-
-            cargarPaquetesPorComponente(vo_componentePaquete);
-            
-            cargarListaPaquetes();
-
+				cargarPaquetesPorComponente(vo_componentePaquete);
+				
+				cargarListaPaquetes();
+			}
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al obtener los paquetes asociados al proyecto.", po_exception);
+            }
         }
 
         /// <summary>
@@ -1928,7 +1979,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los paquetes asociados al proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al obtener los paquetes asociados al proyecto.", po_exception);
             }
         }
 
@@ -1943,14 +1994,22 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void lbx_componentes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int componenteSeleccionado;
-            componenteSeleccionado = Convert.ToInt32(lbx_componentesasociados.SelectedValue.ToString());
+			try
+			{
+				int componenteSeleccionado;
+				componenteSeleccionado = Convert.ToInt32(lbx_componentesasociados.SelectedValue.ToString());
 
-            cls_componente vo_componente = new cls_componente();
-            vo_componente.pPK_componente = componenteSeleccionado;
+				cls_componente vo_componente = new cls_componente();
+				vo_componente.pPK_componente = componenteSeleccionado;
 
-            //Se inicializan los paquetes asociados al componente específico
-            inicializarPaquetesPorComponente(vo_componente);
+				//Se inicializan los paquetes asociados al componente específico
+				inicializarPaquetesPorComponente(vo_componente);
+			}
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al seleccionar el entregable de proyecto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            }
         }
 
         /// <summary>
@@ -1963,56 +2022,63 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             int compSeleccionado;
             //Se obtiene el componente al que se le va a agregar el paquete seleccionado
             compSeleccionado = Convert.ToInt32(lbx_componentesasociados.SelectedValue.ToString());
+			
+			try
+			{
+				cls_componente vo_componente = new cls_componente();
+				vo_componente.pPK_componente = compSeleccionado;
 
-            cls_componente vo_componente = new cls_componente();
-            vo_componente.pPK_componente = compSeleccionado;
+				//Se recorre la lista de paquetes hasta encontrar el que se va a asignar
+				for (int i = lbx_paquetes.Items.Count - 1; i >= 0; i--)
+				{
+					if (lbx_paquetes.Items[i].Selected == true)
+					{
+						cls_paquete vo_paquete = new cls_paquete();
+						vo_paquete.pPK_Paquete = Convert.ToInt32(lbx_paquetes.Items[i].Value.ToString());
+						vo_paquete.pNombre = lbx_paquetes.Items[i].Text;
 
-            //Se recorre la lista de paquetes hasta encontrar el que se va a asignar
-            for (int i = lbx_paquetes.Items.Count - 1; i >= 0; i--)
+						cls_componentePaquete vo_componentePaquete = new cls_componentePaquete();
+
+						vo_componentePaquete.pComponente = vo_componente;
+						vo_componentePaquete.pPaquete = vo_paquete;
+
+						//Se recorre la lista de entregables-componentes en memoria
+						foreach (cls_entregableComponente entComp in cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria)
+						{
+							//Si el componente es el mismo que se va a asignar
+							if (entComp.pPK_Componente == vo_componente.pPK_componente)
+							{
+								if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == entComp.pPK_Entregable &&
+																														searchLinQ.pPK_Componente == vo_componente.pPK_componente &&
+																														searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete).Count() == 0)
+								{
+									//Se agrega el entregable al que pertenece el componentePaquete, puesto que se necesita al guardar el registro
+									vo_componentePaquete.pEntregable = entComp.pEntregable;
+
+									cls_variablesSistema.vs_proyecto.pPaqueteLista.Add(vo_paquete);
+									cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Add(vo_componentePaquete);
+								}                        
+							}
+						}
+
+						lbx_paqasociados.Items.Add(lbx_paquetes.Items[i]);
+						ListItem li = lbx_paquetes.Items[i];
+						lbx_paquetes.Items.Remove(li);
+
+					}
+				}
+
+				//Si aún queda al menos un elemento, se habilita el botón de siguiente
+				if (lbx_paqasociados.Items.Count > 0)
+				{
+					btnNxt.Enabled = true;
+				}
+			}
+            catch (Exception po_exception)
             {
-                if (lbx_paquetes.Items[i].Selected == true)
-                {
-                    cls_paquete vo_paquete = new cls_paquete();
-                    vo_paquete.pPK_Paquete = Convert.ToInt32(lbx_paquetes.Items[i].Value.ToString());
-                    vo_paquete.pNombre = lbx_paquetes.Items[i].Text;
-
-                    cls_componentePaquete vo_componentePaquete = new cls_componentePaquete();
-
-                    vo_componentePaquete.pComponente = vo_componente;
-                    vo_componentePaquete.pPaquete = vo_paquete;
-
-                    //Se recorre la lista de entregables-componentes en memoria
-                    foreach (cls_entregableComponente entComp in cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria)
-                    {
-                        //Si el componente es el mismo que se va a asignar
-                        if (entComp.pPK_Componente == vo_componente.pPK_componente)
-                        {
-                            if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == entComp.pPK_Entregable &&
-                                                                                                                    searchLinQ.pPK_Componente == vo_componente.pPK_componente &&
-                                                                                                                    searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete).Count() == 0)
-                            {
-                                //Se agrega el entregable al que pertenece el componentePaquete, puesto que se necesita al guardar el registro
-                                vo_componentePaquete.pEntregable = entComp.pEntregable;
-
-                                cls_variablesSistema.vs_proyecto.pPaqueteLista.Add(vo_paquete);
-                                cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Add(vo_componentePaquete);
-                            }                        
-                        }
-                    }
-
-                    lbx_paqasociados.Items.Add(lbx_paquetes.Items[i]);
-                    ListItem li = lbx_paquetes.Items[i];
-                    lbx_paquetes.Items.Remove(li);
-
-                }
+                String vs_error_usuario = "Ocurrió un error al asignar el paquete al proyecto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
-
-            //Si aún queda al menos un elemento, se habilita el botón de siguiente
-            if (lbx_paqasociados.Items.Count > 0)
-            {
-                btnNxt.Enabled = true;
-            }
-
         }
 
         /// <summary>
@@ -2028,63 +2094,71 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             cls_componente vo_componente = new cls_componente();
             vo_componente.pPK_componente = compSeleccionado;
+			
+			try
+			{
+				//Se recorre la lista de paquetes asociados
+				for (int i = lbx_paqasociados.Items.Count - 1; i >= 0; i--)
+				{
+					if (lbx_paqasociados.Items[i].Selected == true)
+					{
+						cls_paquete vo_paquete = new cls_paquete();
+						vo_paquete.pPK_Paquete = Convert.ToInt32(lbx_paqasociados.Items[i].Value.ToString());
+						vo_paquete.pNombre = lbx_paqasociados.Items[i].Text;
 
-            //Se recorre la lista de paquetes asociados
-            for (int i = lbx_paqasociados.Items.Count - 1; i >= 0; i--)
+						cls_componentePaquete vo_componentePaquete = new cls_componentePaquete();
+
+						vo_componentePaquete.pComponente = vo_componente;
+						vo_componentePaquete.pPaquete = vo_paquete;
+
+						//Se recorre la lista
+						foreach (cls_entregableComponente entComp in cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria)
+						{
+
+							if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == entComp.pPK_Entregable &&
+																													searchLinQ.pPK_Componente == vo_componente.pPK_componente &&
+																													searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete).Count() > 0)
+							{
+
+								//Se realiza una eliminación de todas las posibles referencias que se presenten a nivel de memoria para el entregable que se está eliminando
+								foreach (cls_paqueteActividad paqAct in cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria)
+								{
+									if (paqAct.pPK_Paquete == vo_paquete.pPK_Paquete)
+									{
+										cls_variablesSistema.vs_proyecto.pActividadLista.RemoveAll(searchLinQ => searchLinQ.pPK_Actividad == paqAct.pPK_Actividad);
+									}
+								}
+
+								cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete);
+
+								cls_variablesSistema.vs_proyecto.pPaqueteLista.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete);
+								cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete);
+							}
+						}
+
+						
+
+						lbx_paquetes.Items.Add(lbx_paqasociados.Items[i]);
+						ListItem li = lbx_paqasociados.Items[i];
+						lbx_paqasociados.Items.Remove(li);
+
+					}
+				}
+
+				//Si luego de la eliminación no se encuentran elementos en las listas, se deshabilita el botón de continuar
+				if (lbx_paqasociados.Items.Count == 0 && cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Count == 0 && cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Count == 0)
+				{
+					btnNxt.Enabled = false;
+				}
+				else
+				{
+					btnNxt.Enabled = true;
+				}
+			}
+            catch (Exception po_exception)
             {
-                if (lbx_paqasociados.Items[i].Selected == true)
-                {
-                    cls_paquete vo_paquete = new cls_paquete();
-                    vo_paquete.pPK_Paquete = Convert.ToInt32(lbx_paqasociados.Items[i].Value.ToString());
-                    vo_paquete.pNombre = lbx_paqasociados.Items[i].Text;
-
-                    cls_componentePaquete vo_componentePaquete = new cls_componentePaquete();
-
-                    vo_componentePaquete.pComponente = vo_componente;
-                    vo_componentePaquete.pPaquete = vo_paquete;
-
-                    //Se recorre la lista
-                    foreach (cls_entregableComponente entComp in cls_variablesSistema.vs_proyecto.pEntregableComponenteListaMemoria)
-                    {
-
-                        if (cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == entComp.pPK_Entregable &&
-                                                                                                                searchLinQ.pPK_Componente == vo_componente.pPK_componente &&
-                                                                                                                searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete).Count() > 0)
-                        {
-
-                            //Se realiza una eliminación de todas las posibles referencias que se presenten a nivel de memoria para el entregable que se está eliminando
-                            foreach (cls_paqueteActividad paqAct in cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria)
-                            {
-                                if (paqAct.pPK_Paquete == vo_paquete.pPK_Paquete)
-                                {
-                                    cls_variablesSistema.vs_proyecto.pActividadLista.RemoveAll(searchLinQ => searchLinQ.pPK_Actividad == paqAct.pPK_Actividad);
-                                }
-                            }
-
-                            cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete);
-
-                            cls_variablesSistema.vs_proyecto.pPaqueteLista.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete);
-                            cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete);
-                        }
-                    }
-
-                    
-
-                    lbx_paquetes.Items.Add(lbx_paqasociados.Items[i]);
-                    ListItem li = lbx_paqasociados.Items[i];
-                    lbx_paqasociados.Items.Remove(li);
-
-                }
-            }
-
-            //Si luego de la eliminación no se encuentran elementos en las listas, se deshabilita el botón de continuar
-            if (lbx_paqasociados.Items.Count == 0 && cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria.Count == 0 && cls_variablesSistema.vs_proyecto.pComponentePaqueteListaBaseDatos.Count == 0)
-            {
-                btnNxt.Enabled = false;
-            }
-            else
-            {
-                btnNxt.Enabled = true;
+                String vs_error_usuario = "Ocurrió un error al remover el paquete del proyecto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
         }
 
@@ -2106,7 +2180,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al cargar las actividades asociadas al proyecto.", po_exception);
             }
         }
 
@@ -2140,10 +2214,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 cargarActividadesPorPaquete();
 
             }
-
-            /*
-                Nota: revisar el manejo de excepxiones personalizadas en este form
-            */
             catch (Exception po_exception)
             {
                 throw new Exception("Ocurrió un error al cargar los datos de la lista de paquetes del proyecto.", po_exception);
@@ -2188,14 +2258,10 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
 
             }
-            /*
-             Nota: revisar el manejo de excepxiones personalizadas en este form
-             */
             catch (Exception po_exception)
             {
                 throw new Exception("Ocurrió un error al cargar los datos de la lista de actividades del proyecto.", po_exception);
             }
-
         }
 
         /// <summary>
@@ -2204,15 +2270,22 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="po_paquete"></param>
         private void inicializarActividadesPorPaquete(cls_paquete po_paquete)
         {
-            cls_paqueteActividad vo_paqueteActividad = new cls_paqueteActividad();
+			try
+			{
+				cls_paqueteActividad vo_paqueteActividad = new cls_paqueteActividad();
 
-            vo_paqueteActividad.pProyecto = cls_variablesSistema.vs_proyecto;
-            vo_paqueteActividad.pPaquete = po_paquete;
+				vo_paqueteActividad.pProyecto = cls_variablesSistema.vs_proyecto;
+				vo_paqueteActividad.pPaquete = po_paquete;
 
-            //Se envía a cargas las actividaes por paquete
-            cargarActividadesPorPaquete(vo_paqueteActividad);
-            //Se carga la totalidad de las actividades que aún pueden ser escogidas
-            cargarListaActividades();
+				//Se envía a cargas las actividaes por paquete
+				cargarActividadesPorPaquete(vo_paqueteActividad);
+				//Se carga la totalidad de las actividades que aún pueden ser escogidas
+				cargarListaActividades();
+			}
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al ontener las actividades asociadas a proyecto.", po_exception);
+            }
         }
 
         /// <summary>
@@ -2447,14 +2520,22 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void lbx_paquetes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int paqueteSeleccionado;
-            paqueteSeleccionado = Convert.ToInt32(lbx_paquetesasociados.SelectedValue.ToString());
+			try
+			{
+				int paqueteSeleccionado;
+				paqueteSeleccionado = Convert.ToInt32(lbx_paquetesasociados.SelectedValue.ToString());
 
-            cls_paquete vo_paquete = new cls_paquete();
-            vo_paquete.pPK_Paquete = paqueteSeleccionado;
+				cls_paquete vo_paquete = new cls_paquete();
+				vo_paquete.pPK_Paquete = paqueteSeleccionado;
 
-            //Se envía a inicializa las actividades según el paquete seleccionado
-            inicializarActividadesPorPaquete(vo_paquete);
+				//Se envía a inicializa las actividades según el paquete seleccionado
+				inicializarActividadesPorPaquete(vo_paquete);
+			}
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al obtener la información del paquete seleccionado.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            }
         }
 
         /// <summary>
@@ -2469,53 +2550,60 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             cls_paquete vo_paquete = new cls_paquete();
             vo_paquete.pPK_Paquete = paqueteSeleccionado;
+			try
+			{
+				//Se recorre la lista de actividades
+				for (int i = lbx_actividades.Items.Count - 1; i >= 0; i--)
+				{
+					if (lbx_actividades.Items[i].Selected == true)
+					{
+						cls_actividad vo_actividad = new cls_actividad();
+						vo_actividad.pPK_Actividad = Convert.ToInt32(lbx_actividades.Items[i].Value.ToString());
+						vo_actividad.pNombre = lbx_actividades.Items[i].Text;
 
-            //Se recorre la lista de actividades
-            for (int i = lbx_actividades.Items.Count - 1; i >= 0; i--)
+						cls_paqueteActividad vo_paqueteActividad = new cls_paqueteActividad();
+
+						vo_paqueteActividad.pPaquete = vo_paquete;
+						vo_paqueteActividad.pActividad = vo_actividad;
+
+						//Se recorre los elementos de la lista de memoria
+						foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria)
+						{
+							if (compPaq.pPK_Paquete == vo_paquete.pPK_Paquete)
+							{
+								//Si la actividad no se encuentra asignada para ese paquete, se agrega
+								if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == compPaq.pPK_Entregable &&
+																												 searchLinQ.pPK_Componente == compPaq.pPK_Componente &&
+																												 searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete &&
+																												 searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad).Count() == 0)
+								{
+									//Se agregam el entregable y componente al que pertenece el paqueteActividad, puesto que se necesita al guardar el registro
+									vo_paqueteActividad.pEntregable = compPaq.pEntregable;
+									vo_paqueteActividad.pComponente = compPaq.pComponente;
+
+									cls_variablesSistema.vs_proyecto.pActividadLista.Add(vo_actividad);
+									cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Add(vo_paqueteActividad);
+								}
+							}
+						}
+
+						lbx_actasociadas.Items.Add(lbx_actividades.Items[i]);
+						ListItem li = lbx_actividades.Items[i];
+						lbx_actividades.Items.Remove(li);
+
+					}
+				}
+
+				//Si al menos se encuetra un elemento asociado, se puede habilitar el botón de siguiente
+				if (lbx_actasociadas.Items.Count > 0)
+				{
+					btnNxt.Enabled = true;
+				}
+			}
+            catch (Exception po_exception)
             {
-                if (lbx_actividades.Items[i].Selected == true)
-                {
-                    cls_actividad vo_actividad = new cls_actividad();
-                    vo_actividad.pPK_Actividad = Convert.ToInt32(lbx_actividades.Items[i].Value.ToString());
-                    vo_actividad.pNombre = lbx_actividades.Items[i].Text;
-
-                    cls_paqueteActividad vo_paqueteActividad = new cls_paqueteActividad();
-
-                    vo_paqueteActividad.pPaquete = vo_paquete;
-                    vo_paqueteActividad.pActividad = vo_actividad;
-
-                    //Se recorre los elementos de la lista de memoria
-                    foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria)
-                    {
-                        if (compPaq.pPK_Paquete == vo_paquete.pPK_Paquete)
-                        {
-                            //Si la actividad no se encuentra asignada para ese paquete, se agrega
-                            if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == compPaq.pPK_Entregable &&
-                                                                                                             searchLinQ.pPK_Componente == compPaq.pPK_Componente &&
-                                                                                                             searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete &&
-                                                                                                             searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad).Count() == 0)
-                            {
-                                //Se agregam el entregable y componente al que pertenece el paqueteActividad, puesto que se necesita al guardar el registro
-                                vo_paqueteActividad.pEntregable = compPaq.pEntregable;
-                                vo_paqueteActividad.pComponente = compPaq.pComponente;
-
-                                cls_variablesSistema.vs_proyecto.pActividadLista.Add(vo_actividad);
-                                cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Add(vo_paqueteActividad);
-                            }
-                        }
-                    }
-
-                    lbx_actasociadas.Items.Add(lbx_actividades.Items[i]);
-                    ListItem li = lbx_actividades.Items[i];
-                    lbx_actividades.Items.Remove(li);
-
-                }
-            }
-
-            //Si al menos se encuetra un elemento asociado, se puede habilitar el botón de siguiente
-            if (lbx_actasociadas.Items.Count > 0)
-            {
-                btnNxt.Enabled = true;
+                String vs_error_usuario = "Ocurrió un error al asignar la actividad al proyecto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
         }
 
@@ -2531,50 +2619,57 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             cls_paquete vo_paquete = new cls_paquete();
             vo_paquete.pPK_Paquete = paqueteSeleccionado;
+			try
+			{
+				//Se recorre la lista de actividades asociadas
+				for (int i = lbx_actasociadas.Items.Count - 1; i >= 0; i--)
+				{
+					if (lbx_actasociadas.Items[i].Selected == true)
+					{
+						cls_actividad vo_actividad = new cls_actividad();
+						vo_actividad.pPK_Actividad = Convert.ToInt32(lbx_actasociadas.Items[i].Value.ToString());
+						vo_actividad.pNombre = lbx_actasociadas.Items[i].Text;
 
-            //Se recorre la lista de actividades asociadas
-            for (int i = lbx_actasociadas.Items.Count - 1; i >= 0; i--)
+						cls_paqueteActividad vo_paqueteActividad = new cls_paqueteActividad();
+
+						vo_paqueteActividad.pPaquete = vo_paquete;
+						vo_paqueteActividad.pActividad = vo_actividad;
+
+						//Se recorren los elementos de la lista de memoria
+						foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria)
+						{
+							if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == compPaq.pPK_Entregable &&
+																											 searchLinQ.pPK_Componente == compPaq.pPK_Componente &&
+																											 searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete &&
+																											 searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad).Count() > 0)
+							{
+								cls_variablesSistema.vs_proyecto.pActividadLista.RemoveAll(searchLinQ => searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad);
+								cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete &&
+																													   searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad);
+							}
+						}
+
+						lbx_actividades.Items.Add(lbx_actasociadas.Items[i]);
+						ListItem li = lbx_actasociadas.Items[i];
+						lbx_actasociadas.Items.Remove(li);
+
+					}
+				}
+
+				//Si no se encuentra al menos un elemento, no se habilita el botón de siguiente
+				if (lbx_actasociadas.Items.Count == 0 && cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Count == 0 && cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Count == 0)
+				{
+					btnNxt.Enabled = false;
+				}
+				else
+				{
+					btnNxt.Enabled = true;
+				}
+			}
+            catch (Exception po_exception)
             {
-                if (lbx_actasociadas.Items[i].Selected == true)
-                {
-                    cls_actividad vo_actividad = new cls_actividad();
-                    vo_actividad.pPK_Actividad = Convert.ToInt32(lbx_actasociadas.Items[i].Value.ToString());
-                    vo_actividad.pNombre = lbx_actasociadas.Items[i].Text;
-
-                    cls_paqueteActividad vo_paqueteActividad = new cls_paqueteActividad();
-
-                    vo_paqueteActividad.pPaquete = vo_paquete;
-                    vo_paqueteActividad.pActividad = vo_actividad;
-
-                    //Se recorren los elementos de la lista de memoria
-                    foreach (cls_componentePaquete compPaq in cls_variablesSistema.vs_proyecto.pComponentePaqueteListaMemoria)
-                    {
-                        if (cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Where(searchLinQ => searchLinQ.pPK_Entregable == compPaq.pPK_Entregable &&
-                                                                                                         searchLinQ.pPK_Componente == compPaq.pPK_Componente &&
-                                                                                                         searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete &&
-                                                                                                         searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad).Count() > 0)
-                        {
-                            cls_variablesSistema.vs_proyecto.pActividadLista.RemoveAll(searchLinQ => searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad);
-                            cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.RemoveAll(searchLinQ => searchLinQ.pPK_Paquete == vo_paquete.pPK_Paquete &&
-                                                                                                                   searchLinQ.pPK_Actividad == vo_actividad.pPK_Actividad);
-                        }
-                    }
-
-                    lbx_actividades.Items.Add(lbx_actasociadas.Items[i]);
-                    ListItem li = lbx_actasociadas.Items[i];
-                    lbx_actasociadas.Items.Remove(li);
-
-                }
-            }
-
-            //Si no se encuentra al menos un elemento, no se habilita el botón de siguiente
-            if (lbx_actasociadas.Items.Count == 0 && cls_variablesSistema.vs_proyecto.pPaqueteActividadListaMemoria.Count == 0 && cls_variablesSistema.vs_proyecto.pPaqueteActividadListaBaseDatos.Count == 0)
-            {
-                btnNxt.Enabled = false;
-            }
-            else
-            {
-                btnNxt.Enabled = true;
+                String vs_error_usuario = "Ocurrió un error al remover la actividad del proyecto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
         }
 

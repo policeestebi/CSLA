@@ -1,4 +1,4 @@
-﻿using System;
+?using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -24,12 +24,13 @@ using CSLA.web.App_Constantes;
 // Explicación de los contenidos del archivo.
 // =========================================================================
 // Historial
-// PERSONA 			             MES – DIA - AÑO		DESCRIPCIÓN
+// PERSONA     		             MES – DIA - AÑO		DESCRIPCIÓN
 // Esteban Ramírez Gónzalez  	 03  – 06  - 2011	 	Se crea la clase
-// Cristian Arce Jiménez      	 29  – 08  - 2011	 	Se crea la clase
-// Cristian Arce Jiménez      	 01  – 11  - 2011	 	Se modifica la clase
-// Cristian Arce Jiménez  	     27 – 11  - 2011	 	Se agrega el manejo de excepciones personalizadas
-// Cristian Arce Jiménez  	     23 – 01  - 2012	 	Se agrega el manejo de filtros
+// Cristian Arce Jiménez      	 08  – 23  - 2011	 	Se crea la clase
+// Cristian Arce Jiménez      	 11  – 01  - 2011	 	Se modifica la clase
+// Cristian Arce Jiménez  	     11  – 27  - 2011	 	Se agrega el manejo de excepciones personalizadas
+// Cristian Arce Jiménez  	     01  – 23  - 2012	 	Se agrega el manejo de filtros
+// Cristian Arce Jiménez  	     05  – 04  - 2012	 	Se modifica el manejo de excepciones
 //								
 //								
 //
@@ -52,19 +53,16 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             if (!Page.IsPostBack)
             {
-
                 try
                 {
                     this.llenarGridView();
                 }
                 catch (Exception po_exception)
                 {
-                    String vs_error_usuario = "Error al inicializar el mantenimiento de estados.";
+                    String vs_error_usuario = "Ocurrió un error al inicializar el mantenimiento de estados.";
                     this.lanzarExcepcion(po_exception, vs_error_usuario);
                 } 
-
             }
-
         }
 
         /// <summary>
@@ -73,13 +71,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected override void OnInit(EventArgs e)
         {
-
-            base.OnInit(e);
-            if (!this.DesignMode)
+			try
             {
-                this.inicializarControles();
+				base.OnInit(e);
+				if (!this.DesignMode)
+				{
+					this.inicializarControles();
+				}
             }
-
+            catch (Exception po_exception)
+            {
+				String vs_error_usuario = "Ocurrió un error al inicializar los controles en el mantenimiento de estados.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
@@ -92,6 +96,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
+				//Botones de uso común
                 this.btn_agregar = (Button)acp_listadoDatos.FindControl("btn_agregar");
                 this.btn_cancelar = (Button)acp_edicionDatos.FindControl("btn_cancelar");
                 this.btn_guardar = (Button)acp_edicionDatos.FindControl("btn_guardar");
@@ -114,8 +119,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void agregarItemListFiltro()
         {
-            this.ucSearchEstado.LstCollecction.Add(new ListItem("Estado", "PK_estado"));
-            this.ucSearchEstado.LstCollecction.Add(new ListItem("Descripcion", "descripcion"));
+			try
+			{
+				this.ucSearchEstado.LstCollecction.Add(new ListItem("Estado", "PK_estado"));
+				this.ucSearchEstado.LstCollecction.Add(new ListItem("Descripcion", "descripcion"));
+			}
+            catch (Exception po_exception)
+            {
+				throw new Exception("Ocurrió un error al agregar los filtros para el mantenimiento de estados.", po_exception);               
+            }
         }
 
         #endregion
@@ -137,12 +149,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error llenando la tabla.", po_exception);
+                throw new Exception("Ocurrió un error llenando la tabla con los registros de estados.", po_exception);
             } 
         }
 
         /// <summary>
-        /// Hace un buscar de la lista de permisos.
+        /// Hace un buscar de la lista de estados.
         /// </summary>
         /// <param name="psFilter">String filtro.</param>
         private void llenarGridViewFilter(String psFilter)
@@ -156,9 +168,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error llenando la tabla con filtro.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
-            }
+                throw new Exception("Ocurrió un error llenando la tabla con los filtros de los registro de estado.", po_exception);
+            } 
         }
 
         /// <summary>
@@ -171,18 +182,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         private cls_estado crearObjeto()
         {
             cls_estado vo_estado = new cls_estado();
-            if (cls_variablesSistema.tipoEstado != cls_constantes.AGREGAR)
-            {
-                vo_estado = (cls_estado)cls_variablesSistema.obj;
-            }
             try
             {
+				if (cls_variablesSistema.tipoEstado != cls_constantes.AGREGAR)
+				{
+					vo_estado = (cls_estado)cls_variablesSistema.obj;
+				}
+				
                 vo_estado.pDescripcion = txt_descripcion.Text;
                 return vo_estado;
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al crear el objeto para guardar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al crear el registro.", po_exception);
             }
         }
 
@@ -230,7 +242,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error eliminando el estado.", po_exception);
+                throw new Exception("Ocurrió un error eliminando el registro.", po_exception);
             }
         }
 
@@ -261,7 +273,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al intentar guardar el registro.", po_exception);
             } 
         }
 
@@ -272,7 +284,14 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void limpiarCampos()
         {
-            this.txt_descripcion.Text = String.Empty;
+			try
+			{
+				this.txt_descripcion.Text = String.Empty;
+			}
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al intentar limpiar los campos de registro.", po_exception);
+            }
         }
 
         /// <summary>
@@ -283,8 +302,16 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="pb_habilitados"></param>
         private void habilitarControles(bool pb_habilitados)
         {
-            this.txt_descripcion.Enabled = pb_habilitados;
-            this.btn_guardar.Visible = pb_habilitados;
+			try
+			{
+				 this.txt_descripcion.Enabled = pb_habilitados;
+				this.btn_guardar.Visible = pb_habilitados;
+			}
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al intentar habilitar los campos de registro.", po_exception);
+            }
+           
         }
 
         /// <summary>
@@ -327,10 +354,16 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="value"></param>
         /// <param name="seletecItem"></param>
         protected void ucSearchEstado_searchClick(object sender, EventArgs e, string value, ListItem seletecItem)
-        {
-
-            this.llenarGridViewFilter(this.ucSearchEstado.Filter); 
-
+        {            
+			try
+            {
+                this.llenarGridViewFilter(this.ucSearchEstado.Filter); 
+            }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al intentar realizar el filtro sobre los registros.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
@@ -495,7 +528,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error al intentar mostrar la ventana de edición para los registros.";
+                String vs_error_usuario = "Ocurrió un error al intentar acceder a la información de los registros.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
