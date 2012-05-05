@@ -1,4 +1,4 @@
-?using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,6 +15,7 @@ using COSEVI.CSLA.lib.entidades.mod.Administracion;
 using CSLA.web.App_Variables;
 using CSLA.web.App_Constantes;
 using System.Data;
+using COSEVI.CSLA.lib.accesoDatos.mod.Administracion;
 
 
 // =========================================================================
@@ -62,7 +63,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 try
                 {
-                    //No se ha definido funcionalidad al cargar la página
+                    this.validarSession();
+                    this.validarAcceso();
                 }
                 catch (Exception po_exception)
                 {
@@ -2676,6 +2678,58 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         #endregion Eventos Actividades
 
+
+        #region Seguridad
+
+        /// <summary>
+        /// Valida si el usuario
+        /// tiene acceso a la página de lo contrario
+        /// destruye la sessión
+        /// 
+        /// </summary>
+        private void validarAcceso()
+        {
+            if (!this.pbAcceso)
+            {
+                this.Session.Abandon();
+                this.Session.Clear();
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Determina si la sesión se encuentra
+        /// activa, si no es así se envía a la página de inicio.
+        /// </summary>
+        private void validarSession()
+        {
+            if (this.Session["cls_usuario"] == null)
+            {
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Valida el acceso del usuario en la página
+        /// </summary>
+        private bool pbAcceso
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ACCESO] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        #endregion Seguridad
 
     }
 }
