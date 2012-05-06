@@ -300,7 +300,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error eliminando el rol. Es posible que exista un registro asociado a este rol", po_exception);
+                throw new Exception("Ocurrió un error eliminando el rol. Es posible que exista un registro asociado a este rol.", po_exception);
             }
         }
 
@@ -360,7 +360,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             this.txt_nombre.Enabled = pb_habilitados;
             this.txt_descripcion.Enabled = pb_habilitados;
             this.chk_activo.Enabled = pb_habilitados;
-            this.btn_guardar.Visible = pb_habilitados && (this.pbAgregar || this.pbModificar); ; ;
+            this.btn_guardar.Visible = pb_habilitados && (this.pbAgregar || this.pbModificar); 
         }
 
         /// <summary>
@@ -983,8 +983,6 @@ namespace CSLA.web.App_pages.mod.Administracion
         }
 
         #endregion
-
-
 
 
     }

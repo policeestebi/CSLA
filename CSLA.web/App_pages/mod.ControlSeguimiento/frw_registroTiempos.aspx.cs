@@ -10,6 +10,7 @@ using ExceptionManagement.Exceptions;
 using COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento;
 using COSEVI.CSLA.lib.entidades.mod.Administracion;
 using COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento;
+using COSEVI.CSLA.lib.accesoDatos.mod.Administracion;
 
 using CSLA.web.App_Variables;
 using CSLA.web.App_Constantes;
@@ -28,10 +29,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!this.IsPostBack)
+            try
             {
-                this.cargarObjetoSegunUrl();
-                this.cargarValores();
+
+                if (!this.IsPostBack)
+                {
+                    this.validarSession();
+                    this.obtenerPermisos();
+
+                    this.cargarObjetoSegunUrl();
+                    this.cargarValores();
+                }
+            }
+            catch (Exception po_exception)
+            {
+                this.lanzarExcepcion(po_exception, "Error al cargar la página");
             }
         }
 
@@ -70,9 +82,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 }
 
             }
-            catch (Exception)
+            catch (Exception po_exception)
             {
-
+                this.lanzarExcepcion(po_exception, "Error al cargar el registro de tiempos");
             }
         }
 
@@ -125,7 +137,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception)
             {
-
+                throw;
             }
         }
 
@@ -191,7 +203,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception)
             {
-
+                throw;
             }
         }
 
@@ -243,7 +255,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception)
             {
-
+                throw;
             }
         }
 
@@ -295,6 +307,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception)
             {
+                throw;
             }
         }
 
@@ -355,14 +368,157 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 //    "<script> alert('Se ha grabado con éxito el registro de tiempos'); </script>"
                 //    , false);
             }
-            catch (Exception)
+            catch (Exception po_excepciones) 
             {
+                this.lanzarExcepcion(po_excepciones, "Error al guardar la información");
             }
         }
 
         #endregion
 
         #region Propiedades
+
+        #endregion
+
+        #region Seguridad
+
+        /// <summary>
+        /// Determina si la sesión se encuentra
+        /// activa, si no es así se envía a la página de inicio.
+        /// </summary>
+        private void validarSession()
+        {
+            if (this.Session["cls_usuario"] == null)
+            {
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Valida el acceso del usuario en la página
+        /// </summary>
+        private bool pbAcceso
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ACCESO] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de agregar del usuario en página.
+        /// </summary>
+        private bool pbAgregar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.AGREGAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de modificar del usuario en página.
+        /// </summary>
+        private bool pbModificar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.MODIFICAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de eliminar del usuario en la página.
+        /// </summary>
+        private bool pbEliminar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ELIMINAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los permisos
+        /// para la página actual.
+        /// </summary>
+        private void obtenerPermisos()
+        {
+            string lsUrl = String.Empty;
+
+            try
+            {
+                lsUrl = "#.." + HttpContext.Current.Request.Url.AbsolutePath;
+
+                Session[cls_constantes.PAGINA] = cls_gestorPagina.obtenerPermisoPaginaRol(lsUrl, ((cls_usuario)this.Session["cls_usuario"]).pFK_rol);
+
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al obtener los permisos del rol en la página actual.", po_exception);
+            }
+        }
+
+        #endregion
+
+        #region Manejo de Excepciones
+
+        /// <summary>
+        /// Método que lanza la excepción personalizada
+        /// </summary>
+        /// <param name="po_exception">Excepción a levantar</param>
+        /// <param name="ps_mensajeUsuario">Mensaje a comunicar al usuario</param>
+        private void lanzarExcepcion(Exception po_exception, String ps_mensajeUsuario)
+        {
+            try
+            {
+                String vs_error_usuario = ps_mensajeUsuario;
+                vs_error_usuario = vs_error_usuario.Replace(" ", "_");
+                vs_error_usuario = vs_error_usuario.Replace("'", "|");
+
+                String vs_error_tecnico = po_exception.Message;
+                vs_error_tecnico = vs_error_tecnico.Replace(" ", "_");
+                vs_error_tecnico = vs_error_tecnico.Replace("'", "|");
+
+                String vs_script = "window.showModalDialog(\"../../frw_error.aspx?vs_error_usuario=" + vs_error_usuario + "&vs_error_tecnico=" + vs_error_tecnico + "\",\"Ventana\",\"dialogHeight:450px;dialogWidth:625px;center:yes;status:no;menubar:no;resizable:no;scrollbars:yes;toolbar:no;location:no;directories:no\");";
+                ScriptManager.RegisterClientScriptBlock(this.upd_Principal, this.upd_Principal.GetType(), "jsKeyScript", vs_script, true);
+
+                throw new GeneralException("GeneralException", po_exception);
+            }
+            catch (GeneralException po_general_exception)
+            {
+                ExceptionManagement.ExceptionManager.Publish(po_general_exception);
+            }
+        }
 
         #endregion
     }

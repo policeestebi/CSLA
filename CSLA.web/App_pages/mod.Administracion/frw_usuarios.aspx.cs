@@ -32,6 +32,7 @@ using COSEVI.lib.Security;
 // Cristian Arce Jiménez    	 24 -  10 - 2011		Se realizan modificaciones en el listar y editar
 // Cristian Arce Jiménez  	     27 – 11  - 2011	 	Se agrega el manejo de excepciones personalizadas
 // Cristian Arce Jiménez  	     23 – 01  - 2012	 	Se agrega el manejo de filtros
+// Esteban Ramírez Gónzalez  	05 – 05 - 2012	    Se agrega manejo se seguridad
 //								
 //								
 //
@@ -57,6 +58,11 @@ namespace CSLA.web.App_pages.mod.Administracion
 
                 try
                 {
+                    this.validarSession();
+                    this.obtenerPermisos();
+                    this.validarAcceso();
+                    this.cargarPermisos();
+
                     this.llenarGridView();
                 }
                 catch (Exception po_exception)
@@ -100,6 +106,7 @@ namespace CSLA.web.App_pages.mod.Administracion
                 this.btn_permanente = (Button)pan_mensajeeliminar.FindControl("btn_permanente");
 
                 this.ucSearchUsuario.SearchClick +=new COSEVI.web.controls.ucSearch.searchClick(this.ucSearchUsuario_searchClick);
+                this.btn_guardar.Click += this.btn_guardar_Click; 
 
                 //Se agregan los filtros.
                 this.agregarItemListFiltro();
@@ -262,7 +269,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error eliminando el usuario.", po_exception);
+                throw new Exception("Ocurrió un error eliminando el usuario. Es posible que exista un registro asociado a este usuario.", po_exception);
             }
         }
 
@@ -293,7 +300,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al guardar el registro. El posible que el usuario ingresado ya exista en el sistema.", po_exception);
             } 
         }
 
@@ -352,13 +359,14 @@ namespace CSLA.web.App_pages.mod.Administracion
             { this.txt_usuario.Enabled = false; }
             this.txt_nombre.Enabled = pb_habilitados;
             this.txt_contrasena.Enabled = pb_habilitados;
+            this.txt_repetirpassword.Enabled = pb_habilitados;
             this.txt_apellido1.Enabled = pb_habilitados;
             this.txt_apellido2.Enabled = pb_habilitados;
             this.ddl_rol.Enabled = pb_habilitados;
             this.txt_puesto.Enabled = pb_habilitados;
             this.chk_activo.Enabled = pb_habilitados;
             this.txt_email.Enabled = pb_habilitados;
-            this.btn_guardar.Visible = pb_habilitados;
+            this.btn_guardar.Visible = pb_habilitados  && (this.pbAgregar || this.pbModificar);
 
         }
 
@@ -425,11 +433,19 @@ namespace CSLA.web.App_pages.mod.Administracion
 
             this.rfv_contrasena.Visible = pb_habilitados;
 
+            this.rfv_contrasena.Enabled = pb_habilitados;
+
             this.lbl_confirmarContrasena.Visible = pb_habilitados;
 
             this.txt_confirmarContrasena.Visible = pb_habilitados;
 
             this.rfv_confirmarContrasena.Visible = pb_habilitados;
+
+            this.rfv_confirmarContrasena.Enabled = pb_habilitados;
+
+            this.cpv_contrasena.Visible = pb_habilitados;
+
+            this.cpv_contrasena.Enabled = pb_habilitados;
 
         }
 
@@ -703,6 +719,145 @@ namespace CSLA.web.App_pages.mod.Administracion
         }
         #endregion
 
+        #region Seguridad
+
+        /// <summary>
+        /// Valida si el usuario
+        /// tiene acceso a la página de lo contrario
+        /// destruye la sessión
+        /// 
+        /// </summary>
+        private void validarAcceso()
+        {
+            if (!this.pbAcceso)
+            {
+                this.Session.Abandon();
+                this.Session.Clear();
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Determina si la sesión se encuentra
+        /// activa, si no es así se envía a la página de inicio.
+        /// </summary>
+        private void validarSession()
+        {
+            if (this.Session["cls_usuario"] == null)
+            {
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Valida el acceso del usuario en la página
+        /// </summary>
+        private bool pbAcceso
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ACCESO] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de agregar del usuario en página.
+        /// </summary>
+        private bool pbAgregar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.AGREGAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de modificar del usuario en página.
+        /// </summary>
+        private bool pbModificar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.MODIFICAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de eliminar del usuario en la página.
+        /// </summary>
+        private bool pbEliminar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ELIMINAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los permisos
+        /// para la página actual.
+        /// </summary>
+        private void obtenerPermisos()
+        {
+            string lsUrl = String.Empty;
+
+            try
+            {
+                lsUrl = "#.." + HttpContext.Current.Request.Url.AbsolutePath;
+
+                Session[cls_constantes.PAGINA] = cls_gestorPagina.obtenerPermisoPaginaRol(lsUrl, ((cls_usuario)this.Session["cls_usuario"]).pFK_rol);
+
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al obtener los permisos del rol en la página actual.", po_exception);
+            }
+        }
+
+        /// <summary>
+        /// Carga los permisos según la página.
+        /// </summary>
+        private void cargarPermisos()
+        {
+            this.btn_agregar.Visible = this.pbAgregar;
+            this.btn_guardar.Visible = this.pbModificar || this.pbAgregar;
+            this.grd_listaUsuarios.Columns[10].Visible = this.pbAcceso;
+            this.grd_listaUsuarios.Columns[11].Visible = this.pbEliminar;
+            this.grd_listaUsuarios.Columns[12].Visible = this.pbModificar;
+            this.grd_listaUsuarios.Columns[13].Visible = this.pbModificar;
+        }
+
+        #endregion
 
     }
 }

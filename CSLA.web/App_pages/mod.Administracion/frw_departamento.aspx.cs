@@ -262,7 +262,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error eliminando el departamento. Es posible que exista un registro asociado a este departamento", po_exception);
+                throw new Exception("Ocurrió un error eliminando el departamento. Es posible que exista un registro asociado a este departamento.", po_exception);
             }
         }
 
