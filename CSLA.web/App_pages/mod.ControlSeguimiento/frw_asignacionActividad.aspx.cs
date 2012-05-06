@@ -57,11 +57,13 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 try
                 {
+                    this.validarSession();
+                    this.validarAcceso();
                     this.inicializarRegistros();
                 }
                 catch (Exception po_exception)
                 {
-                    String vs_error_usuario = "Error al inicializar la asignación de actividades.";
+                    String vs_error_usuario = "Error al inicializar el mantenimiento para la asignación de actividades.";
                     this.lanzarExcepcion(po_exception, vs_error_usuario);
                 } 
 
@@ -75,12 +77,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected override void OnInit(EventArgs e)
         {
-            base.OnInit(e);
-            if (!this.DesignMode)
+            try
             {
-                this.inicializarControles();
+                base.OnInit(e);
+                if (!this.DesignMode)
+                {
+                    this.inicializarControles();
+                }
             }
-
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Error al inicializar los controles del mantenimiento para la asignación de actividades.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
@@ -132,9 +141,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error inicializando los registros del mantenimiento.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
-            } 
+                throw new Exception("Ocurrió un error inicializando los registros del mantenimiento.", po_exception);
+            }
         }
 
         /// <summary>
@@ -148,8 +156,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error asignando el nombre del proyecto.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
+                throw new Exception("Ocurrió un error asignando el nombre del proyecto.", po_exception);
             }
         }
 
@@ -168,8 +175,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error cargando los paquetes asociados al proyecto.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
+                throw new Exception("Ocurrió un error cargando los paquetes asociados al proyecto.", po_exception);
             }
         }
 
@@ -190,8 +196,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error cargando los estados para las actividades asociadas al proyecto.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
+                throw new Exception("Ocurrió un error cargando los estados para las actividades asociadas al proyecto.", po_exception);
             }
 
         }
@@ -225,8 +230,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error cargando la lista de usuarios.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
+                throw new Exception("Ocurrió un error cargando la lista de usuarios.", po_exception);
             }
         }
 
@@ -246,8 +250,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error cargando las actividades asociadas al paquete.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
+                throw new Exception("Ocurrió un error cargando las actividades asociadas al paquete.", po_exception);
             }
         }
 
@@ -330,8 +333,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error cargando la información para la actividad seleccionada.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
+                throw new Exception("Ocurrió un error cargando la información para la actividad seleccionada.", po_exception);
             }
         }
 
@@ -341,7 +343,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// que se encuentra en memoria y la complementa 
         /// con la información presente en el formulario web
         /// </summary>
-        /// <returns>cls_actividadResp</returns>
+        /// <returns>cls_asignacionActividad</returns>
         private cls_asignacionActividad crearObjeto()
         {
             cls_asignacionActividad vo_asignacionActividad = new cls_asignacionActividad();
@@ -401,8 +403,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error cargando el objeto de la lista de memoria.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
+                throw new Exception("Ocurrió un error al cargar el registro de la lista de memoria.", po_exception);
             }
         }
 
@@ -492,11 +493,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <returns></returns>
         private List<cls_asignacionActividad> crearAsignacionActividadMemoria()
         {
-            List<cls_asignacionActividad> vo_asignacionActividad = new List<cls_asignacionActividad>();
+            try
+            {
+                List<cls_asignacionActividad> vo_asignacionActividad = new List<cls_asignacionActividad>();
 
-            vo_asignacionActividad = cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria;
+                vo_asignacionActividad = cls_variablesSistema.vs_proyecto.pAsignacionActividadListaMemoria;
 
-            return vo_asignacionActividad;
+                return vo_asignacionActividad;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al crear intentar obtener los registros que se están editando en memoria.", po_exception);
+            }
         }
 
         /// <summary>
@@ -505,11 +513,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <returns></returns>
         private List<cls_asignacionActividad> crearAsignacionActividadBaseDatos()
         {
-            List<cls_asignacionActividad> vo_asignacionActividad = new List<cls_asignacionActividad>();
+            try
+            {
+                List<cls_asignacionActividad> vo_asignacionActividad = new List<cls_asignacionActividad>();
 
-            vo_asignacionActividad = cls_variablesSistema.vs_proyecto.pAsignacionActividadListaBaseDatos;
+                vo_asignacionActividad = cls_variablesSistema.vs_proyecto.pAsignacionActividadListaBaseDatos;
 
-            return vo_asignacionActividad;
+                return vo_asignacionActividad;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al crear intentar obtener los registros que se están editando.", po_exception);
+            }
         }
 
         /// <summary>
@@ -519,17 +534,23 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void limpiarCamposTexto()
         {
-            this.txt_descripcion.Text = String.Empty;
-            this.txt_fechaInicio.Text = String.Empty;
-            this.txt_fechaFin.Text = String.Empty;
-            this.txt_horasAsignadas.Text = String.Empty;
-            this.txt_horasAsigDefectos.Text = String.Empty;
-            this.txt_horasReales.Text = String.Empty;
-            this.txt_horasRealesDef.Text = String.Empty;
-            this.ddl_estado.SelectedIndex = -1;
+            try
+            {
+                this.txt_descripcion.Text = String.Empty;
+                this.txt_fechaInicio.Text = String.Empty;
+                this.txt_fechaFin.Text = String.Empty;
+                this.txt_horasAsignadas.Text = String.Empty;
+                this.txt_horasAsigDefectos.Text = String.Empty;
+                this.txt_horasReales.Text = String.Empty;
+                this.txt_horasRealesDef.Text = String.Empty;
+                this.ddl_estado.SelectedIndex = -1;
 
-            limpiarListBoxUsuariosAsignados();
-
+                limpiarListBoxUsuariosAsignados();
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al limpiar los campos del registro.", po_exception);
+            }
         }
 
         /// <summary>
@@ -537,17 +558,23 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void limpiarListBoxUsuariosAsignados()
         {
-            if (lbx_usuariosAsociados.Items.Count > 0)
+            try
             {
-                int cantidadUsuAsociados = lbx_usuariosAsociados.Items.Count;
-                cantidadUsuAsociados = lbx_usuariosAsociados.Items.Count;
-
-                for (int i = 0; i < cantidadUsuAsociados; i++)
+                if (lbx_usuariosAsociados.Items.Count > 0)
                 {
-                    lbx_usuariosAsociados.Items.RemoveAt(0);
+                    int cantidadUsuAsociados = lbx_usuariosAsociados.Items.Count;
+                    cantidadUsuAsociados = lbx_usuariosAsociados.Items.Count;
+
+                    for (int i = 0; i < cantidadUsuAsociados; i++)
+                    {
+                        lbx_usuariosAsociados.Items.RemoveAt(0);
+                    }
                 }
             }
-
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al limpiar los la lista con los usuarios asignados a la actividad.", po_exception);
+            }
         }
 
         /// <summary>
@@ -555,17 +582,23 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void limpiarListBoxActividades()
         {
-            if (lbx_actividades.Items.Count > 0)
+            try
             {
-                int cantidadActividades = lbx_actividades.Items.Count;
-                cantidadActividades = lbx_actividades.Items.Count;
-
-                for (int i = 0; i < cantidadActividades; i++)
+                if (lbx_actividades.Items.Count > 0)
                 {
-                    lbx_actividades.Items.RemoveAt(0);
+                    int cantidadActividades = lbx_actividades.Items.Count;
+                    cantidadActividades = lbx_actividades.Items.Count;
+
+                    for (int i = 0; i < cantidadActividades; i++)
+                    {
+                        lbx_actividades.Items.RemoveAt(0);
+                    }
                 }
             }
-
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al limpiar los la lista de actividades.", po_exception);
+            }
         }
 
         /// <summary>
@@ -573,17 +606,23 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void limpiarListBoxUsuarios()
         {
-            if (lbx_usuarios.Items.Count > 0)
+            try
             {
-                int cantidadActividades = lbx_usuarios.Items.Count;
-                cantidadActividades = lbx_usuarios.Items.Count;
-
-                for (int i = 0; i < cantidadActividades; i++)
+                if (lbx_usuarios.Items.Count > 0)
                 {
-                    lbx_usuarios.Items.RemoveAt(0);
+                    int cantidadActividades = lbx_usuarios.Items.Count;
+                    cantidadActividades = lbx_usuarios.Items.Count;
+
+                    for (int i = 0; i < cantidadActividades; i++)
+                    {
+                        lbx_usuarios.Items.RemoveAt(0);
+                    }
                 }
             }
-
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al limpiar los la lista de usuarios.", po_exception);
+            }
         }
 
         /// <summary>
@@ -594,17 +633,23 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="pb_habilitados"></param>
         private void habilitarControles(bool pb_habilitados)
         {
-            this.txt_descripcion.Enabled = pb_habilitados;
-            this.txt_fechaInicio.Enabled = pb_habilitados;
-            this.txt_fechaFin.Enabled = pb_habilitados;
-            this.txt_horasAsignadas.Enabled = pb_habilitados;
-            this.txt_horasAsigDefectos.Enabled = pb_habilitados;
-            this.txt_horasReales.Enabled = pb_habilitados;
-            this.txt_horasRealesDef.Enabled = pb_habilitados;
-            this.ddl_estado.Enabled = pb_habilitados;
+            try
+            {
+                this.txt_descripcion.Enabled = pb_habilitados;
+                this.txt_fechaInicio.Enabled = pb_habilitados;
+                this.txt_fechaFin.Enabled = pb_habilitados;
+                this.txt_horasAsignadas.Enabled = pb_habilitados;
+                this.txt_horasAsigDefectos.Enabled = pb_habilitados;
+                this.txt_horasReales.Enabled = pb_habilitados;
+                this.txt_horasRealesDef.Enabled = pb_habilitados;
+                this.ddl_estado.Enabled = pb_habilitados;
 
-            this.btn_guardar.Visible = pb_habilitados;
-
+                this.btn_guardar.Visible = pb_habilitados && (this.pbAgregar || this.pbModificar); 
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al habilitar los controles del registro.", po_exception);
+            }
         }
 
         /// <summary>
@@ -646,8 +691,16 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void ddlPaquete_DataBound(object sender, EventArgs e)
         {
-            this.ddl_paquete.Items.Insert(0, new ListItem("Seleccione un paquete", "0"));
-            this.ddl_paquete.SelectedIndex = 0;
+            try
+            {
+                this.ddl_paquete.Items.Insert(0, new ListItem("Seleccione un paquete", "0"));
+                this.ddl_paquete.SelectedIndex = 0;
+            }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error mientras se asociaba la lista de paquetes.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            }
         }
 
         /// <summary>
@@ -657,7 +710,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void ddlEstado_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.ddl_estado.Text = ((DropDownList)sender).SelectedValue;
+            try
+            {
+                this.ddl_estado.Text = ((DropDownList)sender).SelectedValue;
+            }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error mientras se obtenía la información asociada al paquete.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
@@ -762,7 +823,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error mientras se guardaba el registro.";
+                String vs_error_usuario = "Ocurrió un error mientras se guardaba la asignación de las actividades.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
@@ -782,7 +843,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error al cancelar la operación.";
+                String vs_error_usuario = "Ocurrió un error al intentar regresar al mantenimiento de proyeto.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
@@ -941,5 +1002,56 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         #endregion
 
+        #region Seguridad
+
+        /// <summary>
+        /// Valida si el usuario
+        /// tiene acceso a la página de lo contrario
+        /// destruye la sessión
+        /// 
+        /// </summary>
+        private void validarAcceso()
+        {
+            if (!this.pbAcceso)
+            {
+                this.Session.Abandon();
+                this.Session.Clear();
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Determina si la sesión se encuentra
+        /// activa, si no es así se envía a la página de inicio.
+        /// </summary>
+        private void validarSession()
+        {
+            if (this.Session["cls_usuario"] == null)
+            {
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Valida el acceso del usuario en la página
+        /// </summary>
+        private bool pbAcceso
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ACCESO] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        #endregion Seguridad
     }
 }

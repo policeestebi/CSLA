@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,6 +15,7 @@ using CSLA.web.App_Variables;
 using CSLA.web.App_Constantes;
 using System.Data;
 using COSEVI.CSLA.lib.entidades.mod.Administracion;
+using COSEVI.CSLA.lib.accesoDatos.mod.Administracion;
 
 
 // =========================================================================
@@ -26,10 +27,12 @@ using COSEVI.CSLA.lib.entidades.mod.Administracion;
 // Explicación de los contenidos del archivo.
 // =========================================================================
 // Historial
-// PERSONA 			           MES – DIA - AÑO		DESCRIPCIÓN
+// PERSONA     		           MES – DIA - AÑO		DESCRIPCIÓN
 // Esteban Ramírez Gónzalez  	03 – 06  - 2011	 	Se crea la clase
-// Cristian Arce Jiménez  	    27 – 11  - 2011	 	Se agrega el manejo de excepciones personalizadas
-// Cristian Arce Jiménez  	    23 – 01  - 2012	 	Se agrega el manejo de filtros
+// Cristian Arce Jiménez  	    11 – 27  - 2011	 	Se agrega el manejo de excepciones personalizadas
+// Cristian Arce Jiménez  	    01 – 23  - 2012	 	Se agrega el manejo de filtros
+// Cristian Arce Jiménez  	    05 – 02  - 2012	 	Se agrega el manejo de filtros
+// Cristian Arce Jiménez  	    05 – 04  - 2012	 	Se agrega cambio en las excepciones
 // 
 //								
 //								
@@ -55,11 +58,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 try
                 {
+                    this.validarSession();
+                    this.obtenerPermisos();
+                    this.validarAcceso();
+                    this.cargarPermisos();
                     this.llenarGridView();
                 }
                 catch (Exception po_exception)
                 {
-                    String vs_error_usuario = "Error al inicializar el mantenimiento de proyectos.";
+                    String vs_error_usuario = "Ocurrió un error al inicializar el mantenimiento de proyectos.";
                     this.lanzarExcepcion(po_exception, vs_error_usuario);
                 } 
             }
@@ -71,11 +78,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected override void OnInit(EventArgs e)
         {
-            base.OnInit(e);
-            if (!this.DesignMode)
+            try
             {
-                this.inicializarControles();
+                base.OnInit(e);
+                if (!this.DesignMode)
+                {
+                    this.inicializarControles();
+                }
             }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error durante la inicialización de los controles en el mantenimiento de proyectos.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
@@ -88,6 +103,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
+                //Inicialización de botones generales
                 this.btn_agregar = (Button)acp_listadoDatos.FindControl("btn_agregar");
                 this.btn_cancelar = (Button)acp_edicionDatos.FindControl("btn_cancelar");
                 this.btn_guardar = (Button)acp_edicionDatos.FindControl("btn_guardar");
@@ -104,7 +120,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error inicializando los controles del mantenimiento.";
+                String vs_error_usuario = "Ocurrió un error al tratar de inicializar los controles del mantenimiento de proyectos.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
@@ -114,18 +130,25 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void agregarItemListFiltro()
         {
-            this.ucSearchProyecto.LstCollecction.Add(new ListItem("Proyecto", "Pk_proyecto"));
-            this.ucSearchProyecto.LstCollecction.Add(new ListItem("Estado", "FK_estado"));
-            this.ucSearchProyecto.LstCollecction.Add(new ListItem("Nombre", "nombre"));
-            this.ucSearchProyecto.LstCollecction.Add(new ListItem("Descripcion", "descripcion"));
-            this.ucSearchProyecto.LstCollecction.Add(new ListItem("Objetivo", "objetivo"));
-            this.ucSearchProyecto.LstCollecction.Add(new ListItem("Meta", "meta"));
-            this.ucSearchProyecto.LstCollecction.Add(new ListItem("FechaInicio", "fechaInicio"));
-            this.ucSearchProyecto.LstCollecction.Add(new ListItem("FechaFin", "fechaFin"));
-            this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasAsignadas", "horasAsignadas"));
-            this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasAsigDefectos", "horasAsigDefectos"));
-            this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasReales", "horasReales"));
-            this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasRealesDefectos", "horasRealesDefectos"));
+            try
+            {
+                this.ucSearchProyecto.LstCollecction.Add(new ListItem("Proyecto", "Pk_proyecto"));
+                this.ucSearchProyecto.LstCollecction.Add(new ListItem("Estado", "FK_estado"));
+                this.ucSearchProyecto.LstCollecction.Add(new ListItem("Nombre", "nombre"));
+                this.ucSearchProyecto.LstCollecction.Add(new ListItem("Descripcion", "descripcion"));
+                this.ucSearchProyecto.LstCollecction.Add(new ListItem("Objetivo", "objetivo"));
+                this.ucSearchProyecto.LstCollecction.Add(new ListItem("Meta", "meta"));
+                this.ucSearchProyecto.LstCollecction.Add(new ListItem("FechaInicio", "fechaInicio"));
+                this.ucSearchProyecto.LstCollecction.Add(new ListItem("FechaFin", "fechaFin"));
+                this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasAsignadas", "horasAsignadas"));
+                this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasAsigDefectos", "horasAsigDefectos"));
+                this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasReales", "horasReales"));
+                this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasRealesDefectos", "horasRealesDefectos"));
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al agregar los items para el filtro del mantenimiento de proyectos.", po_exception);
+            } 
         }
 
         #endregion
@@ -153,12 +176,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 this.grd_listaProyecto.DataBind();
                 this.ddl_estado.DataBind();
+
+                //Se ponen invisibles las columas de llave del proyecto y estado
                 this.grd_listaProyecto.Columns[0].Visible = false;
                 this.grd_listaProyecto.Columns[12].Visible = false;
+
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error llenando la tabla.", po_exception);
+                throw new Exception("Ocurrió un error llenando la tabla de proyectos en el mantenimiento.", po_exception);
             } 
         }
 
@@ -178,21 +204,22 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 this.grd_listaProyecto.DataSource = cls_gestorProyecto.listarProyectoFiltro(psFilter);
                 
                 this.grd_listaProyecto.DataBind();
+
+                //Se ponen invisibles las columas de llave del proyecto y estado
                 this.grd_listaProyecto.Columns[0].Visible = false;
                 this.grd_listaProyecto.Columns[12].Visible = false;
+
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error llenando la tabla con filtro.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
-            }
+                throw new Exception("Ocurrió un error llenando la tabla luego de aplicar el filtro para los proyectos en el mantenimiento.", po_exception);
+            } 
         }
 
         /// <summary>
         /// Crea un objeto de tipo
         /// cls_proyecto con la informacón
-        /// que se encuentra en el formulario
-        /// web
+        /// que se encuentra en el formulario web
         /// </summary>
         /// <returns>cls_proyecto</returns>
         private cls_proyecto crearObjetoProyecto()
@@ -226,7 +253,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <summary>
         /// Método que devuelve los departamentos que han sido recién asociados al proyecto
         /// </summary>
-        /// <returns></returns>
+        /// <returns>cls_departamento</returns>
         private List<cls_departamento> departamentosAsociados()
         {
             List<cls_departamento> vo_lista = null;
@@ -236,6 +263,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
+                //Se recorre los elementos del listbox de departamentos asociados
                 foreach (ListItem item in lbx_depasociados.Items)
                 {
                     vo_departamento = new cls_departamento();
@@ -288,7 +316,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al cargar el registro de proyecto.", po_exception);
             }
 
         }
@@ -311,24 +339,26 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Por favor, verifique que el proyecto no tenga entregables asociados.", po_exception);
+                throw new Exception("No se ha logralo eliminar los departamentos asociados al proyecto seleccionado.", po_exception);
             }
 
             //Si se eliminaron de manera correcta los departamentos asociados a proyecto, se procede a eliminar el proyecto en si
             try
             {
                 cls_gestorProyecto.deleteProyecto(po_proyecto);
+
+
+                this.llenarGridView();
+
+                this.upd_Principal.Update();
+
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error eliminando el proyecto.", po_exception);
+                throw new Exception("No se ha logralo eliminar el registro seleccionado, el proyecto podría presentar entregables asociados.", po_exception);
             }
-
-            this.llenarGridView();
-
-            this.upd_Principal.Update();
         }
-
+        
         /// <summary>
         /// Guarda la información se que se encuentra
         /// en el formulario Web, ya sea
@@ -401,77 +431,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al guardar el registro de proyecto.", po_exception);
             }
         }
-
-        //private int guardarDatos()
-        //{
-        //    int vi_resultado = 1;
-            
-        //    try
-        //    {
-        //        cls_proyecto vo_proyecto = this.crearObjetoProyecto();
-        //        List<cls_departamento> vl_departamento = departamentosAsociados();
-        //        cls_departamentoProyecto vo_departamentoProyecto = new cls_departamentoProyecto();
-
-        //        switch (cls_variablesSistema.tipoEstado)
-        //        {
-        //            case cls_constantes.AGREGAR:
-        //                vi_resultado = cls_gestorProyecto.insertProyecto(vo_proyecto);
-
-        //                vo_departamentoProyecto.pProyecto = vo_proyecto;
-
-        //                //Para cada departamento, se realiza la correspondiente inserción con el proyecto específico
-        //                foreach (cls_departamento vo_departamento in vl_departamento)
-        //                {
-        //                    vo_departamentoProyecto.pDepartamento = vo_departamento;
-
-        //                    vi_resultado = cls_gestorDepartamentoProyecto.insertDepartamentoProyecto(vo_departamentoProyecto);
-        //                }
-
-        //                break;
-        //            case cls_constantes.EDITAR:
-        //                vi_resultado = cls_gestorProyecto.updateProyecto(vo_proyecto);
-
-        //                vo_departamentoProyecto.pProyecto = vo_proyecto;
-
-        //                //Se revisa cada departamento en la lista que presenta la variable de sistema de "departamentoProyecto", si la lista de deparmentos asociados
-        //                //no cuenta con el departamento de contenido en la lista de la variable de sistema, esta última se intenta eliminar
-        //                foreach (cls_departamento vo_departamento in cls_variablesSistema.vs_departamentoProyecto.pDepartamentoList)
-        //                {
-        //                    if (!vl_departamento.Contains(vo_departamento))
-        //                    {
-        //                        vo_departamentoProyecto.pDepartamento = vo_departamento;
-        //                        vi_resultado = cls_gestorDepartamentoProyecto.deleteDepartamentoProyecto(vo_departamentoProyecto);  
-        //                    }                            
-        //                }
-
-        //                //Si alguno de los departamentos recién asociados no se encuentra en la variable del sistema, se procede a realizar la inserción de la misma
-        //                foreach (cls_departamento vo_departamento in vl_departamento)
-        //                {
-        //                    if (!cls_variablesSistema.vs_departamentoProyecto.pDepartamentoList.Contains(vo_departamento))
-        //                    {
-        //                        vo_departamentoProyecto.pDepartamento = vo_departamento;
-
-        //                        vi_resultado = cls_gestorDepartamentoProyecto.insertDepartamentoProyecto(vo_departamentoProyecto);
-        //                    }
-        //                }
-
-        //                break;
-        //            default:
-        //                break;
-        //        }
-
-        //        limpiarVariablesSistema();
-
-        //        return vi_resultado;
-        //    }
-        //    catch (Exception po_exception)
-        //    {
-        //        throw new Exception("Ocurrió un error al guardar el registro.", po_exception);
-        //    } 
-        //}
 
         /// <summary>
         /// Método que limpia la información
@@ -480,17 +442,24 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void limpiarCampos()
         {
-            this.ddl_estado.SelectedIndex = -1;
-            this.txt_nombre.Text = String.Empty;
-            this.txt_descripcion.Text = String.Empty;
-            this.txt_objetivo.Text = String.Empty;
-            this.txt_meta.Text = String.Empty;
-            this.txt_fechaInicio.Text = String.Empty;
-            this.txt_fechaFin.Text = String.Empty;
-            this.txt_horasAsignadas.Text = String.Empty;
-            this.txt_horasAsigDefectos.Text = String.Empty;
-            this.txt_horasReales.Text = String.Empty;
-            this.txt_horasRealesDef.Text = String.Empty;
+            try
+            {
+                this.ddl_estado.SelectedIndex = -1;
+                this.txt_nombre.Text = String.Empty;
+                this.txt_descripcion.Text = String.Empty;
+                this.txt_objetivo.Text = String.Empty;
+                this.txt_meta.Text = String.Empty;
+                this.txt_fechaInicio.Text = String.Empty;
+                this.txt_fechaFin.Text = String.Empty;
+                this.txt_horasAsignadas.Text = String.Empty;
+                this.txt_horasAsigDefectos.Text = String.Empty;
+                this.txt_horasReales.Text = String.Empty;
+                this.txt_horasRealesDef.Text = String.Empty;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al limpiar los campos del mantenimiento.", po_exception);
+            }
         }
 
         /// <summary>
@@ -501,23 +470,29 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="pb_habilitados"></param>
         private void habilitarControles(bool pb_habilitados)
         {
-            this.ddl_estado.Enabled = pb_habilitados;
-            this.txt_nombre.Enabled = pb_habilitados;
-            this.txt_descripcion.Enabled = pb_habilitados;
-            this.txt_objetivo.Enabled = pb_habilitados;
-            this.txt_meta.Enabled = pb_habilitados;
-            this.txt_fechaInicio.Enabled = pb_habilitados;
-            this.txt_fechaFin.Enabled = pb_habilitados;
-            this.txt_horasAsignadas.Enabled = pb_habilitados;
-            this.txt_horasAsigDefectos.Enabled = pb_habilitados;
-            this.txt_horasReales.Enabled = pb_habilitados;
-            this.txt_horasRealesDef.Enabled = pb_habilitados;
+            try
+            {
+                this.ddl_estado.Enabled = pb_habilitados;
+                this.txt_nombre.Enabled = pb_habilitados;
+                this.txt_descripcion.Enabled = pb_habilitados;
+                this.txt_objetivo.Enabled = pb_habilitados;
+                this.txt_meta.Enabled = pb_habilitados;
+                this.txt_fechaInicio.Enabled = pb_habilitados;
+                this.txt_fechaFin.Enabled = pb_habilitados;
+                this.txt_horasAsignadas.Enabled = pb_habilitados;
+                this.txt_horasAsigDefectos.Enabled = pb_habilitados;
+                this.txt_horasReales.Enabled = pb_habilitados;
+                this.txt_horasRealesDef.Enabled = pb_habilitados;
 
-            btn_asignarDepto.Enabled = pb_habilitados;
-            btn_removerDepto.Enabled = pb_habilitados;
+                btn_asignarDepto.Enabled = pb_habilitados;
+                btn_removerDepto.Enabled = pb_habilitados;
 
-            this.btn_guardar.Visible = pb_habilitados;
-
+                this.btn_guardar.Visible = pb_habilitados && (this.pbAgregar || this.pbModificar); 
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al habilitar los controles del mantenimiento.", po_exception);
+            }
         }
 
         /// <summary>
@@ -554,12 +529,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     lbx_departamentos.DataSource = vo_dataSet;
                     lbx_departamentos.DataTextField = "nombre";
                     lbx_departamentos.DataValueField = "PK_departamento";
-                    lbx_departamentos.DataBind();
-                    
+                    lbx_departamentos.DataBind();                  
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los estados del proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al cargar los departamentos que pueden asociarse al proyecto.", po_exception);
             } 
 
         }
@@ -613,7 +587,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
-        /// 
+        /// Método que obtiene el proyecto actual y lo carga en la variable estática del sistema que mantiene la instancia del registro
         /// </summary>
         /// <param name="po_proyecto"></param>
         private void cargarProyectoAsignacion(cls_proyecto po_proyecto)
@@ -624,7 +598,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar los departamentos asociados al proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al cargar el proyecto en la varible del sistema.", po_exception);
             }
 
         }
@@ -670,7 +644,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         #region Eventos
 
         /// <summary>
-        /// Busca un rol según el filtro.
+        /// Busca un proyecto según el filtro.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -678,7 +652,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="seletecItem"></param>
         protected void ucSearchProyecto_searchClick(object sender, EventArgs e, string value, ListItem seletecItem)
         {
-            this.llenarGridViewFilter(this.ucSearchProyecto.Filter); 
+            try
+            {
+                this.llenarGridViewFilter(this.ucSearchProyecto.Filter);
+            }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al inicializar la búsqueda de registros.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
@@ -890,7 +872,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error al intentar mostrar la ventana de edición para los registros.";
+                String vs_error_usuario = "Ocurrió un error al intentar " + e.CommandName.ToString() + " el registro de proyecto seleccionado.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
@@ -902,31 +884,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void ddlEstado_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.ddl_estado.Text = ((DropDownList)sender).SelectedValue;
-        }
-
-        #endregion
-
-        #region Creación
-
-        /// <summary>
-        /// Método que se encarga de presentar los datos para el ListBox de departamentos
-        /// </summary>
-        private void llenarListBoxDepartamentos() 
-        {
             try
             {
-                this.lbx_departamentos.DataSource = cls_gestorDepartamentoProyecto.listarDepartamento();
-                this.lbx_departamentos.DataValueField = "Pk_departamento";
-                this.lbx_departamentos.DataTextField = "nombre";
-                this.lbx_departamentos.DataBind();
-
+                this.ddl_estado.Text = ((DropDownList)sender).SelectedValue;
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar la lista de departamentos.", po_exception);
+                String vs_error_usuario = "Ocurrió un error al intentar cambiar el estado del proyecto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
         }
+        #endregion
+
+        #region Creación
 
         /// <summary>
         /// Evento para asignar departamentos a un proyecto
@@ -935,14 +905,22 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void btn_asignarDepto_Click(object sender, EventArgs e)
         {
-            for (int i = lbx_departamentos.Items.Count - 1; i >= 0; i--)
+            try
             {
-                if (lbx_departamentos.Items[i].Selected == true)
+                for (int i = lbx_departamentos.Items.Count - 1; i >= 0; i--)
                 {
-                    lbx_depasociados.Items.Add(lbx_departamentos.Items[i]);
-                    ListItem li = lbx_departamentos.Items[i];
-                    lbx_departamentos.Items.Remove(li);
+                    if (lbx_departamentos.Items[i].Selected == true)
+                    {
+                        lbx_depasociados.Items.Add(lbx_departamentos.Items[i]);
+                        ListItem li = lbx_departamentos.Items[i];
+                        lbx_departamentos.Items.Remove(li);
+                    }
                 }
+            }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al intentar asignar el departamento seleccionado al proyecto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
         }
 
@@ -953,21 +931,174 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void btn_removerDepto_Click(object sender, EventArgs e)
         {
-            for (int i = lbx_depasociados.Items.Count - 1; i >= 0; i--)
+            try
             {
-                if (lbx_depasociados.Items[i].Selected == true)
+                for (int i = lbx_depasociados.Items.Count - 1; i >= 0; i--)
                 {
-                    lbx_departamentos.Items.Add(lbx_depasociados.Items[i]);
-                    ListItem li = lbx_depasociados.Items[i];
-                    lbx_depasociados.Items.Remove(li);
+                    if (lbx_depasociados.Items[i].Selected == true)
+                    {
+                        lbx_departamentos.Items.Add(lbx_depasociados.Items[i]);
+                        ListItem li = lbx_depasociados.Items[i];
+                        lbx_depasociados.Items.Remove(li);
+                    }
                 }
+            }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al intentar remover el departamento seleccionado al proyecto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
         }
 
         #endregion Creación
 
+        #region Seguridad
 
+        /// <summary>
+        /// Valida si el usuario
+        /// tiene acceso a la página de lo contrario
+        /// destruye la sessión
+        /// 
+        /// </summary>
+        private void validarAcceso()
+        {
+            if (!this.pbAcceso)
+            {
+                this.Session.Abandon();
+                this.Session.Clear();
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
 
+        /// <summary>
+        /// Determina si la sesión se encuentra
+        /// activa, si no es así se envía a la página de inicio.
+        /// </summary>
+        private void validarSession()
+        {
+            if (this.Session["cls_usuario"] == null)
+            {
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
 
+        /// <summary>
+        /// Valida el acceso del usuario en la página
+        /// </summary>
+        private bool pbAcceso
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ACCESO] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de agregar del usuario en página.
+        /// </summary>
+        private bool pbAgregar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.AGREGAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de modificar del usuario en página.
+        /// </summary>
+        private bool pbModificar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.MODIFICAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de eliminar del usuario en la página.
+        /// </summary>
+        private bool pbEliminar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ELIMINAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los permisos
+        /// para la página actual.
+        /// </summary>
+        private void obtenerPermisos()
+        {
+            string lsUrl = String.Empty;
+
+            try
+            {
+                lsUrl = "#.." + HttpContext.Current.Request.Url.AbsolutePath;
+
+                Session[cls_constantes.PAGINA] = cls_gestorPagina.obtenerPermisoPaginaRol(lsUrl, ((cls_usuario)this.Session["cls_usuario"]).pFK_rol);
+
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al obtener los permisos del rol en la página actual..", po_exception);
+            }
+        }
+
+        /// <summary>
+        /// Carga los permisos según la página.
+        /// </summary>
+        private void cargarPermisos()
+        {
+            try
+            {
+                this.btn_agregar.Visible = this.pbAgregar;
+                this.btn_guardar.Visible = this.pbModificar || this.pbAgregar;
+                this.grd_listaProyecto.Columns[13].Visible = this.pbAcceso;
+                this.grd_listaProyecto.Columns[14].Visible = this.pbModificar;
+                this.grd_listaProyecto.Columns[15].Visible = this.pbEliminar;
+                //Si se tiene permiso de agregar o modificar, se puede crero asignar
+                this.grd_listaProyecto.Columns[16].Visible = this.pbModificar || this.pbAgregar;
+                this.grd_listaProyecto.Columns[17].Visible = this.pbModificar || this.pbAgregar;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al intentar cargar los permisos para la página actual..", po_exception);
+            }
+        }
+
+        #endregion Seguridad
     }
 }

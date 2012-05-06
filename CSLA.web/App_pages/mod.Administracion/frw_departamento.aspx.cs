@@ -81,12 +81,19 @@ namespace CSLA.web.App_pages.mod.Administracion
         /// <param name="e"></param>
         protected override void OnInit(EventArgs e)
         {
-
-            base.OnInit(e);
-            if (!this.DesignMode)
+            try
             {
-                this.inicializarControles();
+                base.OnInit(e);
+                if (!this.DesignMode)
+                {
+                    this.inicializarControles();
+                }
             }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Error al tratar de inicializar los controles del departamento.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
@@ -99,6 +106,7 @@ namespace CSLA.web.App_pages.mod.Administracion
         {
             try
             {
+                //Botones de uso común
                 this.btn_agregar = (Button)acp_listadoDatos.FindControl("btn_agregar");
                 this.btn_cancelar = (Button)acp_edicionDatos.FindControl("btn_cancelar");
                 this.btn_guardar = (Button)acp_edicionDatos.FindControl("btn_guardar");
@@ -122,9 +130,16 @@ namespace CSLA.web.App_pages.mod.Administracion
         /// </summary>
         private void agregarItemListFiltro()
         {
-            this.ucSearchDepartamento.LstCollecction.Add(new ListItem("Nombre", "nombre"));
-            this.ucSearchDepartamento.LstCollecction.Add(new ListItem("Ubicacion", "ubicacion"));
-            this.ucSearchDepartamento.LstCollecction.Add(new ListItem("Administrador", "administrador"));
+            try
+            {
+                this.ucSearchDepartamento.LstCollecction.Add(new ListItem("Nombre", "nombre"));
+                this.ucSearchDepartamento.LstCollecction.Add(new ListItem("Ubicacion", "ubicacion"));
+                this.ucSearchDepartamento.LstCollecction.Add(new ListItem("Administrador", "administrador"));
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al intentar asignar los filtros para el mantenimiento.", po_exception);
+            } 
         }
 
         #endregion
@@ -289,10 +304,17 @@ namespace CSLA.web.App_pages.mod.Administracion
         /// </summary>
         private void limpiarCampos()
         {
-            this.ddl_departamentoPadre.SelectedIndex = -1;
-            this.txt_nombre.Text = String.Empty;
-            this.txt_ubicacion.Text = String.Empty;
-            this.txt_administrador.Text = String.Empty;
+            try
+            {
+                this.ddl_departamentoPadre.SelectedIndex = -1;
+                this.txt_nombre.Text = String.Empty;
+                this.txt_ubicacion.Text = String.Empty;
+                this.txt_administrador.Text = String.Empty;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al limpiar los campos del registro.", po_exception);
+            } 
         }
 
         /// <summary>
@@ -303,12 +325,18 @@ namespace CSLA.web.App_pages.mod.Administracion
         /// <param name="pb_habilitados"></param>
         private void habilitarControles(bool pb_habilitados)
         {
-            this.txt_nombre.Enabled = pb_habilitados;
-            this.txt_ubicacion.Enabled = pb_habilitados;
-            this.txt_administrador.Enabled = pb_habilitados;
-            this.ddl_departamentoPadre.Enabled = pb_habilitados;
-            this.btn_guardar.Visible = pb_habilitados && (this.pbAgregar || this.pbModificar); ;
-
+            try
+            {
+                this.txt_nombre.Enabled = pb_habilitados;
+                this.txt_ubicacion.Enabled = pb_habilitados;
+                this.txt_administrador.Enabled = pb_habilitados;
+                this.ddl_departamentoPadre.Enabled = pb_habilitados;
+                this.btn_guardar.Visible = pb_habilitados && (this.pbAgregar || this.pbModificar); 
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al habilitar los campos del registro.", po_exception);
+            } 
         }
 
         /// <summary>
@@ -375,9 +403,15 @@ namespace CSLA.web.App_pages.mod.Administracion
         /// <param name="seletecItem"></param>
         protected void ucSearchDepartamento_searchClick(object sender, EventArgs e, string value, ListItem seletecItem)
         {
-
-            this.llenarGridViewFilter(this.ucSearchDepartamento.Filter); 
-
+            try
+            {
+                this.llenarGridViewFilter(this.ucSearchDepartamento.Filter); 
+             }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al intentar realizar la búsqueda filtrada de los registros.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            }
         }
 
         /// <summary>
@@ -409,7 +443,7 @@ namespace CSLA.web.App_pages.mod.Administracion
 
         /// <summary>
         /// Evento que se ejecuta cuando se 
-        /// guarda un nuevo rol.
+        /// guarda un nuevo departamento.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -693,14 +727,21 @@ namespace CSLA.web.App_pages.mod.Administracion
         /// </summary>
         private void cargarPermisos()
         {
-            this.btn_agregar.Visible = this.pbAgregar;
-            this.btn_guardar.Visible = this.pbModificar || this.pbAgregar;
-            this.grd_listaDepartamentos.Columns[5].Visible = this.pbAcceso;
-            this.grd_listaDepartamentos.Columns[6].Visible = this.pbModificar; 
-            this.grd_listaDepartamentos.Columns[7].Visible = this.pbEliminar;
+            try
+            {
+                this.btn_agregar.Visible = this.pbAgregar;
+                this.btn_guardar.Visible = this.pbModificar || this.pbAgregar;
+                this.grd_listaDepartamentos.Columns[5].Visible = this.pbAcceso;
+                this.grd_listaDepartamentos.Columns[6].Visible = this.pbModificar; 
+                this.grd_listaDepartamentos.Columns[7].Visible = this.pbEliminar;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al intentar cargar los permisos para la página actual..", po_exception);
+            }
         }
 
-        #endregion
+        #endregion Seguridad
 
     }
 }

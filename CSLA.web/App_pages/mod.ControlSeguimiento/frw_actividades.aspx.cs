@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +13,8 @@ using COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento;
 
 using CSLA.web.App_Variables;
 using CSLA.web.App_Constantes;
+using COSEVI.CSLA.lib.entidades.mod.Administracion;
+using COSEVI.CSLA.lib.accesoDatos.mod.Administracion;
 
 
 // =========================================================================
@@ -24,10 +26,11 @@ using CSLA.web.App_Constantes;
 // Explicación de los contenidos del archivo.
 // =========================================================================
 // Historial
-// PERSONA 			           MES – DIA - AÑO		DESCRIPCIÓN
+// PERSONA     		           MES – DIA - AÑO		DESCRIPCIÓN
 // Esteban Ramírez Gónzalez  	03 – 06  - 2011	 	Se crea la clase
 // Cristian Arce Jiménez  	    27 – 11  - 2011	 	Se agrega el manejo de excepciones personalizadas
-// Cristian Arce Jiménez  	    23 – 01  - 2012	 	Se agrega el manejo de filtros
+// Cristian Arce Jiménez  	    01 – 23  - 2012	 	Se agrega el manejo de filtros
+// Cristian Arce Jiménez  	    05 – 03  - 2012	 	Cambia el manejo de excepciones
 // 
 //								
 //								
@@ -51,19 +54,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             if (!Page.IsPostBack)
             {
-
                 try
                 {
+                    this.validarSession();
+                    this.obtenerPermisos();
+                    this.validarAcceso();
+                    this.cargarPermisos();
+
                     this.llenarGridView();
                 }
                 catch (Exception po_exception)
                 {
-                    String vs_error_usuario = "Error al inicializar el mantenimiento de actividades.";
+                    String vs_error_usuario = "Ocurrió un error al inicializar el mantenimiento de actividades.";
                     this.lanzarExcepcion(po_exception, vs_error_usuario);
                 } 
-
             }
-
         }
 
         /// <summary>
@@ -72,13 +77,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected override void OnInit(EventArgs e)
         {
-
-            base.OnInit(e);
-            if (!this.DesignMode)
+			try
+			{
+				base.OnInit(e);
+				if (!this.DesignMode)
+				{
+					this.inicializarControles();
+				}
+			}
+            catch (Exception po_exception)
             {
-                this.inicializarControles();
-            }
-
+				String vs_error_usuario = "Ocurrió un error al tratar de inicializar los controles del mantenimiento de actividades.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
@@ -91,10 +102,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
+				//Botones comunes
                 this.btn_agregar = (Button)acp_listadoDatos.FindControl("btn_agregar");
                 this.btn_cancelar = (Button)acp_edicionDatos.FindControl("btn_cancelar");
                 this.btn_guardar = (Button)acp_edicionDatos.FindControl("btn_guardar");
 
+				//Evento de busqueda
                 this.ucSearchActividad.SearchClick +=new COSEVI.web.controls.ucSearch.searchClick(this.ucSearchActividad_searchClick);
 
                 //Se agregan los filtros.
@@ -113,11 +126,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void agregarItemListFiltro()
         {
-
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("Actividad", "PK_Actividad"));
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("Codigo", "codigo"));
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("Nombre", "nombre"));
-            this.ucSearchActividad.LstCollecction.Add(new ListItem("Descripcion", "descripcion"));
+			try
+			{
+				this.ucSearchActividad.LstCollecction.Add(new ListItem("Actividad", "PK_Actividad"));
+				this.ucSearchActividad.LstCollecction.Add(new ListItem("Codigo", "codigo"));
+				this.ucSearchActividad.LstCollecction.Add(new ListItem("Nombre", "nombre"));
+				this.ucSearchActividad.LstCollecction.Add(new ListItem("Descripcion", "descripcion"));
+            }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error inicializando los campos para filtro del mantenimiento.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         #endregion
@@ -139,7 +159,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error llenando la tabla.", po_exception);
+                throw new Exception("Ocurrió un error llenando la tabla de actividades.", po_exception);
             } 
         }
 
@@ -158,8 +178,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error llenando la tabla con filtro.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
+                throw new Exception("Ocurrió un error llenando la tabla con el filtro para las actividades.", po_exception);
             }
         }
 
@@ -173,12 +192,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         private cls_actividad crearObjeto()
         {
             cls_actividad vo_actividad = new cls_actividad();
-            if (cls_variablesSistema.tipoEstado != cls_constantes.AGREGAR)
-            {
-                vo_actividad = (cls_actividad)cls_variablesSistema.obj;
-            }
             try
             {
+				if (cls_variablesSistema.tipoEstado != cls_constantes.AGREGAR)
+				{
+					vo_actividad = (cls_actividad)cls_variablesSistema.obj;
+				}
                 vo_actividad.pCodigo = txt_codigo.Text;
                 vo_actividad.pNombre = txt_nombre.Text;
                 vo_actividad.pDescripcion = txt_descripcion.Text;
@@ -186,13 +205,13 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al crear el objeto para guardar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al crear el objeto para guardar el registro de actividad.", po_exception);
             }
         }
 
         /// <summary>
         /// Método que carga la información
-        /// de un permiso.
+        /// de una actividad.
         /// </summary>
         private void cargarObjeto()
         {
@@ -216,15 +235,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al cargar el registro de actividad.", po_exception);
             } 
 
         }
 
         /// <summary>
-        /// Método que elimina un permiso
+        /// Método que elimina una actividad
         /// </summary>
-        /// <param name="po_actividad">Permiso a eliminar</param>
+        /// <param name="po_actividad">actividad a eliminar</param>
         private void eliminarDatos(cls_actividad po_actividad)
         {
             try
@@ -268,7 +287,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al tratar de guardar la información del registro.", po_exception);
             } 
         }
 
@@ -279,9 +298,16 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void limpiarCampos()
         {
-            this.txt_codigo.Text = String.Empty;
-            this.txt_nombre.Text = String.Empty;
-            this.txt_descripcion.Text = String.Empty;
+			try
+			{
+				this.txt_codigo.Text = String.Empty;
+				this.txt_nombre.Text = String.Empty;
+				this.txt_descripcion.Text = String.Empty;
+			}
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al limpiar los campos del mantenimientos.", po_exception);
+            }
         }
 
         /// <summary>
@@ -292,11 +318,17 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="pb_habilitados"></param>
         private void habilitarControles(bool pb_habilitados)
         {
-            this.txt_codigo.Enabled = pb_habilitados;
-            this.txt_nombre.Enabled = pb_habilitados;
-            this.txt_descripcion.Enabled = pb_habilitados;
-            this.btn_guardar.Visible = pb_habilitados;
-
+			try
+			{
+				this.txt_codigo.Enabled = pb_habilitados;
+				this.txt_nombre.Enabled = pb_habilitados;
+				this.txt_descripcion.Enabled = pb_habilitados;
+				this.btn_guardar.Visible = pb_habilitados && (this.pbAgregar || this.pbModificar); 
+			}
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al habilitar los campos del mantenimientos.", po_exception);
+            }
         }
 
         /// <summary>
@@ -332,7 +364,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         #region Eventos
 
         /// <summary>
-        /// Busca un rol según el filtro.
+        /// Busca una actividad según el filtro.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -340,19 +372,24 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="seletecItem"></param>
         protected void ucSearchActividad_searchClick(object sender, EventArgs e, string value, ListItem seletecItem)
         {
-
-            this.llenarGridViewFilter(this.ucSearchActividad.Filter); 
-
+			try
+			{
+				this.llenarGridViewFilter(this.ucSearchActividad.Filter); 
+			}
+            catch (Exception po_exception)
+            {
+				String vs_error_usuario = "Ocurrió un error al realizar la búsqueda del registro seleccionado.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
-        /// Agrega un nuevo permiso.
+        /// Agrega una nueva actividad.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void btn_agregar_Click(object sender, EventArgs e)
         {
-
             try
             {
                 cls_variablesSistema.tipoEstado = cls_constantes.AGREGAR;
@@ -370,12 +407,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 String vs_error_usuario = "Ocurrió un error al intentar mostrar la ventana de edición para los registros.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
-
         }
 
         /// <summary>
         /// Evento que se ejecuta cuando se 
-        /// guarda un nuevo rol.
+        /// guarda una nueva actividad.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -395,7 +431,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error mientras se guardaba el registro.";
+                String vs_error_usuario = "Ocurrió un error al intentar guardar la información del registro.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
@@ -420,7 +456,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error al cancelar la operación.";
+                String vs_error_usuario = "Ocurrió un error al tratar de cancelar la operación.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
@@ -434,14 +470,13 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
-                
                 this.grd_listaActividades.PageIndex = e.NewPageIndex;
                 this.llenarGridView();
                 this.upd_Principal.Update();
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error al realizar el listado de la actividad.";
+                String vs_error_usuario = "Ocurrió un error al realizar el listado de las actividades.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
@@ -503,13 +538,158 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error al intentar mostrar la ventana de edición para los registros.";
+                String vs_error_usuario = "Ocurrió un error al intentar acceder a la información del registro seleccionado.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
 
         #endregion
 
+        #region Seguridad
+
+        /// <summary>
+        /// Valida si el usuario
+        /// tiene acceso a la página de lo contrario
+        /// destruye la sessión
+        /// 
+        /// </summary>
+        private void validarAcceso()
+        {
+            if (!this.pbAcceso)
+            {
+                this.Session.Abandon();
+                this.Session.Clear();
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Determina si la sesión se encuentra
+        /// activa, si no es así se envía a la página de inicio.
+        /// </summary>
+        private void validarSession()
+        {
+            if (this.Session["cls_usuario"] == null)
+            {
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Valida el acceso del usuario en la página
+        /// </summary>
+        private bool pbAcceso
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ACCESO] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de agregar del usuario en página.
+        /// </summary>
+        private bool pbAgregar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.AGREGAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de modificar del usuario en página.
+        /// </summary>
+        private bool pbModificar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.MODIFICAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de eliminar del usuario en la página.
+        /// </summary>
+        private bool pbEliminar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ELIMINAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los permisos
+        /// para la página actual.
+        /// </summary>
+        private void obtenerPermisos()
+        {
+            string lsUrl = String.Empty;
+
+            try
+            {
+                lsUrl = "#.." + HttpContext.Current.Request.Url.AbsolutePath;
+
+                Session[cls_constantes.PAGINA] = cls_gestorPagina.obtenerPermisoPaginaRol(lsUrl, ((cls_usuario)this.Session["cls_usuario"]).pFK_rol);
+
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al obtener los permisos del rol en la página actual..", po_exception);
+            }
+        }
+
+        /// <summary>
+        /// Carga los permisos según la página.
+        /// </summary>
+        private void cargarPermisos()
+        {
+            try
+            {
+                this.btn_agregar.Visible = this.pbAgregar;
+                this.btn_guardar.Visible = this.pbModificar || this.pbAgregar;
+                this.grd_listaActividades.Columns[4].Visible = this.pbAcceso;
+                this.grd_listaActividades.Columns[5].Visible = this.pbModificar;
+                this.grd_listaActividades.Columns[6].Visible = this.pbEliminar;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al intentar cargar los permisos para la página actual..", po_exception);
+            }
+        }
+
+        #endregion Seguridad
 
     }
 }

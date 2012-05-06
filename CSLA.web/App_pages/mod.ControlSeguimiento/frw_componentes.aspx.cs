@@ -12,6 +12,8 @@ using COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento;
 
 using CSLA.web.App_Variables;
 using CSLA.web.App_Constantes;
+using COSEVI.CSLA.lib.entidades.mod.Administracion;
+using COSEVI.CSLA.lib.accesoDatos.mod.Administracion;
 
 
 // =========================================================================
@@ -28,7 +30,7 @@ using CSLA.web.App_Constantes;
 // Cristian Arce Jiménez      	29 – 08  - 2011	 	Se crea la clase
 // Cristian Arce Jiménez  	    27 – 11  - 2011	 	Se agrega el manejo de excepciones personalizadas
 // Cristian Arce Jiménez  	    23 – 01  - 2012	 	Se agrega el manejo de filtros
-// 
+// Cristian Arce Jiménez  	    05 – 03  - 2012	 	Cambia el manejo de excepciones
 //								
 //								
 //
@@ -51,19 +53,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             if (!Page.IsPostBack)
             {
-
                 try
                 {
+                    this.validarSession();
+                    this.obtenerPermisos();
+                    this.validarAcceso();
+                    this.cargarPermisos();
+
                     this.llenarGridView();
                 }
                 catch (Exception po_exception)
                 {
-                    String vs_error_usuario = "Error al inicializar el mantenimiento de componentes.";
+                    String vs_error_usuario = "Ocurrió un error al inicializar el mantenimiento de componentes.";
                     this.lanzarExcepcion(po_exception, vs_error_usuario);
                 } 
-
             }
-
         }
 
         /// <summary>
@@ -72,13 +76,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected override void OnInit(EventArgs e)
         {
-
-            base.OnInit(e);
-            if (!this.DesignMode)
+            try
             {
-                this.inicializarControles();
+                base.OnInit(e);
+                if (!this.DesignMode)
+                {
+                    this.inicializarControles();
+                }
             }
-
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al tratar de inicializar los controles del mantenimiento de actividades.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
@@ -113,11 +123,18 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void agregarItemListFiltro()
         {
-
-            this.ucSearchComponente.LstCollecction.Add(new ListItem("Componente", "PK_componente"));
-            this.ucSearchComponente.LstCollecction.Add(new ListItem("Codigo", "codigo"));
-            this.ucSearchComponente.LstCollecction.Add(new ListItem("Nombre", "nombre"));
-            this.ucSearchComponente.LstCollecction.Add(new ListItem("Descripcion", "descripcion"));
+            try
+            {
+                this.ucSearchComponente.LstCollecction.Add(new ListItem("Componente", "PK_componente"));
+                this.ucSearchComponente.LstCollecction.Add(new ListItem("Codigo", "codigo"));
+                this.ucSearchComponente.LstCollecction.Add(new ListItem("Nombre", "nombre"));
+                this.ucSearchComponente.LstCollecction.Add(new ListItem("Descripcion", "descripcion"));
+            }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error inicializando los campos para filtro del mantenimiento.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            }         
         }
 
         #endregion
@@ -139,12 +156,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error llenando la tabla.", po_exception);
+                throw new Exception("Ocurrió un error llenando la tabla de componentes.", po_exception);
             } 
         }
 
         /// <summary>
-        /// Hace un buscar de la lista de permisos.
+        /// Hace un buscar de la lista de componentes.
         /// </summary>
         /// <param name="psFilter">String filtro.</param>
         private void llenarGridViewFilter(String psFilter)
@@ -158,8 +175,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error llenando la tabla con filtro.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
+                throw new Exception("Ocurrió un error llenando la tabla con el filtro para los componentes.", po_exception);
             }
         }
 
@@ -172,13 +188,14 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <returns>cls_componente</returns>
         private cls_componente crearObjeto()
         {
-            cls_componente vo_componente = new cls_componente();
-            if (cls_variablesSistema.tipoEstado != cls_constantes.AGREGAR)
-            {
-                vo_componente = (cls_componente)cls_variablesSistema.obj;
-            }
             try
             {
+                cls_componente vo_componente = new cls_componente();
+                if (cls_variablesSistema.tipoEstado != cls_constantes.AGREGAR)
+                {
+                    vo_componente = (cls_componente)cls_variablesSistema.obj;
+                }
+
                 vo_componente.pCodigo = txt_codigo.Text;
                 vo_componente.pNombre = txt_nombre.Text;
                 vo_componente.pDescripcion = txt_descripcion.Text;
@@ -186,7 +203,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al crear el objeto para guardar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al crear el registro de componente.", po_exception);
             }
         }
 
@@ -215,7 +232,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar el registro.", po_exception);
+                throw new Exception("Ocurrió un error al cargar el registro de componente.", po_exception);
             } 
 
         }
@@ -278,9 +295,16 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// </summary>
         private void limpiarCampos()
         {
-            this.txt_codigo.Text = String.Empty;
-            this.txt_nombre.Text = String.Empty;
-            this.txt_descripcion.Text = String.Empty;
+            try
+            {
+                this.txt_codigo.Text = String.Empty;
+                this.txt_nombre.Text = String.Empty;
+                this.txt_descripcion.Text = String.Empty;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al limpiar los campos del registro.", po_exception);
+            } 
         }
 
         /// <summary>
@@ -291,11 +315,17 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="pb_habilitados"></param>
         private void habilitarControles(bool pb_habilitados)
         {
-            this.txt_codigo.Enabled = pb_habilitados;
-            this.txt_nombre.Enabled = pb_habilitados;
-            this.txt_descripcion.Enabled = pb_habilitados;
-            this.btn_guardar.Visible = pb_habilitados;
-
+            try
+            {
+                this.txt_codigo.Enabled = pb_habilitados;
+                this.txt_nombre.Enabled = pb_habilitados;
+                this.txt_descripcion.Enabled = pb_habilitados;
+                this.btn_guardar.Visible = pb_habilitados && (this.pbAgregar || this.pbModificar); 
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al habilitar los campos del registro.", po_exception);
+            } 
         }
 
         /// <summary>
@@ -338,10 +368,16 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="value"></param>
         /// <param name="seletecItem"></param>
         protected void ucSearchComponente_searchClick(object sender, EventArgs e, string value, ListItem seletecItem)
-        {
-
-            this.llenarGridViewFilter(this.ucSearchComponente.Filter); 
-
+        {       
+            try
+            {
+                this.llenarGridViewFilter(this.ucSearchComponente.Filter);
+            }
+            catch (Exception po_exception)
+            {
+                String vs_error_usuario = "Ocurrió un error al realizar la búsqueda del registro seleccionado.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
+            } 
         }
 
         /// <summary>
@@ -373,7 +409,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         /// <summary>
         /// Evento que se ejecuta cuando se 
-        /// guarda un nuevo rol.
+        /// guarda un nuevo componente.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -500,13 +536,157 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error al intentar mostrar la ventana de edición para los registros.";
+                String vs_error_usuario = "Ocurrió un error al intentar acceder a la información del registro.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
 
         #endregion
 
+        #region Seguridad
 
+        /// <summary>
+        /// Valida si el usuario
+        /// tiene acceso a la página de lo contrario
+        /// destruye la sessión
+        /// 
+        /// </summary>
+        private void validarAcceso()
+        {
+            if (!this.pbAcceso)
+            {
+                this.Session.Abandon();
+                this.Session.Clear();
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Determina si la sesión se encuentra
+        /// activa, si no es así se envía a la página de inicio.
+        /// </summary>
+        private void validarSession()
+        {
+            if (this.Session["cls_usuario"] == null)
+            {
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Valida el acceso del usuario en la página
+        /// </summary>
+        private bool pbAcceso
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ACCESO] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de agregar del usuario en página.
+        /// </summary>
+        private bool pbAgregar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.AGREGAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de modificar del usuario en página.
+        /// </summary>
+        private bool pbModificar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.MODIFICAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida el permiso de eliminar del usuario en la página.
+        /// </summary>
+        private bool pbEliminar
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ELIMINAR] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los permisos
+        /// para la página actual.
+        /// </summary>
+        private void obtenerPermisos()
+        {
+            string lsUrl = String.Empty;
+
+            try
+            {
+                lsUrl = "#.." + HttpContext.Current.Request.Url.AbsolutePath;
+
+                Session[cls_constantes.PAGINA] = cls_gestorPagina.obtenerPermisoPaginaRol(lsUrl, ((cls_usuario)this.Session["cls_usuario"]).pFK_rol);
+
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al obtener los permisos del rol en la página actual..", po_exception);
+            }
+        }
+
+        /// <summary>
+        /// Carga los permisos según la página.
+        /// </summary>
+        private void cargarPermisos()
+        {
+            try
+            {
+                this.btn_agregar.Visible = this.pbAgregar;
+                this.btn_guardar.Visible = this.pbModificar || this.pbAgregar;
+                this.grd_listaComponente.Columns[4].Visible = this.pbAcceso;
+                this.grd_listaComponente.Columns[5].Visible = this.pbModificar;
+                this.grd_listaComponente.Columns[6].Visible = this.pbEliminar;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al intentar cargar los permisos para la página actual..", po_exception);
+            }
+        }
+
+        #endregion Seguridad
     }
 }
