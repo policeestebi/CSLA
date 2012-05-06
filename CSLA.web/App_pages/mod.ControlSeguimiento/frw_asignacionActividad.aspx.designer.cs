@@ -292,42 +292,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.RegularExpressionValidator rfv_horasAsignadaslenght;
         
         /// <summary>
-        /// lbl_horasAsigDefectos control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_horasAsigDefectos;
-        
-        /// <summary>
-        /// txt_horasAsigDefectos control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_horasAsigDefectos;
-        
-        /// <summary>
-        /// rfv_horasAsignadasDefectos control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_horasAsignadasDefectos;
-        
-        /// <summary>
-        /// rfv_horasAsignadasDefectoslenght control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator rfv_horasAsignadasDefectoslenght;
-        
-        /// <summary>
         /// lbl_horasReales control.
         /// </summary>
         /// <remarks>
@@ -362,42 +326,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator rfv_horasRealeslenght;
-        
-        /// <summary>
-        /// lbl_horasRealesDef control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_horasRealesDef;
-        
-        /// <summary>
-        /// txt_horasRealesDef control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_horasRealesDef;
-        
-        /// <summary>
-        /// rfv_horasRealesDef control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_horasRealesDef;
-        
-        /// <summary>
-        /// rfv_horasRealesDeflenght control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator rfv_horasRealesDeflenght;
         
         /// <summary>
         /// lbl_estado control.

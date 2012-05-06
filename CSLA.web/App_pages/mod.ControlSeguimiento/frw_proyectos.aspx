@@ -57,10 +57,8 @@
                                                 <asp:BoundField DataField="pMeta" HeaderText="Meta" SortExpression="pMeta" />
                                                 <asp:BoundField DataField="pFechaInicio" HeaderText="FechaInicio" SortExpression="pFechaInicio" />
                                                 <asp:BoundField DataField="pFechaFin" HeaderText="FechaFin" SortExpression="pFechaFin" />
-                                                <asp:BoundField DataField="pHorasAsignadas" HeaderText="HorasAsignadas" SortExpression="pHorasAsignadas" />
-                                                <asp:BoundField DataField="pHorasAsigDefectos" HeaderText="HA.Defectos" SortExpression="pHorasAsigDefectos" />
+                                                <asp:BoundField DataField="pHorasAsignadas" HeaderText="HorasAsignadas" SortExpression="pHorasAsignadas" />                                               
                                                 <asp:BoundField DataField="pHorasReales" HeaderText="HorasReales" SortExpression="pHorasReales" />
-                                                <asp:BoundField DataField="pHorasRealesDefectos" HeaderText="HR.Defectos" SortExpression="pHorasRealesDefectos" />
                                                 <asp:BoundField DataField="pDescripcionEstado" HeaderText="Nombre" SortExpression="pDescripcionEstado" />
                                                 <asp:BoundField DataField="pFK_estado" HeaderText="Estado" SortExpression="pFK_estado"
                                                     Visible="false" ShowHeader="false" />
@@ -236,21 +234,7 @@
                                                             ToolTip="Ingrese el objetivo del proyecto" ErrorMessage="Objetivo es requerido"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
                                                         <asp:RegularExpressionValidator ID="rfv_objetivolenght" runat="server" ErrorMessage="La longitud máxima son 500 caracteres."
                                                             ValidationExpression="^([\S\s]{0,500})$" ControlToValidate="txt_objetivo" Display="Dynamic"></asp:RegularExpressionValidator>
-                                                    </td>
-                                                    <td>
-                                                        <asp:Label ID="lbl_horasAsigDefectos" runat="server" Text="Horas Asig. Defec: "></asp:Label>
-                                                    </td>
-                                                    <td>
-                                                        <asp:TextBox ID="txt_horasAsigDefectos" runat="server"></asp:TextBox>
-                                                    </td>
-                                                    <td>
-                                                        <asp:RequiredFieldValidator ID="rfv_horasAsignadasDefectos" runat="server" ControlToValidate="txt_horasAsigDefectos"
-                                                            ToolTip="Ingrese la cantidad de horas asignadas en defectos para el proyecto"
-                                                            ErrorMessage="Horas asignadas en defectos son requeridas"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
-                                                        <asp:RegularExpressionValidator ID="rfv_horasAsignadasDefectoslenght" runat="server"
-                                                            ErrorMessage="Número decimal fuera del rango establecido." ValidationExpression="^[0-9]{1,3}(\.[0-9]{0,2})?$"
-                                                            ControlToValidate="txt_horasAsigDefectos" Display="Dynamic"></asp:RegularExpressionValidator>
-                                                    </td>
+                                                    </td>                                                   
                                                 </tr>
                                                 <tr align="left">
                                                     <td>
@@ -277,27 +261,6 @@
                                                                 ValidationExpression="^[0-9]{1,3}(\.[0-9]{0,2})?$" ControlToValidate="txt_horasReales"
                                                                 Display="Dynamic"></asp:RegularExpressionValidator>
                                                         </td>
-                                                </tr>
-                                                <tr align="left">
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                        <asp:Label ID="lbl_horasRealesDef" runat="server" Text="Horas Reales Def: "></asp:Label>
-                                                    </td>
-                                                    <td>
-                                                        <asp:TextBox ID="txt_horasRealesDef" runat="server"></asp:TextBox>
-                                                    </td>
-                                                    <td>
-                                                        <asp:RequiredFieldValidator ID="rfv_horasRealesDef" runat="server" ControlToValidate="txt_horasRealesDef"
-                                                            ToolTip="Ingrese la cantidad de horas reales en defectos para el proyecto" ErrorMessage="Horas reales son requeridas"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
-                                                        <asp:RegularExpressionValidator ID="rfv_horasRealesDeflenght" runat="server" ErrorMessage="Número decimal fuera del rango establecido."
-                                                            ValidationExpression="^[0-9]{1,3}(\.[0-9]{0,2})?$" ControlToValidate="txt_horasRealesDef"
-                                                            Display="Dynamic"></asp:RegularExpressionValidator>
-                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <tr>

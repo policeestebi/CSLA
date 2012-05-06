@@ -116,22 +116,10 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
             set { this.horasAsignadas = value; }
         }
 
-		public decimal pHorasAsigDefectos
-        {
-            get { return horasAsigDefectos; }
-            set { this.horasAsigDefectos = value; }
-        }
-
 		public decimal pHorasReales
         {
             get { return horasReales; }
             set { this.horasReales = value; }
-        }
-
-		public decimal pHorasRealesDefectos
-        {
-            get { return horasRealesDefectos; }
-            set { this.horasRealesDefectos = value; }
         }
 
         public cls_estado pEstado
@@ -202,19 +190,9 @@ namespace COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento
 	    private decimal horasAsignadas;
 
         /// <summary>
-        /// Horas asignadas para defectos del proyecto
-        /// </summary>
-	    private decimal horasAsigDefectos;
-
-        /// <summary>
         /// Horas reales de duración del proyecto
         /// </summary>
 	    private decimal horasReales;
-
-        /// <summary>
-        /// Horas reales en la corrección de defectos para el proyecto
-        /// </summary>
-	    private decimal horasRealesDefectos;
 
 	    private cls_estado estadoProyecto;
 
