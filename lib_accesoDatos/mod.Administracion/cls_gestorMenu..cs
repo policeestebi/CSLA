@@ -533,7 +533,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Administracion
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al obtener el listado de los permisos de manera filtrada.", po_exception);
+                throw new Exception("Ocurrió un error al obtener el listado de los menús de manera filtrada.", po_exception);
             }
         }
     }

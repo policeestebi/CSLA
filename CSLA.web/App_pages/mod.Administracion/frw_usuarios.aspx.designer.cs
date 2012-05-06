@@ -328,6 +328,15 @@ namespace CSLA.web.App_pages.mod.Administracion {
         protected global::System.Web.UI.WebControls.RegularExpressionValidator rfv_reescribirlength;
         
         /// <summary>
+        /// cpv_contrasena control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CompareValidator cpv_contrasena;
+        
+        /// <summary>
         /// lbl_nombre control.
         /// </summary>
         /// <remarks>

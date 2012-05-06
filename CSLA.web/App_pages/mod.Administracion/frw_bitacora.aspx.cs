@@ -27,6 +27,7 @@ using CSLA.web.App_Constantes;
 // PERSONA 			        MES – DIA - AÑO		DESCRIPCIÓN
 // Esteban Ramírez Gónzalez  	03 – 06  - 2011	 	Se crea la clase
 // Esteban Ramírez Gónzalez  	26 – 08  - 2011	 	Se crea la clase
+// Esteban Ramírez Gónzalez  	05 – 05 - 2012	    Se agrega manejo se seguridad
 //								…………………………………………………………
 //								…………………………………………………………
 // 
@@ -55,6 +56,11 @@ namespace CSLA.web.App_pages.mod.Administracion
 
                 try
                 {
+                    this.validarSession();
+                    this.obtenerPermisos();
+                    this.validarAcceso();
+                    this.cargarPermisos();
+
                     this.llenarGridView();
                 }
                 catch (Exception po_exception)
@@ -254,6 +260,87 @@ namespace CSLA.web.App_pages.mod.Administracion
                 String vs_error_usuario = "Ocurrió un error al realizar el listado de la bitácora.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
+        }
+
+        #endregion
+
+        #region Seguridad
+
+        /// <summary>
+        /// Valida si el usuario
+        /// tiene acceso a la página de lo contrario
+        /// destruye la sessión
+        /// 
+        /// </summary>
+        private void validarAcceso()
+        {
+            if (!this.pbAcceso)
+            {
+                this.Session.Abandon();
+                this.Session.Clear();
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Determina si la sesión se encuentra
+        /// activa, si no es así se envía a la página de inicio.
+        /// </summary>
+        private void validarSession()
+        {
+            if (this.Session["cls_usuario"] == null)
+            {
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
+            }
+        }
+
+        /// <summary>
+        /// Valida el acceso del usuario en la página
+        /// </summary>
+        private bool pbAcceso
+        {
+            get
+            {
+                if (Session[cls_constantes.PAGINA] != null)
+                {
+                    return (Session[cls_constantes.PAGINA] as cls_pagina)[cls_constantes.ACCESO] != null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los permisos
+        /// para la página actual.
+        /// </summary>
+        private void obtenerPermisos()
+        {
+            string lsUrl = String.Empty;
+
+            try
+            {
+                lsUrl = "#.." + HttpContext.Current.Request.Url.AbsolutePath;
+
+                Session[cls_constantes.PAGINA] = cls_gestorPagina.obtenerPermisoPaginaRol(lsUrl, ((cls_usuario)this.Session["cls_usuario"]).pFK_rol);
+
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al obtener los permisos en la página actual..", po_exception);
+            }
+        }
+
+        /// <summary>
+        /// Carga los permisos según la página.
+        /// </summary>
+        private void cargarPermisos()
+        {
+           
         }
 
         #endregion
