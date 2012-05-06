@@ -644,7 +644,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 this.txt_horasRealesDef.Enabled = pb_habilitados;
                 this.ddl_estado.Enabled = pb_habilitados;
 
-                this.btn_guardar.Visible = pb_habilitados && (this.pbAgregar || this.pbModificar); 
+                this.btn_guardar.Visible = pb_habilitados;
             }
             catch (Exception po_exception)
             {

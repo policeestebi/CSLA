@@ -94,6 +94,24 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.Label lbl_actividades;
         
         /// <summary>
+        /// lbl_asociados control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_asociados;
+        
+        /// <summary>
+        /// lbl_usuarios control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_usuarios;
+        
+        /// <summary>
         /// lbx_actividades control.
         /// </summary>
         /// <remarks>
@@ -101,15 +119,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListBox lbx_actividades;
-        
-        /// <summary>
-        /// lbl_usuariosAsociados control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_usuariosAsociados;
         
         /// <summary>
         /// lbx_usuariosAsociados control.
@@ -137,15 +146,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btn_removerUsuario;
-        
-        /// <summary>
-        /// lbl_usuarios control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_usuarios;
         
         /// <summary>
         /// lbx_usuarios control.

@@ -113,6 +113,7 @@
     <Content Include="App_Themes\Basico\imagenes\iconos\loading.gif" />
     <Content Include="Default.aspx" />
     <Content Include="frw_principal.aspx" />
+    <Content Include="Global.asax" />
     <Content Include="PageLoader.asmx" />
     <Content Include="test.aspx" />
     <Content Include="Web.config">
@@ -252,6 +253,9 @@
     </Compile>
     <Compile Include="App_pages\mod.ControlSeguimiento\frw_proyectos.aspx.designer.cs">
       <DependentUpon>frw_proyectos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="test.aspx.cs">
       <DependentUpon>test.aspx</DependentUpon>
