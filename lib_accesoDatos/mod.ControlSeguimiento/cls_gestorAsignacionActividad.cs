@@ -69,10 +69,12 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                 vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
 
-                // Se obtiene el número del registro insertado.
-                po_Actividad.pPK_Actividad = Convert.ToInt32(cls_gestorUtil.selectMax(cls_constantes.ACTIVIDAD, "PK_actividad"));
-
-                //cls_interface.insertarTransacccionBitacora(cls_constantes.INSERTAR, cls_constantes.ACTIVIDAD, po_Actividad.pPK_Actividad.ToString());
+                cls_interface.insertarTransacccionBitacora(cls_constantes.INSERTAR, cls_constantes.ACTIVIDAD_ASIGNACION, "Act: " + po_Actividad.pPK_Actividad.ToString() +
+                                                                                                                         "Paq: " + po_Actividad.pPK_Paquete.ToString() +
+                                                                                                                         "Comp: " + po_Actividad.pPK_Componente +
+                                                                                                                         "Ent: " + po_Actividad.pPK_Entregable.ToString() + 
+                                                                                                                         "Proy: " + po_Actividad.pPK_Proyecto.ToString() +
+                                                                                                                         "Usuario: " + po_Actividad.pPK_Usuario.ToString());
 
                 cls_sqlDatabase.commitTransaction();
 
@@ -121,7 +123,12 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                 vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
 
-                cls_interface.insertarTransacccionBitacora(cls_constantes.MODIFICAR, cls_constantes.ACTIVIDAD, po_Actividad.pPK_Actividad.ToString());
+                cls_interface.insertarTransacccionBitacora(cls_constantes.MODIFICAR, cls_constantes.ACTIVIDAD_ASIGNACION, "Act: " + po_Actividad.pPK_Actividad.ToString() +
+                                                                                                                          "Paq: " + po_Actividad.pPK_Paquete.ToString() +
+                                                                                                                          "Comp: " + po_Actividad.pPK_Componente +
+                                                                                                                          "Ent: " + po_Actividad.pPK_Entregable.ToString() +
+                                                                                                                          "Proy: " + po_Actividad.pPK_Proyecto.ToString() +
+                                                                                                                          "Usuario: " + po_Actividad.pPK_Usuario.ToString());
 
                 cls_sqlDatabase.commitTransaction();
 
@@ -163,7 +170,12 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                 vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
 
-                cls_interface.insertarTransacccionBitacora(cls_constantes.ELIMINAR, cls_constantes.ACTIVIDAD, po_Actividad.pPK_Actividad.ToString());
+                cls_interface.insertarTransacccionBitacora(cls_constantes.ELIMINAR, cls_constantes.ACTIVIDAD_ASIGNACION, "Act: " + po_Actividad.pPK_Actividad.ToString() +
+                                                                                                                         "Paq: " + po_Actividad.pPK_Paquete.ToString() +
+                                                                                                                         "Comp: " + po_Actividad.pPK_Componente +
+                                                                                                                         "Ent: " + po_Actividad.pPK_Entregable.ToString() +
+                                                                                                                         "Proy: " + po_Actividad.pPK_Proyecto.ToString() +
+                                                                                                                         "Usuario: " + po_Actividad.pPK_Usuario.ToString());
 
                 cls_sqlDatabase.commitTransaction();
 
