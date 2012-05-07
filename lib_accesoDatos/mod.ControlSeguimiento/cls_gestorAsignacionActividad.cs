@@ -62,9 +62,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                         new cls_parameter("@paramfechaInicio", po_Actividad.pFechaInicio),
                         new cls_parameter("@paramfechaFin", po_Actividad.pFechaFin),
                         new cls_parameter("@paramhorasAsignadas", po_Actividad.pHorasAsignadas),
-                        new cls_parameter("@paramhorasAsigDefectos", po_Actividad.pHorasAsigDefectos),
-                        new cls_parameter("@paramhorasReales", po_Actividad.pHorasReales),
-                        new cls_parameter("@paramhorasRealesDefectos", po_Actividad.pHorasRealesDefectos)
+                        new cls_parameter("@paramhorasReales", po_Actividad.pHorasReales)
                 };
 
                 cls_sqlDatabase.beginTransaction();
@@ -115,9 +113,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                     new cls_parameter("@paramfechaInicio", po_Actividad.pFechaInicio),
                     new cls_parameter("@paramfechaFin", po_Actividad.pFechaFin),
                     new cls_parameter("@paramhorasAsignadas", po_Actividad.pHorasAsignadas),
-                    new cls_parameter("@paramhorasAsigDefectos", po_Actividad.pHorasAsigDefectos),
                     new cls_parameter("@paramhorasReales", po_Actividad.pHorasReales),
-                    new cls_parameter("@paramhorasRealesDefectos", po_Actividad.pHorasRealesDefectos),
                     new cls_parameter("@paramAccion", ps_accion)
                 };
 
@@ -226,13 +222,9 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                    vo_Actividad.pFechaFin = Convert.ToDateTime(vu_dataSet.Tables[0].Rows[i]["fechaFin"]);
 
                    vo_Actividad.pHorasAsignadas = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasAsignadas"]);
-
-                   vo_Actividad.pHorasAsigDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasAsigDefectos"]);
-
+                   
                    vo_Actividad.pHorasReales = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasReales"]);
-
-                   vo_Actividad.pHorasRealesDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasRealesDefectos"]);
-
+                   
                    vo_lista.Add(vo_Actividad);
                }
 
@@ -295,11 +287,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                     vo_asignacionActividad.pHorasAsignadas = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[0]["horasAsignadas"]);
 
-                    vo_asignacionActividad.pHorasAsigDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[0]["horasAsigDefectos"]);
-
                     vo_asignacionActividad.pHorasReales = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[0]["horasReales"]);
-
-                    vo_asignacionActividad.pHorasRealesDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[0]["horasRealesDefectos"]);
                     
                     for (int i = 0; i < vu_dataSet.Tables[0].Rows.Count; i++)
                     {

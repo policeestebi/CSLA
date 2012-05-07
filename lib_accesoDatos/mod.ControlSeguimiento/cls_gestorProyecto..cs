@@ -58,9 +58,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                         new cls_parameter("@paramfechaInicio", poProyecto.pFechaInicio),
                         new cls_parameter("@paramfechaFin", poProyecto.pFechaFin),
                         new cls_parameter("@paramhorasAsignadas", poProyecto.pHorasAsignadas),
-                        new cls_parameter("@paramhorasAsigDefectos", poProyecto.pHorasAsigDefectos),
-                        new cls_parameter("@paramhorasReales", poProyecto.pHorasReales),
-                        new cls_parameter("@paramhorasRealesDefectos", poProyecto.pHorasRealesDefectos)  
+                        new cls_parameter("@paramhorasReales", poProyecto.pHorasReales)
                 };
 
                 cls_sqlDatabase.beginTransaction();
@@ -109,9 +107,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                             new cls_parameter("@paramfechaInicio", poProyecto.pFechaInicio),
                             new cls_parameter("@paramfechaFin", poProyecto.pFechaFin),
                             new cls_parameter("@paramhorasAsignadas", poProyecto.pHorasAsignadas),
-                            new cls_parameter("@paramhorasAsigDefectos", poProyecto.pHorasAsigDefectos),
-                            new cls_parameter("@paramhorasReales", poProyecto.pHorasReales),
-                            new cls_parameter("@paramhorasRealesDefectos", poProyecto.pHorasRealesDefectos)                  
+                            new cls_parameter("@paramhorasReales", poProyecto.pHorasReales)                
                     };
 
                     cls_sqlDatabase.beginTransaction();
@@ -209,11 +205,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                    poProyecto.pHorasAsignadas = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasAsignadas"]);
 
-                   poProyecto.pHorasAsigDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasAsigDefectos"]);
-
                    poProyecto.pHorasReales = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasReales"]);
-
-                   poProyecto.pHorasRealesDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasRealesDefectos"]);
 
                    vo_lista.Add(poProyecto);
                }
@@ -262,11 +254,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                 poProyecto.pHorasAsignadas = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[0]["horasAsignadas"]);
 
-                poProyecto.pHorasAsigDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[0]["horasAsigDefectos"]);
-
                 poProyecto.pHorasReales = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[0]["horasReales"]);
-
-                poProyecto.pHorasRealesDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[0]["horasRealesDefectos"]);
 
                return poProyecto;
 
@@ -336,11 +324,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                    voProyecto.pHorasAsignadas = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[0]["horasAsignadas"]);
 
-                   voProyecto.pHorasAsigDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[0]["horasAsigDefectos"]);
-
                    voProyecto.pHorasReales = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[0]["horasReales"]);
-
-                   voProyecto.pHorasRealesDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[0]["horasRealesDefectos"]);
 
                    vo_lista.Add(voProyecto);
                }
@@ -396,11 +380,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
 
                    poProyecto.pHorasAsignadas = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasAsignadas"]);
 
-                   poProyecto.pHorasAsigDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasAsigDefectos"]);
-
                    poProyecto.pHorasReales = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasReales"]);
-
-                   poProyecto.pHorasRealesDefectos = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["horasRealesDefectos"]);
 
                    vo_lista.Add(poProyecto);
                }
@@ -415,9 +395,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                poProyecto.pFechaInicio = DateTime.Now;
                poProyecto.pFechaFin = DateTime.Now;
                poProyecto.pHorasAsignadas = 0;
-               poProyecto.pHorasAsigDefectos = 0;
                poProyecto.pHorasReales = 0;
-               poProyecto.pHorasRealesDefectos = 0;
 
                vo_lista.Insert(0, poProyecto);
 
@@ -431,9 +409,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                poProyecto.pFechaInicio = DateTime.Now;
                poProyecto.pFechaFin = DateTime.Now;
                poProyecto.pHorasAsignadas = 0;
-               poProyecto.pHorasAsigDefectos = 0;
                poProyecto.pHorasReales = 0;
-               poProyecto.pHorasRealesDefectos = 0;
                vo_lista.Insert(0, poProyecto);
 
                return vo_lista;

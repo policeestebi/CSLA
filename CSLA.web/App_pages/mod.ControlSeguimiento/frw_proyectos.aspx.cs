@@ -141,9 +141,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 this.ucSearchProyecto.LstCollecction.Add(new ListItem("FechaInicio", "fechaInicio"));
                 this.ucSearchProyecto.LstCollecction.Add(new ListItem("FechaFin", "fechaFin"));
                 this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasAsignadas", "horasAsignadas"));
-                this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasAsigDefectos", "horasAsigDefectos"));
                 this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasReales", "horasReales"));
-                this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasRealesDefectos", "horasRealesDefectos"));
             }
             catch (Exception po_exception)
             {
@@ -239,9 +237,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 vo_proyecto.pFechaInicio = Convert.ToDateTime(txt_fechaInicio.Text);
                 vo_proyecto.pFechaFin = Convert.ToDateTime(txt_fechaFin.Text);
                 vo_proyecto.pHorasAsignadas = Convert.ToDecimal(txt_horasAsignadas.Text);
-                vo_proyecto.pHorasAsigDefectos = Convert.ToDecimal(txt_horasAsigDefectos.Text);
                 vo_proyecto.pHorasReales = Convert.ToDecimal(txt_horasReales.Text);
-                vo_proyecto.pHorasRealesDefectos = Convert.ToDecimal(txt_horasRealesDef.Text);
                 return vo_proyecto;
             }
             catch (Exception po_exception)
@@ -302,9 +298,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 this.txt_fechaInicio.Text = vo_proyecto.pFechaInicio.ToShortDateString();
                 this.txt_fechaFin.Text = vo_proyecto.pFechaFin.ToShortDateString();
                 this.txt_horasAsignadas.Text = vo_proyecto.pHorasAsignadas.ToString();
-                this.txt_horasAsigDefectos.Text = vo_proyecto.pHorasAsigDefectos.ToString();
                 this.txt_horasReales.Text = vo_proyecto.pHorasReales.ToString();
-                this.txt_horasRealesDef.Text = vo_proyecto.pHorasRealesDefectos.ToString();
                 if (cls_variablesSistema.tipoEstado == cls_constantes.VER)
                 {
                     this.habilitarControles(false);
@@ -452,9 +446,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 this.txt_fechaInicio.Text = String.Empty;
                 this.txt_fechaFin.Text = String.Empty;
                 this.txt_horasAsignadas.Text = String.Empty;
-                this.txt_horasAsigDefectos.Text = String.Empty;
                 this.txt_horasReales.Text = String.Empty;
-                this.txt_horasRealesDef.Text = String.Empty;
             }
             catch (Exception po_exception)
             {
@@ -480,9 +472,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 this.txt_fechaInicio.Enabled = pb_habilitados;
                 this.txt_fechaFin.Enabled = pb_habilitados;
                 this.txt_horasAsignadas.Enabled = pb_habilitados;
-                this.txt_horasAsigDefectos.Enabled = pb_habilitados;
                 this.txt_horasReales.Enabled = pb_habilitados;
-                this.txt_horasRealesDef.Enabled = pb_habilitados;
 
                 btn_asignarDepto.Enabled = pb_habilitados;
                 btn_removerDepto.Enabled = pb_habilitados;
@@ -795,11 +785,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 vo_proyecto.pFechaInicio = Convert.ToDateTime(vu_fila.Cells[5].Text.ToString());
                 vo_proyecto.pFechaFin = Convert.ToDateTime(vu_fila.Cells[6].Text.ToString());
                 vo_proyecto.pHorasAsignadas = Convert.ToDecimal(vu_fila.Cells[7].Text.ToString());
-                vo_proyecto.pHorasAsigDefectos = Convert.ToDecimal(vu_fila.Cells[8].Text.ToString());
-                vo_proyecto.pHorasReales = Convert.ToDecimal(vu_fila.Cells[9].Text.ToString());
-                vo_proyecto.pHorasRealesDefectos = Convert.ToDecimal(vu_fila.Cells[10].Text.ToString());
-                vo_proyecto.pDescripcionEstado = vu_fila.Cells[11].Text.ToString();
-                vo_proyecto.pFK_estado = Convert.ToInt32(vu_fila.Cells[12].Text.ToString());
+                vo_proyecto.pHorasReales = Convert.ToDecimal(vu_fila.Cells[8].Text.ToString());
+                vo_proyecto.pDescripcionEstado = vu_fila.Cells[9].Text.ToString();
+                vo_proyecto.pFK_estado = Convert.ToInt32(vu_fila.Cells[10].Text.ToString());
 
                 switch (e.CommandName.ToString())
                 {
@@ -1086,12 +1074,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 this.btn_agregar.Visible = this.pbAgregar;
                 this.btn_guardar.Visible = this.pbModificar || this.pbAgregar;
-                this.grd_listaProyecto.Columns[13].Visible = this.pbAcceso;
-                this.grd_listaProyecto.Columns[14].Visible = this.pbModificar;
-                this.grd_listaProyecto.Columns[15].Visible = this.pbEliminar;
+                this.grd_listaProyecto.Columns[11].Visible = this.pbAcceso;
+                this.grd_listaProyecto.Columns[12].Visible = this.pbModificar;
+                this.grd_listaProyecto.Columns[13].Visible = this.pbEliminar;
                 //Si se tiene permiso de agregar o modificar, se puede crero asignar
-                this.grd_listaProyecto.Columns[16].Visible = this.pbModificar || this.pbAgregar;
-                this.grd_listaProyecto.Columns[17].Visible = this.pbModificar || this.pbAgregar;
+                this.grd_listaProyecto.Columns[14].Visible = this.pbModificar || this.pbAgregar;
+                this.grd_listaProyecto.Columns[15].Visible = this.pbModificar || this.pbAgregar;
             }
             catch (Exception po_exception)
             {

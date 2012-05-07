@@ -112,7 +112,7 @@
                                                                 &nbsp;
                                                             </td>
                                                             <td>
-                                                                <asp:ListBox ID="lbx_usuariosAsociados" runat="server" SelectionMode="Single" Width="200px"
+                                                                <asp:ListBox ID="lbx_usuariosAsociados" runat="server" SelectionMode="Multiple" Width="200px"
                                                                     Height="150px" AutoPostBack="true"></asp:ListBox>
                                                             </td>
                                                             <td>
@@ -129,7 +129,7 @@
                                                                 &nbsp;
                                                             </td>
                                                             <td>
-                                                                <asp:ListBox ID="lbx_usuarios" runat="server" SelectionMode="Single" Width="200px"
+                                                                <asp:ListBox ID="lbx_usuarios" runat="server" SelectionMode="Multiple" Width="200px"
                                                                     Height="150px" AutoPostBack="true"></asp:ListBox>
                                                             </td>
                                                         </tr>
@@ -197,23 +197,7 @@
                                                                     ValidationExpression="^[0-9]{1,3}(\,[0-9]{0,2})?$" ControlToValidate="txt_horasAsignadas"
                                                                     Display="Dynamic"></asp:RegularExpressionValidator>
                                                             </td>
-                                                        </tr>
-                                                        <tr align="left">
-                                                            <td>
-                                                                <asp:Label ID="lbl_horasAsigDefectos" runat="server" Text="Horas Asig. Defec: "></asp:Label>
-                                                            </td>
-                                                            <td>
-                                                                <asp:TextBox ID="txt_horasAsigDefectos" runat="server"></asp:TextBox>
-                                                            </td>
-                                                            <td>
-                                                                <asp:RequiredFieldValidator ID="rfv_horasAsignadasDefectos" runat="server" ControlToValidate="txt_horasAsigDefectos"
-                                                                    ToolTip="Ingrese la cantidad de horas asignadas en defectos para el proyecto"
-                                                                    ErrorMessage="Horas asignadas en defectos son requeridas"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
-                                                                <asp:RegularExpressionValidator ID="rfv_horasAsignadasDefectoslenght" runat="server"
-                                                                    ErrorMessage="Número decimal fuera del rango establecido." ValidationExpression="^[0-9]{1,3}(\,[0-9]{0,2})?$"
-                                                                    ControlToValidate="txt_horasAsigDefectos" Display="Dynamic"></asp:RegularExpressionValidator>
-                                                            </td>
-                                                        </tr>
+                                                        </tr>                                                        
                                                         <tr align="left">
                                                             <td>
                                                                 <asp:Label ID="lbl_horasReales" runat="server" Text="Horas Reales: "></asp:Label>
@@ -228,22 +212,7 @@
                                                                     ValidationExpression="^[0-9]{1,3}(\,[0-9]{0,2})?$" ControlToValidate="txt_horasReales"
                                                                     Display="Dynamic"></asp:RegularExpressionValidator>
                                                             </td>
-                                                        </tr>
-                                                        <tr align="left">
-                                                            <td>
-                                                                <asp:Label ID="lbl_horasRealesDef" runat="server" Text="Horas Reales Def: "></asp:Label>
-                                                            </td>
-                                                            <td>
-                                                                <asp:TextBox ID="txt_horasRealesDef" runat="server"></asp:TextBox>
-                                                            </td>
-                                                            <td>
-                                                                <asp:RequiredFieldValidator ID="rfv_horasRealesDef" runat="server" ControlToValidate="txt_horasRealesDef"
-                                                                    ToolTip="Ingrese la cantidad de horas reales en defectos para el proyecto" ErrorMessage="Horas reales son requeridas"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
-                                                                <asp:RegularExpressionValidator ID="rfv_horasRealesDeflenght" runat="server" ErrorMessage="Número decimal fuera del rango establecido."
-                                                                    ValidationExpression="^[0-9]{1,3}(\,[0-9]{0,2})?$" ControlToValidate="txt_horasRealesDef"
-                                                                    Display="Dynamic"></asp:RegularExpressionValidator>
-                                                            </td>
-                                                        </tr>
+                                                        </tr>                                                        
                                                         <tr align="left">
                                                             <td>
                                                                 <asp:Label ID="lbl_estado" runat="server" Text="Estado: "></asp:Label>
