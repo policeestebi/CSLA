@@ -51,8 +51,13 @@ CREATE PROCEDURE  PA_cont_proyectoUpdate
   @parammeta varchar(500) , 
   @paramfechaInicio datetime, 
   @paramfechaFin datetime, 
+<<<<<<< HEAD
   @paramhorasAsignadas decimal, 
   @paramhorasReales decimal, 
+=======
+  @paramhorasAsignadas decimal,
+  @paramhorasReales decimal,
+>>>>>>> db82208f0a3b66a6e123fe05106fff536778f8d9
   @paramPK_proyecto int
 
 AS 
@@ -69,7 +74,11 @@ SET NOCOUNT ON;
 			fechaInicio = @paramfechaInicio ,
 			fechaFin = @paramfechaFin ,
 			horasAsignadas = @paramhorasAsignadas ,
+<<<<<<< HEAD
 			horasReales = @paramhorasReales     
+=======
+			horasReales = @paramhorasReales      
+>>>>>>> db82208f0a3b66a6e123fe05106fff536778f8d9
          WHERE 
 			PK_proyecto = @paramPK_proyecto 
   
@@ -476,9 +485,7 @@ CREATE PROCEDURE  PA_cont_asignacionActividadUpdate
   @paramfechaInicio datetime, 
   @paramfechaFin datetime, 
   @paramhorasAsignadas numeric(10,2), 
-  @paramhorasAsigDefectos numeric(10,2), 
   @paramhorasReales numeric(10,2), 
-  @paramhorasRealesDefectos numeric(10,2), 
   @paramAccion int  
 AS 
  BEGIN 
@@ -523,9 +530,7 @@ AS
 					fechaInicio = @paramfechaInicio,
 					fechaFin = @paramfechaFin,
 					horasAsignadas = @paramhorasAsignadas,
-					horasAsigDefectos = @paramhorasAsigDefectos,
 					horasReales = @paramhorasReales,
-					horasRealesDefectos = @paramhorasRealesDefectos,
 					FK_estado  = @paramFK_estado
 				WHERE 
 				   PK_actividad = @paramPK_actividad AND
@@ -542,9 +547,7 @@ AS
 					fechaInicio = @paramfechaInicio,
 					fechaFin = @paramfechaFin,
 					horasAsignadas = @paramhorasAsignadas,
-					horasAsigDefectos = @paramhorasAsigDefectos,
 					horasReales = @paramhorasReales,
-					horasRealesDefectos = @paramhorasRealesDefectos,
 					FK_estado  = @paramFK_estado
 				WHERE 
 				   PK_actividad = @paramPK_actividad AND
@@ -558,8 +561,7 @@ AS
 	ELSE
 		BEGIN
 			EXEC PA_cont_asignacionActividadInsert @paramPK_actividad,@paramPK_paquete,@paramPK_componente,@paramPK_entregable,@paramPK_proyecto,
-												   @paramPK_usuario,@paramFK_estado,@paramdescripcion,@paramfechaInicio,@paramfechaFin,@paramhorasAsignadas,
-												   @paramhorasAsigDefectos,@paramhorasReales,@paramhorasRealesDefectos;
+												   @paramPK_usuario,@paramFK_estado,@paramdescripcion,@paramfechaInicio,@paramfechaFin,@paramhorasAsignadas,@paramhorasReales;
 		END
 END   
  GO 

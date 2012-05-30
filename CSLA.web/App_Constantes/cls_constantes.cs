@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
+using System.Configuration;
 namespace CSLA.web.App_Constantes
 {
     public class cls_constantes
@@ -27,6 +27,10 @@ namespace CSLA.web.App_Constantes
 
         //Constantes de la sesion
         public const string PAGINA = "vo_pagina";
+
+        public const String URLKEY =  "URL";
+
+        public static String SCRIPTLOGOUT = String.Format("top.location = '{0}'",ConfigurationManager.AppSettings[URLKEY]);
 
     }
 }

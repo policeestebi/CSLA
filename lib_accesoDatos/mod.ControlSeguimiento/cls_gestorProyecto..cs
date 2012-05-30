@@ -451,9 +451,8 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                                                    DateTime.Now,
                                                    DateTime.Now,
                                                    0,
-                                                   0,
-                                                   0,
-                                                   0 };
+                                                   0
+                                                   };
 
                    vu_dataSet.Tables[0].Rows.InsertAt(row,0);
 
@@ -467,9 +466,8 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                                                 DateTime.Now,
                                                 DateTime.Now,
                                                 0,
-                                                0,
-                                                0,
-                                                0};
+                                                0
+                                                };
 
                    vu_dataSet.Tables[0].Rows.InsertAt(row,0);
 

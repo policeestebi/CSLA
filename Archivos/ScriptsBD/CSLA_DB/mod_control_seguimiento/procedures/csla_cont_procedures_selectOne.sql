@@ -55,9 +55,7 @@ AS
 			fechaInicio,
 			fechaFin,
 			horasAsignadas,
-			horasAsigDefectos,
-			horasReales,
-			horasRealesDefectos  
+			horasReales
 		FROM t_cont_proyecto  
         WHERE 
 			PK_proyecto = @paramPK_proyecto
@@ -112,6 +110,7 @@ CREATE PROCEDURE  PA_cont_componenteSelectOne
 AS 
  BEGIN 
          SELECT 
+			PK_componente,
 			codigo,
 			nombre,
 			descripcion   
@@ -140,7 +139,7 @@ CREATE PROCEDURE  PA_cont_paqueteSelectOne
 AS 
  BEGIN 
          SELECT 
-			PK_actividad,
+			PK_paquete,
 			codigo,
 			nombre,
 			descripcion     
@@ -303,9 +302,7 @@ AS
 			 cont_asig_act.fechaInicio,
 			 cont_asig_act.fechaFin,
 			 cont_asig_act.horasAsignadas,
-			 cont_asig_act.horasAsigDefectos,
 			 cont_asig_act.horasReales,
-			 cont_asig_act.horasRealesDefectos,
 			 cont_act.nombre nombreActividad,       
 			 cont_paq.nombre nombrePaquete,
 			 admi_usu.nombre nombreUsuario

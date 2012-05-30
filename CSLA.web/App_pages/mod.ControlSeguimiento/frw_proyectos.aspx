@@ -168,7 +168,8 @@
                                                     </td>
                                                     <td>
                                                         <asp:TextBox ID="txt_fechaInicio" runat="server"></asp:TextBox>
-                                                        <act:CalendarExtender ID="dt_fechaInicio" runat="server" TargetControlID="txt_fechaInicio"
+                                                        <asp:ImageButton ID="img_cldFechaInicio" runat="server" ImageUrl="../../App_Themes/Basico/botones/img_calendario.png" CausesValidation="false" />
+                                                        <act:CalendarExtender ID="dt_fechaInicio" runat="server" TargetControlID="txt_fechaInicio" PopupButtonID="img_cldFechaInicio"
                                                             Format="MMMM d, yyyy" />
                                                     </td>
                                                     <td>
@@ -194,7 +195,8 @@
                                                     </td>
                                                     <td>
                                                         <asp:TextBox ID="txt_fechaFin" runat="server"></asp:TextBox>
-                                                        <act:CalendarExtender ID="dt_fechaFin" runat="server" TargetControlID="txt_fechaFin"
+                                                        <asp:ImageButton ID="img_cldFechaFinal" runat="server" ImageUrl="../../App_Themes/Basico/botones/img_calendario.png" CausesValidation="false" />
+                                                        <act:CalendarExtender ID="dt_fechaFin" runat="server" TargetControlID="txt_fechaFin" PopupButtonID="img_cldFechaFinal"
                                                             Format="MMMM d, yyyy" />
                                                     </td>
                                                     <td>

@@ -59,11 +59,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.validarSession();
+
             if (!Page.IsPostBack)
             {
                 try
-                {
-                    this.validarSession();
+                {        
                     this.validarAcceso();
                 }
                 catch (Exception po_exception)
@@ -2693,8 +2694,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 this.Session.Abandon();
                 this.Session.Clear();
-                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
-                Response.Redirect("../../Default.aspx");
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", cls_constantes.SCRIPTLOGOUT, true);
             }
         }
 
@@ -2706,8 +2706,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             if (this.Session["cls_usuario"] == null)
             {
-                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
-                Response.Redirect("../../Default.aspx");
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", cls_constantes.SCRIPTLOGOUT, true);
             }
         }
 

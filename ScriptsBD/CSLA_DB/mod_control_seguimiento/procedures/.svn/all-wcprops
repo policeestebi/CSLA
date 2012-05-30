@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/203/CSLA/Archivos/ScriptsBD/CSLA_DB/mod_control_seguimiento/procedures
+END
+csla_cont_procedures_selectOne.sql
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/!svn/ver/201/CSLA/Archivos/ScriptsBD/CSLA_DB/mod_control_seguimiento/procedures/csla_cont_procedures_selectOne.sql
+END
+csla_cont_procedures_selects.sql
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/!svn/ver/201/CSLA/Archivos/ScriptsBD/CSLA_DB/mod_control_seguimiento/procedures/csla_cont_procedures_selects.sql
+END
+csla_cont_procedures_deletes.sql
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/!svn/ver/201/CSLA/Archivos/ScriptsBD/CSLA_DB/mod_control_seguimiento/procedures/csla_cont_procedures_deletes.sql
+END
+csla_cont_procedures_updates.sql
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/!svn/ver/203/CSLA/Archivos/ScriptsBD/CSLA_DB/mod_control_seguimiento/procedures/csla_cont_procedures_updates.sql
+END
+csla_cont_procedures_inserts.sql
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/!svn/ver/201/CSLA/Archivos/ScriptsBD/CSLA_DB/mod_control_seguimiento/procedures/csla_cont_procedures_inserts.sql
+END

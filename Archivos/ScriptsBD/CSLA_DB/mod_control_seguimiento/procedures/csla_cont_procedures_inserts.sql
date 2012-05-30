@@ -55,7 +55,10 @@ CREATE PROCEDURE  PA_cont_proyectoInsert
   @paramfechaFin datetime, 
   @paramhorasAsignadas decimal, 
   @paramhorasReales decimal
+<<<<<<< HEAD
  
+=======
+>>>>>>> db82208f0a3b66a6e123fe05106fff536778f8d9
 AS 
  BEGIN 
  SET NOCOUNT ON; 
@@ -458,9 +461,8 @@ CREATE PROCEDURE  PA_cont_asignacionActividadInsert
   @paramfechaInicio datetime, 
   @paramfechaFin datetime, 
   @paramhorasAsignadas numeric(10,2), 
-  @paramhorasAsigDefectos numeric(10,2), 
-  @paramhorasReales numeric(10,2), 
-  @paramhorasRealesDefectos numeric(10,2) 
+  @paramhorasReales numeric(10,2)
+  
 AS 
  BEGIN 
  SET NOCOUNT ON; 
@@ -478,9 +480,7 @@ AS
          fechaInicio,
          fechaFin,
          horasAsignadas,
-         horasAsigDefectos,
-         horasReales,
-         horasRealesDefectos
+         horasReales
         ) 
         VALUES
         ( 
@@ -495,9 +495,7 @@ AS
          @paramfechaInicio,
          @paramfechaFin,
          @paramhorasAsignadas,
-         @paramhorasAsigDefectos,
-         @paramhorasReales,
-         @paramhorasRealesDefectos
+         @paramhorasReales
         ) 
 
 END   

@@ -54,11 +54,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.validarSession();
+
             if (!Page.IsPostBack)
             {
                 try
-                {
-                    this.validarSession();
+                {        
                     this.obtenerPermisos();
                     this.validarAcceso();
                     this.cargarPermisos();
@@ -164,7 +165,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 //Se ponen visibles las columas de llave del proyecto y estado, esto para el binding, luego se ocultan de nuevo
                 this.grd_listaProyecto.Columns[0].Visible = true;
+<<<<<<< HEAD
                 this.grd_listaProyecto.Columns[10].Visible = true;
+=======
+                //this.grd_listaProyecto.Columns[12].Visible = true;
+>>>>>>> db82208f0a3b66a6e123fe05106fff536778f8d9
 
                 //El datasource del gridview es el listado de proyectos
                 this.grd_listaProyecto.DataSource = cls_gestorProyecto.listarProyectos();
@@ -177,7 +182,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 //Se ponen invisibles las columas de llave del proyecto y estado
                 this.grd_listaProyecto.Columns[0].Visible = false;
+<<<<<<< HEAD
                 this.grd_listaProyecto.Columns[10].Visible = false;
+=======
+                //this.grd_listaProyecto.Columns[12].Visible = false;
+>>>>>>> db82208f0a3b66a6e123fe05106fff536778f8d9
 
             }
             catch (Exception po_exception)
@@ -196,7 +205,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 //Se ponen visibles las columas de llave del proyecto y estado, esto para el binding, luego se ocultan de nuevo
                 this.grd_listaProyecto.Columns[0].Visible = true;
+<<<<<<< HEAD
                 this.grd_listaProyecto.Columns[10].Visible = true;
+=======
+                //this.grd_listaProyecto.Columns[12].Visible = true;
+>>>>>>> db82208f0a3b66a6e123fe05106fff536778f8d9
 
                 //El datasource del gridview es el listado de proyectos pero ya con el filtro asignado
                 this.grd_listaProyecto.DataSource = cls_gestorProyecto.listarProyectoFiltro(psFilter);
@@ -205,7 +218,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 //Se ponen invisibles las columas de llave del proyecto y estado
                 this.grd_listaProyecto.Columns[0].Visible = false;
+<<<<<<< HEAD
                 this.grd_listaProyecto.Columns[10].Visible = false;
+=======
+                //this.grd_listaProyecto.Columns[12].Visible = false;
+>>>>>>> db82208f0a3b66a6e123fe05106fff536778f8d9
 
             }
             catch (Exception po_exception)
@@ -804,7 +821,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 vo_proyecto.pHorasAsignadas = Convert.ToDecimal(vu_fila.Cells[7].Text.ToString());
                 vo_proyecto.pHorasReales = Convert.ToDecimal(vu_fila.Cells[8].Text.ToString());
                 vo_proyecto.pDescripcionEstado = vu_fila.Cells[9].Text.ToString();
-                vo_proyecto.pFK_estado = Convert.ToInt32(vu_fila.Cells[10].Text.ToString());
+                //vo_proyecto.pFK_estado = Convert.ToInt32(vu_fila.Cells[10].Text.ToString());
 
                 switch (e.CommandName.ToString())
                 {
@@ -984,8 +1001,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 this.Session.Abandon();
                 this.Session.Clear();
-                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
-                Response.Redirect("../../Default.aspx");
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", cls_constantes.SCRIPTLOGOUT, true);
             }
         }
 
@@ -997,8 +1013,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             if (this.Session["cls_usuario"] == null)
             {
-                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
-                Response.Redirect("../../Default.aspx");
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", cls_constantes.SCRIPTLOGOUT, true);
             }
         }
 

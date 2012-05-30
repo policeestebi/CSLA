@@ -121,6 +121,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         protected global::System.Web.UI.WebControls.TextBox txt_fechaInicio;
         
         /// <summary>
+        /// img_cldFechaInicio control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton img_cldFechaInicio;
+        
+        /// <summary>
         /// dt_fechaInicio control.
         /// </summary>
         /// <remarks>
@@ -191,6 +200,15 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txt_fechaFin;
+        
+        /// <summary>
+        /// img_cldFechaFinal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton img_cldFechaFinal;
         
         /// <summary>
         /// dt_fechaFin control.
