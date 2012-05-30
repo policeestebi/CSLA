@@ -59,12 +59,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.validarSession();
-
             if (!Page.IsPostBack)
             {
                 try
-                {        
+                {
+                    this.validarSession();
                     this.validarAcceso();
                 }
                 catch (Exception po_exception)
@@ -323,9 +322,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             
             //Se obtiene la llave primaria de proyecto, es decir, PK_proyecto, de la variables del sistema, para luego sólo enviarla por parámetro en los guardar
             int llaveProyecto = cls_variablesSistema.vs_proyecto.pPK_proyecto;  
-
-            //De momento se va a agregar, por defecto
-            //cls_variablesSistema.tipoEstado = cls_constantes.AGREGAR;
 
             try
             {
@@ -2694,7 +2690,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 this.Session.Abandon();
                 this.Session.Clear();
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", cls_constantes.SCRIPTLOGOUT, true);
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
             }
         }
 
@@ -2706,7 +2703,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             if (this.Session["cls_usuario"] == null)
             {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", cls_constantes.SCRIPTLOGOUT, true);
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
+                Response.Redirect("../../Default.aspx");
             }
         }
 
