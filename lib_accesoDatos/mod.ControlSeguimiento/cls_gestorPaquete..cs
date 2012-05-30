@@ -206,7 +206,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                {
                    String vs_comando = "PA_cont_paqueteSelectOne";
                    cls_parameter[] vu_parametros = { 
-                                                       new cls_parameter("@PK_paquete", poPaquete.pPK_Paquete) 
+                                                       new cls_parameter("@paramPK_paquete", poPaquete.pPK_Paquete) 
                                                    };
 
                    DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);

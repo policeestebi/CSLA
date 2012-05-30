@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Configuration;
 
 
 using COSEVI.CSLA.lib.accesoDatos.App_InterfaceComunes;
@@ -52,16 +53,17 @@ namespace CSLA.web.App_pages.mod.Administracion
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            this.validarSession();
+
             if (!Page.IsPostBack)
             {
-
                 try
                 {
-                    this.validarSession();
+                    
                     this.obtenerPermisos();
                     this.validarAcceso();
                     this.cargarPermisos();
-
                     this.llenarGridView();
                     this.cargarDataSetDepartamentos();
                 }
@@ -611,8 +613,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             {
                 this.Session.Abandon();
                 this.Session.Clear();
-                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
-                Response.Redirect("../../Default.aspx");
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida",cls_constantes.SCRIPTLOGOUT, true);
             }
         }
 
@@ -624,8 +625,7 @@ namespace CSLA.web.App_pages.mod.Administracion
         {
             if (this.Session["cls_usuario"] == null)
             {
-                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
-                Response.Redirect("../../Default.aspx");
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", cls_constantes.SCRIPTLOGOUT, true);
             }
         }
 

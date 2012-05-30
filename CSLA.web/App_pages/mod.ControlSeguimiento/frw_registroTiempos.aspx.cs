@@ -31,10 +31,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
+                this.validarSession();
 
                 if (!this.IsPostBack)
                 {
-                    this.validarSession();
+                    
                     this.obtenerPermisos();
 
                     this.cargarObjetoSegunUrl();
@@ -390,8 +391,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             if (this.Session["cls_usuario"] == null)
             {
-                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert('Salida'); document.location.href = '../../Default.aspx';", true);
-                Response.Redirect("../../Default.aspx");
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", cls_constantes.SCRIPTLOGOUT, true);
             }
         }
 
