@@ -448,3 +448,5 @@ AS
 			PK_usuario = @paramUsuario
 END  
 GO 
+
+

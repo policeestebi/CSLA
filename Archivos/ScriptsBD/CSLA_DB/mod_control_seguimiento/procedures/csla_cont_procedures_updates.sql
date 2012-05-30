@@ -52,9 +52,7 @@ CREATE PROCEDURE  PA_cont_proyectoUpdate
   @paramfechaInicio datetime, 
   @paramfechaFin datetime, 
   @paramhorasAsignadas decimal, 
-  @paramhorasAsigDefectos decimal, 
   @paramhorasReales decimal, 
-  @paramhorasRealesDefectos decimal,
   @paramPK_proyecto int
 
 AS 
@@ -71,9 +69,7 @@ SET NOCOUNT ON;
 			fechaInicio = @paramfechaInicio ,
 			fechaFin = @paramfechaFin ,
 			horasAsignadas = @paramhorasAsignadas ,
-			horasAsigDefectos = @paramhorasAsigDefectos ,
-			horasReales = @paramhorasReales ,
-			horasRealesDefectos = @paramhorasRealesDefectos       
+			horasReales = @paramhorasReales     
          WHERE 
 			PK_proyecto = @paramPK_proyecto 
   

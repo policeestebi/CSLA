@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_pages\frw_bienvenidad.aspx" />
+    <Content Include="App_pages\mod.ControlSeguimiento\frw_copiarProyecto.aspx" />
     <Content Include="App_pages\mod.ControlSeguimiento\frw_asignacionActividad.aspx" />
     <Content Include="App_pages\mod.ControlSeguimiento\frw_calendario.aspx" />
     <Content Include="App_pages\mod.ControlSeguimiento\frw_operaciones.aspx" />
@@ -127,6 +128,13 @@
     </Compile>
     <Compile Include="App_pages\frw_bienvenidad.aspx.designer.cs">
       <DependentUpon>frw_bienvenidad.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_pages\mod.ControlSeguimiento\frw_copiarProyecto.aspx.cs">
+      <DependentUpon>frw_copiarProyecto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="App_pages\mod.ControlSeguimiento\frw_copiarProyecto.aspx.designer.cs">
+      <DependentUpon>frw_copiarProyecto.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_pages\mod.ControlSeguimiento\frw_asignacionActividad.aspx.cs">
       <DependentUpon>frw_asignacionActividad.aspx</DependentUpon>

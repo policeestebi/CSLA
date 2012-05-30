@@ -54,9 +54,7 @@ CREATE PROCEDURE  PA_cont_proyectoInsert
   @paramfechaInicio datetime, 
   @paramfechaFin datetime, 
   @paramhorasAsignadas decimal, 
-  @paramhorasAsigDefectos decimal, 
-  @paramhorasReales decimal, 
-  @paramhorasRealesDefectos decimal 
+  @paramhorasReales decimal
  
 AS 
  BEGIN 
@@ -72,9 +70,7 @@ AS
          fechaInicio,
          fechaFin,
          horasAsignadas,
-         horasAsigDefectos,
-         horasReales,
-         horasRealesDefectos
+         horasReales
         ) 
         VALUES
         ( 
@@ -86,9 +82,7 @@ AS
          @paramfechaInicio,
          @paramfechaFin,
          @paramhorasAsignadas,
-         @paramhorasAsigDefectos,
-         @paramhorasReales,
-         @paramhorasRealesDefectos
+         @paramhorasReales
         ) 
 
 END   
@@ -706,3 +700,36 @@ AS
 END   
 GO 
 
+  IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_cont_proyectoCopiaInsert]'))
+DROP PROCEDURE [dbo].[PA_cont_proyectoCopiaInsert]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	15-05-2012
+-- Fecha Actulización:	15-05-2012
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_cont_proyectoCopiaInsert
+  @paramPK_proyectoNuevo int,
+  @paramPK_proyectoOriginal int
+AS 
+ BEGIN 
+		--Se inserta en cada una de las tablas, tomando como base el proyecto original, y asignando la PK de cada proyecto nuevo
+		INSERT INTO t_cont_proyecto_entregable(PK_entregable,PK_proyecto) 
+			   (SELECT PK_entregable,@paramPK_proyectoNuevo FROM t_cont_proyecto_entregable WHERE PK_proyecto = @paramPK_proyectoOriginal);
+
+		INSERT INTO t_cont_entregable_componente(PK_componente,PK_entregable,PK_proyecto) 
+			   (SELECT PK_componente,PK_entregable,@paramPK_proyectoNuevo FROM t_cont_entregable_componente WHERE PK_proyecto = @paramPK_proyectoOriginal);
+		
+		INSERT INTO t_cont_componente_paquete(PK_paquete,PK_componente,PK_entregable,PK_proyecto) 
+			   (SELECT PK_paquete,PK_componente,PK_entregable,@paramPK_proyectoNuevo FROM t_cont_componente_paquete WHERE PK_proyecto = @paramPK_proyectoOriginal);
+
+		INSERT INTO t_cont_paquete_actividad(PK_actividad,PK_paquete,PK_componente,PK_entregable,PK_proyecto) 
+			   (SELECT PK_actividad,PK_paquete,PK_componente,PK_entregable,@paramPK_proyectoNuevo FROM t_cont_paquete_actividad WHERE PK_proyecto = @paramPK_proyectoOriginal);
+
+ END
+ GO

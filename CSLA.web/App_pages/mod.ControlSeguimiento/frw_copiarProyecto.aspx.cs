@@ -22,7 +22,7 @@ using COSEVI.CSLA.lib.accesoDatos.mod.Administracion;
 // COSEVI - Consejo de Seguridad Vial. - 2011
 // Sistema CSLA (Sistema para el Control y Seguimiento de Labores)
 //
-// frw_permiso.aspx.cs
+// frw_copiarProyecto.aspx.cs
 //
 // Explicación de los contenidos del archivo.
 // =========================================================================
@@ -41,7 +41,7 @@ using COSEVI.CSLA.lib.accesoDatos.mod.Administracion;
 
 namespace CSLA.web.App_pages.mod.ControlSeguimiento
 {
-    public partial class frw_proyectos : System.Web.UI.Page
+    public partial class frw_copiarProyecto : System.Web.UI.Page
     {
 
         #region Inicialización
@@ -62,11 +62,21 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     this.obtenerPermisos();
                     this.validarAcceso();
                     this.cargarPermisos();
-                    this.llenarGridView();
+
+                    //Se envía a cargar por debajo los datos del proyecto que se intenta copiar
+                    cargarNombreProyecto();
+
+                    //Se carga el dataset con los estados que puede adquirir un proyecto
+                    cargarDataSetEstados();
+                    this.ddl_estado.DataBind();
+
+                    //Se cargan los departamentos
+                    cargarDataSetDepartamentos();
+
                 }
                 catch (Exception po_exception)
                 {
-                    String vs_error_usuario = "Ocurrió un error al inicializar el mantenimiento de proyectos.";
+                    String vs_error_usuario = "Ocurrió un error al inicializar el copiado de proyectos.";
                     this.lanzarExcepcion(po_exception, vs_error_usuario);
                 } 
             }
@@ -88,7 +98,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Ocurrió un error durante la inicialización de los controles en el mantenimiento de proyectos.";
+                String vs_error_usuario = "Ocurrió un error durante la inicialización de los controles en el copiado de proyectos.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
@@ -104,18 +114,12 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             try
             {
                 //Inicialización de botones generales
-                this.btn_agregar = (Button)acp_listadoDatos.FindControl("btn_agregar");
                 this.btn_cancelar = (Button)acp_edicionDatos.FindControl("btn_cancelar");
                 this.btn_guardar = (Button)acp_edicionDatos.FindControl("btn_guardar");
 
                 //Inicialización de botones de la asignación de Departamentos para el Proyecto
                 this.btn_asignarDepto = (Button)acp_edicionDatos.FindControl("btn_asignarDepto");
                 this.btn_removerDepto = (Button)acp_edicionDatos.FindControl("btn_removerDepto");
-
-                this.ucSearchProyecto.SearchClick += new COSEVI.web.controls.ucSearch.searchClick(this.ucSearchProyecto_searchClick);
-
-                //Se agregan los filtros.
-                this.agregarItemListFiltro();
 
             }
             catch (Exception po_exception)
@@ -125,94 +129,9 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             } 
         }
 
-        /// <summary>
-        /// Agrega los filtros para el control de búsqueda.
-        /// </summary>
-        private void agregarItemListFiltro()
-        {
-            try
-            {
-                this.ucSearchProyecto.LstCollecction.Add(new ListItem("Proyecto", "Pk_proyecto"));
-                this.ucSearchProyecto.LstCollecction.Add(new ListItem("Estado", "FK_estado"));
-                this.ucSearchProyecto.LstCollecction.Add(new ListItem("Nombre", "nombre"));
-                this.ucSearchProyecto.LstCollecction.Add(new ListItem("Descripcion", "descripcion"));
-                this.ucSearchProyecto.LstCollecction.Add(new ListItem("Objetivo", "objetivo"));
-                this.ucSearchProyecto.LstCollecction.Add(new ListItem("Meta", "meta"));
-                this.ucSearchProyecto.LstCollecction.Add(new ListItem("FechaInicio", "fechaInicio"));
-                this.ucSearchProyecto.LstCollecction.Add(new ListItem("FechaFin", "fechaFin"));
-                this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasAsignadas", "horasAsignadas"));
-                this.ucSearchProyecto.LstCollecction.Add(new ListItem("HorasReales", "horasReales"));
-            }
-            catch (Exception po_exception)
-            {
-                throw new Exception("Ocurrió un error al agregar los items para el filtro del mantenimiento de proyectos.", po_exception);
-            } 
-        }
-
         #endregion
 
         #region Métodos
-
-        /// <summary>
-        /// Método que se encarga de 
-        /// llenar la información del
-        /// grid view
-        /// </summary>
-        private void llenarGridView()
-        {
-            try
-            {
-                //Se ponen visibles las columas de llave del proyecto y estado, esto para el binding, luego se ocultan de nuevo
-                this.grd_listaProyecto.Columns[0].Visible = true;
-                this.grd_listaProyecto.Columns[10].Visible = true;
-
-                //El datasource del gridview es el listado de proyectos
-                this.grd_listaProyecto.DataSource = cls_gestorProyecto.listarProyectos();
-                
-                //Se carga el dataset con los estados que puede adquirir un proyecto
-                cargarDataSetEstados();
-
-                this.grd_listaProyecto.DataBind();
-                this.ddl_estado.DataBind();
-
-                //Se ponen invisibles las columas de llave del proyecto y estado
-                this.grd_listaProyecto.Columns[0].Visible = false;
-                this.grd_listaProyecto.Columns[10].Visible = false;
-
-            }
-            catch (Exception po_exception)
-            {
-                throw new Exception("Ocurrió un error llenando la tabla de proyectos en el mantenimiento.", po_exception);
-            } 
-        }
-
-        /// <summary>
-        /// Hace un buscar de la lista de proyectos.
-        /// </summary>
-        /// <param name="psFilter">String filtro.</param>
-        private void llenarGridViewFilter(String psFilter)
-        {
-            try
-            {
-                //Se ponen visibles las columas de llave del proyecto y estado, esto para el binding, luego se ocultan de nuevo
-                this.grd_listaProyecto.Columns[0].Visible = true;
-                this.grd_listaProyecto.Columns[10].Visible = true;
-
-                //El datasource del gridview es el listado de proyectos pero ya con el filtro asignado
-                this.grd_listaProyecto.DataSource = cls_gestorProyecto.listarProyectoFiltro(psFilter);
-                
-                this.grd_listaProyecto.DataBind();
-
-                //Se ponen invisibles las columas de llave del proyecto y estado
-                this.grd_listaProyecto.Columns[0].Visible = false;
-                this.grd_listaProyecto.Columns[10].Visible = false;
-
-            }
-            catch (Exception po_exception)
-            {
-                throw new Exception("Ocurrió un error llenando la tabla luego de aplicar el filtro para los proyectos en el mantenimiento.", po_exception);
-            } 
-        }
 
         /// <summary>
         /// Crea un objeto de tipo
@@ -223,10 +142,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         private cls_proyecto crearObjetoProyecto()
         {
             cls_proyecto vo_proyecto = new cls_proyecto();
-            if (cls_variablesSistema.tipoEstado != cls_constantes.AGREGAR)
-            {
-                vo_proyecto = (cls_proyecto)cls_variablesSistema.obj;
-            }
             try
             {
                 vo_proyecto.pFK_estado = Convert.ToInt32(ddl_estado.SelectedValue);
@@ -283,76 +198,24 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         /// Método que carga la información
         /// de un proyecto.
         /// </summary>
-        private void cargarObjetoProyecto()
-        {
-            cls_proyecto vo_proyecto = null;
+        //private void cargarObjetoProyecto()
+        //{
+        //    cls_proyecto vo_proyecto = null;
 
-            try
-            {
-                vo_proyecto = (cls_proyecto)cls_variablesSistema.obj;
-                this.ddl_estado.SelectedValue = vo_proyecto.pFK_estado.ToString();
-                this.txt_nombre.Text = vo_proyecto.pNombre;
-                this.txt_descripcion.Text = vo_proyecto.pDescripcion;
-                this.txt_objetivo.Text = vo_proyecto.pObjetivo;
-                this.txt_meta.Text = vo_proyecto.pMeta;
-                this.txt_fechaInicio.Text = vo_proyecto.pFechaInicio.ToShortDateString();
-                this.txt_fechaFin.Text = vo_proyecto.pFechaFin.ToShortDateString();
-                this.txt_horasAsignadas.Text = vo_proyecto.pHorasAsignadas.ToString();
-                this.txt_horasReales.Text = vo_proyecto.pHorasReales.ToString();
-                if (cls_variablesSistema.tipoEstado == cls_constantes.VER)
-                {
-                    this.habilitarControles(false);
-                }
-                else
-                {
-                    this.habilitarControles(true);
-                }
-            }
-            catch (Exception po_exception)
-            {
-                throw new Exception("Ocurrió un error al cargar el registro de proyecto.", po_exception);
-            }
+        //    try
+        //    {
+        //        vo_proyecto = new cls_proyecto();
+        //        vo_proyecto = (cls_proyecto)cls_variablesSistema.vs_proyecto;
 
-        }
+        //        this.habilitarControles(true);               
+        //    }
+        //    catch (Exception po_exception)
+        //    {
+        //        throw new Exception("Ocurrió un error al cargar el registro de proyecto.", po_exception);
+        //    }
 
-        /// <summary>
-        /// Método que elimina un proyecto
-        /// </summary>
-        /// <param name="po_proyecto">Permiso a eliminar</param>
-        private void eliminarDatos(cls_proyecto po_proyecto)
-        {
-            //Primero se intenta eliminar los departamentos asociados a un proyecto, se presenta una excepción si estos tienen también entregables asociados
-            try
-            {
-                int vi_resultado = 1;
+        //}
 
-                cls_departamentoProyecto vo_departamentoProyecto = new cls_departamentoProyecto();
-                vo_departamentoProyecto.pProyecto = po_proyecto;
-                vi_resultado = cls_gestorDepartamentoProyecto.deleteDepartamentoProyectoMasivo(vo_departamentoProyecto);            
-            
-            }
-            catch (Exception po_exception)
-            {
-                throw new Exception("No se ha logralo eliminar los departamentos asociados al proyecto seleccionado.", po_exception);
-            }
-
-            //Si se eliminaron de manera correcta los departamentos asociados a proyecto, se procede a eliminar el proyecto en si
-            try
-            {
-                cls_gestorProyecto.deleteProyecto(po_proyecto);
-
-
-                this.llenarGridView();
-
-                this.upd_Principal.Update();
-
-            }
-            catch (Exception po_exception)
-            {
-                throw new Exception("No se ha logralo eliminar el registro seleccionado, el proyecto podría presentar entregables asociados.", po_exception);
-            }
-        }
-        
         /// <summary>
         /// Guarda la información se que se encuentra
         /// en el formulario Web, ya sea
@@ -375,57 +238,25 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 //El proyecto es el mismo para todos los departamentos que se vayan a insertar
                 vo_dptoProyecto.pProyecto = vo_proyecto;
 
-                switch (cls_variablesSistema.tipoEstado)
+                //Se intenta realizar la inserción del proyecto en la tabla correspondiente
+                vi_resultado = cls_gestorProyecto.insertProyecto(vo_proyecto);
+
+                //Para cada departamento, se realiza la correspondiente inserción con el proyecto específico
+                foreach (cls_departamento vo_departamento in vl_departamentoAsociado)
                 {
-                    case cls_constantes.AGREGAR:
+                    vo_dptoProyecto.pDepartamento = vo_departamento;
 
-                        //Se intenta realizar la inserción del proyecto en la tabla correspondiente
-                        vi_resultado = cls_gestorProyecto.insertProyecto(vo_proyecto);
-
-                        //Para cada departamento, se realiza la correspondiente inserción con el proyecto específico
-                        foreach (cls_departamento vo_departamento in vl_departamentoAsociado)
-                        {
-                            vo_dptoProyecto.pDepartamento = vo_departamento;
-
-                            vi_resultado = cls_gestorDepartamentoProyecto.insertDepartamentoProyecto(vo_dptoProyecto);
-                        }
-
-                        break;
-
-                    case cls_constantes.EDITAR:
-                        vi_resultado = cls_gestorProyecto.updateProyecto(vo_proyecto);
-
-                        //Se revisa cada departamento en la lista que presenta la variable de sistema de "proyecto", si la lista de deparmentos asociados
-                        //no cuenta con el departamento de contenido en la lista de la variable de sistema, esta última se intenta eliminar
-                        foreach (cls_departamento vo_departamento in cls_variablesSistema.vs_proyecto.pDepartamentoLista)
-                        {
-                            if (!(vl_departamentoAsociado.Where(dep => dep.pPK_departamento == vo_departamento.pPK_departamento).Count() > 0))
-                            {
-                                vo_dptoProyecto.pDepartamento = vo_departamento;
-                                vi_resultado = cls_gestorDepartamentoProyecto.deleteDepartamentoProyecto(vo_dptoProyecto);
-                            }
-                        }
-
-                        //Si alguno de los departamentos recién asociados no se encuentra en la variable del sistema, se procede a realizar la inserción de la misma
-                        foreach (cls_departamento vo_departamento in vl_departamentoAsociado)
-                        {
-                            if (!(cls_variablesSistema.vs_proyecto.pDepartamentoLista.Where(dep => dep.pPK_departamento == vo_departamento.pPK_departamento).Count() > 0))
-                            {
-                                vo_dptoProyecto.pDepartamento = vo_departamento;
-                                vi_resultado = cls_gestorDepartamentoProyecto.insertDepartamentoProyecto(vo_dptoProyecto);
-                            }
-                        }
-
-                        break;
-                    default:
-                        break;
+                    vi_resultado = cls_gestorDepartamentoProyecto.insertDepartamentoProyecto(vo_dptoProyecto);
                 }
+
+                //Se realiza la inserción en las demás tablas, entregable/componente/paquete/actividad, con respecto al proyecto copiado
+                vi_resultado = cls_gestorProyecto.insertProyectoCopia(vo_proyecto.pPK_proyecto, cls_variablesSistema.vs_proyecto.pPK_proyecto);
 
                 return vi_resultado;
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al guardar el registro de proyecto.", po_exception);
+                throw new Exception("Ocurrió un error al guardar el registro de copia del proyecto.", po_exception);
             }
         }
 
@@ -486,6 +317,22 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
+        /// Metodo que carga el nombre del proyecto que se escogió para ser copiado
+        /// </summary>
+        private void cargarNombreProyecto()
+        {
+            try
+            {
+                this.txt_proyecto.Text = cls_variablesSistema.vs_proyecto.pNombre;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al cargar el nombre del proyecto.", po_exception);
+            }
+
+        }
+
+        /// <summary>
         /// Metodo que carga el dataSet de los estados a los que se puede asociar un proyecto
         /// </summary>
         private void cargarDataSetEstados()
@@ -529,85 +376,23 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
-        /// Método que obtiene los departamentos asociados a un proyecto específicos
+        /// Método que se ejecuta cuando se le da
+        /// en el botón de regresar.
         /// </summary>
-        private void cargarDepartamentoProyecto(cls_proyecto po_proyecto)
-        {
-            DataSet vo_dataSet = new DataSet();
-
-            try
-            {
-                vo_dataSet = cls_gestorDepartamentoProyecto.selectDepartamentoProyecto(po_proyecto);
-                lbx_depasociados.DataSource = vo_dataSet;
-                lbx_depasociados.DataTextField = "nombre";
-                lbx_depasociados.DataValueField = "PK_departamento";
-                lbx_depasociados.DataBind();
-
-                if (lbx_depasociados.Items.Count > 0)
-                {
-                    cls_variablesSistema.vs_proyecto = po_proyecto;
-
-                    foreach (ListItem item in lbx_depasociados.Items)
-                    {
-                        cls_departamento vo_departamento = new cls_departamento();
-                        cls_departamentoProyecto vo_deptoProyecto = new cls_departamentoProyecto();
-
-                        lbx_departamentos.Items.Remove(item);
-
-                        vo_departamento.pPK_departamento = Convert.ToInt32(item.Value);
-                        vo_departamento.pNombre = item.Text;
-
-                        vo_deptoProyecto.pProyecto = po_proyecto;
-                        vo_deptoProyecto.pDepartamentoList.Add(vo_departamento);
-
-                        cls_variablesSistema.vs_proyecto.pDepartamentoLista.Add(vo_departamento);
-                        cls_variablesSistema.vs_proyecto.pDptoProyLista.Add(vo_deptoProyecto);
-                    }
-                }
-                else
-                {
-                    limpiarVariablesSistema();
-                }
-            }
-            catch (Exception po_exception)
-            {
-                throw new Exception("Ocurrió un error al cargar los departamentos asociados al proyecto.", po_exception);
-            }
-
-        }
-
-        /// <summary>
-        /// Método que obtiene el proyecto actual y lo carga en la variable estática del sistema que mantiene la instancia del registro
-        /// </summary>
-        /// <param name="po_proyecto"></param>
-        private void cargarProyectoAsignacion(cls_proyecto po_proyecto)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void regresarMantenimiento()
         {
             try
             {
-                cls_variablesSistema.vs_proyecto = po_proyecto;
+                //Se redirecciona a la ventana principal de proyectos
+                Response.Redirect("frw_proyectos.aspx", false);
             }
             catch (Exception po_exception)
             {
-                throw new Exception("Ocurrió un error al cargar el proyecto en la varible del sistema.", po_exception);
+                String vs_error_usuario = "Ocurrió un error al intentar regresar al mantenimiento de proyeto.";
+                this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
-
-        }
-
-        /// <summary>
-        /// Método que obtiene el código del proyecto actual y lo carga en la variable estática del sistema que mantiene la instancia del registro
-        /// </summary>
-        /// <param name="po_proyecto"></param>
-        private void cargarProyectoCopia(cls_proyecto po_proyecto)
-        {
-            try
-            {
-                cls_variablesSistema.vs_proyecto = po_proyecto;
-            }
-            catch (Exception po_exception)
-            {
-                throw new Exception("Ocurrió un error al cargar el proyecto en la varible del sistema para la copia.", po_exception);
-            }
-
         }
 
         /// <summary>
@@ -651,58 +436,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         #region Eventos
 
         /// <summary>
-        /// Busca un proyecto según el filtro.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <param name="value"></param>
-        /// <param name="seletecItem"></param>
-        protected void ucSearchProyecto_searchClick(object sender, EventArgs e, string value, ListItem seletecItem)
-        {
-            try
-            {
-                this.llenarGridViewFilter(this.ucSearchProyecto.Filter);
-            }
-            catch (Exception po_exception)
-            {
-                String vs_error_usuario = "Ocurrió un error al inicializar la búsqueda de registros.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
-            } 
-        }
-
-        /// <summary>
-        /// Agrega un nuevo proyecto.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btn_agregar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                cls_variablesSistema.tipoEstado = cls_constantes.AGREGAR;
-
-                this.limpiarCampos();
-
-                this.habilitarControles(true);
-
-                this.upd_Principal.Update();
-
-                this.ard_principal.SelectedIndex = 1;
-
-                cargarDataSetDepartamentos();
-
-                limpiarVariablesSistema();
-
-            }
-            catch (Exception po_exception)
-            {
-                String vs_error_usuario = "Ocurrió un error al intentar mostrar la ventana de edición para los registros.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
-            } 
-
-        }
-
-        /// <summary>
         /// Evento que se ejecuta cuando se 
         /// guarda un nuevo proyecto.
         /// </summary>
@@ -714,8 +447,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 this.guardarDatos();
 
-                this.llenarGridView();
-
                 this.limpiarCampos();
 
                 this.limpiarVariablesSistema();
@@ -723,6 +454,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                 this.upd_Principal.Update();
 
                 this.ard_principal.SelectedIndex = 0;
+
+                this.regresarMantenimiento();
 
             }
             catch (Exception po_exception)
@@ -753,144 +486,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             catch (Exception po_exception)
             {
                 String vs_error_usuario = "Ocurrió un error al cancelar la operación.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
-            } 
-        }
-
-        /// <summary>
-        /// Cambiar de índice de página.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void grd_listaProyecto_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-            try
-            {              
-                this.grd_listaProyecto.PageIndex = e.NewPageIndex;
-                this.llenarGridView();
-                this.upd_Principal.Update();
-            }
-            catch (Exception po_exception)
-            {
-                String vs_error_usuario = "Ocurrió un error al realizar el listado de proyectos.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
-            } 
-        }
-
-        /// <summary>
-        /// Cuando se seleccionada un botón del grid.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void grd_listaProyecto_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            try
-            {
-                int vi_indice = Convert.ToInt32(e.CommandArgument);
-
-                GridViewRow vu_fila = this.grd_listaProyecto.Rows[vi_indice];
-
-                cls_proyecto vo_proyecto = new cls_proyecto();
-
-                List<cls_departamentoProyecto> vo_departamentoProyecto = new List<cls_departamentoProyecto>();
-
-                vo_proyecto.pPK_proyecto= Convert.ToInt32(vu_fila.Cells[0].Text.ToString());
-                vo_proyecto.pNombre = vu_fila.Cells[1].Text.ToString();
-                vo_proyecto.pDescripcion = vu_fila.Cells[2].Text.ToString();
-                vo_proyecto.pObjetivo = vu_fila.Cells[3].Text.ToString();
-                vo_proyecto.pMeta = vu_fila.Cells[4].Text.ToString();
-                vo_proyecto.pFechaInicio = Convert.ToDateTime(vu_fila.Cells[5].Text.ToString());
-                vo_proyecto.pFechaFin = Convert.ToDateTime(vu_fila.Cells[6].Text.ToString());
-                vo_proyecto.pHorasAsignadas = Convert.ToDecimal(vu_fila.Cells[7].Text.ToString());
-                vo_proyecto.pHorasReales = Convert.ToDecimal(vu_fila.Cells[8].Text.ToString());
-                vo_proyecto.pDescripcionEstado = vu_fila.Cells[9].Text.ToString();
-                vo_proyecto.pFK_estado = Convert.ToInt32(vu_fila.Cells[10].Text.ToString());
-
-                switch (e.CommandName.ToString())
-                {
-                    case cls_constantes.VER:
-                        vo_proyecto = cls_gestorProyecto.seleccionarProyectos(vo_proyecto);
-
-                        cls_variablesSistema.obj = vo_proyecto;
-
-                        cls_variablesSistema.tipoEstado = e.CommandName;
-
-                        this.cargarObjetoProyecto();
-
-                        cargarDataSetDepartamentos();
-
-                        cargarDepartamentoProyecto(vo_proyecto);
-
-                        this.ard_principal.SelectedIndex = 1;
-                        break;
-
-                    case cls_constantes.EDITAR:
-                        vo_proyecto = cls_gestorProyecto.seleccionarProyectos(vo_proyecto);
-
-                        cls_variablesSistema.obj = vo_proyecto;
-
-                        cls_variablesSistema.tipoEstado = e.CommandName;
-
-                        this.cargarObjetoProyecto();
-
-                        cargarDataSetDepartamentos();
-
-                        cargarDepartamentoProyecto(vo_proyecto);
-
-                        this.ard_principal.SelectedIndex = 1;
-                        break;
-
-                    case cls_constantes.ELIMINAR:
-                        this.eliminarDatos(vo_proyecto);
-                        break;
-
-                    case cls_constantes.CREAR:
-
-                        //Se limpia la variable de sistema que mantiene los departamentos proyectos para inmediatamente después comprobar si hubieron cambios o no
-                        limpiarVariablesSistema();
-
-                        //Se envía a cargar el atributo estático de cls_variablesSistema que mantiene la lista de departamentos proyecto
-                        cargarDepartamentoProyecto(vo_proyecto);
-
-                        //Se envía a la página de creación de proyectos
-                        Response.Redirect("frw_proyectosCreacion.aspx",false);
-
-                        break;
-
-                    case cls_constantes.ASIGNAR:
-
-                        //Se limpia la variable de sistema que mantiene los departamentos proyectos para inmediatamente después comprobar si hubieron cambios o no
-                        limpiarVariablesSistema();
-
-                        //Se envía a cargar el atributo estático de cls_variablesSistema que mantiene el proyecto
-                        cargarProyectoAsignacion(vo_proyecto);
-
-                        //Se envía a la página de creación de proyectos
-                        Response.Redirect("frw_asignacionActividad.aspx", false);
-
-                        break;
-
-                    case cls_constantes.COPIAR:
-
-                        //Se limpia la variable de sistema que mantiene los departamentos proyectos para inmediatamente después comprobar si hubieron cambios o no
-                        limpiarVariablesSistema();
-
-                        //Se envía a cargar el atributo estático de cls_variablesSistema que mantiene el proyecto
-                        cargarProyectoCopia(vo_proyecto);
-
-                        //Se envía a la página de creación de proyectos
-                        Response.Redirect("frw_copiarProyecto.aspx", false);
-
-                        break;
-
-                    default:
-                        break;
-                }
-
-            }
-            catch (Exception po_exception)
-            {
-                String vs_error_usuario = "Ocurrió un error al intentar " + e.CommandName.ToString() + " el registro de proyecto seleccionado.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             } 
         }
@@ -1102,14 +697,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         {
             try
             {
-                this.btn_agregar.Visible = this.pbAgregar;
-                this.btn_guardar.Visible = this.pbModificar || this.pbAgregar;
-                this.grd_listaProyecto.Columns[11].Visible = this.pbAcceso;
-                this.grd_listaProyecto.Columns[12].Visible = this.pbModificar;
-                this.grd_listaProyecto.Columns[13].Visible = this.pbEliminar;
-                //Si se tiene permiso de agregar o modificar, se puede crero asignar
-                this.grd_listaProyecto.Columns[14].Visible = this.pbModificar || this.pbAgregar;
-                this.grd_listaProyecto.Columns[15].Visible = this.pbModificar || this.pbAgregar;
+                //this.btn_guardar.Visible = this.pbModificar || this.pbAgregar;
             }
             catch (Exception po_exception)
             {

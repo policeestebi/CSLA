@@ -1,12 +1,12 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/msp.EstiloBasico/mspContenido.Master"
-    AutoEventWireup="true" CodeBehind="frw_proyectos.aspx.cs" Inherits="CSLA.web.App_pages.mod.ControlSeguimiento.frw_proyectos" %>
+    AutoEventWireup="true" CodeBehind="frw_copiarProyecto.aspx.cs" Inherits="CSLA.web.App_pages.mod.ControlSeguimiento.frw_copiarProyecto" %>
 
 <%@ Register Assembly="COSEVI.web.controls" Namespace="COSEVI.web.controls" TagPrefix="cc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="act" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="tituloPagina" runat="server">
-    Lista de Proyectos
+    Copia de Proyectos
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cuerpoPagina" runat="server">
     <asp:ScriptManager ID="scr_Man" runat="server">
@@ -18,119 +18,9 @@
                 SuppressHeaderPostbacks="true" HeaderCssClass="encabezadoAcordeon" ContentCssClass="contenidoAcordeon"
                 HeaderSelectedCssClass="encabezadoSeleccionadoAcordeon">
                 <Panes>
-                    <act:AccordionPane ID="acp_listadoDatos" runat="server">
-                        <Header>
-                            <a href="" style="color: #FFFFFF; font-size: 12px;">Listado de Proyectos</a>
-                        </Header>
-                        <Content>
-                            <table id="tbl_contenido">
-                                <tr>
-                                    <%-- Contenido de agregado Arriba--%>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <%-- Búsqueda--%>
-                                        <cc1:ucSearch ID="ucSearchProyecto" runat="server" OnSearchClick="ucSearchProyecto_searchClick" />
-                                        <asp:Button ID="btn_agregar" runat="server" Text="Agregar" OnClick="btn_agregar_Click"
-                                            CausesValidation="false" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <%-- Espacio--%>
-                                        <br />
-                                        <br />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <%-- GridView--%>
-                                        <asp:GridView ID="grd_listaProyecto" AllowPaging="True" runat="server" AutoGenerateColumns="False"
-                                            Width="100%" CssClass="Grid" CellSpacing="1" CellPadding="3" OnRowCommand="grd_listaProyecto_RowCommand"
-                                            OnPageIndexChanging="grd_listaProyecto_PageIndexChanging">
-                                            <PagerSettings PageButtonCount="20" />
-                                            <Columns>
-                                                <asp:BoundField DataField="pPK_proyecto" HeaderText="Actividad" SortExpression="pPK_proyecto" />
-                                                <asp:BoundField DataField="pNombre" HeaderText="Nombre" SortExpression="pNombre" />
-                                                <asp:BoundField DataField="pDescripcion" HeaderText="Descripcion" SortExpression="pDescripcion" />
-                                                <asp:BoundField DataField="pObjetivo" HeaderText="Objetivo" SortExpression="pObjetivo" />
-                                                <asp:BoundField DataField="pMeta" HeaderText="Meta" SortExpression="pMeta" />
-                                                <asp:BoundField DataField="pFechaInicio" HeaderText="FechaInicio" SortExpression="pFechaInicio" />
-                                                <asp:BoundField DataField="pFechaFin" HeaderText="FechaFin" SortExpression="pFechaFin" />
-                                                <asp:BoundField DataField="pHorasAsignadas" HeaderText="HorasAsignadas" SortExpression="pHorasAsignadas" />                                               
-                                                <asp:BoundField DataField="pHorasReales" HeaderText="HorasReales" SortExpression="pHorasReales" />
-                                                <asp:BoundField DataField="pDescripcionEstado" HeaderText="Nombre" SortExpression="pDescripcionEstado" />
-                                                <asp:BoundField DataField="pFK_estado" HeaderText="Estado" SortExpression="pFK_estado"
-                                                    Visible="false" ShowHeader="false" />
-                                                <asp:TemplateField>
-                                                    <ItemTemplate>
-                                                        <asp:ImageButton runat="server" ID="btn_ver" CommandName="Ver" CommandArgument='<%# DataBinder.Eval(Container, "RowIndex") %>'
-                                                            CausesValidation="false" ImageUrl="~/App_Themes/Basico/Botones/img_ver.gif" />
-                                                    </ItemTemplate>
-                                                    <ItemStyle Width="1px" />
-                                                </asp:TemplateField>
-                                                <asp:TemplateField>
-                                                    <ItemTemplate>
-                                                        <asp:ImageButton runat="server" ID="btn_editar" CommandName="Editar" CommandArgument='<%# DataBinder.Eval(Container, "RowIndex") %>'
-                                                            CausesValidation="false" ImageUrl="~/App_Themes/Basico/Botones/img_editar.gif" />
-                                                    </ItemTemplate>
-                                                    <ItemStyle Width="1px" />
-                                                </asp:TemplateField>
-                                                <asp:TemplateField>
-                                                    <ItemTemplate>
-                                                        <asp:ImageButton runat="server" ID="btn_eliminar" CommandName="Eliminar" CommandArgument='<%# DataBinder.Eval(Container, "RowIndex") %>'
-                                                            CausesValidation="false" ImageUrl="~/App_Themes/Basico/botones/img_eliminar.gif"
-                                                            OnClientClick="return confirm('¿Está seguro que desea eliminar este registro?');" />
-                                                    </ItemTemplate>
-                                                    <ItemStyle Width="1px" />
-                                                </asp:TemplateField>
-                                                <asp:TemplateField>
-                                                    <ItemTemplate>
-                                                        <asp:ImageButton runat="server" ID="btn_crear" CommandName="Crear" CommandArgument='<%# DataBinder.Eval(Container, "RowIndex") %>'
-                                                            CausesValidation="false" Height="16px" Width="16px" ImageUrl="~/App_Themes/Basico/imagenes/iconos/img_proyecto.png"
-                                                            ToolTip="Crear proyecto" />
-                                                    </ItemTemplate>
-                                                    <ItemStyle Width="1px" />
-                                                </asp:TemplateField>
-                                                <asp:TemplateField>
-                                                    <ItemTemplate>
-                                                        <asp:ImageButton runat="server" ID="btn_asignar" CommandName="Asignar" CommandArgument='<%# DataBinder.Eval(Container, "RowIndex") %>'
-                                                            CausesValidation="false" Height="16px" Width="16px" ImageUrl="~/App_Themes/Basico/imagenes/iconos/img_user.png"
-                                                            ToolTip="Asignación de Actividades" />
-                                                    </ItemTemplate>
-                                                    <ItemStyle Width="1px" />
-                                                </asp:TemplateField>
-                                                <asp:TemplateField>
-                                                    <ItemTemplate>
-                                                        <asp:ImageButton runat="server" ID="btn_copiar" CommandName="Copiar" CommandArgument='<%# DataBinder.Eval(Container, "RowIndex") %>'
-                                                            CausesValidation="false" Height="16px" Width="16px" ImageUrl="~/App_Themes/Basico/imagenes/iconos/img_user.png"
-                                                            ToolTip="Copia de Proyecto" />
-                                                    </ItemTemplate>
-                                                    <ItemStyle Width="1px" />
-                                                </asp:TemplateField>
-                                            </Columns>
-                                            <HeaderStyle CssClass="GridHeader"></HeaderStyle>
-                                            <AlternatingRowStyle CssClass="GridAltItem" />
-                                        </asp:GridView>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <%--Contenido Agregado Abajo --%>
-                                        <table id="tbl_agregado" align="right">
-                                            <tr align="right">
-                                                <td>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </Content>
-                    </act:AccordionPane>
                     <act:AccordionPane ID="acp_edicionDatos" runat="server">
                         <Header>
-                            <a href="" style="color: #FFFFFF; font-size: 12px;">Edici&oacute;n de Proyectos</a>
+                            <a href="" style="color: #FFFFFF; font-size: 12px;">Edici&oacute;n Copia de Proyecto</a>
                         </Header>
                         <Content>
                             <table id="Table1">
@@ -152,7 +42,18 @@
                                     <td>
                                         <%-- GridView o Mantenimiento--%>
                                         <table id="tbl_mantenimiento">
+                                        <tr align="left">
+                                                    <td>
+                                                        <asp:Label ID="lbl_proyecto" runat="server" Text="Proyecto: " Width="90px" ></asp:Label>
+                                                    </td>
+                                                    <td>
+                                                        <asp:TextBox ID="txt_proyecto" runat="server" Width="200px" TextMode="SingleLine" ReadOnly="true"></asp:TextBox>
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                </tr>
                                             <tr align="left">
+                                                
                                                 <tr align="left">
                                                     <td>
                                                         <asp:Label ID="lbl_estado" runat="server" Text="Estado: "></asp:Label>
