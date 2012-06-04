@@ -23,7 +23,7 @@
             $(document).ready(function () {
                 $(".calendarLink").fancybox({
                     'width': '100%',
-                    'height': '47%',
+                    'height': '48%',
                     'autoScale': false,
                     'transitionIn': 'none',
                     'transitionOut': 'none',

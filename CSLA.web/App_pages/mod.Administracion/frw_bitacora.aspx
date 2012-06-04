@@ -212,7 +212,7 @@
             </act:Accordion>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <div class="dialog" title="Bitácora">
+<%--    <div class="dialog" title="Bitácora">
         <p>La fecha inicial debe ser menor a la fecha final.</p>
-    </div>
+    </div>--%>
 </asp:Content>

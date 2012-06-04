@@ -119,7 +119,7 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <!-- Diálogo que muestra que cuando la solicitud ha sido grabada de manera exitosa -->
-   <%--   <div id="dialog" title="Registro de Tiempos">
+   <div id="dialog" title="Registro de Tiempos">
                 <p>Se ha grabado con éxito el registro de tiempos</p>
-      </div>--%>
+      </div>
 </asp:Content>
