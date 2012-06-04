@@ -123,6 +123,78 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Administracion
            }
        }
 
+    /// <summary>
+    /// Método que obtiene la lista
+    /// de la bitácora de manera filtrada.
+    /// </summary>
+    /// <param name="pd_fechaInicial"></param>
+    /// <param name="pd_fechaFinal"></param>
+    /// <param name="ps_usuarioDesde"></param>
+    /// <param name="ps_usuarioHasta"></param>
+    /// <param name="ps_accion"></param>
+    /// <param name="ps_tabla"></param>
+    /// <param name="ps_registro"></param>
+    /// <returns></returns>
+       public static List<cls_bitacora> listarBitacoraFiltro
+           (
+                DateTime pd_fechaInicial,
+               DateTime pd_fechaFinal,
+               string ps_usuarioDesde,
+               string ps_usuarioHasta,
+               string ps_accion,
+               string ps_tabla,
+               string ps_registro
+           )
+       {
+           List<cls_bitacora> vo_lista = null;
+           cls_bitacora poBitacora = null;
+           try
+           {
+               String vs_comando = "PA_admi_bitacoraSelectFiltro";
+               cls_parameter[] vu_parametros = { 
+                                                   new cls_parameter("@paramfechaInicio",  pd_fechaInicial),
+                                                   new cls_parameter("@paramfechaFinal",  pd_fechaFinal),
+                                                   new cls_parameter("@paramUsuarioDesde ",  ps_usuarioDesde),
+                                                   new cls_parameter("@paramUsuarioHasta ",  ps_usuarioHasta),
+                                                   new cls_parameter("@paramTabla",  ps_tabla),
+                                                   new cls_parameter("@paramAccion",  ps_accion),
+                                                   new cls_parameter("@paramRegistro",  ps_registro)
+                                               };
+
+               DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
+
+               vo_lista = new List<cls_bitacora>();
+               for (int i = 0; i < vu_dataSet.Tables[0].Rows.Count; i++)
+               {
+                   poBitacora = new cls_bitacora();
+
+                   poBitacora.pPK_bitacora = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["PK_bitacora"]);
+
+                   poBitacora.pFK_departamento = Convert.IsDBNull(vu_dataSet.Tables[0].Rows[i]["FK_departamento"]) ? 1 : Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["FK_departamento"]);
+
+                   poBitacora.pFK_usuario = vu_dataSet.Tables[0].Rows[i]["FK_usuario"].ToString();
+
+                   poBitacora.pAccion = vu_dataSet.Tables[0].Rows[i]["accion"].ToString();
+
+                   poBitacora.pFechaAccion = Convert.ToDateTime(vu_dataSet.Tables[0].Rows[i]["fecha_accion"]);
+
+                   poBitacora.pNumeroRegistro = vu_dataSet.Tables[0].Rows[i]["numero_registro"].ToString();
+
+                   poBitacora.pTabla = vu_dataSet.Tables[0].Rows[i]["tabla"].ToString();
+
+                   poBitacora.pMaquina = vu_dataSet.Tables[0].Rows[i]["maquina"].ToString();
+
+                   vo_lista.Add(poBitacora);
+               }
+
+               return vo_lista;
+           }
+           catch (Exception po_exception)
+           {
+               throw new Exception("Ocurrió un error al obtener el listado de la bitácora.", po_exception);
+           }
+       }
+
        /// <summary>
        /// Método que permite seleccionar  
        /// un único registro en la tabla bitacora

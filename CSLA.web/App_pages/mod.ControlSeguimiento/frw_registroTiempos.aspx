@@ -2,6 +2,28 @@
     AutoEventWireup="true" CodeBehind="frw_registroTiempos.aspx.cs" Inherits="CSLA.web.App_pages.mod.ControlSeguimiento.frm_registroTiempos" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+
+<script type="text/javascript">
+
+    function MostrarMensaje() {
+        $(function(){
+            $('#dialog').dialog('open');
+        }); 
+    }
+
+    $(function(){
+        $('#dialog').dialog({
+            autoOpen: false,
+            buttons: {
+                "Ok": function () {
+                    $(this).dialog("close");
+                }
+            },
+            modal: true
+        });
+    }); 
+</script>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="tituloPagina" runat="server">
     Registro de Tiempos
@@ -93,6 +115,11 @@
                     </table>
                 </div>
             </div>
+          
         </ContentTemplate>
     </asp:UpdatePanel>
+    <!-- Diálogo que muestra que cuando la solicitud ha sido grabada de manera exitosa -->
+   <%--   <div id="dialog" title="Registro de Tiempos">
+                <p>Se ha grabado con éxito el registro de tiempos</p>
+      </div>--%>
 </asp:Content>

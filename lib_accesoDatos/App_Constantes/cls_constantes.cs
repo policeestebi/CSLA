@@ -49,4 +49,41 @@ namespace COSEVI.CSLA.lib.accesoDatos.App_Constantes
         public const int CODIGO_INVALIDO = -1;
 
     }
+
+    public enum Accion
+    {
+        Insertar,
+        Modificar,
+        Eliminar,
+        Login,
+        Logoff
+    }
+
+    public enum Tablas
+    {
+        t_admi_permiso,
+        t_admi_rol,
+        t_admi_menu,
+        t_cont_componente,
+        t_cont_entregable,
+        t_cont_estado,
+        t_cont_paquete,
+        t_admi_consecutivo,
+        t_admi_departamento,
+        t_admi_pagina,
+        t_admi_pagina_permiso,
+        t_admi_rol_pagina_permiso,
+        t_admi_usuario,
+        t_cont_actividad,
+        t_admi_bitacora,
+        t_cont_entregable_componente,
+        t_cont_proyecto_entregable,
+        t_cont_componente_paquete,
+        t_cont_departamento_proyecto,
+        t_cont_operacion,
+        t_cont_asignacion_actividad,
+        t_cont_asignacion_operacion,
+        t_cont_registro_operacion,
+        t_cont_registro_actividad
+    }
 }

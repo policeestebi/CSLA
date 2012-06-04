@@ -27,9 +27,25 @@ namespace CSLA.web.App_Constantes
         //Constantes de la sesion
         public const string PAGINA = "vo_pagina";
 
+        /// <summary>
+        /// Constante que se utiliza para
+        /// obtener el Key en el web.config
+        /// con la dirección URL.
+        /// </summary>
         public const String URLKEY =  "URL";
 
-        public static String SCRIPTLOGOUT = String.Format("top.location = '{0}'",ConfigurationManager.AppSettings[URLKEY]);
+        /// <summary>
+        /// Script que se utiliza
+        /// para salir al login cuando 
+        /// se validan las páginas.
+        /// </summary>
+        public static String SCRIPTLOGOUT = String.Format("top.location = '{0}';",ConfigurationManager.AppSettings[URLKEY]);
+
+        /// <summary>
+        /// Constante que se utiliza para determinar el folder
+        /// en donde se ubican todas las páginas del sistema.
+        /// </summary>
+        public const String FOLDER_PAGES = "App_pages";
 
     }
 }

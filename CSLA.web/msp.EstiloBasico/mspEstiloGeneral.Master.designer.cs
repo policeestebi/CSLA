@@ -22,6 +22,15 @@ namespace CSLA.web.msp.EstiloBasico {
         protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
         
         /// <summary>
+        /// jquery control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder jquery;
+        
+        /// <summary>
         /// head control.
         /// </summary>
         /// <remarks>
@@ -49,6 +58,15 @@ namespace CSLA.web.msp.EstiloBasico {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentPlaceHolder2;
         
         /// <summary>
+        /// ContentPlaceHolder3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentPlaceHolder3;
+        
+        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>
@@ -74,6 +92,15 @@ namespace CSLA.web.msp.EstiloBasico {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbl_fecha;
+        
+        /// <summary>
+        /// hpl_acerca control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hpl_acerca;
         
         /// <summary>
         /// hpl_usuario control.

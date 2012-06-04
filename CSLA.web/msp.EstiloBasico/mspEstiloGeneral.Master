@@ -8,14 +8,15 @@
     <title>COSEVI-CSLA</title>
     <link href="../App_Themes/Basico/css/reset_style.css" type="text/css" rel="stylesheet" />
     <link href="../App_Themes/Basico/css/principal_style.css" type="text/css" rel="stylesheet" />
-  <link type="text/css" href="../App_Themes/Basico/css/menu.css" rel="stylesheet" />
-<%--    <script type="text/javascript" src="../App_Themes/Basico/js/jquery.js"></script>
-    <script type="text/javascript" src="../App_Themes/Basico/js/js.js"></script>
-    <script type="text/javascript" src="../App_Themes/Basico/js/menu.js"></script>--%>
-    <asp:ContentPlaceHolder ID="head" runat="server">
+    <link type="text/css" href="../App_Themes/Basico/css/menu.css" rel="stylesheet" />
+    <link rel="Stylesheet" type="text/css" href="../App_Themes/Basico/css/jquery.fancybox.css"
+        media="screen" />
+    <asp:ContentPlaceHolder ID="jquery" runat="server">
         <script src="<%=Page.ResolveUrl("~/App_Themes/Basico/js/jquery.js") %>" language="javascript"
             type="text/javascript">
         </script>
+    </asp:ContentPlaceHolder>
+    <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
         <script src="<%=Page.ResolveUrl("~/App_Themes/Basico/js/js.js") %>" language="javascript"
@@ -27,6 +28,32 @@
             type="text/javascript">
         </script>
     </asp:ContentPlaceHolder>
+    <asp:ContentPlaceHolder ID="ContentPlaceHolder3" runat="server">
+        <script src="<%=Page.ResolveUrl("~/App_Themes/Basico/js/jquery.fancybox.pack.js") %>"
+            language="javascript" type="text/javascript">
+        </script>
+    </asp:ContentPlaceHolder>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            Load();
+        });
+
+        function Load() {
+
+            $(function () {
+                $(".about").fancybox({
+                    'width': 550,
+                    'height': 200,
+                    'autoScale': false,
+                    'transitionIn': 'none',
+                    'transitionOut': 'none',
+                    'type': 'iframe',
+                    'closeBtn': true
+                });
+            });
+        }
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -51,13 +78,16 @@
                     <div id="usuario">
                         <div id="fecha">
                             <asp:Label ID="lbl_fecha" runat="server" Text=""></asp:Label>
+                            <br />
+                            <asp:HyperLink ID="hpl_acerca" runat="server" Text="Acerce de CSLA" CssClass="about"
+                                NavigateUrl="../App_pages/frw_acerdaDe.aspx"></asp:HyperLink>
                         </div>
                         <div id="usuario_login">
-                            <asp:HyperLink ID="hpl_usuario"  runat="server" Visible="false"></asp:HyperLink> 
+                            <asp:HyperLink ID="hpl_usuario" runat="server" Visible="false"></asp:HyperLink>
                             &nbsp
                             <asp:Label ID="lbl_separador" runat="server" Text="|"></asp:Label>
                             &nbsp
-                            <asp:HyperLink  ID="hpl_logOut" NavigateUrl="../Default.aspx" runat="server" Visible="false">Salir</asp:HyperLink>
+                            <asp:HyperLink ID="hpl_logOut" NavigateUrl="../Default.aspx" runat="server" Visible="false">Salir</asp:HyperLink>
                         </div>
                     </div>
                 </div>
@@ -120,13 +150,14 @@
             </ul>
         </div>--%>
             </asp:ContentPlaceHolder>
-            <div id="Loading" style="padding: 10px; margin: 10px; vertical-align: middle; display:none" align="center">
+            <div id="Loading" style="padding: 10px; margin: 10px; vertical-align: middle; display: none"
+                align="center">
                 <table>
                     <tr>
                         <td align="center" valign="middle">
                             <br />
                             <br />
-                            <img  alt="loading" id="Img1" src="../App_Themes/Basico/imagenes/iconos/loading.gif" />
+                            <img alt="loading" id="Img1" src="../App_Themes/Basico/imagenes/iconos/loading.gif" />
                         </td>
                     </tr>
                 </table>
@@ -156,7 +187,7 @@
         </div>
         <div id="copyright" style="display: none">
             <a href="http://apycom.com/">Apycom jQuery Menus</a>
-         </div>
+        </div>
     </div>
     </form>
 </body>

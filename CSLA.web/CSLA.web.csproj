@@ -64,6 +64,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_pages\frw_acerdaDe.aspx" />
     <Content Include="App_pages\frw_bienvenidad.aspx" />
     <Content Include="App_pages\mod.ControlSeguimiento\frw_asignacionActividad.aspx" />
     <Content Include="App_pages\mod.ControlSeguimiento\frw_calendario.aspx" />
@@ -72,6 +73,7 @@
     <Content Include="App_pages\mod.ControlSeguimiento\frw_registroTiempos.aspx" />
     <Content Include="App_pages\mod.Reportes\frw_rep_registroTiempos.aspx" />
     <Content Include="App_Themes\Basico\css\common.css" />
+    <Content Include="App_Themes\Basico\css\jquery-ui.css" />
     <Content Include="App_Themes\Basico\css\jquery.fancybox.css" />
     <Content Include="App_Themes\Basico\imagenes\fancybox\blank.gif" />
     <Content Include="App_Themes\Basico\imagenes\fancybox\fancybox-x.png" />
@@ -96,6 +98,21 @@
     <Content Include="App_Themes\Basico\imagenes\iconos\img_previous.png" />
     <Content Include="App_Themes\Basico\imagenes\iconos\img_proyecto.png" />
     <Content Include="App_Themes\Basico\imagenes\iconos\img_user.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-icons_222222_256x240.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-icons_228ef1_256x240.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-icons_ef8c08_256x240.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-icons_ffd27a_256x240.png" />
+    <Content Include="App_Themes\Basico\imagenes\jui\ui-icons_ffffff_256x240.png" />
+    <Content Include="App_Themes\Basico\js\jquery-ui.min.js" />
     <Content Include="App_Themes\Basico\js\jquery.fancybox.js" />
     <Content Include="App_Themes\Basico\js\jquery.fancybox.pack.js" />
     <Content Include="frw_error.aspx" />
@@ -125,6 +142,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Constantes\cls_util.cs" />
+    <Compile Include="App_pages\frw_acerdaDe.aspx.cs">
+      <DependentUpon>frw_acerdaDe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="App_pages\frw_acerdaDe.aspx.designer.cs">
+      <DependentUpon>frw_acerdaDe.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_pages\frw_bienvenidad.aspx.cs">
       <DependentUpon>frw_bienvenidad.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

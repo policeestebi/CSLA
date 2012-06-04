@@ -623,7 +623,7 @@ namespace CSLA.web.App_pages.mod.Administracion
 
             try
             {
-                lsUrl = "#.." + HttpContext.Current.Request.Url.AbsolutePath;
+                lsUrl = "#" + cls_util.ObtenerDireccion(HttpContext.Current.Request.Url.AbsolutePath.Remove(0, 1));
 
                 Session[cls_constantes.PAGINA] = cls_gestorPagina.obtenerPermisoPaginaRol(lsUrl, ((cls_usuario)this.Session["cls_usuario"]).pFK_rol);
 

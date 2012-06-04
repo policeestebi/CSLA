@@ -16,6 +16,7 @@ using COSEVI.CSLA.lib.accesoDatos.mod.Administracion;
 using CSLA.web.App_Variables;
 using CSLA.web.App_Constantes;
 
+
 using COSEVI.lib.Security;
 
 // =========================================================================
@@ -300,7 +301,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 this.Session.Abandon();
                 this.Session.Clear();
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", cls_constantes.SCRIPTLOGOUT, true);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida",  cls_constantes.SCRIPTLOGOUT, true);
             }
         }
 
@@ -344,7 +345,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
-                lsUrl = "#.." + HttpContext.Current.Request.Url.AbsolutePath;
+                lsUrl = "#" + cls_util.ObtenerDireccion(HttpContext.Current.Request.Url.AbsolutePath.Remove(0, 1));
 
                 Session[cls_constantes.PAGINA] = cls_gestorPagina.obtenerPermisoPaginaRol(lsUrl, ((cls_usuario)this.Session["cls_usuario"]).pFK_rol);
 

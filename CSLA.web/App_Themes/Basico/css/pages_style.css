@@ -659,3 +659,18 @@ div.tdCalendar td
 {
     padding:0px;
 }
+
+div.filter
+{
+    border:1px solid;
+    padding:5px;
+    margin:2px auto;
+}
+
+div.filter table
+{
+    height:65px;
+    margin: 0 auto;
+}
+
+

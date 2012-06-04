@@ -23,7 +23,7 @@
             $(document).ready(function () {
                 $(".calendarLink").fancybox({
                     'width': '100%',
-                    'height': '100%',
+                    'height': '47%',
                     'autoScale': false,
                     'transitionIn': 'none',
                     'transitionOut': 'none',
@@ -58,8 +58,8 @@
             <div class="calendarContainer">
                 <cc1:ucCalendar runat="server" ID="calendario" Css="calendar" CssHeader="calendarHeader"
                     CssDays="days" CssCalendarRow="calendarRow" CssLink="calendarLink" CssBotonImprevisto="imprevisto"
-                    UrlLink="frw_registroTiempos.aspx" UrlImprevisto="frw_operaciones.aspx" UrlSiguiente="/App_Themes/Basico/imagenes/iconos/img_siguiente.png"
-                    UrlAnterior="/App_Themes/Basico/imagenes/iconos/img_anterior.png" UrlBotonCalendario="/App_Themes/Basico/botones/img_calendario.png"
+                    UrlLink="frw_registroTiempos.aspx" UrlImprevisto="frw_operaciones.aspx" UrlSiguiente="../../App_Themes/Basico/imagenes/iconos/img_siguiente.png"
+                    UrlAnterior="../../App_Themes/Basico/imagenes/iconos/img_anterior.png" UrlBotonCalendario="/App_Themes/Basico/botones/img_calendario.png"
                     OnvoCambioFecha="Unnamed1_voCambioFecha" DataTextFieldProyecto="nombre" DataValueFieldProyecto="PK_proyecto"
                     CodigoActividadField="PK_codigo" DescripcionField="descripcion" FechaField="fecha"
                     TipoField="tipo" RegistroField="PK_registro" HorasField="horas" 

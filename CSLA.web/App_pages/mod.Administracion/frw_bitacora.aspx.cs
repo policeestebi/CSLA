@@ -7,9 +7,11 @@ using System.Web.UI.WebControls;
 
 
 using COSEVI.CSLA.lib.accesoDatos.App_InterfaceComunes;
+using CONS = COSEVI.CSLA.lib.accesoDatos.App_Constantes;
 using ExceptionManagement.Exceptions;
 using COSEVI.CSLA.lib.entidades.mod.Administracion;
 using COSEVI.CSLA.lib.accesoDatos.mod.Administracion;
+
 
 using CSLA.web.App_Variables;
 using CSLA.web.App_Constantes;
@@ -63,6 +65,13 @@ namespace CSLA.web.App_pages.mod.Administracion
                     this.cargarPermisos();
 
                     this.llenarGridView();
+                    this.llenarCombosUsuario();
+                    this.llenarComboTabla();
+                    this.llenarComboAccion();
+
+                    this.txt_fechaInicio.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                    this.txt_fechaFinal.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+
                 }
                 catch (Exception po_exception)
                 {
@@ -99,11 +108,13 @@ namespace CSLA.web.App_pages.mod.Administracion
         {
             try
             {
-                this.btn_agregar = (Button)acp_listadoDatos.FindControl("btn_agregar");
-                this.ucSearchBitacora.SearchClick += new COSEVI.web.controls.ucSearch.searchClick(this.ucSearchBitacora_searchClick);
-
+                //this.btn_agregar = (Button)acp_listadoDatos.FindControl("btn_agregar");
+                //this.ucSearchBitacora.SearchClick += new COSEVI.web.controls.ucSearch.searchClick(this.ucSearchBitacora_searchClick);
+                this.grd_listaBitacora = (GridView)acp_listadoDatos.FindControl("grd_listaBitacora");
+                this.ddl_desde = (DropDownList)acp_listadoDatos.FindControl("ddl_desde");
+                this.ddl_hasta = (DropDownList)acp_listadoDatos.FindControl("ddl_hasta");
                 //Se agregan los filtros.
-                this.agregarItemListFiltro();
+                //this.agregarItemListFiltro();
 
             }
             catch (Exception po_exception)
@@ -119,19 +130,134 @@ namespace CSLA.web.App_pages.mod.Administracion
         private void agregarItemListFiltro()
         {
 
-            this.ucSearchBitacora.LstCollecction.Add(new ListItem("Bitacora", "PK_bitacora"));
-            this.ucSearchBitacora.LstCollecction.Add(new ListItem("Departamento", "FK_departamento"));
-            this.ucSearchBitacora.LstCollecction.Add(new ListItem("Usuario", "FK_usuario"));
-            this.ucSearchBitacora.LstCollecction.Add(new ListItem("Accion", "accion"));
-            this.ucSearchBitacora.LstCollecction.Add(new ListItem("Fecha", "fecha_accion"));
-            this.ucSearchBitacora.LstCollecction.Add(new ListItem("Numero", "numero_registro"));
-            this.ucSearchBitacora.LstCollecction.Add(new ListItem("Tabla", "tabla"));
-            this.ucSearchBitacora.LstCollecction.Add(new ListItem("Maquina", "maquina"));
+            //this.ucSearchBitacora.LstCollecction.Add(new ListItem("Bitacora", "PK_bitacora"));
+            //this.ucSearchBitacora.LstCollecction.Add(new ListItem("Departamento", "FK_departamento"));
+            //this.ucSearchBitacora.LstCollecction.Add(new ListItem("Usuario", "FK_usuario"));
+            //this.ucSearchBitacora.LstCollecction.Add(new ListItem("Accion", "accion"));
+            //this.ucSearchBitacora.LstCollecction.Add(new ListItem("Fecha", "fecha_accion"));
+            //this.ucSearchBitacora.LstCollecction.Add(new ListItem("Numero", "numero_registro"));
+            //this.ucSearchBitacora.LstCollecction.Add(new ListItem("Tabla", "tabla"));
+            //this.ucSearchBitacora.LstCollecction.Add(new ListItem("Maquina", "maquina"));
         }
 
         #endregion
 
         #region Métodos
+        /// <summary>
+        /// Valida los datos de los filtros.
+        /// </summary>
+        /// <returns></returns>
+        public bool validarDatos()
+        {
+            bool resultado = true;
+
+            if (Convert.ToDateTime(this.txt_fechaInicio.Text) > Convert.ToDateTime(this.txt_fechaFinal.Text))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Mensaje", "MostrarMensaje();", true);
+
+                resultado = false;
+            }
+
+            return resultado;
+        }
+
+        /// <summary>
+        /// Método que filtra la bitácora
+        /// </summary>
+        private void filtrarBitacora()
+        {
+            if (this.validarDatos())
+            {
+
+                DateTime vd_fechaInicio = Convert.ToDateTime(this.txt_fechaInicio.Text);
+                DateTime vd_fechaFinal = Convert.ToDateTime(this.txt_fechaFinal.Text);
+                string usuarioDesde = this.ddl_desde.SelectedIndex == 0 ? "A" : this.ddl_desde.SelectedValue;
+                string usuarioHasta = this.ddl_hasta.SelectedIndex == 0 ? "Z" : this.ddl_hasta.SelectedValue;
+                string tabla = "%" + this.ddl_table.SelectedValue + "%";
+                string accion = "%" + this.ddl_accion.SelectedValue + "%";
+                string registro = "%" + this.txt_registro.Text + "%";
+
+                this.grd_listaBitacora.DataSource = cls_gestorBitacora.listarBitacoraFiltro(vd_fechaInicio,
+                                                                                            vd_fechaFinal,
+                                                                                            usuarioDesde,
+                                                                                            usuarioHasta,
+                                                                                            accion,
+                                                                                            tabla, registro);
+                this.grd_listaBitacora.DataBind();
+            }
+
+        }
+
+        /// <summary>
+        /// Método que se encarga de
+        /// llenar la información 
+        /// del filtro de acciones.
+        /// </summary>
+        private void llenarComboAccion()
+        {
+            try
+            {
+                this.ddl_accion.Items.Clear();
+
+                foreach (int value in Enum.GetValues(typeof(CONS.Accion)))
+                {
+                    this.ddl_accion.Items.Add(new ListItem(Enum.GetName(typeof(CONS.Accion), value), Enum.GetName(typeof(CONS.Accion), value)));
+                }
+                this.ddl_accion.Items.Insert(0, new ListItem("<Seleccione>", ""));
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al llenar el filtro de acciones.", po_exception);
+            }
+        }
+
+        /// <summary>
+        /// Método que se encarga de
+        /// llenar la información 
+        /// del filtro de tablas.
+        /// </summary>
+        private void llenarComboTabla()
+        {
+            try
+            {
+                this.ddl_table.Items.Clear();
+
+                foreach (int value in Enum.GetValues(typeof(CONS.Tablas)))
+                {
+                    this.ddl_table.Items.Add(new ListItem(Enum.GetName(typeof(CONS.Tablas), value), Enum.GetName(typeof(CONS.Tablas), value)));
+                }
+                this.ddl_table.Items.Insert(0, new ListItem("<Seleccione>", ""));
+
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al llenar el filtro de tablas.", po_exception);
+            }
+        }
+
+        /// <summary>
+        /// Método que se encarga de 
+        /// llenar la información
+        /// del filtro de empleados.
+        /// </summary>
+        private void llenarCombosUsuario()
+        {
+            try
+            {
+                this.ddl_desde.DataSource = cls_gestorUsuario.listarUsuarios();
+                this.ddl_desde.DataBind();
+                this.ddl_hasta.DataSource = cls_gestorUsuario.listarUsuarios();
+                this.ddl_hasta.DataBind();
+
+                this.ddl_desde.Items.Insert(0,new ListItem("<Seleccione>",""));
+                this.ddl_hasta.Items.Insert(0, new ListItem("<Seleccione>", ""));
+
+            }
+            catch(Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al llenar los filtros de usuarios.", po_exception);
+            }
+        }
 
         /// <summary>
         /// Método que se encarga de 
@@ -204,6 +330,24 @@ namespace CSLA.web.App_pages.mod.Administracion
         #endregion
 
         #region Eventos
+        /// <summary>
+        /// Evento que se ejecuta
+        /// cuando se da click al botón de buscar.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btn_buscar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.filtrarBitacora();
+            }
+            catch (Exception po_exception)
+            {
+                this.lanzarExcepcion(po_exception, "Error al filtrar la información de la bitácora.");
+            }
+
+        }
 
         /// <summary>
         /// Busca un rol según el filtro.
@@ -214,7 +358,7 @@ namespace CSLA.web.App_pages.mod.Administracion
         /// <param name="seletecItem"></param>
         protected void ucSearchBitacora_searchClick(object sender, EventArgs e, string value, ListItem seletecItem)
         {
-            this.llenarGridViewFilter(this.ucSearchBitacora.Filter); 
+            //this.llenarGridViewFilter(this.ucSearchBitacora.Filter); 
 
         }
 
@@ -253,7 +397,7 @@ namespace CSLA.web.App_pages.mod.Administracion
             try
             {          
                 this.grd_listaBitacora.PageIndex = e.NewPageIndex;
-                this.llenarGridView();
+                this.filtrarBitacora();
                 this.upd_Principal.Update();
             }
             catch (Exception po_exception)
@@ -266,6 +410,8 @@ namespace CSLA.web.App_pages.mod.Administracion
         #endregion
 
         #region Seguridad
+
+       
 
         /// <summary>
         /// Valida si el usuario
@@ -323,7 +469,7 @@ namespace CSLA.web.App_pages.mod.Administracion
 
             try
             {
-                lsUrl = "#.." + HttpContext.Current.Request.Url.AbsolutePath;
+                lsUrl = "#" + cls_util.ObtenerDireccion(HttpContext.Current.Request.Url.AbsolutePath.Remove(0, 1));
 
                 Session[cls_constantes.PAGINA] = cls_gestorPagina.obtenerPermisoPaginaRol(lsUrl, ((cls_usuario)this.Session["cls_usuario"]).pFK_rol);
 
@@ -343,6 +489,8 @@ namespace CSLA.web.App_pages.mod.Administracion
         }
 
         #endregion
+
+       
 
     }
 }

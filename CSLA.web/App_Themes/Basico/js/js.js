@@ -61,7 +61,7 @@ function OnError(args) {
 $(document).ready(function () {
 
     //var href = '/App_pages/mod.Administracion/frw_permisos.aspx'
-    var href = '/App_pages/mod.ControlSeguimiento/frw_calendario.aspx'
+    var href = 'App_pages/mod.ControlSeguimiento/frw_calendario.aspx'
 
     loadPage(href, '', 750);
 

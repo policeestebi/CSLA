@@ -314,7 +314,6 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
         #endregion
 
-
         #region Eventos
 
         /// <summary>
@@ -359,15 +358,8 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
                     }
                 }
 
-                StringBuilder script = new StringBuilder();
-
-                script.Append("<script> alert(\"Se ha grabado con éxito el registro de tiempos\"); </script>");
-
-                ClientScript.RegisterClientScriptBlock(GetType(), "Grabado", script.ToString(), false);
-
-                //ClientScript.RegisterStartupScript(GetType(), "Grabado",
-                //    "<script> alert('Se ha grabado con éxito el registro de tiempos'); </script>"
-                //    , false);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "MostrarMensaje();", true);
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Salida", "alert(\"Se ha grabado con éxito el registro de tiempos\");", true);
             }
             catch (Exception po_excepciones) 
             {
@@ -477,7 +469,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
             try
             {
-                lsUrl = "#.." + HttpContext.Current.Request.Url.AbsolutePath;
+                lsUrl = "#" + cls_util.ObtenerDireccion(HttpContext.Current.Request.Url.AbsolutePath.Remove(0, 1));
 
                 Session[cls_constantes.PAGINA] = cls_gestorPagina.obtenerPermisoPaginaRol(lsUrl, ((cls_usuario)this.Session["cls_usuario"]).pFK_rol);
 

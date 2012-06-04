@@ -6,10 +6,17 @@
 <head id="Head1" runat="server">
     <link rel="Stylesheet" type="text/css" href="../App_Themes/Basico/css/pages_style.css"
         media="screen" />
-    <link rel="Stylesheet" type="text/css" href="../App_Themes/Basico/css/jquery.fancybox.css"
+    <link rel="Stylesheet" type="text/css" href="../App_Themes/Basico/css/jquery-ui.css"
+        media="screen" />
+        <link rel="Stylesheet" type="text/css" href="../App_Themes/Basico/css/jquery.fancybox.css"
         media="screen" />
     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
         <script src="<%=Page.ResolveUrl("~/App_Themes/Basico/js/jquery.js") %>" language="javascript"
+            type="text/javascript">
+        </script>
+    </asp:ContentPlaceHolder>
+    <asp:ContentPlaceHolder ID="ContentPlaceHolder3" runat="server">
+        <script src="<%=Page.ResolveUrl("~/App_Themes/Basico/js/jquery-ui.min.js") %>" language="javascript"
             type="text/javascript">
         </script>
     </asp:ContentPlaceHolder>

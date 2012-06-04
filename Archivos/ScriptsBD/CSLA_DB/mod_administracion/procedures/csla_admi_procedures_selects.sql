@@ -466,3 +466,45 @@ BEGIN
 		pa.url = @paramPagina
 END  
 GO 
+
+    IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_admi_bitacoraSelectFiltro]'))
+DROP PROCEDURE [dbo].[PA_admi_bitacoraSelectFiltro]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Generador
+-- Fecha Creación:	03-06-2012
+-- Fecha Actulización: 03-06-2012
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_admi_bitacoraSelectFiltro
+	@paramfechaInicio DateTime, 
+	@paramfechaFinal DateTime,
+	@paramUsuarioDesde Varchar(30),
+	@paramUsuarioHasta Varchar(30),
+	@paramTabla VARCHAR(MAX),
+	@paramAccion VARCHAR(MAX),
+	@paramRegistro VARCHAR(MAX)
+AS 
+BEGIN 
+		SELECT 
+         PK_bitacora,
+         FK_departamento,
+         FK_usuario,
+         accion,
+         fecha_accion,
+         numero_registro,
+         tabla,
+         maquina
+        FROM t_admi_bitacora
+        WHERE
+			fecha_accion BETWEEN @paramfechaInicio AND @paramfechaFinal AND
+			FK_usuario >=  @paramUsuarioDesde AND FK_usuario <= @paramUsuarioHasta AND
+			tabla LIKE @paramTabla AND
+			accion LIKE @paramAccion AND 
+			numero_registro LIKE @paramRegistro
+END  
+ GO 
