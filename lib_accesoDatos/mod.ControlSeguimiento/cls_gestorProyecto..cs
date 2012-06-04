@@ -483,5 +483,43 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
            return vu_dataSet;
        }
 
+       /// <summary>
+       /// Método que permite insertar 
+       /// un nuevo registro en la tabla Proyecto tomando como base uno ya existente
+       /// </summary>
+       /// <param name="poProyecto">Proyecto a insertar</param>
+       /// <returns>Int valor del resultado de la ejecución de la sentencia</returns>
+       public static int insertProyectoCopia(int pi_proyectoNuevo, int pi_proyectoOriginal)
+       {
+           int vi_resultado;
+
+           try
+           {
+               String vs_comando = "PA_cont_proyectoCopiaInsert";
+               cls_parameter[] vu_parametros = 
+                {                    
+                        new cls_parameter("@paramPK_proyectoNuevo", pi_proyectoNuevo),
+                        new cls_parameter("@paramPK_proyectoOriginal", pi_proyectoOriginal)
+                };
+
+               cls_sqlDatabase.beginTransaction();
+
+               vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
+
+               cls_interface.insertarTransacccionBitacora(cls_constantes.INSERTAR, cls_constantes.PROYECTO_COPIA, pi_proyectoNuevo.ToString());
+
+               cls_sqlDatabase.commitTransaction();
+
+               return vi_resultado;
+
+           }
+           catch (Exception po_exception)
+           {
+               cls_sqlDatabase.rollbackTransaction();
+               throw new Exception("Ocurrió un error al insertar en las tablas correspondientes para la copia del proyecto.", po_exception);
+           }
+
+       }
+
     }
 }

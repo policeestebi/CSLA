@@ -17,6 +17,7 @@ namespace CSLA.web.App_Constantes
         public const String CAMBIAR = "Cambiar";
         public const String CREAR= "Crear";
         public const String ASIGNAR = "Asignar";
+        public const String COPIAR = "Copiar";
 
 
         //Parámetros para las urls

@@ -165,7 +165,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 //Se ponen visibles las columas de llave del proyecto y estado, esto para el binding, luego se ocultan de nuevo
                 this.grd_listaProyecto.Columns[0].Visible = true;
+<<<<<<< HEAD
+                this.grd_listaProyecto.Columns[10].Visible = true;
+=======
                 //this.grd_listaProyecto.Columns[12].Visible = true;
+>>>>>>> db82208f0a3b66a6e123fe05106fff536778f8d9
 
                 //El datasource del gridview es el listado de proyectos
                 this.grd_listaProyecto.DataSource = cls_gestorProyecto.listarProyectos();
@@ -178,7 +182,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 //Se ponen invisibles las columas de llave del proyecto y estado
                 this.grd_listaProyecto.Columns[0].Visible = false;
+<<<<<<< HEAD
+                this.grd_listaProyecto.Columns[10].Visible = false;
+=======
                 //this.grd_listaProyecto.Columns[12].Visible = false;
+>>>>>>> db82208f0a3b66a6e123fe05106fff536778f8d9
 
             }
             catch (Exception po_exception)
@@ -197,7 +205,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             {
                 //Se ponen visibles las columas de llave del proyecto y estado, esto para el binding, luego se ocultan de nuevo
                 this.grd_listaProyecto.Columns[0].Visible = true;
+<<<<<<< HEAD
+                this.grd_listaProyecto.Columns[10].Visible = true;
+=======
                 //this.grd_listaProyecto.Columns[12].Visible = true;
+>>>>>>> db82208f0a3b66a6e123fe05106fff536778f8d9
 
                 //El datasource del gridview es el listado de proyectos pero ya con el filtro asignado
                 this.grd_listaProyecto.DataSource = cls_gestorProyecto.listarProyectoFiltro(psFilter);
@@ -206,7 +218,11 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                 //Se ponen invisibles las columas de llave del proyecto y estado
                 this.grd_listaProyecto.Columns[0].Visible = false;
+<<<<<<< HEAD
+                this.grd_listaProyecto.Columns[10].Visible = false;
+=======
                 //this.grd_listaProyecto.Columns[12].Visible = false;
+>>>>>>> db82208f0a3b66a6e123fe05106fff536778f8d9
 
             }
             catch (Exception po_exception)
@@ -595,6 +611,23 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
 
         /// <summary>
+        /// Método que obtiene el código del proyecto actual y lo carga en la variable estática del sistema que mantiene la instancia del registro
+        /// </summary>
+        /// <param name="po_proyecto"></param>
+        private void cargarProyectoCopia(cls_proyecto po_proyecto)
+        {
+            try
+            {
+                cls_variablesSistema.vs_proyecto = po_proyecto;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al cargar el proyecto en la varible del sistema para la copia.", po_exception);
+            }
+
+        }
+
+        /// <summary>
         /// Método que lanza la excepción personalizada
         /// </summary>
         /// <param name="po_exception">Excepción a levantar</param>
@@ -854,6 +887,19 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
 
                         break;
 
+                    case cls_constantes.COPIAR:
+
+                        //Se limpia la variable de sistema que mantiene los departamentos proyectos para inmediatamente después comprobar si hubieron cambios o no
+                        limpiarVariablesSistema();
+
+                        //Se envía a cargar el atributo estático de cls_variablesSistema que mantiene el proyecto
+                        cargarProyectoCopia(vo_proyecto);
+
+                        //Se envía a la página de creación de proyectos
+                        Response.Redirect("frw_copiarProyecto.aspx", false);
+
+                        break;
+
                     default:
                         break;
                 }
@@ -885,7 +931,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
         }
         #endregion
 
-        #region Creación
+        #region Asignación Departamento
 
         /// <summary>
         /// Evento para asignar departamentos a un proyecto
@@ -939,7 +985,7 @@ namespace CSLA.web.App_pages.mod.ControlSeguimiento
             }
         }
 
-        #endregion Creación
+        #endregion Asignación Departamento
 
         #region Seguridad
 
