@@ -49,6 +49,9 @@
     <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web.DataVisualization, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="System.Web.Extensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -72,6 +75,7 @@
     <Content Include="App_pages\mod.ControlSeguimiento\frw_operaciones.aspx" />
     <Content Include="App_pages\mod.ControlSeguimiento\frw_proyectosCreacion.aspx" />
     <Content Include="App_pages\mod.ControlSeguimiento\frw_registroTiempos.aspx" />
+    <Content Include="App_pages\mod.Estadisco\frw_grf_inversionTiempos.aspx" />
     <Content Include="App_pages\mod.Reportes\frw_rep_registroTiempos.aspx" />
     <Content Include="App_Themes\Basico\css\common.css" />
     <Content Include="App_Themes\Basico\css\jquery-ui.css" />
@@ -199,6 +203,13 @@
     </Compile>
     <Compile Include="App_pages\mod.ControlSeguimiento\frw_registroTiempos.aspx.designer.cs">
       <DependentUpon>frw_registroTiempos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_pages\mod.Estadisco\frw_grf_inversionTiempos.aspx.cs">
+      <DependentUpon>frw_grf_inversionTiempos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="App_pages\mod.Estadisco\frw_grf_inversionTiempos.aspx.designer.cs">
+      <DependentUpon>frw_grf_inversionTiempos.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_pages\mod.Reportes\frw_rep_registroTiempos.aspx.cs">
       <DependentUpon>frw_rep_registroTiempos.aspx</DependentUpon>
@@ -411,7 +422,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="App_pages\mod.Estadisco\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -98,6 +98,7 @@
     <Compile Include="mod.ControlSeguimiento\cls_gestorProyectoEntregable..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_gestorRegistroActividad.cs" />
     <Compile Include="mod.ControlSeguimiento\cls_gestorRegistroOperacion.cs" />
+    <Compile Include="mod.Estadistico\cls_gestorEstadistico.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,7 +108,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="mod.Estadistico\" />
     <Folder Include="mod.Reportes\" />
   </ItemGroup>
   <ItemGroup>

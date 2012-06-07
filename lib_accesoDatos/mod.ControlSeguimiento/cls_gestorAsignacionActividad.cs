@@ -128,7 +128,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.ControlSeguimiento
                                                                                                                           "Comp: " + po_Actividad.pPK_Componente +
                                                                                                                           "Ent: " + po_Actividad.pPK_Entregable.ToString() +
                                                                                                                           "Proy: " + po_Actividad.pPK_Proyecto.ToString() +
-                                                                                                                          "Usuario: " + po_Actividad.pPK_Usuario.ToString());
+                                                                                                                          "Usuario: " + po_Actividad.pUsuarioPivot.ToString());
 
                 cls_sqlDatabase.commitTransaction();
 

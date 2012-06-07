@@ -56,6 +56,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -93,10 +96,11 @@
     <Compile Include="mod.ControlSeguimiento\cls_proyectoEntregable..cs" />
     <Compile Include="mod.ControlSeguimiento\cls_registroActividad.cs" />
     <Compile Include="mod.ControlSeguimiento\cls_registroOperacion.cs" />
+    <Compile Include="mod.Estadistico\cls_estadistico.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="mod.Estadistico\" />
+    <Folder Include="App_Modelos\" />
     <Folder Include="mod.Reportes\" />
   </ItemGroup>
   <ItemGroup>

@@ -55,10 +55,6 @@ CREATE PROCEDURE  PA_cont_proyectoInsert
   @paramfechaFin datetime, 
   @paramhorasAsignadas decimal, 
   @paramhorasReales decimal
-<<<<<<< HEAD
- 
-=======
->>>>>>> db82208f0a3b66a6e123fe05106fff536778f8d9
 AS 
  BEGIN 
  SET NOCOUNT ON; 

@@ -814,3 +814,39 @@ AS
 END  
 GO 
 
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_estd_inversionTiempos]'))
+DROP PROCEDURE [dbo].[PA_estd_inversionTiempos]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Esteban Ramírez G.
+-- Fecha Creación:	19-04-2011
+-- Fecha Actualización:	19-04-2011
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  PA_estd_inversionTiempos
+  @paramProyecto	INT
+AS 
+ BEGIN 
+
+	Select 'Actividad' as tipo, COUNT(PK_registro)AS cantidad 
+			From t_cont_registro_actividad tcra 
+			Where tcra.PK_proyecto = @paramProyecto
+
+	Union all
+
+	Select tipo = CASE tco.tipo 
+					WHEN 'I' THEN 'Imprevisto'
+					WHEN 'O' THEN 'Operacion' END, 
+			   COUNT(tco.tipo) AS cantidad 
+			From t_cont_registro_operacion tcro INNER JOIN t_cont_operacion tco
+			ON tcro.PK_codigo = tco.PK_codigo, t_cont_proyecto tcp
+			WHERE tcro.fecha between tcp.fechaInicio AND tcp.fechaFin
+			AND tcp.PK_proyecto = @paramProyecto
+		Group by tco.tipo
+
+END  
+GO 
