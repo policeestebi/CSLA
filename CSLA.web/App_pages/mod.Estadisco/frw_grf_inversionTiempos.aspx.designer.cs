@@ -22,12 +22,12 @@ namespace CSLA.web.App_pages.mod.Estadistico {
         protected global::System.Web.UI.ScriptManager srm_principal;
         
         /// <summary>
-        /// chtCategoriesProductCount control.
+        /// Chart1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart chtCategoriesProductCount;
+        protected global::System.Web.UI.DataVisualization.Charting.Chart Chart1;
     }
 }
