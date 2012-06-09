@@ -14,17 +14,6 @@
 
 <asp:ScriptManager ID="srm_principal" runat="server"></asp:ScriptManager>
 
-<%--  <asp:Chart ID="chtCategoriesProductCount" runat="server" Width="550" Height="350"> 
-   <Series> 
-      <asp:Series Name="Categories" ChartType="Bar" Palette="Chocolate" ChartArea="MainChartArea"></asp:Series> 
-   </Series> 
-    
-   <ChartAreas> 
-      <asp:ChartArea Name="MainChartArea" Area3DStyle-Enable3D="true"> 
-      </asp:ChartArea> 
-   </ChartAreas> 
-</asp:Chart> --%>
-
     <asp:chart id="Chart1" runat="server" Height="300px" Width="400px" OnClick="Chart1_Click">
       <titles>
         <asp:Title ShadowOffset="3" Name="Title1" />
