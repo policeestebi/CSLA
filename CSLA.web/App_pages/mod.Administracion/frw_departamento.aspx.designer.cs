@@ -238,6 +238,42 @@ namespace CSLA.web.App_pages.mod.Administracion {
         protected global::System.Web.UI.WebControls.RegularExpressionValidator rfv_administradorlength;
         
         /// <summary>
+        /// lbl_consecutivo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_consecutivo;
+        
+        /// <summary>
+        /// txt_consecutivo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_consecutivo;
+        
+        /// <summary>
+        /// rfv_consecutivo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv_consecutivo;
+        
+        /// <summary>
+        /// rfv_consecutivolength control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rfv_consecutivolength;
+        
+        /// <summary>
         /// btn_cancelar control.
         /// </summary>
         /// <remarks>

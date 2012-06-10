@@ -197,6 +197,20 @@
                                                     
                                                     </td>
                                                 </tr>
+                                                <tr align="left">
+                                                    <td>
+                                                        <asp:Label ID="lbl_consecutivo" runat="server" Text="Consecutivo: "></asp:Label>
+                                                    </td>
+                                                    <td>
+                                                        <asp:TextBox ID="txt_consecutivo" runat="server" Height="15px" Width="150px" TextMode="SingleLine"></asp:TextBox>
+                                                    </td>
+                                                    <td>
+                                                        <asp:RequiredFieldValidator ID="rfv_consecutivo" runat="server" ControlToValidate="txt_consecutivo"
+                                                            ToolTip="Ingrese el consecutivo del departamento" ErrorMessage="Consecutivo requerido"><img alt="imagen" width="25px" height="20px" src="../../App_Themes/Basico/botones/img_warning.gif" border="none"/></asp:RequiredFieldValidator>
+                                                        <asp:RegularExpressionValidator ID="rfv_consecutivolength" runat="server" ErrorMessage="La longitud máxima son 45 caracteres." 
+                                                            ValidationExpression="^([\S\s]{0,45})$" ControlToValidate="txt_consecutivo" Display="Dynamic"></asp:RegularExpressionValidator>                                                                                                      
+                                                    </td>
+                                                </tr>
                                             </tr>
                                         </table>
                                     </td>

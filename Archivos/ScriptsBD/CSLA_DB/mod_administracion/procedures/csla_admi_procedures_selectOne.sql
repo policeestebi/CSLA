@@ -136,7 +136,8 @@ AS
          FK_departamento,
          ubicacion,
 		 nombre,
-		 administrador
+		 administrador,
+		 consecutivo
         FROM t_admi_departamento
 		WHERE 
 			PK_departamento = @paramPK_departamento

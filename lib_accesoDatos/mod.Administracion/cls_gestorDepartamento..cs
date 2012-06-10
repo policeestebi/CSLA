@@ -59,7 +59,8 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Administracion
                         new cls_parameter("@paramFK_departamento", poDepartamento.pFK_departamento),
                         new cls_parameter("@paramnombre", poDepartamento.pNombre),
                         new cls_parameter("@paramubicacion", poDepartamento.pUbicacion),
-                        new cls_parameter("@paramadministrador", poDepartamento.pAdministrador)
+                        new cls_parameter("@paramadministrador", poDepartamento.pAdministrador),
+                        new cls_parameter("@paramconsecutivo", poDepartamento.pConsecutivo)
                     };
 
                     vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
@@ -71,7 +72,8 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Administracion
                         new cls_parameter("@paramFK_departamento", DBNull.Value),
                         new cls_parameter("@paramnombre", poDepartamento.pNombre),
                         new cls_parameter("@paramubicacion", poDepartamento.pUbicacion),
-                        new cls_parameter("@paramadministrador", poDepartamento.pAdministrador)
+                        new cls_parameter("@paramadministrador", poDepartamento.pAdministrador),
+                        new cls_parameter("@paramconsecutivo", poDepartamento.pConsecutivo)
                     };
 
                     vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
@@ -118,7 +120,8 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Administracion
                             new cls_parameter("@paramFK_departamento", poDepartamento.pFK_departamento),
                             new cls_parameter("@paramnombre", poDepartamento.pNombre),
                             new cls_parameter("@paramubicacion", poDepartamento.pUbicacion),
-                            new cls_parameter("@paramadministrador", poDepartamento.pAdministrador)
+                            new cls_parameter("@paramadministrador", poDepartamento.pAdministrador),
+                        new cls_parameter("@paramconsecutivo", poDepartamento.pConsecutivo)
                         };
                     vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
                 }
@@ -130,7 +133,8 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Administracion
                             new cls_parameter("@paramFK_departamento", DBNull.Value),
                             new cls_parameter("@paramnombre", poDepartamento.pNombre),
                             new cls_parameter("@paramubicacion", poDepartamento.pUbicacion),
-                            new cls_parameter("@paramadministrador", poDepartamento.pAdministrador)
+                            new cls_parameter("@paramadministrador", poDepartamento.pAdministrador),
+                            new cls_parameter("@paramconsecutivo", poDepartamento.pConsecutivo)
                         };
 
                     vi_resultado = cls_sqlDatabase.executeNonQuery(vs_comando, true, vu_parametros);
@@ -220,6 +224,8 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Administracion
 
                     poDepartamento.pAdministrador = vu_dataSet.Tables[0].Rows[i]["administrador"].ToString();
 
+                    poDepartamento.pConsecutivo = vu_dataSet.Tables[0].Rows[i]["consecutivo"].ToString();
+
                     vo_lista.Add(poDepartamento);
                 }
 
@@ -267,6 +273,8 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Administracion
                 poDepartamento.pNombre = vu_dataSet.Tables[0].Rows[0]["nombre"].ToString();
 
                 poDepartamento.pAdministrador = vu_dataSet.Tables[0].Rows[0]["administrador"].ToString();
+
+                poDepartamento.pConsecutivo = vu_dataSet.Tables[0].Rows[0]["consecutivo"].ToString();
 
                 return poDepartamento;
 
@@ -327,6 +335,8 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Administracion
                     voDepartamento.pUbicacion = vu_dataSet.Tables[0].Rows[i]["ubicacion"].ToString();
 
                     voDepartamento.pAdministrador = vu_dataSet.Tables[0].Rows[i]["administrador"].ToString();
+
+                    voDepartamento.pConsecutivo = vu_dataSet.Tables[0].Rows[i]["consecutivo"].ToString();
 
                     vo_lista.Add(voDepartamento);
                 }

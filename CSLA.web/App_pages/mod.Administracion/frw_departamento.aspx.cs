@@ -53,14 +53,12 @@ namespace CSLA.web.App_pages.mod.Administracion
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
-
             this.validarSession();
 
             if (!Page.IsPostBack)
             {
                 try
-                {
-                    
+                {    
                     this.obtenerPermisos();
                     this.validarAcceso();
                     this.cargarPermisos();
@@ -72,9 +70,7 @@ namespace CSLA.web.App_pages.mod.Administracion
                     String vs_error_usuario = "Error al inicializar el mantenimiento de departamentos.";
                     this.lanzarExcepcion(po_exception, vs_error_usuario);
                 } 
-
             }
-
         }
 
         /// <summary>
@@ -208,6 +204,7 @@ namespace CSLA.web.App_pages.mod.Administracion
                 vo_departamento.pNombre = txt_nombre.Text;
                 vo_departamento.pUbicacion = txt_ubicacion.Text;
                 vo_departamento.pAdministrador = txt_administrador.Text;
+                vo_departamento.pConsecutivo = txt_consecutivo.Text;
                 return vo_departamento;
             }
             catch (Exception po_exception)
@@ -231,6 +228,7 @@ namespace CSLA.web.App_pages.mod.Administracion
                 this.txt_nombre.Text = vo_departamento.pNombre;
                 this.txt_ubicacion.Text = vo_departamento.pUbicacion;
                 this.txt_administrador.Text = vo_departamento.pAdministrador;
+                this.txt_consecutivo.Text = vo_departamento.pConsecutivo;
 
                 if (cls_variablesSistema.tipoEstado == cls_constantes.VER)
                 {
@@ -312,6 +310,7 @@ namespace CSLA.web.App_pages.mod.Administracion
                 this.txt_nombre.Text = String.Empty;
                 this.txt_ubicacion.Text = String.Empty;
                 this.txt_administrador.Text = String.Empty;
+                this.txt_consecutivo.Text = String.Empty;
             }
             catch (Exception po_exception)
             {
@@ -332,6 +331,7 @@ namespace CSLA.web.App_pages.mod.Administracion
                 this.txt_nombre.Enabled = pb_habilitados;
                 this.txt_ubicacion.Enabled = pb_habilitados;
                 this.txt_administrador.Enabled = pb_habilitados;
+                this.txt_consecutivo.Enabled = pb_habilitados;
                 this.ddl_departamentoPadre.Enabled = pb_habilitados;
                 this.btn_guardar.Visible = pb_habilitados && (this.pbAgregar || this.pbModificar); 
             }
@@ -546,6 +546,7 @@ namespace CSLA.web.App_pages.mod.Administracion
                 vo_departamento.pNombre = vu_fila.Cells[2].Text.ToString();
                 vo_departamento.pUbicacion = vu_fila.Cells[3].Text.ToString();
                 vo_departamento.pAdministrador = vu_fila.Cells[4].Text.ToString();
+                vo_departamento.pConsecutivo = vu_fila.Cells[5].Text.ToString();
 
                 switch (e.CommandName.ToString())
                 {

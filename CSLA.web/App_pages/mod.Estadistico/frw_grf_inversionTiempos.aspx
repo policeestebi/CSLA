@@ -33,7 +33,7 @@
             </td>
         </tr>
     </table>
-    <asp:Chart ID="Chart1" runat="server" Height="300px" Width="400px">
+    <asp:Chart ID="Chart1" runat="server" Height="300px" Width="400px" >
         <Titles>
             <asp:Title ShadowOffset="3" Name="Title1" />
         </Titles>
@@ -42,10 +42,10 @@
                 LegendStyle="Row" />
         </Legends>
         <Series>
-            <asp:Series Name="Default" />
+            <asp:Series Name="Default"  />
         </Series>
         <ChartAreas>
-            <asp:ChartArea Name="ChartArea1" BorderWidth="0" />
+            <asp:ChartArea Name="ChartArea1" BorderWidth="0"  />
         </ChartAreas>
     </asp:Chart>
     <table id="Table3">

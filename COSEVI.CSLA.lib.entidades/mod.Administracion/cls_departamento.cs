@@ -82,6 +82,12 @@ namespace COSEVI.CSLA.lib.entidades.mod.Administracion
             set { this.administrador = value; }
         }
 
+        public string pConsecutivo
+        {
+            get { return consecutivo; }
+            set { this.consecutivo = value; }
+        }
+
         public cls_departamento pDepartamentoPadre
         {
             get { return departamentoPadre; }
@@ -111,6 +117,11 @@ namespace COSEVI.CSLA.lib.entidades.mod.Administracion
         /// Administrador del departamento
         /// </summary>
 	    private string administrador;
+
+        /// <summary>
+        /// Consecutivo del departamento
+        /// </summary>
+        private string consecutivo;
 
         private cls_departamento departamentoPadre;
 

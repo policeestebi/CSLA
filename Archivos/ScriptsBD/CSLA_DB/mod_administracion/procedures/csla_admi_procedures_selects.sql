@@ -124,7 +124,8 @@ AS
          FK_departamento,
          ubicacion,
 		 nombre,
-		 administrador
+		 administrador,
+		 consecutivo
         FROM t_admi_departamento
 END  
  GO 

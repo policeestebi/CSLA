@@ -156,7 +156,8 @@ CREATE PROCEDURE  PA_admi_departamentoUpdate
   @paramFK_departamento int, 
   @paramnombre varchar(30), 
   @paramubicacion varchar(100), 
-  @paramadministrador varchar(30) 
+  @paramadministrador varchar(30),
+  @paramconsecutivo varchar(45)
 AS 
  BEGIN 
 SET NOCOUNT ON; 
@@ -165,7 +166,8 @@ SET NOCOUNT ON;
          SET FK_departamento = @paramFK_departamento ,
 			nombre = @paramnombre ,
 			ubicacion = @paramubicacion ,
-			administrador = @paramadministrador       
+			administrador = @paramadministrador,
+			consecutivo = @paramconsecutivo         
          WHERE 
 			PK_departamento = @paramPK_departamento       
 
