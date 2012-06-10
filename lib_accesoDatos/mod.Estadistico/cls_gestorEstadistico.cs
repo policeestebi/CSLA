@@ -36,7 +36,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Estadistico
 {
     public class cls_gestorEstadistico
     {
-       /// <summary>
+        /// <summary>
        /// Método que permite seleccionar  
        /// un único registro en la tabla estado
        /// </summary>

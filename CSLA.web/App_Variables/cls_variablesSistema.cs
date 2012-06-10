@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using COSEVI.CSLA.lib.entidades.mod.Administracion;
 using COSEVI.CSLA.lib.entidades.mod.ControlSeguimiento;
+using System.Web.UI.DataVisualization.Charting;
 
 namespace CSLA.web.App_Variables
 {
@@ -21,6 +22,14 @@ namespace CSLA.web.App_Variables
 
         //Variable Estática para llevar la creación de un proyecto!!!
         public static cls_proyecto vs_proyecto = new cls_proyecto();
+
+        public static Chart vc_grafico;
+
+
+        //public static Series vs_series = new Series();
+        //public static ChartArea vca_area = new ChartArea();
+
+        
 
     }
 }

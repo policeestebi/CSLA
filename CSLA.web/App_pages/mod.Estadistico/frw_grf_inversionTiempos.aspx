@@ -33,7 +33,7 @@
             </td>
         </tr>
     </table>
-    <asp:Chart ID="Chart1" runat="server" Height="300px" Width="400px" >
+    <asp:Chart ID="Chart1" runat="server" Height="300px" Width="400px" OnClick="Chart1_Click">
         <Titles>
             <asp:Title ShadowOffset="3" Name="Title1" />
         </Titles>

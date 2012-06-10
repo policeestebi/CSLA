@@ -9,6 +9,7 @@ using System.Data;
 using COSEVI.CSLA.lib.accesoDatos.mod.Estadistico;
 using COSEVI.CSLA.lib.entidades.mod.Estadistico;
 using System.Drawing;
+using CSLA.web.App_Variables;
 
 namespace CSLA.web.App_pages.mod.Estadistico
 {
@@ -111,6 +112,20 @@ namespace CSLA.web.App_pages.mod.Estadistico
 
             // Set Antialiasing mode
             Chart1.AntiAliasing = AntiAliasingStyles.Graphics;
+
+            cargarChart(Chart1);
+
+            //cls_variablesSistema.obj = Chart1;
+
+            //cls_variablesSistema.vs_series = new Series();
+            //cls_variablesSistema.vs_series = Chart1.Series["Default"];
+            //cls_variablesSistema.vca_area = new ChartArea();
+            //cls_variablesSistema.vca_area = Chart1.ChartAreas["ChartArea1"];
+
+            //cls_variablesSistema.vc_grafico.Series["Default"] = new Series("Default");
+            //cls_variablesSistema.vc_grafico.Series["Default"] = Chart1.Series["Default"];
+            //cls_variablesSistema.vc_grafico.ChartAreas["ChartArea1"] = new ChartArea("ChartArea1");
+            //cls_variablesSistema.vc_grafico.ChartAreas["ChartArea1"] = Chart1.ChartAreas["ChartArea1"];
         }
 
         /// <summary>
@@ -128,6 +143,24 @@ namespace CSLA.web.App_pages.mod.Estadistico
             catch (Exception po_exception)
             {
                 throw new Exception("Ocurrió un error al cargar los estados del proyecto.", po_exception);
+            }
+        }
+
+
+        private void cargarChart(Chart c)
+        {
+            try
+            {
+                cls_variablesSistema.vc_grafico = c;
+
+                cls_variablesSistema.vc_grafico = new Chart();
+                cls_variablesSistema.vc_grafico = c;
+
+                cls_variablesSistema.obj = c;
+            }
+            catch
+            { 
+            
             }
         }
 
@@ -167,6 +200,7 @@ namespace CSLA.web.App_pages.mod.Estadistico
 
                 if (Convert.ToInt32(ddl_proyecto.SelectedValue) != 0)
                 {
+                    cls_variablesSistema.vc_grafico = new Chart();
                     CargaGrafico(Convert.ToInt32(ddl_proyecto.SelectedValue));
                 }
             }
@@ -178,16 +212,17 @@ namespace CSLA.web.App_pages.mod.Estadistico
         }
 
         //Si queda tiempo, hacer que se pueda ver levantada la porción que se escoja
-        //protected void Chart1_Click(object sender, ImageMapEventArgs e)
-        //{
-        //    int pointIndex = int.Parse(e.PostBackValue);
-        //    Series series = Chart1.Series["Default"];
-        //    if (pointIndex >= 0 && pointIndex < series.Points.Count)
-        //    {
-        //        series.Points[pointIndex].CustomProperties = string.Empty;
-        //        series.Points[pointIndex].CustomProperties += "Exploded=true";
-        //    }
-        //}
+        protected void Chart1_Click(object sender, ImageMapEventArgs e)
+        {
+            int pointIndex = int.Parse(e.PostBackValue);
+            //Series series = Chart1.Series["Default"];
+            Series series = cls_variablesSistema.vc_grafico.Series["Default"];
+            if (pointIndex >= 0 && pointIndex < series.Points.Count)
+            {
+                series.Points[pointIndex].CustomProperties = string.Empty;
+                series.Points[pointIndex].CustomProperties += "Exploded=true";
+            }
+        }
 
         /// <summary>
         /// Evento que se ejecuta cuando se le da
