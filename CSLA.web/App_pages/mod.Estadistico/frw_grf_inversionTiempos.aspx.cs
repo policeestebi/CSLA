@@ -35,15 +35,6 @@ namespace CSLA.web.App_pages.mod.Estadistico
                 }
 
             }
-            else
-            {
-                int ddlproyecto = int.Parse(ddl_proyecto.SelectedValue);
-                if (ddlproyecto == 0)
-                {
-                    ddlProyecto_SelectedIndexChanged(this, EventArgs.Empty);
-                }
-
-            }
         }
 
         #endregion Inicialización
@@ -173,7 +164,11 @@ namespace CSLA.web.App_pages.mod.Estadistico
             try
             {
                 this.ddl_proyecto.SelectedValue = ((DropDownList)sender).SelectedValue;
-                CargaGrafico(Convert.ToInt32(ddl_proyecto.SelectedValue));
+
+                if (Convert.ToInt32(ddl_proyecto.SelectedValue) != 0)
+                {
+                    CargaGrafico(Convert.ToInt32(ddl_proyecto.SelectedValue));
+                }
             }
             catch (Exception po_exception)
             {
@@ -182,16 +177,17 @@ namespace CSLA.web.App_pages.mod.Estadistico
             }
         }
 
-        protected void Chart1_Click(object sender, ImageMapEventArgs e)
-        {
-            int pointIndex = int.Parse(e.PostBackValue);
-            Series series = Chart1.Series["Default"];
-            if (pointIndex >= 0 && pointIndex < series.Points.Count)
-            {
-                series.Points[pointIndex].CustomProperties = string.Empty;
-                series.Points[pointIndex].CustomProperties += "Exploded=true";
-            }
-        }
+        //Si queda tiempo, hacer que se pueda ver levantada la porción que se escoja
+        //protected void Chart1_Click(object sender, ImageMapEventArgs e)
+        //{
+        //    int pointIndex = int.Parse(e.PostBackValue);
+        //    Series series = Chart1.Series["Default"];
+        //    if (pointIndex >= 0 && pointIndex < series.Points.Count)
+        //    {
+        //        series.Points[pointIndex].CustomProperties = string.Empty;
+        //        series.Points[pointIndex].CustomProperties += "Exploded=true";
+        //    }
+        //}
 
         /// <summary>
         /// Evento que se ejecuta cuando se le da
