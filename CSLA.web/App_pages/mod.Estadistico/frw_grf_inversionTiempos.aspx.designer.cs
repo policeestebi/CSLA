@@ -13,13 +13,13 @@ namespace CSLA.web.App_pages.mod.Estadistico {
     public partial class frw_grf_inversionTiempos {
         
         /// <summary>
-        /// srm_principal control.
+        /// scr_Man control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager srm_principal;
+        protected global::System.Web.UI.ScriptManager scr_Man;
         
         /// <summary>
         /// lbl_titulo control.
@@ -49,21 +49,12 @@ namespace CSLA.web.App_pages.mod.Estadistico {
         protected global::System.Web.UI.WebControls.DropDownList ddl_proyecto;
         
         /// <summary>
-        /// Chart1 control.
+        /// Grafico control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart Chart1;
-        
-        /// <summary>
-        /// btn_regresar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_regresar;
+        protected global::System.Web.UI.DataVisualization.Charting.Chart Grafico;
     }
 }

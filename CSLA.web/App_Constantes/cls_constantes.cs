@@ -48,5 +48,12 @@ namespace CSLA.web.App_Constantes
         /// </summary>
         public const String FOLDER_PAGES = "App_pages";
 
+        /// <summary>
+        /// Constante que se utiliza para guardar el código
+        /// del proyecto del que se va a obtener información 
+        /// para los gráficos.
+        /// </summary>
+        public const string CODIGOPROYECTO = "vs_codigoProyecto";
+
     }
 }
