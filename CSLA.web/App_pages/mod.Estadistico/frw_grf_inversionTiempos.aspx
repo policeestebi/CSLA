@@ -14,22 +14,47 @@
 
 <asp:ScriptManager ID="srm_principal" runat="server"></asp:ScriptManager>
 
-    <asp:chart id="Chart1" runat="server" Height="300px" Width="400px" OnClick="Chart1_Click">
+    <table id="Table1">
+        <tr align="right">
+            <td>
+                <asp:Label ID="lbl_titulo" runat="server" Text="Distribución de Tiempos por Proyecto" />
+            </td>
+        </tr>
+    </table>
+
+    <table id="Table2">
+        <tr align="right">
+            <td>
+                <asp:Label ID="lbl_proyecto" runat="server" Text="Proyecto: "></asp:Label>
+            </td>
+            <td>
+                <asp:DropDownList ID="ddl_proyecto" runat="server" OnSelectedIndexChanged="ddlProyecto_SelectedIndexChanged" AutoPostBack="true" OnDataBound="ddlProyecto_DataBound" >
+                </asp:DropDownList>
+            </td>
+        </tr>
+    </table>
+
+    <asp:chart id="Chart1" runat="server" Height="300px" Width="400px" OnClick="Chart1_Click" >
       <titles>
         <asp:Title ShadowOffset="3" Name="Title1" />
       </titles>
       <legends>
-        <asp:Legend Alignment="Center" Docking="Bottom"
-                    IsTextAutoFit="False" Name="Default"
-                    LegendStyle="Row" />
+        <asp:Legend Alignment="Center" Docking="Bottom" IsTextAutoFit="False" Name="Default" LegendStyle="Row" />
       </legends>
       <series>
         <asp:Series Name="Default" />
       </series>
       <chartareas>
-        <asp:ChartArea Name="ChartArea1"
-                         BorderWidth="0" />
+        <asp:ChartArea Name="ChartArea1" BorderWidth="0" />
       </chartareas>
     </asp:chart>
 
+    <table id="Table3">
+        <tr align="right">
+             <td>
+                <asp:Button ID="btn_regresar" CausesValidation="false" OnClick="btn_regresar_Click"
+                    runat="server" Text="Regresar" />
+            </td>
+        </tr>
+    </table>
 </asp:Content>

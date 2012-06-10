@@ -41,7 +41,7 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Estadistico
        /// un único registro en la tabla estado
        /// </summary>
        /// <returns>poEstado valor del resultado de la ejecución de la sentencia</returns>
-        public static List<cls_estadistico> seleccionarGrafico(cls_estadistico poEstadistico)
+        public static List<cls_estadistico> SeleccionarInfoPorProyecto(cls_estadistico poEstadistico)
        {
            List<cls_estadistico> vo_lista = null;
            cls_estadistico vo_Estadistico = null;
@@ -72,6 +72,42 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Estadistico
                throw new Exception("Ocurrió un error al obtener el gráfico específico.", po_exception);
            }
        }
+
+        /// <summary>
+        /// Método que permite seleccionar  
+        /// la lista simple de proyectos del sistema
+        /// </summary>
+        /// <returns>poEstado valor del resultado de la ejecución de la sentencia</returns>
+        public static List<cls_proyecto> listarProyectos()
+        {
+            List<cls_proyecto> vo_lista = null;
+            cls_proyecto vo_proyecto = null;
+
+            try
+            {
+                DataSet vu_dataSet = cls_gestorUtil.selectFilter(cls_constantes.PROYECTO, " PK_proyecto, nombre", " 1 = 1 ");
+
+                vo_lista = new List<cls_proyecto>();
+
+                for (int i = 0; i < vu_dataSet.Tables[0].Rows.Count; i++)
+                {
+                    vo_proyecto = new cls_proyecto();
+
+                    vo_proyecto.pPK_proyecto = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["PK_proyecto"].ToString());
+
+                    vo_proyecto.pNombre = vu_dataSet.Tables[0].Rows[i]["nombre"].ToString();
+
+                    vo_lista.Add(vo_proyecto);
+                }
+
+                return vo_lista;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al obtener la lista de proyectos.", po_exception);
+            }
+        }
+
 
    }
 }

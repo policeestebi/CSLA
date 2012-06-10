@@ -22,6 +22,33 @@ namespace CSLA.web.App_pages.mod.Estadistico {
         protected global::System.Web.UI.ScriptManager srm_principal;
         
         /// <summary>
+        /// lbl_titulo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_titulo;
+        
+        /// <summary>
+        /// lbl_proyecto control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_proyecto;
+        
+        /// <summary>
+        /// ddl_proyecto control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddl_proyecto;
+        
+        /// <summary>
         /// Chart1 control.
         /// </summary>
         /// <remarks>
@@ -29,5 +56,14 @@ namespace CSLA.web.App_pages.mod.Estadistico {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.DataVisualization.Charting.Chart Chart1;
+        
+        /// <summary>
+        /// btn_regresar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_regresar;
     }
 }
