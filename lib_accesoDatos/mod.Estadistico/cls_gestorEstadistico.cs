@@ -36,42 +36,8 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Estadistico
 {
     public class cls_gestorEstadistico
     {
-        /// <summary>
-       /// Método que permite seleccionar  
-       /// un único registro en la tabla estado
-       /// </summary>
-       /// <returns>poEstado valor del resultado de la ejecución de la sentencia</returns>
-        public static List<cls_estadistico> SeleccionarInfoPorProyecto(cls_estadistico poEstadistico)
-       {
-           List<cls_estadistico> vo_lista = null;
-           cls_estadistico vo_Estadistico = null;
 
-           try
-           {
-               String vs_comando = "PA_estd_inversionTiempos";
-               cls_parameter[] vu_parametros = { new cls_parameter("@paramProyecto", poEstadistico.pPK_proyecto) };
-
-               DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
-
-               vo_lista = new List<cls_estadistico>();
-               for (int i = 0; i < vu_dataSet.Tables[0].Rows.Count; i++)
-               {
-                   vo_Estadistico = new cls_estadistico();
-
-                   vo_Estadistico.pTipoLabor = vu_dataSet.Tables[0].Rows[i]["tipo"].ToString();
-
-                   vo_Estadistico.pCantidad = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["cantidad"].ToString());
-
-                   vo_lista.Add(vo_Estadistico);
-               }
-
-               return vo_lista;
-           }
-           catch (Exception po_exception)
-           {
-               throw new Exception("Ocurrió un error al obtener el gráfico específico.", po_exception);
-           }
-       }
+        #region Consultas Comunes
 
         /// <summary>
         /// Método que permite seleccionar  
@@ -108,6 +74,96 @@ namespace COSEVI.CSLA.lib.accesoDatos.mod.Estadistico
             }
         }
 
+        #endregion Consultas Comunes
 
-   }
+
+        #region Gráfico Totalidad de Labores por Proyecto
+
+        /// <summary>
+       /// Método que permite seleccionar  
+       /// un único registro en la tabla estado
+       /// </summary>
+       /// <returns>poEstado valor del resultado de la ejecución de la sentencia</returns>
+        public static List<cls_totalidadLabores> TotalidadLaboresPorProyecto(cls_totalidadLabores po_totalidadLabores)
+       {
+           List<cls_totalidadLabores> vo_lista = null;
+           cls_totalidadLabores vo_totalidadLabores = null;
+
+           try
+           {
+               String vs_comando = "PA_estd_inversionTiempos";
+               cls_parameter[] vu_parametros = { new cls_parameter("@paramProyecto", po_totalidadLabores.pPK_proyecto) };
+
+               DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
+
+               vo_lista = new List<cls_totalidadLabores>();
+               for (int i = 0; i < vu_dataSet.Tables[0].Rows.Count; i++)
+               {
+                   vo_totalidadLabores = new cls_totalidadLabores();
+
+                   vo_totalidadLabores.pTipoLabor = vu_dataSet.Tables[0].Rows[i]["tipo"].ToString();
+
+                   vo_totalidadLabores.pCantidad = Convert.ToInt32(vu_dataSet.Tables[0].Rows[i]["cantidad"].ToString());
+
+                   vo_lista.Add(vo_totalidadLabores);
+               }
+
+               return vo_lista;
+           }
+           catch (Exception po_exception)
+           {
+               throw new Exception("Ocurrió un error al obtener el gráfico de la totalidad de labores.", po_exception);
+           }
+       }
+
+        #endregion Gráfico Totalidad de Labores por Proyecto
+
+
+        #region Gráfico Top Actividades por Proyecto
+
+        /// <summary>
+        /// Método que permite seleccionar  
+        /// un único registro en la tabla estado
+        /// </summary>
+        /// <returns>vo_lista valor del resultado de la ejecución de la sentencia</returns>
+        public static List<cls_topActividades> TopActividadesPorProyecto(cls_topActividades po_topActividades)
+        {
+            List<cls_topActividades> vo_lista = null;
+            cls_topActividades vo_topActividades = null;
+
+            try
+            {
+                String vs_comando = "PA_estd_actividadesTopProyecto";
+                cls_parameter[] vu_parametros = { new cls_parameter("@paramProyecto", po_topActividades.pPK_proyecto),
+                                                  new cls_parameter("@paramFechaInicio", po_topActividades.pFechaDesde),
+                                                  new cls_parameter("@paramFechaFin", po_topActividades.pFechaHasta)
+                                                };
+
+                DataSet vu_dataSet = cls_sqlDatabase.executeDataset(vs_comando, true, vu_parametros);
+
+                vo_lista = new List<cls_topActividades>();
+                for (int i = 0; i < vu_dataSet.Tables[0].Rows.Count; i++)
+                {
+                    vo_topActividades = new cls_topActividades();
+
+                    vo_topActividades.pNombreActividad = vu_dataSet.Tables[0].Rows[i]["actividad"].ToString();
+
+                    vo_topActividades.pCantidadHoras = Convert.ToDecimal(vu_dataSet.Tables[0].Rows[i]["cantidadHoras"].ToString());
+
+                    vo_lista.Add(vo_topActividades);
+                }
+
+                return vo_lista;
+            }
+            catch (Exception po_exception)
+            {
+                throw new Exception("Ocurrió un error al obtener el gráfico del top de actividades por proyecto.", po_exception);
+            }
+        }
+
+        #endregion Gráfico Top Actividades por Proyecto
+
+
+
+    }
 }

@@ -55,5 +55,19 @@ namespace CSLA.web.App_Constantes
         /// </summary>
         public const string CODIGOPROYECTO = "vs_codigoProyecto";
 
+        /// <summary>
+        /// Constante que se utiliza para guardar la "fecha desde"
+        /// del proyecto del que se va a obtener información 
+        /// para los gráficos.
+        /// </summary>
+        public const string FECHADESDE = "vs_fechaDesde";
+
+        /// <summary>
+        /// Constante que se utiliza para guardar la "fecha hasta"
+        /// del proyecto del que se va a obtener información 
+        /// para los gráficos.
+        /// </summary>
+        public const string FECHAHASTA = "vs_fechaHasta";
+
     }
 }

@@ -18,7 +18,7 @@ using COSEVI.CSLA.lib.entidades.mod.Administracion;
 // COSEVI - Consejo de Seguridad Vial. - 2011
 // Sistema CSLA (Sistema para el Control y Seguimiento de Labores)
 //
-// frw_actividades.aspx.cs
+// frw_grf_topActividades.aspx.cs
 //
 // Explicación de los contenidos del archivo.
 // =========================================================================
@@ -34,7 +34,7 @@ using COSEVI.CSLA.lib.entidades.mod.Administracion;
 
 namespace CSLA.web.App_pages.mod.Estadistico
 {
-    public partial class frw_grf_inversionTiempos : System.Web.UI.Page
+    public partial class frw_grf_topActividades : System.Web.UI.Page
     {
 
         #region Inicialización
@@ -58,7 +58,7 @@ namespace CSLA.web.App_pages.mod.Estadistico
                 }
                 catch (Exception po_exception)
                 {
-                    String vs_error_usuario = "Error en la consulta de datos para el gráfco de labores por proyecto.";
+                    String vs_error_usuario = "Error en la consulta de datos para el gráfco de actividades top por proyecto.";
                     this.lanzarExcepcion(po_exception, vs_error_usuario);
                 }
 
@@ -77,7 +77,7 @@ namespace CSLA.web.App_pages.mod.Estadistico
             }
             catch (Exception po_exception)
             {
-                String vs_error_usuario = "Error al inicializar los controles de la ventana para el gráfico de labores por proyecto.";
+                String vs_error_usuario = "Error al inicializar los controles de la ventana para el gráfico de actividades top por proyecto.";
                 this.lanzarExcepcion(po_exception, vs_error_usuario);
             }
         }
@@ -93,14 +93,16 @@ namespace CSLA.web.App_pages.mod.Estadistico
             {
                 if (!Page.IsPostBack)
                 {
-                    //Cuando se está ingresando a la página, se limpia la variable de sesión para evitar valores incorrectos
-                    Session[cls_constantes.CODIGOPROYECTO] = null;
+                    //Cuando se está ingresando a la página, se limpian las variables de sesión para evitar valores incorrectos
+                    LimpiarVariablesSession();
+                    txt_fechaInicio.Text = DateTime.Today.AddMonths(-1).ToString().Substring(0,10);
+                    txt_fechaFin.Text = DateTime.Today.ToString().Substring(0, 10);
                 }
                 else
                 {
                     if (!(Session[cls_constantes.CODIGOPROYECTO] == null))
                     {
-                        CargaGrafico(Convert.ToInt32(Session[cls_constantes.CODIGOPROYECTO]));
+                        CargaGrafico(Convert.ToInt32(Session[cls_constantes.CODIGOPROYECTO]), Convert.ToDateTime(Session[cls_constantes.FECHADESDE]), Convert.ToDateTime(Session[cls_constantes.FECHAHASTA]));
                     }
                 }
             }
@@ -119,14 +121,14 @@ namespace CSLA.web.App_pages.mod.Estadistico
         /// <summary>
         /// Método que realiza la consulta en BD para obtener la información por proyecto y cargar sus valores
         /// </summary>
-        private void CargaGrafico(int ps_proyecto)
+        private void CargaGrafico(int ps_proyecto, DateTime pd_fechaDesde, DateTime pd_fechaHasta)
         {
             try
             {
                 //Si se está obteniendo información para un proyecto que NO es el proyecto por defecto
                 if (ps_proyecto > 0)
                 {
-                    obtenerGraficoPorProyecto(ps_proyecto);
+                    obtenerGraficoActividadesPorProyecto(ps_proyecto, pd_fechaDesde, pd_fechaHasta);
                 }
                 else
                 {
@@ -164,14 +166,17 @@ namespace CSLA.web.App_pages.mod.Estadistico
         /// <summary>
         /// Método que obtiene la información con la que se va a cargar en gráfico
         /// </summary>
-        private void obtenerGraficoPorProyecto(int ps_proyecto)
+        private void obtenerGraficoActividadesPorProyecto(int ps_proyecto, DateTime pd_fechaDesde, DateTime pd_fechaHasta)
         {
             try
             {
                 //Se procede a obtener la información por proyecto
-                cls_totalidadLabores vo_estadistico = new cls_totalidadLabores();
-                vo_estadistico.pPK_proyecto = ps_proyecto;
-                List<cls_totalidadLabores> vl_estadistico = cls_gestorEstadistico.TotalidadLaboresPorProyecto(vo_estadistico);
+                cls_topActividades vo_topActividades = new cls_topActividades();
+                vo_topActividades.pPK_proyecto = ps_proyecto;
+                vo_topActividades.pFechaDesde = pd_fechaDesde;
+                vo_topActividades.pFechaHasta = pd_fechaHasta;
+
+                List<cls_topActividades> vl_topActividades = cls_gestorEstadistico.TopActividadesPorProyecto(vo_topActividades);
 
                 //Se asignan los tooltips para el gráfico
                 Grafico.Series["Leyendas"].ToolTip = "#VALX: #VAL{d}";
@@ -182,31 +187,48 @@ namespace CSLA.web.App_pages.mod.Estadistico
                 Grafico.Series["Leyendas"].LegendPostBackValue = "#INDEX";
 
                 //Se realiza el binding de la información que se obtuvo en la consulta
-                Grafico.Series["Leyendas"].Points.DataBindXY(vl_estadistico, "pTipoLabor", vl_estadistico, "pCantidad");
-
-                //Se asignan los colores de la composición del gráfico
-                Grafico.Series["Leyendas"].Points[0].Color = Color.Tomato;
-                Grafico.Series["Leyendas"].Points[1].Color = Color.SteelBlue;
-                Grafico.Series["Leyendas"].Points[2].Color = Color.Orange;
+                Grafico.Series["Leyendas"].Points.DataBindXY(vl_topActividades, "pNombreActividad", vl_topActividades, "pCantidadHoras");
 
                 //Se indica que tipo de gráfico se va a presentar al usuario
-                Grafico.Series["Leyendas"].ChartType = SeriesChartType.Pie;
+                Grafico.Series["Leyendas"].ChartType = SeriesChartType.Column;
 
                 //Se asignan los estilos del gráfico
-                Grafico.Series["Leyendas"]["PieLabelStyle"] = "Disabled";
                 Grafico.ChartAreas["AreaGrafico"].Area3DStyle.Enable3D = true;
-                Grafico.Series["Leyendas"].Points[0]["Exploded"] = "true";
-                Grafico.Legends[0].Enabled = true;
+                // Draw as 3D Cylinder
+                Grafico.Series["Leyendas"]["DrawingStyle"] = "Cylinder";
+                Grafico.Legends[0].Enabled = false;
 
-                // Show a 30% perspective
-                Grafico.ChartAreas["AreaGrafico"].Area3DStyle.Perspective = 40;
                 // Set the X Angle to 30
-                Grafico.ChartAreas["AreaGrafico"].Area3DStyle.Inclination = 65;
+                Grafico.ChartAreas["AreaGrafico"].Area3DStyle.Inclination = 10;
                 // Set the Y Angle to 40
-                Grafico.ChartAreas["AreaGrafico"].Area3DStyle.Rotation = 30;
+                Grafico.ChartAreas["AreaGrafico"].Area3DStyle.Rotation = 40;
+
+                // Show columns as clustered
+                Grafico.ChartAreas["AreaGrafico"].Area3DStyle.IsClustered = true;
+
+                // Set series point width
+                Grafico.Series["Leyendas"]["PointWidth"] = "0.6";
+
+                // Show X axis end labels
+                Grafico.ChartAreas["AreaGrafico"].AxisX.LabelStyle.IsEndLabelVisible = false;
+
+                // Set axis title
+                Grafico.ChartAreas["AreaGrafico"].AxisX.Title = "Nombre de Actividades";
+
+                // Set Title font
+                Grafico.ChartAreas["AreaGrafico"].AxisX.TitleFont = new Font("Arial", 10, FontStyle.Bold);
+
+                // Set axis title
+                Grafico.ChartAreas["AreaGrafico"].AxisY.Title = "Cantidad de Horas Invertidas";
+
+                // Set Title font
+                Grafico.ChartAreas["AreaGrafico"].AxisY.TitleFont = new Font("Arial", 10, FontStyle.Bold);
+                
+                //Set orientacion
+                Grafico.ChartAreas["AreaGrafico"].AxisY.TextOrientation = TextOrientation.Auto;
 
                 //Se aplica el estilo pastel a los colores definidos para el gráfico
-                Grafico.Palette = ChartColorPalette.BrightPastel;
+                Grafico.Palette = ChartColorPalette.Bright;
                 Grafico.ApplyPaletteColors();
                 //Para que el estilo tome efecto se debe asignar a cada uno de los puntos de la serie en el gráfico
                 foreach (var series in Grafico.Series)
@@ -219,6 +241,7 @@ namespace CSLA.web.App_pages.mod.Estadistico
 
                 // Set Antialiasing mode
                 Grafico.AntiAliasing = AntiAliasingStyles.Graphics;
+                Grafico.AlignDataPointsByAxisLabel();
             }
             catch (Exception po_exception)
             {
@@ -233,16 +256,15 @@ namespace CSLA.web.App_pages.mod.Estadistico
         {
             try
             {
-                string[] valoresX = new string[] { "Actividades", "Imprevistos", "Operaciones" };
-                decimal[] valoresY = new decimal[] { 0, 0, 0 };
+                string[] valoresX = new string[] { "Sin Actividades" };
+                decimal[] valoresY = new decimal[] { 0 };
 
                 //Se realiza el binding de la información que se obtuvo en la consulta
                 Grafico.Series["Leyendas"].Points.DataBindXY(valoresX, valoresY);
+                Grafico.Legends[0].Enabled = false;
 
                 //Se asignan los colores de la composición del gráfico
-                Grafico.Series["Leyendas"].Points[0].Color = Color.Tomato;
-                Grafico.Series["Leyendas"].Points[1].Color = Color.SteelBlue;
-                Grafico.Series["Leyendas"].Points[2].Color = Color.Orange;
+                Grafico.Series["Leyendas"].Points[0].Color = Color.White;
 
                 //Se indica que tipo de gráfico se va a presentar al usuario
                 Grafico.Series["Leyendas"].ChartType = SeriesChartType.Pie;
@@ -251,6 +273,16 @@ namespace CSLA.web.App_pages.mod.Estadistico
             {
                 throw new Exception("Ocurrió un error al cargar el gráfico con la información por defecto.", po_exception);
             }
+        }
+
+        /// <summary>
+        /// Método utilizado para limpiar las 3 variables de sesión que utiliza este gráfico
+        /// </summary>
+        private void LimpiarVariablesSession()
+        {
+            Session[cls_constantes.CODIGOPROYECTO] = null;
+            Session[cls_constantes.FECHADESDE] = null;
+            Session[cls_constantes.FECHAHASTA] = null;
         }
 
         /// <summary>
@@ -286,48 +318,24 @@ namespace CSLA.web.App_pages.mod.Estadistico
         #region Eventos
 
         /// <summary>
-        /// Evento obtiene el valor del ddl para el llamado al método que lo carga en ventana
+        /// Evento para levantar el explode del gráfico(Explode = destacar, hacer sobresalir una de las secciones)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void ddlProyecto_SelectedIndexChanged(object sender, EventArgs e)
+        protected void Generar_Click(object sender, EventArgs e)
         {
             try
             {
-                this.ddl_proyecto.SelectedValue = ((DropDownList)sender).SelectedValue;
                 Session[cls_constantes.CODIGOPROYECTO] = ddl_proyecto.SelectedValue;
+                Session[cls_constantes.FECHADESDE] = txt_fechaInicio.Text;
+                Session[cls_constantes.FECHAHASTA] = txt_fechaFin.Text;
 
                 //Si el proyecto es un proyecto válido, se carga, de lo contrario, se limpia la variable en memoria
                 //Si el proyecto es el "0", no se traerá nada, por lo que no se mostrará nada en ventana, que es el 
                 //caso defecto, y está bien
                 if (Convert.ToInt32(ddl_proyecto.SelectedValue) > -1)
                 {
-                    CargaGrafico(Convert.ToInt32(ddl_proyecto.SelectedValue));
-                }
-            }
-            catch (Exception po_exception)
-            {
-                String vs_error_usuario = "Ocurrió un error al obtener intentar cambiar el proyecto.";
-                this.lanzarExcepcion(po_exception, vs_error_usuario);
-            }
-        }
-
-        /// <summary>
-        /// Evento para levantar el explode del gráfico(Explode = destacar, hacer sobresalir una de las secciones)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void Grafico_Click(object sender, ImageMapEventArgs e)
-        {
-            try
-            {
-                int pointIndex = int.Parse(e.PostBackValue);
-                Series series = Grafico.Series["Leyendas"];
-
-                if (pointIndex >= 0 && pointIndex < series.Points.Count)
-                {
-                    series.Points[pointIndex].CustomProperties = string.Empty;
-                    series.Points[pointIndex].CustomProperties += "Exploded=true";
+                    CargaGrafico(Convert.ToInt32(ddl_proyecto.SelectedValue), Convert.ToDateTime(txt_fechaInicio.Text), Convert.ToDateTime(txt_fechaFin.Text));
                 }
             }
             catch (Exception po_exception)

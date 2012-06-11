@@ -822,9 +822,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Autor: Esteban Ramírez G.
--- Fecha Creación:	19-04-2011
--- Fecha Actualización:	19-04-2011
+-- Autor: Cristian Arce Jiménez.
+-- Fecha Creación:	01-06-2012
+-- Fecha Actualización:	01-06-2012
 -- Descripción: 
 -- =============================================
 CREATE PROCEDURE  PA_estd_inversionTiempos
@@ -850,3 +850,43 @@ AS
 
 END  
 GO 
+
+IF  EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'[dbo].[PA_estd_actividadesTopProyecto]'))
+DROP PROCEDURE [dbo].[PA_estd_actividadesTopProyecto]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Autor: Cristian Arce Jiménez.
+-- Fecha Creación:	01-06-2012
+-- Fecha Actualización:	01-06-2012
+-- Descripción: 
+-- =============================================
+CREATE PROCEDURE  [dbo].[PA_estd_actividadesTopProyecto]
+  @paramProyecto	INT,
+  @paramFechaInicio	datetime,
+  @paramFechaFin	datetime
+AS 
+ BEGIN 
+
+	Select TOP(10)tca.nombre AS actividad, SUM(horas) AS cantidadHoras 
+			From t_cont_registro_actividad tcra INNER JOIN t_cont_proyecto tcp
+				ON 
+				   tcra.PK_proyecto = tcp.PK_proyecto INNER JOIN t_cont_actividad tca
+				ON 
+				   tcra.PK_actividad = tca.PK_actividad INNER JOIN t_cont_asignacion_actividad tcaa 
+				ON 
+				   tcra.PK_actividad = tcaa.PK_actividad AND
+				   tcra.PK_paquete = tcaa.PK_paquete AND
+				   tcra.PK_componente = tcaa.PK_componente AND
+				   tcra.PK_entregable = tcaa.PK_entregable AND
+				   tcra.PK_proyecto = tcaa.PK_proyecto AND
+				   tcra.PK_usuario = tcaa.PK_usuario 
+			Where 
+				tcra.PK_proyecto = @paramProyecto AND
+				tcra.fecha BETWEEN @paramFechaInicio AND @paramFechaFin
+	GROUP BY tca.nombre
+
+END  
