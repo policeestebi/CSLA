@@ -179,8 +179,8 @@ namespace CSLA.web.App_pages.mod.Estadistico
                 List<cls_topActividades> vl_topActividades = cls_gestorEstadistico.TopActividadesPorProyecto(vo_topActividades);
 
                 //Se asignan los tooltips para el gráfico
-                Grafico.Series["Leyendas"].ToolTip = "#VALX: #VAL{d}";
-                Grafico.Series["Leyendas"].LegendToolTip = "#VALX: #VAL{d}";
+                Grafico.Series["Leyendas"].ToolTip = "#VALX: #VAL{d} horas";
+                Grafico.Series["Leyendas"].LegendToolTip = "#VALX: #VAL{d} Horas";
                 Grafico.Series["Leyendas"].IsVisibleInLegend = true;
                 Grafico.Series["Leyendas"].Label = "#VALX\n#PERCENT";
                 Grafico.Series["Leyendas"].PostBackValue = "#INDEX";
@@ -189,46 +189,69 @@ namespace CSLA.web.App_pages.mod.Estadistico
                 //Se realiza el binding de la información que se obtuvo en la consulta
                 Grafico.Series["Leyendas"].Points.DataBindXY(vl_topActividades, "pNombreActividad", vl_topActividades, "pCantidadHoras");
 
-                //Se indica que tipo de gráfico se va a presentar al usuario
-                Grafico.Series["Leyendas"].ChartType = SeriesChartType.Column;
 
                 //Se asignan los estilos del gráfico
-                Grafico.ChartAreas["AreaGrafico"].Area3DStyle.Enable3D = true;
+                //Grafico.ChartAreas["AreaGrafico"].Area3DStyle.Enable3D = true;
                 // Draw as 3D Cylinder
-                Grafico.Series["Leyendas"]["DrawingStyle"] = "Cylinder";
+                //Grafico.Series["Leyendas"]["DrawingStyle"] = "Cylinder";
                 Grafico.Legends[0].Enabled = false;
 
                 // Set the X Angle to 30
-                Grafico.ChartAreas["AreaGrafico"].Area3DStyle.Inclination = 10;
-                // Set the Y Angle to 40
-                Grafico.ChartAreas["AreaGrafico"].Area3DStyle.Rotation = 40;
+                //Grafico.ChartAreas["AreaGrafico"].Area3DStyle.Inclination = 10;
+                //// Set the Y Angle to 40
+                //Grafico.ChartAreas["AreaGrafico"].Area3DStyle.Rotation = 40;
 
-                // Show columns as clustered
-                Grafico.ChartAreas["AreaGrafico"].Area3DStyle.IsClustered = true;
+                //// Show columns as clustered
+                //Grafico.ChartAreas["AreaGrafico"].Area3DStyle.IsClustered = true;
 
                 // Set series point width
-                Grafico.Series["Leyendas"]["PointWidth"] = "0.6";
+               // Grafico.Series["Leyendas"]["PointWidth"] = "0.6";
 
                 // Show X axis end labels
-                Grafico.ChartAreas["AreaGrafico"].AxisX.LabelStyle.IsEndLabelVisible = false;
+                //Grafico.ChartAreas["AreaGrafico"].AxisX.LabelStyle.IsEndLabelVisible = false;
 
                 // Set axis title
-                Grafico.ChartAreas["AreaGrafico"].AxisX.Title = "Nombre de Actividades";
+                //Grafico.ChartAreas["AreaGrafico"].AxisX.Title = "Nombre de Actividades";
 
-                // Set Title font
-                Grafico.ChartAreas["AreaGrafico"].AxisX.TitleFont = new Font("Arial", 10, FontStyle.Bold);
+                //// Set Title font
+                //Grafico.ChartAreas["AreaGrafico"].AxisX.TitleFont = new Font("Arial", 10, FontStyle.Bold);
 
-                // Set axis title
-                Grafico.ChartAreas["AreaGrafico"].AxisY.Title = "Cantidad de Horas Invertidas";
+                //// Set axis title
+                //Grafico.ChartAreas["AreaGrafico"].AxisY.Title = "Cantidad de Horas Invertidas";
 
-                // Set Title font
-                Grafico.ChartAreas["AreaGrafico"].AxisY.TitleFont = new Font("Arial", 10, FontStyle.Bold);
+                //// Set Title font
+                //Grafico.ChartAreas["AreaGrafico"].AxisY.TitleFont = new Font("Arial", 10, FontStyle.Bold);
                 
-                //Set orientacion
-                Grafico.ChartAreas["AreaGrafico"].AxisY.TextOrientation = TextOrientation.Auto;
+                ////Set orientacion
+                //Grafico.ChartAreas["AreaGrafico"].AxisY.TextOrientation = TextOrientation.Auto;
+
+
+                // Set pyramid chart type
+                Grafico.Series["Leyendas"].ChartType = SeriesChartType.Pyramid;
+
+                // Set pyramid data point labels style
+                Grafico.Series["Leyendas"]["PyramidLabelStyle"] = "Outside";
+
+                // Place labels on the left side
+                Grafico.Series["Leyendas"]["PyramidOutsideLabelPlacement"] = "Right";
+
+                // Set gap between points
+                Grafico.Series["Leyendas"]["PyramidPointGap"] = "2";
+
+                // Set minimum point height
+                Grafico.Series["Leyendas"]["PyramidMinPointHeight"] = "1";
+
+                // Set 3D mode
+                Grafico.ChartAreas["AreaGrafico"].Area3DStyle.Enable3D = true;
+
+                // Set 3D angle
+                Grafico.Series["Leyendas"]["Pyramid3DRotationAngle"] = "9";
+
+                // Set 3D drawing style
+                Grafico.Series["Leyendas"]["Pyramid3DDrawingStyle"] = "SquareBase";
 
                 //Se aplica el estilo pastel a los colores definidos para el gráfico
-                Grafico.Palette = ChartColorPalette.Bright;
+                Grafico.Palette = ChartColorPalette.BrightPastel;
                 Grafico.ApplyPaletteColors();
                 //Para que el estilo tome efecto se debe asignar a cada uno de los puntos de la serie en el gráfico
                 foreach (var series in Grafico.Series)

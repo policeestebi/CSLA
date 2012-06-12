@@ -49,7 +49,7 @@
                         </td>
                     </tr>
                 </table>
-                <asp:Chart ID="Grafico" runat="server" Height="300px" Width="400px"  OnClick="Grafico_Click"
+                <asp:Chart ID="Grafico" runat="server" Height="393px" Width="540px"  OnClick="Grafico_Click"
                     oninit="Grafico_Init">
                     <Titles>
                         <asp:Title ShadowOffset="3" Name="Title1" />
