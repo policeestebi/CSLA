@@ -1,0 +1,11 @@
+D:\cslagit\CSLA\CSLA\COSEVI.web.controls\bin\Release\COSEVI.web.controls.dll
+D:\cslagit\CSLA\CSLA\COSEVI.web.controls\bin\Release\COSEVI.web.controls.pdb
+D:\cslagit\CSLA\CSLA\COSEVI.web.controls\bin\Release\AjaxControlToolkit.dll
+D:\cslagit\CSLA\CSLA\COSEVI.web.controls\bin\Release\COSEVI.CSLA.lib.entidades.dll
+D:\cslagit\CSLA\CSLA\COSEVI.web.controls\bin\Release\COSEVI.CSLA.lib.entidades.pdb
+D:\cslagit\CSLA\CSLA\COSEVI.web.controls\obj\Release\ResolveAssemblyReference.cache
+D:\cslagit\CSLA\CSLA\COSEVI.web.controls\obj\Release\COSEVI.web.controls.cld_resources.resources
+D:\cslagit\CSLA\CSLA\COSEVI.web.controls\obj\Release\GenerateResource-ResGen.read.1.tlog
+D:\cslagit\CSLA\CSLA\COSEVI.web.controls\obj\Release\GenerateResource-ResGen.write.1.tlog
+D:\cslagit\CSLA\CSLA\COSEVI.web.controls\obj\Release\COSEVI.web.controls.dll
+D:\cslagit\CSLA\CSLA\COSEVI.web.controls\obj\Release\COSEVI.web.controls.pdb
